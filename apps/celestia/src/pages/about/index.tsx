@@ -223,7 +223,7 @@ const AboutPage: NextPage = () => {
           <ExternalLink href="https://www.themoviedb.org/documentation/api">The Movie Database API</ExternalLink>
           {`. ${t('common:tmdbDisclaimer')}`}
           <br />
-          <strong>Coding, design & hosting:</strong> <ExternalLink href="https://github.com/SeinopSys">SeinopSys</ExternalLink>
+          <strong>Coding, design & hosting:</strong> <ExternalLink href="https://went.tf">WentTheFox</ExternalLink>
         </p>
       </section>
       <section id="supported-providers">

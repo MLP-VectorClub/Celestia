@@ -18,9 +18,8 @@
   "license": "MIT",
   "type": "commonjs",
   "author": {
-    "name": "SeinopSys",
-    "email": "david@seinopsys.dev",
-    "url": "https://seinopsys.dev"
+    "name": "WentTheFOX",
+    "url": "https://went.tf"
   },
   "devDependencies": {
     "@seinopsys-forks/openapi-to-typescript": "^0.0.11",
