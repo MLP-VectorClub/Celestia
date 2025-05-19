@@ -1,0 +1,19 @@
+#main {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding-top: 0;
+  padding-right: 0;
+  padding-bottom: 0;
+  @include gray-grid;
+
+  @include media-breakpoint-down($sidebar-breakpoint-down) {
+    padding: 5px 5px 5px 0;
+  }
+
+  @include media-breakpoint-up($sidebar-breakpoint-up) {
+    width: calc(100% - #{$sidebar-width});
+    margin-left: $sidebar-width;
+    padding: $main-margin $main-margin #{$main-margin + $footer-height} $main-margin;
+  }
+}

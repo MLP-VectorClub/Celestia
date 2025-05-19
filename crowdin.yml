@@ -1,0 +1,3 @@
+files:
+  - source: /apps/celestia/public/locales/en/*.json
+    translation: /apps/celestia/public/locales/%two_letters_code%/%original_file_name%

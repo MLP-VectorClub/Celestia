@@ -1,0 +1,29 @@
+#footer {
+  text-align: center;
+  display: block;
+  width: 100%;
+  padding: 10px;
+  line-height: 18px;
+  color: #fff;
+  @include fluid-background;
+
+  a {
+    text-decoration: underline;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  @include media-breakpoint-up(lg) {
+    text-align: left;
+    z-index: 4;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: $footer-height;
+    white-space: nowrap;
+  }
+}
+
+#git-info-toggle {
+  cursor: pointer;
+}
