@@ -21,7 +21,6 @@ import { validatePageParam } from 'src/utils/validate-page-param';
 import {
   EpisodeColumn,
   EpisodeNumberColumn,
-  GenerationColumn,
   SeasonColumn,
   ShowNumberColumn,
   TitleAirDateColumn,
@@ -49,11 +48,6 @@ const TITLE_AIR_DATE_COLUMN: ShowTableColumnDefinition = {
 };
 
 const EPISODE_TABLE_COLUMNS: ShowEntriesTableProps['columns'] = [
-  {
-    header: 'Generation',
-    shortHeader: 'Gen',
-    renderContent: GenerationColumn,
-  },
   {
     header: '№',
     only: 'mobile',

@@ -1,6 +1,5 @@
 import { ShowTableColumnDefinition } from 'src/types/show';
 import { episodeToString, seasonEpisodeToString } from 'src/utils/show';
-import styles from 'modules/ShowPage.module.scss';
 import { FC, useRef } from 'react';
 import { ShowListItem } from '@mlp-vectorclub/api-types';
 import { useAuth } from 'src/hooks';
@@ -9,16 +8,9 @@ import { PATHS } from 'src/paths';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { UncontrolledTooltip } from 'reactstrap';
 import { format } from 'date-fns';
-import { GuideIcon } from 'src/components/shared/GuideIcon';
 import { useTranslation } from 'next-i18next';
 
 export const EpisodeColumn: ShowTableColumnDefinition['renderContent'] = ({ entry }) => <>{episodeToString(entry)}</>;
-
-export const GenerationColumn: ShowTableColumnDefinition['renderContent'] = ({ entry }) => (
-  <div className={styles.generationImage}>
-    {entry.generation && <GuideIcon guide={entry.generation} />}
-  </div>
-);
 
 export const SeasonColumn: ShowTableColumnDefinition['renderContent'] = ({ entry }) => <>{entry.season}</>;
 
