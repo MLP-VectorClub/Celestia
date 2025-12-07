@@ -16,7 +16,7 @@ export const EpisodeColumn: ShowTableColumnDefinition['renderContent'] = ({ entr
 
 export const GenerationColumn: ShowTableColumnDefinition['renderContent'] = ({ entry }) => (
   <div className={styles.generationImage}>
-    <GuideIcon guide={entry.generation} />
+    {entry.generation && <GuideIcon guide={entry.generation} />}
   </div>
 );
 

@@ -31,6 +31,7 @@ const schemaOutputFileName = 'schema.json';
     });
     console.log('API schema successfully downloaded');
   } else {
+    console.log(`Checking if API schema exists at ${filePath}…`);
     if (!fs.existsSync(filePath)) {
       console.error('Missing API schema file (or API_JSON_PATH not set)');
       process.exit(1);
