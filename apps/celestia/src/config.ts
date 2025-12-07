@@ -32,7 +32,7 @@ export const GUEST_AVATAR = '/img/guest.svg';
 
 export const CSRF_COOKIE_NAME = 'XSRF-TOKEN';
 
-export const GUIDE_NAMES: readonly GuideName[] = ['pony', 'eqg', 'pl'] as const;
+export const GUIDE_NAMES: readonly GuideName[] = ['pony', 'eqg'] as const;
 
 export const GUIDE_PAGE_SIZES: readonly number[] = range(7, 20 + 1);
 
