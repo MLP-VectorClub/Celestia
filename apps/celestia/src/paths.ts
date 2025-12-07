@@ -64,5 +64,5 @@ export const PATHS = {
   USER_LEGACY: (username: string) => `/@${username}`,
   USER: (id: Numeric = '[user]') => `/users/${id}`,
   USER_LONG: ({ id, name }: PublicUser) => `/users/${pathSegmentWithId(id, name)}`,
-  EPISODE: (show: ShowListItem) => `/episode/${String(show.generation)}/${seasonEpisodeToString(show)}-${makeUrlSafe(show.title)}`,
+  EPISODE: (show: ShowListItem) => `/episode/${seasonEpisodeToString(show)}-${makeUrlSafe(show.title)}`,
 };
