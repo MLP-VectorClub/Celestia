@@ -6,7 +6,6 @@ import { padStart } from 'lodash';
 
 const guideNameMap: Record<GuideName, string> = {
   pony: 'Friendship is Magic',
-  pl: 'Pony Life',
   eqg: 'Equestria Girls',
 };
 
