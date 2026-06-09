@@ -16,7 +16,7 @@ import { getOAuthProvider } from 'src/utils/auth';
 import { titleSetter } from 'src/utils/core';
 import { useAppDispatch, wrapper } from 'src/store';
 import { PATHS } from 'src/paths';
-import { SSRConfig, useTranslation } from 'next-i18next';
+import { SSRConfig, useTranslation } from 'next-i18next/pages';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 import { useQueryClient } from 'react-query';
 

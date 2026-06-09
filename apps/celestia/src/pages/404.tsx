@@ -8,7 +8,7 @@ import { useTitleSetter } from 'src/hooks';
 import { useDispatch } from 'react-redux';
 import { NextPage } from 'next';
 import { Translatable } from 'src/types';
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'next-i18next/pages';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 const titleFactory: TitleFactory = () => {

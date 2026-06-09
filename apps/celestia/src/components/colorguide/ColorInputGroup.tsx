@@ -1,4 +1,4 @@
-import { Input, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
+import { Input, InputGroup, InputGroupText } from 'reactstrap';
 import { hexToRgb, validHexColorPattern, yiq } from 'src/utils';
 import { ChangeEventHandler, FC, PropsWithChildren, useCallback, useMemo, useState } from 'react';
 import InlineIcon from 'src/components/shared/InlineIcon';
@@ -30,11 +30,9 @@ export const ColorInputGroup: FC<PropTypes> = ({ baseColor, value, name, childre
   return (
     <>
       <InputGroup>
-        <InputGroupAddon tag="label" addonType="prepend" htmlFor={inputId} className="mb-0">
-          <InputGroupText style={{ backgroundColor: value, userSelect: 'none' }}>
-            <InlineIcon icon="eye-dropper" fixedWidth className={darkColor ? 'text-light' : 'text-dark'} />
-          </InputGroupText>
-        </InputGroupAddon>
+        <InputGroupText tag="label" htmlFor={inputId} className="mb-0" style={{ backgroundColor: value, userSelect: 'none' }}>
+          <InlineIcon icon="eye-dropper" fixedWidth className={darkColor ? 'text-light' : 'text-dark'} />
+        </InputGroupText>
         <Input
           id={inputId}
           name={name}

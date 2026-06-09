@@ -1,6 +1,6 @@
 @import '../vars';
-@import '~bootstrap-scss/functions';
-@import '~bootstrap-scss/variables';
+@import 'bootstrap-scss/functions';
+@import 'bootstrap-scss/variables';
 
 .list {
   display: flex;
@@ -9,17 +9,17 @@
   justify-content: flex-start;
 }
 
-.sprite-wrap {
+.spriteWrap {
   display: flex;
   justify-content: center;
 }
 
-.appearance-preview {
+.appearancePreview {
   width: 100px;
   height: 100px;
 }
 
-.card-body {
+.cardBody {
   display: flex;
   flex-flow: column nowrap;
   align-items: center;

@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, isAction, PayloadAction } from '@reduxjs/toolkit';
 import { HYDRATE } from 'next-redux-wrapper';
 import { omit } from 'lodash';
 import { renderingStateSlice } from 'src/utils/store';
@@ -58,14 +58,14 @@ const coreSlice = createSlice({
       renderingStateSlice(state).breadcrumbs = renderingStateSlice(initialState).breadcrumbs;
     },
   },
-  extraReducers: {
-    [HYDRATE](state: CoreState, action: PayloadAction<{ core: CoreState }>) {
-      // Copy server properties to client
-      return {
+  extraReducers: (builder) => {
+    builder.addMatcher(
+      (action): action is PayloadAction<{ core: CoreState }> => isAction(action) && action.type === HYDRATE,
+      (state: CoreState, action: PayloadAction<{ core: CoreState }>) => ({
         ...omit(action.payload.core, 'client'),
         client: state.client || action.payload.core.server,
-      };
-    },
+      })
+    );
   },
 });
 

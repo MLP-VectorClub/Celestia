@@ -1,5 +1,5 @@
-import { ChangeEventHandler, FC, FormEventHandler, MouseEventHandler, useCallback, useEffect, useRef, useState } from 'react';
-import { Button, Col, CustomInput, Form, Progress, Row } from 'reactstrap';
+import React, { ChangeEventHandler, FC, FormEventHandler, MouseEventHandler, useCallback, useEffect, useRef, useState } from 'react';
+import { Button, Col, Form, Input, Label, Progress, Row } from 'reactstrap';
 import { saveAs } from 'file-saver';
 import ExternalLink from 'src/components/shared/ExternalLink';
 import { SpriteGeneratorPreview } from 'src/components/colorguide/sprite-generator/SpriteGeneratorPreview';
@@ -29,8 +29,8 @@ const DEFAULT_OPTIONS: SpriteGeneratorOptions = {
 };
 
 export const SpriteGenerator: FC = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const imageMap = useRef<SpriteGeneratorImageMap | undefined>();
+  const canvasRef = useRef<HTMLCanvasElement>(null) as React.RefObject<HTMLCanvasElement>;
+  const imageMap = useRef<SpriteGeneratorImageMap | undefined>(undefined);
   const [colorMap, setColorMap] = useState<SpriteGeneratorColorMap>(() => ({
     [SpriteGeneratorBaseColor.COAT_OUTLINE]: convertNumberToRgb(SpriteGeneratorBaseColor.COAT_OUTLINE),
     [SpriteGeneratorBaseColor.COAT_SHADOW_OUTLINE]: convertNumberToRgb(SpriteGeneratorBaseColor.COAT_SHADOW_OUTLINE),
@@ -47,8 +47,8 @@ export const SpriteGenerator: FC = () => {
   const [loadedImages, setLoadedImages] = useState(0);
   const [licenseAccepted, setLicenseAccepted] = useState(false);
   const [options, setOptions] = useState<SpriteGeneratorOptions>(DEFAULT_OPTIONS);
-  const copyButtonRef = useRef<HTMLButtonElement>(null);
-  const attributionTextRef = useRef<HTMLSpanElement>(null);
+  const copyButtonRef = useRef<HTMLButtonElement>(null) as React.RefObject<HTMLButtonElement>;
+  const attributionTextRef = useRef<HTMLSpanElement>(null) as React.RefObject<HTMLSpanElement>;
 
   useEffect(() => {
     let localLoadedImages = 0;
@@ -151,22 +151,16 @@ export const SpriteGenerator: FC = () => {
         </Row>
       </Form>
       <h2 className="mt-3">Download</h2>
-      <CustomInput
-        type="checkbox"
-        id="accept-license"
-        label={
-          <>
-            I accept that generated images are licensed under the{' '}
-            <ExternalLink href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
-              Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
-            </ExternalLink>{' '}
-            license
-          </>
-        }
-        checked={licenseAccepted}
-        onChange={handleLicenseChange}
-        className="mb-3"
-      />
+      <div className="form-check mb-3">
+        <Input type="checkbox" className="form-check-input" id="accept-license" checked={licenseAccepted} onChange={handleLicenseChange} />
+        <Label check htmlFor="accept-license" className="form-check-label">
+          I accept that generated images are licensed under the{' '}
+          <ExternalLink href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+            Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+          </ExternalLink>{' '}
+          license
+        </Label>
+      </div>
       <p className="text-info">
         <InlineIcon icon="info" first fixedWidth />
         Attribution example:

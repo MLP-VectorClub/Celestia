@@ -1,4 +1,4 @@
-.color-list-item {
+.colorListItem {
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -7,22 +7,22 @@
     margin-bottom: 0.25rem;
   }
 
-  .color-info {
+  .colorInfo {
     margin-left: 0.5rem;
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;
     line-height: 1.2;
 
-    &.detailed .color-label {
+    &.detailed .colorLabel {
       font-size: 1.1rem;
     }
 
-    .color-label {
+    .colorLabel {
       font-size: 1.2rem;
     }
 
-    .color-details {
+    .colorDetails {
       font-size: 0.75rem;
     }
   }

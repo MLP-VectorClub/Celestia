@@ -4,12 +4,10 @@ import {
   Alert,
   Button,
   Col,
-  CustomInput,
   Form,
   FormGroup,
   Input,
   InputGroup,
-  InputGroupAddon,
   Label,
   Row,
   UncontrolledTooltip,
@@ -29,7 +27,7 @@ import RevealPasswordButton from 'src/components/shared/RevealPasswordButton';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { signInThunk } from 'src/store/thunks';
 import { API_PREFIX } from 'src/config';
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'next-i18next/pages';
 import { useQueryClient } from 'react-query';
 
 enum INPUT_NAMES {
@@ -214,16 +212,17 @@ const SingInForm: FC = () => {
               disabled={isLoading}
               autoComplete="current-password"
             />
-            <InputGroupAddon addonType="append">
-              <RevealPasswordButton passwordRevealed={passwordRevealed} setPasswordRevealed={setPasswordRevealed} />
-            </InputGroupAddon>
+            <RevealPasswordButton passwordRevealed={passwordRevealed} setPasswordRevealed={setPasswordRevealed} />
           </InputGroup>
           <BootstrapErrorMessages errors={errors} name={INPUT_NAMES.PASSWORD} />
         </Col>
       </FormGroup>
 
       <FormGroup>
-        <CustomInput type="checkbox" label={t('common:auth.rememberMe')} id="remember-me" {...r(INPUT_NAMES.REMEMBER)} />
+        <div className="form-check">
+          <Input type="checkbox" className="form-check-input" id="remember-me" {...r(INPUT_NAMES.REMEMBER)} />
+          <Label check htmlFor="remember-me" className="form-check-label">{t('common:auth.rememberMe')}</Label>
+        </div>
       </FormGroup>
 
       {signIn.error?.type === UnifiedErrorResponseTypes.AUTHENTICATION_ERROR && (

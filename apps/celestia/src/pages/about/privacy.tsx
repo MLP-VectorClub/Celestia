@@ -14,7 +14,7 @@ import { PATHS } from 'src/paths';
 import { useTitleSetter } from 'src/hooks/core';
 import { Translatable } from 'src/types';
 import { typedServerSideTranslations } from 'src/utils/i18n';
-import { Trans, useTranslation } from 'next-i18next';
+import { Trans, useTranslation } from 'next-i18next/pages';
 
 const titleFactory: TitleFactory = () => {
   const title: Translatable = ['common:titles.privacyPolicy'];

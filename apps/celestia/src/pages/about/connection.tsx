@@ -15,7 +15,7 @@ import { useConnectionInfo } from 'src/hooks/connection-info';
 import { MappedAboutConnectionResult } from 'src/types/api-alias';
 import { useTitleSetter } from 'src/hooks/core';
 import { connectionFetcher } from 'src/fetchers/connection-info';
-import { SSRConfig, useTranslation } from 'next-i18next';
+import { SSRConfig, useTranslation } from 'next-i18next/pages';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 interface PropTypes {

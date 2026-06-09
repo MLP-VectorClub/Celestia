@@ -4,7 +4,7 @@ import FooterGitInfo from 'src/components/shared/FooterGitInfo';
 import FooterLastUpdateInfo from 'src/components/shared/FooterLastUpdateInfo';
 import { FC, MouseEventHandler, useCallback, useState } from 'react';
 import { useConnectionInfo } from 'src/hooks';
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'next-i18next/pages';
 
 const FooterVersionInfo: FC = () => {
   const { t } = useTranslation();

@@ -1,7 +1,7 @@
 @import '../vars';
-@import '~bootstrap-scss/functions';
-@import '~bootstrap-scss/variables';
-@import '~bootstrap-scss/mixins';
+@import 'bootstrap-scss/functions';
+@import 'bootstrap-scss/variables';
+@import 'bootstrap-scss/mixins';
 
 @mixin tag-variant($color: $tag-color-default) {
   $border: mix(white, $color, 10%);
@@ -22,9 +22,9 @@
 
   &:focus {
     @if $enable-shadows {
-      @include box-shadow($btn-box-shadow, 0 0 0 $btn-focus-width rgba(mix(color-yiq($background), $border, 15%), 0.5));
+      @include box-shadow($btn-box-shadow, 0 0 0 $btn-focus-width rgba(mix(color-contrast($background), $border, 15%), 0.5));
     } @else {
-      box-shadow: 0 0 0 $btn-focus-width rgba(mix(color-yiq($background), $border, 15%), 0.5);
+      box-shadow: 0 0 0 $btn-focus-width rgba(mix(color-contrast($background), $border, 15%), 0.5);
     }
   }
 }
@@ -50,27 +50,27 @@
     }
   }
 
-  &.type-category {
+  &.typeCategory {
     @include tag-variant($tag-color-category);
   }
 
-  &.type-species {
+  &.typeSpecies {
     @include tag-variant($tag-color-species);
   }
 
-  &.type-gender {
+  &.typeGender {
     @include tag-variant($tag-color-gender);
   }
 
-  &.type-clothing {
+  &.typeClothing {
     @include tag-variant($tag-color-clothing);
   }
 
-  &.type-warning {
+  &.typeWarning {
     @include tag-variant($tag-color-warning);
   }
 
-  &.type-character {
+  &.typeCharacter {
     @include tag-variant($tag-color-character);
   }
 }

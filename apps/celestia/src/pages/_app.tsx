@@ -10,7 +10,7 @@ import AuthModal from 'src/components/modals/AuthModal';
 import ProgressIndicator from 'src/components/ProgressIndicator';
 import Layout from 'src/components/Layout';
 import { LayoutContextProvider } from 'src/hooks';
-import { appWithTranslation } from 'next-i18next';
+import { appWithTranslation } from 'next-i18next/pages';
 import { AppComponent } from 'next/dist/shared/lib/router/router';
 import { queryClient } from 'src/store/queryClient';
 import { Provider } from 'react-redux';
@@ -24,6 +24,7 @@ const Celestia: AppComponent = ({ Component, ...rest }) => {
   const layoutContext = useMemo(() => ({ disabled, setLayoutDisabled }), [disabled, setLayoutDisabled]);
 
   return (
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- props type is a fixed "any" value
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <TitleManager />

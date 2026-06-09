@@ -1,5 +1,5 @@
 import { GetUsersMeResult, User, ValidationErrorResponse } from '@mlp-vectorclub/api-types';
-import { TFunction } from 'next-i18next';
+import { TFunction } from 'next-i18next/pages';
 
 export enum Status {
   INIT,

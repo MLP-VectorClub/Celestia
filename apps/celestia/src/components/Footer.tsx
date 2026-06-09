@@ -7,7 +7,7 @@ import ExternalLink from 'src/components/shared/ExternalLink';
 import Abbr from 'src/components/shared/Abbr';
 import FooterVersionInfo from 'src/components/shared/FooterVersionInfo';
 import { FC } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'next-i18next/pages';
 
 const Footer: FC = () => {
   const { t } = useTranslation();

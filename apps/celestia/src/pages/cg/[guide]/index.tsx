@@ -27,7 +27,7 @@ import PinnedAppearances from 'src/components/colorguide/PinnedAppearances';
 import SearchBar from 'src/components/colorguide/SearchBar';
 import { PATHS } from 'src/paths';
 import { validatePageParam } from 'src/utils/validate-page-param';
-import { SSRConfig } from 'next-i18next';
+import { SSRConfig } from 'next-i18next/pages';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 const titleFactory: TitleFactory<Omit<PropTypes, 'initialData'>> = ({ guide, page, q }) => {

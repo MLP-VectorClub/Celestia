@@ -25,7 +25,7 @@ import {
   ShowNumberColumn,
   TitleAirDateColumn,
 } from 'src/components/show/columns';
-import { SSRConfig, useTranslation } from 'next-i18next';
+import { SSRConfig, useTranslation } from 'next-i18next/pages';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 interface ShowPageProps {

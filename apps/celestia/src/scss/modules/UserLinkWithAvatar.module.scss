@@ -1,9 +1,9 @@
 @import '../vars';
-@import '~bootstrap-scss/functions';
-@import '~bootstrap-scss/variables';
+@import 'bootstrap-scss/functions';
+@import 'bootstrap-scss/variables';
 @import '../mixins/reserve-button';
 
-.user-link-with-avatar {
+.userLinkWithAvatar {
   $image-height: 1.5em;
   $border-size: 1px;
 

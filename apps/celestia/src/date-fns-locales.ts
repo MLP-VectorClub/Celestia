@@ -1,4 +1,4 @@
-import enLocale from 'date-fns/locale/en-US';
+import { enUS as enLocale } from 'date-fns/locale/en-US';
 
 /**
  * @file These imports are in their own file to work around the ESLint rule

@@ -17,7 +17,7 @@ import { guideIndexFetcher } from 'src/fetchers';
 import { PATHS } from 'src/paths';
 import pluralize from 'pluralize';
 import { GuideIcon } from 'src/components/shared/GuideIcon';
-import { SSRConfig, useTranslation } from 'next-i18next';
+import { SSRConfig, useTranslation } from 'next-i18next/pages';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 interface PropTypes {

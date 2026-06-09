@@ -5,7 +5,7 @@ import { useCallback, useEffect } from 'react';
 import { CoreSliceMirroredState } from 'src/store/slices';
 import { titleSetter } from 'src/utils/core';
 import { AppDispatch } from 'src/store';
-import { TFunction, useTranslation } from 'next-i18next';
+import { TFunction, useTranslation } from 'next-i18next/pages';
 import { PageTitle, Translatable } from 'src/types';
 
 export function useCsrf() {

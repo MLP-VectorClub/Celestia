@@ -4,7 +4,7 @@ import { formatDistanceToNow, isValid } from 'date-fns';
 import { distinctUntilChanged, map, tap } from 'rxjs/operators';
 import { UncontrolledTooltip } from 'reactstrap';
 import { formatLongDate } from 'src/utils';
-import { UncontrolledTooltipProps } from 'reactstrap/lib/Tooltip';
+import { UncontrolledTooltipProps } from 'reactstrap';
 import TooltipContent from 'src/components/shared/TooltipContent';
 
 interface PropTypes extends Omit<TimeHTMLAttributes<unknown>, 'datetime'> {
@@ -57,7 +57,7 @@ const TimeAgo: FC<PropTypes> = ({ date: inputDate, tooltip = true, tooltipPlacem
       <>
         {timeTag}
         <UncontrolledTooltip target={rest.id} placement={tooltipPlacement} fade={false}>
-          {({ scheduleUpdate }) => <TooltipContent scheduleUpdate={scheduleUpdate}>{formatLongDate(date)}</TooltipContent>}
+          <TooltipContent>{formatLongDate(date)}</TooltipContent>
         </UncontrolledTooltip>
       </>
     );

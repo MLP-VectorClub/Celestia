@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { Alert, Button, Col, CustomInput, Form, FormGroup, FormText, Input, InputGroup, InputGroupAddon, Label } from 'reactstrap';
+import { Alert, Button, Col, Form, FormGroup, FormText, Input, InputGroup, Label } from 'reactstrap';
 import { useForm } from 'react-hook-form';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { RootState, useAppDispatch } from 'src/store';
@@ -14,7 +14,7 @@ import { combineErrors, validateEmail, validatePassword, validateRequired, valid
 import { Status, UnifiedErrorResponseTypes } from 'src/types/common';
 import { PATHS } from 'src/paths';
 import { AuthModalSide } from 'src/types/auth';
-import { TFunction, Trans, useTranslation } from 'next-i18next';
+import { TFunction, Trans, useTranslation } from 'next-i18next/pages';
 
 enum INPUT_NAMES {
   NAME = 'name',
@@ -155,9 +155,7 @@ const RegisterForm: FC = () => {
               disabled={isLoading}
               autoComplete="off"
             />
-            <InputGroupAddon addonType="append">
-              <RevealPasswordButton passwordRevealed={passwordRevealed} setPasswordRevealed={setPasswordRevealed} />
-            </InputGroupAddon>
+            <RevealPasswordButton passwordRevealed={passwordRevealed} setPasswordRevealed={setPasswordRevealed} />
           </InputGroup>
           <FormText className="text-muted">
             {t('common:auth.passwordHelp', {
@@ -169,15 +167,20 @@ const RegisterForm: FC = () => {
       </FormGroup>
 
       <FormGroup>
-        <CustomInput
-          id={INPUT_NAMES.PRIVACY}
-          type="checkbox"
-          label={<AcceptPrivacyPolicy t={t} />}
-          invalid={INPUT_NAMES.PRIVACY in errors}
-          disabled={isLoading}
-          {...acceptPrivacyPolicyRegister}
-          innerRef={acceptPrivacyPolicyRef}
-        />
+        <div className="form-check">
+          <Input
+            id={INPUT_NAMES.PRIVACY}
+            type="checkbox"
+            className="form-check-input"
+            invalid={INPUT_NAMES.PRIVACY in errors}
+            disabled={isLoading}
+            {...acceptPrivacyPolicyRegister}
+            innerRef={acceptPrivacyPolicyRef}
+          />
+          <Label check htmlFor={INPUT_NAMES.PRIVACY} className="form-check-label">
+            <AcceptPrivacyPolicy t={t} />
+          </Label>
+        </div>
         <BootstrapErrorMessages errors={errors} name={INPUT_NAMES.PRIVACY} />
       </FormGroup>
 

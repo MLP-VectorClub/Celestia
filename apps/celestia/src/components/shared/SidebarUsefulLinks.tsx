@@ -1,9 +1,9 @@
 import { useAuth, useSidebarUsefulLinks } from 'src/hooks';
-import { FC, MouseEventHandler, useCallback } from 'react';
+import { FC, JSX, MouseEventHandler, useCallback } from 'react';
 import { coreActions } from 'src/store/slices';
 import ExternalLink from 'src/components/shared/ExternalLink';
 import Link from 'next/link';
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'next-i18next/pages';
 import { PATHS } from 'src/paths';
 import { useAppDispatch } from 'src/store';
 

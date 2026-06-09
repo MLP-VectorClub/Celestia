@@ -4,7 +4,7 @@ import TimeAgo from 'src/components/shared/TimeAgo';
 import { ServerInfoHookValue } from 'src/hooks';
 import { getBuildData } from 'src/utils';
 import { FC, ReactNode } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'next-i18next/pages';
 
 const buildData = IS_CLIENT_SIDE ? getBuildData() : null;
 

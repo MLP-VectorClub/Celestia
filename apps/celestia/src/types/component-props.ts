@@ -13,4 +13,4 @@ export type InlineIconProps = {
   first?: boolean;
   color?: string;
   children?: never;
-} & Omit<FontAwesomeIconProps, 'icon'>;
+} & Omit<FontAwesomeIconProps, 'icon' | 'ref'>;
