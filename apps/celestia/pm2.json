@@ -2,7 +2,7 @@
   "apps": [
     {
       "name": "Celestia",
-      "script": "yarn start",
+      "script": "pnpm start",
       "log_date_format": "YYYY-MM-DD HH:mm:ss Z",
       "env": {
         "PORT": "6900"
