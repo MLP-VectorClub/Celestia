@@ -115,18 +115,20 @@ function generateIndex(schema) {
   fs.mkdirSync(outputDir, { recursive: true });
 
   let schema;
-  if (/^https?:\/\//.test(filePath)) {
-    const fetch = (await import('node-fetch')).default;
+  if (!filePath) {
+    console.error('API_JSON_PATH is not set');
+    process.exit(1);
+  } else if (/^https?:\/\//.test(filePath)) {
     console.log(`Downloading API schema from ${filePath}…`);
     schema = await fetch(filePath).then((r) => {
-      if (r.status !== 200) throw new Error(r.json());
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
       return r.json();
     });
     console.log('API schema successfully downloaded');
   } else {
     console.log(`Checking if API schema exists at ${filePath}…`);
     if (!fs.existsSync(filePath)) {
-      console.error('Missing API schema file (or API_JSON_PATH not set)');
+      console.error(`Missing API schema file at ${filePath}`);
       process.exit(1);
     }
     console.log(`Reading API schema from ${filePath}…`);
