@@ -5,13 +5,13 @@ import { SpriteGenerator } from 'src/components/colorguide/sprite-generator/Spri
 import { TitleFactory } from 'src/types/title';
 import { useMemo } from 'react';
 import { PATHS } from 'src/paths';
-import { NextSeo } from 'next-seo';
+import Head from 'next/head';
 import { assembleSeoUrl } from 'src/utils';
 import { useTitleSetter } from 'src/hooks';
 import { useAppDispatch, wrapper } from 'src/store';
 import { titleSetter } from 'src/utils/core';
 import { Translatable } from 'src/types';
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'next-i18next/pages';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 const titleFactory: TitleFactory = () => {
@@ -37,21 +37,12 @@ const SpriteGeneratorPage: NextPage = () => {
     <Content>
       <StandardHeading heading={t('colorGuide:sprite.title')} lead="Create your own pony sprite images based on our template" />
       <SpriteGenerator />
-      <NextSeo
-        description="Create your own pixelated pony reference images using the MLP Vector Club's template generator"
-        openGraph={{
-          images: [
-            {
-              url: assembleSeoUrl('/img/default-sprite.png'),
-              width: 300,
-              height: 300,
-              alt:
-                'Pixelated template artwork of a My Little Pony character with no mane, tail, horn, or wings. In the top right corner ' +
-                'a larger view of the iris and a body-colored rectangle is present, the latter for showcasing the cutie mark.',
-            },
-          ],
-        }}
-      />
+      <Head>
+        <meta name="description" content="Create your own pixelated pony reference images using the MLP Vector Club's template generator" />
+        <meta property="og:image" content={assembleSeoUrl('/img/default-sprite.png')} />
+        <meta property="og:image:width" content="300" />
+        <meta property="og:image:height" content="300" />
+      </Head>
     </Content>
   );
 };

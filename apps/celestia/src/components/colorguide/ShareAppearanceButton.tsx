@@ -1,5 +1,5 @@
-import { FC, useCallback, useRef, useState } from 'react';
-import { Button, FormGroup, InputGroup, InputGroupAddon, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import React, { FC, useCallback, useRef, useState } from 'react';
+import { Button, FormGroup, InputGroup, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { SocialShareButtons } from 'src/components/colorguide/SocialShareButtons';
 import styles from 'modules/ShareAppearanceButton.module.scss';
@@ -12,9 +12,9 @@ interface PropTypes {
 export const ShareAppearanceButton: FC<PropTypes> = ({ shortUrl }) => {
   const [shareOpen, setShareOpen] = useState(false);
   const [shareVisible, setShareVisible] = useState(false);
-  const copyButtonRef = useRef<HTMLButtonElement>(null);
-  const urlInputRef = useRef<HTMLElement>(null);
-  const modalRef = useRef<HTMLElement>(null);
+  const copyButtonRef = useRef<HTMLButtonElement>(null) as React.RefObject<HTMLButtonElement>;
+  const urlInputRef = useRef<HTMLElement>(null) as React.RefObject<HTMLElement>;
+  const modalRef = useRef<HTMLElement>(null) as React.RefObject<HTMLElement>;
 
   const startSharing = useCallback(async () => {
     try {
@@ -59,17 +59,13 @@ export const ShareAppearanceButton: FC<PropTypes> = ({ shortUrl }) => {
           <p>You can use the link below to share this appearance with the world.</p>
           <FormGroup>
             <InputGroup>
-              <InputGroupAddon addonType="prepend" className="flex-grow-1">
-                <span className={`input-group-text ${styles.appearanceLinkInput}`} ref={urlInputRef}>
-                  {shortUrl}
-                </span>
-              </InputGroupAddon>
-              <InputGroupAddon addonType="append">
-                <Button color="secondary" innerRef={copyButtonRef} onMouseLeave={clearCopyStatus}>
-                  <InlineIcon icon="clipboard" first />
-                  Copy
-                </Button>
-              </InputGroupAddon>
+              <span className={`input-group-text flex-grow-1 ${styles.appearanceLinkInput}`} ref={urlInputRef}>
+                {shortUrl}
+              </span>
+              <Button color="secondary" innerRef={copyButtonRef} onMouseLeave={clearCopyStatus}>
+                <InlineIcon icon="clipboard" first />
+                Copy
+              </Button>
             </InputGroup>
           </FormGroup>
           <FormGroup>

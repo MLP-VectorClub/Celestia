@@ -1,17 +1,16 @@
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
-import { useSelector } from 'react-redux';
-import { RootState } from 'src/store';
+import { useAppSelector } from 'src/store';
 import Link from 'next/link';
 import { renderingStateSlice } from 'src/utils/store';
 import { FC } from 'react';
 import { translatableValue } from 'src/hooks';
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'next-i18next/pages';
 
 const ELEMENT_ID = 'breadcrumbs';
 
 const Breadcrumbs: FC = () => {
   const { t } = useTranslation();
-  const { breadcrumbs } = useSelector((state: RootState) => renderingStateSlice(state.core));
+  const { breadcrumbs } = useAppSelector((state) => renderingStateSlice(state.core));
 
   // TODO Rich JSON+LD data for SEO
 

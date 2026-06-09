@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, JSX } from 'react';
 import { SlimAppearance } from '@mlp-vectorclub/api-types';
 import { Card, CardBody } from 'reactstrap';
 import Image from 'next/image';

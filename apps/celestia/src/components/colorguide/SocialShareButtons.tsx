@@ -1,5 +1,5 @@
 import styles from 'modules/SocialShareButtons.module.scss';
-import { FC, useRef } from 'react';
+import React, { FC, useRef } from 'react';
 import { EmailShareButton, TelegramShareButton, TwitterShareButton, VKShareButton, WhatsappShareButton } from 'react-share';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { UncontrolledTooltip } from 'reactstrap';
@@ -9,11 +9,11 @@ interface PropTypes {
 }
 
 export const SocialShareButtons: FC<PropTypes> = ({ url }) => {
-  const telegramRef = useRef<HTMLButtonElement>(null);
-  const twitterRef = useRef<HTMLButtonElement>(null);
-  const whatsappRef = useRef<HTMLButtonElement>(null);
-  const emailRef = useRef<HTMLButtonElement>(null);
-  const vkRef = useRef<HTMLButtonElement>(null);
+  const telegramRef = useRef<HTMLButtonElement>(null) as React.RefObject<HTMLButtonElement>;
+  const twitterRef = useRef<HTMLButtonElement>(null) as React.RefObject<HTMLButtonElement>;
+  const whatsappRef = useRef<HTMLButtonElement>(null) as React.RefObject<HTMLButtonElement>;
+  const emailRef = useRef<HTMLButtonElement>(null) as React.RefObject<HTMLButtonElement>;
+  const vkRef = useRef<HTMLButtonElement>(null) as React.RefObject<HTMLButtonElement>;
   return (
     <div className={styles.socialSharing}>
       <TelegramShareButton ref={telegramRef} className={styles.telegramColor} url={url}>

@@ -6,7 +6,7 @@ import { mapRoleLabel, permission } from 'src/utils';
 import pluralize from 'pluralize';
 import GroupedUserList from 'src/components/users/GroupedUserList';
 import StaffMembersList from 'src/components/users/StaffMembersList';
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'next-i18next/pages';
 import StatusAlert from 'src/components/shared/StatusAlert';
 
 interface PropTypes {

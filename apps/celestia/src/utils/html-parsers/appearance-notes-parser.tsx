@@ -1,3 +1,4 @@
+import { JSX } from 'react';
 import HtmlToReact, { Parser as HtmlToReactParser, ProcessingInstruction } from 'html-to-react';
 import Link from 'next/link';
 

@@ -4,7 +4,7 @@ import { Appearance } from '@mlp-vectorclub/api-types';
 import { processAppearanceNotes } from 'src/utils/html-parsers/appearance-notes-parser';
 import styles from 'modules/AppearanceNotes.module.scss';
 import { AppearanceNotesText } from 'src/components/colorguide/AppearanceNotesText';
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'next-i18next/pages';
 
 const cmSpacingClasses = 'ml-2 pl-2 border-left';
 

@@ -1,8 +1,8 @@
-import { configureStore, Store } from '@reduxjs/toolkit';
+import { configureStore, type Store, type ThunkDispatch, type UnknownAction } from '@reduxjs/toolkit';
 import { createWrapper, MakeStore } from 'next-redux-wrapper';
 import { rootReducer } from 'src/store/rootReducer';
 import { queryClient } from 'src/store/queryClient';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
 import { WithAppThunkExtra } from 'src/store/thunkTypes';
 
 const createStore = () => {
@@ -17,7 +17,7 @@ const createStore = () => {
 
 type StoreType = ReturnType<typeof createStore>;
 export type RootState = ReturnType<StoreType['getState']>;
-export type AppDispatch = StoreType['dispatch'];
+export type AppDispatch = ThunkDispatch<RootState, WithAppThunkExtra['extra'], UnknownAction>;
 
 // create a makeStore function
 const makeStore: MakeStore<Store<RootState>> = () => createStore();
@@ -28,3 +28,4 @@ export const wrapper = createWrapper<Store<RootState>>(makeStore, {
 });
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

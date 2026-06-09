@@ -1,8 +1,7 @@
-import { FieldError, FieldValues } from 'react-hook-form';
-import { FieldErrors, ValidateResult } from 'react-hook-form/dist/types';
+import { FieldError, FieldErrors, FieldValues, ValidateResult } from 'react-hook-form';
 import { Nullable, UnifiedErrorResponse, UnifiedErrorResponseTypes } from 'src/types';
 import { ValidationErrorResponse } from '@mlp-vectorclub/api-types';
-import { TFunction } from 'next-i18next';
+import { TFunction } from 'next-i18next/pages';
 import { CustomTypeOptions } from 'react-i18next';
 
 export const combineErrors = <FormValues extends FieldValues = FieldValues>(

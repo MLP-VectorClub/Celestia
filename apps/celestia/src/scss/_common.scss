@@ -108,7 +108,7 @@ body {
 
       &,
       .close {
-        color: color-yiq($value) !important;
+        color: color-contrast($value) !important;
       }
     }
   }

@@ -1,4 +1,4 @@
-import {
+import React, {
   ChangeEventHandler,
   FC,
   FocusEvent,
@@ -13,7 +13,7 @@ import {
 import { Nullable, Status } from 'src/types';
 import { GuideName } from '@mlp-vectorclub/api-types';
 import { useGuideAutocomplete } from 'src/hooks';
-import { Button, Col, Form, Input, InputGroup, InputGroupAddon, ListGroupItem, Row, UncontrolledTooltip } from 'reactstrap';
+import { Button, Col, Form, Input, InputGroup, ListGroupItem, Row, UncontrolledTooltip } from 'reactstrap';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import Link from 'next/link';
 import styles from 'modules/SearchBar.module.scss';
@@ -42,7 +42,7 @@ const SearchBar: FC<PropTypes> = ({ initialQuery, guide }) => {
   const { results, status } = useGuideAutocomplete({ guide, q: acQuery });
   const searchInputRef = useRef<HTMLInputElement>(null);
   const resultsListRef = useRef<HTMLDivElement>(null);
-  const clearButtonRef = useRef<HTMLButtonElement>(null);
+  const clearButtonRef = useRef<HTMLButtonElement>(null) as React.RefObject<HTMLButtonElement>;
 
   const handleAcQueryChange = useRef(debounce((query: string) => setAcQuery(query), 400));
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = useCallback(
@@ -212,18 +212,16 @@ const SearchBar: FC<PropTypes> = ({ initialQuery, guide }) => {
               aria-autocomplete="list"
               aria-activedescendant={acOptionId(activeResult)}
             />
-            <InputGroupAddon addonType="append">
-              <Button outline type="reset" disabled={clearButtonDisabled} innerRef={clearButtonRef}>
-                <InlineIcon icon="times" />
-              </Button>
-              <Button color="ui" className="d-none d-lg-inline-block">
-                <InlineIcon icon="search" first />
-                Search
-              </Button>
-              <Button color="ui" className="d-lg-none">
-                <InlineIcon icon="search" />
-              </Button>
-            </InputGroupAddon>
+            <Button outline type="reset" disabled={clearButtonDisabled} innerRef={clearButtonRef}>
+              <InlineIcon icon="times" />
+            </Button>
+            <Button color="ui" className="d-none d-lg-inline-block">
+              <InlineIcon icon="search" first />
+              Search
+            </Button>
+            <Button color="ui" className="d-lg-none">
+              <InlineIcon icon="search" />
+            </Button>
           </InputGroup>
           <UncontrolledTooltip target={clearButtonRef} fade={false} placement="bottom">
             Clear search

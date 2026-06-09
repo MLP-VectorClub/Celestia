@@ -1,6 +1,6 @@
 import { ShowTableColumnDefinition } from 'src/types/show';
 import { episodeToString, seasonEpisodeToString } from 'src/utils/show';
-import { FC, useRef } from 'react';
+import React, { FC, useRef } from 'react';
 import { ShowListItem } from '@mlp-vectorclub/api-types';
 import { useAuth } from 'src/hooks';
 import Link from 'next/link';
@@ -8,7 +8,7 @@ import { PATHS } from 'src/paths';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { UncontrolledTooltip } from 'reactstrap';
 import { format } from 'date-fns';
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'next-i18next/pages';
 
 export const EpisodeColumn: ShowTableColumnDefinition['renderContent'] = ({ entry }) => <>{episodeToString(entry)}</>;
 
@@ -21,8 +21,8 @@ export const ShowNumberColumn: ShowTableColumnDefinition['renderContent'] = ({ e
 export const TitleAirDateColumn: FC<{ entry: ShowListItem }> = ({ entry }) => {
   const { t } = useTranslation();
   const { isStaff } = useAuth();
-  const editButtonRef = useRef<HTMLButtonElement>(null);
-  const deleteButtonRef = useRef<HTMLButtonElement>(null);
+  const editButtonRef = useRef<HTMLButtonElement>(null) as React.RefObject<HTMLButtonElement>;
+  const deleteButtonRef = useRef<HTMLButtonElement>(null) as React.RefObject<HTMLButtonElement>;
   const typeName = t(`show:index.typeNames.${entry.type}`);
   const airDateFormat = t(`show:index.airDateFormat`);
   return <>

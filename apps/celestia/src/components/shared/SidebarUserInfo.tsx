@@ -6,7 +6,7 @@ import LoadingRing from 'src/components/shared/LoadingRing';
 import AvatarWrap from 'src/components/shared/AvatarWrap';
 import ProfileLink from 'src/components/shared/ProfileLink';
 import { FC } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'next-i18next/pages';
 
 const SidebarUserInfo: FC = () => {
   const { t } = useTranslation();

@@ -12,7 +12,7 @@ import StatusAlert from 'src/components/shared/StatusAlert';
 import { wrapper } from 'src/store';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { SSRConfig } from 'next-i18next';
+import { SSRConfig } from 'next-i18next/pages';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 interface PropTypes {

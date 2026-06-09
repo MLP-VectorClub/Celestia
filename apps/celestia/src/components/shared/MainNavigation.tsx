@@ -8,7 +8,7 @@ import ExternalLink from 'src/components/shared/ExternalLink';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { getDefaultGuideLink, getHomeLink, getProfileLink } from 'src/utils/path-utils';
 import { PATHS } from 'src/paths';
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'next-i18next/pages';
 
 const MainNavigation: FC = () => {
   const { t } = useTranslation();

@@ -1,12 +1,12 @@
 @import '../vars';
-@import '~bootstrap-scss/functions';
-@import '~bootstrap-scss/variables';
+@import 'bootstrap-scss/functions';
+@import 'bootstrap-scss/variables';
 
-.compact-color-groups {
+.compactColorGroups {
   display: flex;
   flex-flow: row wrap;
 
-  .compact-color-group {
+  .compactColorGroup {
     display: inline-flex;
     flex-flow: row wrap;
     justify-content: center;
@@ -22,7 +22,7 @@
   }
 }
 
-.compact-color-group-label {
+.compactColorGroupLabel {
   line-height: 1.2rem;
 
   &:after {
@@ -31,7 +31,7 @@
   }
 }
 
-.compact-color-list {
+.compactColorList {
   display: flex;
   flex-flow: row wrap;
   align-items: flex-start;

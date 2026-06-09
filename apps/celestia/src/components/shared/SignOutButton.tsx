@@ -5,7 +5,7 @@ import { Status } from 'src/types';
 import { RootState, useAppDispatch } from 'src/store';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { signOutThunk } from 'src/store/thunks';
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'next-i18next/pages';
 
 const BUTTON_ID = 'signout';
 

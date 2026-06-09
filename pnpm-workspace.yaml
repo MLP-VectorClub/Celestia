@@ -3,8 +3,10 @@ packages:
   - "packages/*"
 
 allowBuilds:
+  '@parcel/watcher': false
   core-js: true
   es5-ext: true
+  sharp: false
   unrs-resolver: true
 
 minimumReleaseAge: 20160

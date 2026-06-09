@@ -1,5 +1,5 @@
 import { GuideName } from '@mlp-vectorclub/api-types';
-import { FC, useRef } from 'react';
+import React, { FC, useRef } from 'react';
 import { getGuideLabel } from 'src/utils';
 import { UncontrolledTooltip } from 'reactstrap';
 
@@ -12,7 +12,7 @@ interface PropTypes {
 export const GuideImage: FC<PropTypes> = ({ guide, className, tooltip = false }) => {
   const guideName = getGuideLabel(guide);
   const logoPath = `/img/logos/${guide}.svg`;
-  const imageRef = useRef<HTMLImageElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null) as React.RefObject<HTMLImageElement>;
   return (
     <>
       {/* eslint-disable-next-line @next/next/no-img-element */}

@@ -23,7 +23,7 @@ import { titleSetter } from 'src/utils/core';
 import { NextPage } from 'next';
 import { PATHS } from 'src/paths';
 import { Translatable } from 'src/types';
-import { Trans, useTranslation } from 'next-i18next';
+import { Trans, useTranslation } from 'next-i18next/pages';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 const AppPageLink: FC<PropsWithChildren<{ href: string }>> = ({ children, href }) => (

@@ -15,9 +15,8 @@ import SpriteImage from 'src/components/colorguide/SpriteImage';
 import { GuideNotFound } from 'src/components/colorguide/GuideNotFound';
 import { GuideLink } from 'src/components/colorguide/GuideLink';
 import styles from 'modules/AppearancePage.module.scss';
-import { NextSeo } from 'next-seo';
+import Head from 'next/head';
 import { useMemo } from 'react';
-import { NextSeoProps } from 'next-seo/lib/types';
 import ButtonCollection from 'src/components/shared/ButtonCollection';
 import { Button } from 'reactstrap';
 import InlineIcon from 'src/components/shared/InlineIcon';
@@ -28,7 +27,7 @@ import { AppearanceCutieMarks } from 'src/components/colorguide/AppearanceCutieM
 import { FeaturePlaceholder } from 'src/components/shared/FeaturePlaceholder';
 import { AppearanceColorGroups } from 'src/components/colorguide/AppearanceColorGroups';
 import { AppearanceNotes } from 'src/components/colorguide/AppearanceNotes';
-import { SSRConfig } from 'next-i18next';
+import { SSRConfig } from 'next-i18next/pages';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 interface PropTypes {
@@ -37,6 +36,12 @@ interface PropTypes {
   initialData: {
     appearance: Nullable<DetailedAppearance>;
   };
+}
+
+interface SeoData {
+  description: string;
+  canonical: string;
+  ogImage?: { url: string; width: number; height: number };
 }
 
 const titleFactory: TitleFactory<Pick<PropTypes, 'guide' | 'initialData'>> = ({ guide, initialData }) => {
@@ -73,22 +78,14 @@ const AppearancePage: NextPage<PropTypes> = ({ guide, id, initialData }) => {
   const titleData = useMemo(() => titleFactory({ initialData, guide }), [guide, initialData]);
   useTitleSetter(dispatch, titleData);
 
-  const seoData = useMemo<NextSeoProps | null>(
+  const seoData = useMemo<SeoData | null>(
     () =>
       appearance
         ? {
             description: `Show accurate colors for "${appearance.label}" from the MLP-VectorClub's Official Color Guide`,
             canonical: assembleSeoUrl(PATHS.APPEARANCE(appearance)),
-            openGraph: appearance.sprite
-              ? {
-                  images: [
-                    {
-                      width: 600,
-                      height: 600,
-                      url: appearance.sprite.path,
-                    },
-                  ],
-                }
+            ogImage: appearance.sprite
+              ? { width: 600, height: 600, url: appearance.sprite.path }
               : undefined,
           }
         : null,
@@ -102,7 +99,19 @@ const AppearancePage: NextPage<PropTypes> = ({ guide, id, initialData }) => {
 
   return (
     <Content>
-      {seoData && <NextSeo {...seoData} />}
+      {seoData && (
+        <Head>
+          <meta name="description" content={seoData.description} />
+          <link rel="canonical" href={seoData.canonical} />
+          {seoData.ogImage && (
+            <>
+              <meta property="og:image" content={seoData.ogImage.url} />
+              <meta property="og:image:width" content={String(seoData.ogImage.width)} />
+              <meta property="og:image:height" content={String(seoData.ogImage.height)} />
+            </>
+          )}
+        </Head>
+      )}
       {appearance.sprite && (
         <div className={styles.spriteImage}>
           <SpriteImage sprite={appearance.sprite} height={300} />

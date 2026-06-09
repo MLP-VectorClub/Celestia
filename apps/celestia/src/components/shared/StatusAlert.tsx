@@ -1,13 +1,13 @@
 import { Status } from 'src/types';
 import { Alert } from 'reactstrap';
 import InlineIcon from 'src/components/shared/InlineIcon';
-import { FC, ReactChild } from 'react';
+import { FC, ReactNode } from 'react';
 
 interface PropTypes {
   status: Status;
   subject?: string;
-  errorMessage?: ReactChild;
-  loadingMessage?: ReactChild;
+  errorMessage?: ReactNode;
+  loadingMessage?: ReactNode;
 }
 
 const StatusAlert: FC<PropTypes> = ({ status, loadingMessage, errorMessage, subject = 'data' }) => {

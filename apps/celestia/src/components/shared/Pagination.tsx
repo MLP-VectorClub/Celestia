@@ -1,5 +1,5 @@
 import { Button, Input, Pagination as RSPagination, PaginationItem, PaginationLink, Tooltip } from 'reactstrap';
-import { ChangeEventHandler, FC, KeyboardEventHandler, PropsWithChildren, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ChangeEventHandler, FC, JSX, KeyboardEventHandler, PropsWithChildren, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { pickBy } from 'lodash';
 import Link from 'next/link';
@@ -7,7 +7,7 @@ import { calculatePaginationItems, GO_TO_ITEM, PaginationProps } from 'src/utils
 import { ParsedUrlQuery } from 'querystring';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import classNames from 'classnames';
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'next-i18next/pages';
 
 type PageLinkProps = PropsWithChildren<{
   number: number;

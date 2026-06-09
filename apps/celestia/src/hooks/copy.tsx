@@ -1,4 +1,4 @@
-import { RefObject, useCallback, useEffect, useMemo, useState } from 'react';
+import { JSX, RefObject, useCallback, useEffect, useMemo, useState } from 'react';
 import ClipboardJS from 'clipboard';
 import { Tooltip } from 'reactstrap';
 

@@ -8,7 +8,7 @@ import { authActions } from 'src/store/slices';
 import { useAuth } from 'src/hooks';
 import SingInForm from 'src/components/shared/forms/SignInForm';
 import RegisterForm from 'src/components/shared/forms/RegisterForm';
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'next-i18next/pages';
 
 const AuthModal: FC = () => {
   const { t } = useTranslation();

@@ -25,7 +25,7 @@ import { GuideNotFound } from 'src/components/colorguide/GuideNotFound';
 import ButtonCollection from 'src/components/shared/ButtonCollection';
 import ReturnToGuideButton from 'src/components/colorguide/ReturnToGuideButton';
 import StatusAlert from 'src/components/shared/StatusAlert';
-import { SSRConfig, useTranslation } from 'next-i18next';
+import { SSRConfig, useTranslation } from 'next-i18next/pages';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 interface PropTypes {

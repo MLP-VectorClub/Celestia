@@ -4,7 +4,7 @@ import ExternalLink from 'src/components/shared/ExternalLink';
 import { OLD_SITE_HOST } from 'src/config';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
-import { Trans } from 'next-i18next';
+import { Trans } from 'next-i18next/pages';
 
 const Notices: FC = () => {
   const router = useRouter();

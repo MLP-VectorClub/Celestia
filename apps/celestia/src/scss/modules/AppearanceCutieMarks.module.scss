@@ -1,8 +1,8 @@
-.cutie-marks {
+.cutieMarks {
   display: flex;
   flex-flow: row wrap;
 
-  .cutie-mark-card {
+  .cutieMarkCard {
     max-width: 250px;
     text-align: center;
     margin: 5px;
@@ -30,7 +30,7 @@
         z-index: 1;
       }
 
-      .preview-image-container {
+      .previewImageContainer {
         position: absolute;
         z-index: 2;
         top: 0;
@@ -41,7 +41,7 @@
         align-items: center;
         justify-content: center;
 
-        .preview-image-wrap {
+        .previewImageWrap {
           position: relative;
           display: block;
           width: 42%;
@@ -50,7 +50,7 @@
       }
     }
 
-    .by-line {
+    .byLine {
       display: flex;
       align-items: center;
       justify-content: center;

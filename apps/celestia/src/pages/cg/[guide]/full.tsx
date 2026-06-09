@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 import Content from 'src/components/shared/Content';
-import { useCallback, useMemo, VoidFunctionComponent } from 'react';
+import { FC, useCallback, useMemo } from 'react';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import {
   fullListSortOptionsMap,
@@ -27,7 +27,7 @@ import { TitleFactory } from 'src/types/title';
 import { titleSetter } from 'src/utils/core';
 import { PATHS } from 'src/paths';
 import ReturnToGuideButton from 'src/components/colorguide/ReturnToGuideButton';
-import { SSRConfig, Trans, useTranslation } from 'next-i18next';
+import { SSRConfig, Trans, useTranslation } from 'next-i18next/pages';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 interface PropTypes {
@@ -64,7 +64,7 @@ const FullGuidePage: NextPage<PropTypes> = ({ guide, sort, initialData }) => {
   const titleData = useMemo(() => titleFactory({ guide }), [guide]);
   useTitleSetter(dispatch, titleData);
 
-  const SortDropdown: VoidFunctionComponent<{ sortI18n: FullGuideSortField }> = useCallback(
+  const SortDropdown: FC<{ sortI18n: FullGuideSortField }> = useCallback(
     ({ sortI18n }) => (
       <DropdownToggle color="white" className="font-italic">
         {t(`colorGuide:fullList.sortOptions.${sortI18n}`)}

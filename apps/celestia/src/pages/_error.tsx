@@ -8,7 +8,7 @@ import { AppDispatch, wrapper } from 'src/store';
 import { useTitleSetter } from 'src/hooks';
 import { TitleFactory } from 'src/types/title';
 import { titleSetter } from 'src/utils/core';
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'next-i18next/pages';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 interface PropTypes {

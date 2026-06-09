@@ -6,7 +6,7 @@ import { useAuth, useCsrf } from 'src/hooks';
 import LoadingRing from 'src/components/shared/LoadingRing';
 import TooltipContent from 'src/components/shared/TooltipContent';
 import { FC } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'next-i18next/pages';
 import { useAppDispatch } from 'src/store';
 
 const BUTTON_ID = 'signin';
@@ -30,12 +30,10 @@ const SignInButton: FC = () => {
       </Button>
       {disabled && (
         <UncontrolledTooltip target={BUTTON_ID} container="sidebar" placement="bottom">
-          {({ scheduleUpdate }) => (
-            <TooltipContent scheduleUpdate={scheduleUpdate}>
-              <LoadingRing inline spaceRight />
-              {csrfLoading ? t('common:sidebar.csrfInitializing') : t('common:sidebar.authInitializing')}
-            </TooltipContent>
-          )}
+          <TooltipContent>
+            <LoadingRing inline spaceRight />
+            {csrfLoading ? t('common:sidebar.csrfInitializing') : t('common:sidebar.authInitializing')}
+          </TooltipContent>
         </UncontrolledTooltip>
       )}
     </>

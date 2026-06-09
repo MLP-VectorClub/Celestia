@@ -1,17 +1,17 @@
 @import '../vars';
-@import '~bootstrap-scss/functions';
-@import '~bootstrap-scss/variables';
-@import '~bootstrap-scss/mixins';
-@import '~bootstrap-scss/list-group';
+@import 'bootstrap-scss/functions';
+@import 'bootstrap-scss/variables';
+@import 'bootstrap-scss/mixins';
+@import 'bootstrap-scss/list-group';
 
-.search-bar-col {
+.searchBarCol {
   @include media-breakpoint-up(xl) {
     max-width: 700px;
   }
 }
 
-.search-input-group {
-  &.ac-open {
+.searchInputGroup {
+  &.acOpen {
     > :first-child {
       border-bottom-left-radius: 0;
     }
@@ -25,7 +25,7 @@
   }
 }
 
-.ac-results {
+.acResults {
   position: absolute;
   z-index: $zindex-dropdown;
   width: 100%;
@@ -37,7 +37,7 @@
   }
 }
 
-.ac-result-item {
+.acResultItem {
   display: flex !important;
   flex-flow: row nowrap;
   align-items: center;
@@ -47,6 +47,6 @@
   }
 }
 
-.ac-result-label {
+.acResultLabel {
   font-size: 1.5rem;
 }
