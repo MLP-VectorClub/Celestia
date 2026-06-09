@@ -8,17 +8,17 @@ if [[ "$refname" ==  "$RUN_FOR_REF" ]]; then
     GIT="env -i git"
     CMD_CD="cd $(readlink -nf "$PWD/..")"
     CMD_FETCH="$GIT fetch"
-    CMD_YARN="yarn"
-    CMD_BUILD="nice yarn build"
-    CMD_RESTART="yarn reload"
+    CMD_INSTALL="pnpm install --frozen-lockfile"
+    CMD_BUILD="nice pnpm build"
+    CMD_RESTART="pnpm reload"
 
     echo "$ $CMD_CD"
     eval ${CMD_CD}
     echo "$ $CMD_FETCH"
     eval ${CMD_FETCH}
 
-    echo "$ $CMD_YARN"
-    eval $CMD_YARN
+    echo "$ $CMD_INSTALL"
+    eval $CMD_INSTALL
 
     echo "$ $CMD_BUILD"
     if eval $CMD_BUILD; then
