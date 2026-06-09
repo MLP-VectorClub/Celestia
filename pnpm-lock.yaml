@@ -156,8 +156,8 @@ importers:
         specifier: ^4.1.0
         version: 4.2.0
       urlcat:
-        specifier: ^2.0.4
-        version: 2.0.4
+        specifier: ^3.1.0
+        version: 3.1.0
     devDependencies:
       '@mlp-vectorclub/tsconfig':
         specifier: workspace:*
@@ -3980,8 +3980,8 @@ packages:
       file-loader:
         optional: true
 
-  urlcat@2.0.4:
-    resolution: {integrity: sha512-12c4Vi40DHVdZ/8mOLjZjp0asCzM6hi8Gj116fpImRP1FN4gBMCtMi9XhLNOmre/FEQYNqHbZmX8iyYAtIcy8Q==}
+  urlcat@3.1.0:
+    resolution: {integrity: sha512-qY6b94/aGMIHh70EEQ/4hfR2LUGZ+fPQNp64cf7yRX9kAp4XG2tx7LgYUU1Qkh17bFylME0u4n3lOezonougPw==}
 
   use-sync-external-store@1.6.0:
     resolution: {integrity: sha512-Pp6GSwGP/NrPIrxVFAIkOQeyw8lFenOHijQWkUTrDvrF4ALqylP2C/KCkeS9dpUM3KvYRQhna5vt7IL95+ZQ9w==}
@@ -8462,7 +8462,9 @@ snapshots:
     optionalDependencies:
       file-loader: 6.2.0(webpack@5.107.2)
 
-  urlcat@2.0.4: {}
+  urlcat@3.1.0:
+    dependencies:
+      qs: 6.15.2
 
   use-sync-external-store@1.6.0(react@18.3.1):
     dependencies:

@@ -57,7 +57,7 @@
     "rxjs": "^7.5.7",
     "sass": "1.32.x",
     "tsconfig-paths": "^4.1.0",
-    "urlcat": "^2.0.4"
+    "urlcat": "^3.1.0"
   },
   "devDependencies": {
     "@mlp-vectorclub/tsconfig": "workspace:*",
