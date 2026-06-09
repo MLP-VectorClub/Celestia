@@ -1,0 +1,10 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+
+allowBuilds:
+  core-js: true
+  es5-ext: true
+  unrs-resolver: true
+
+minimumReleaseAge: 20160
