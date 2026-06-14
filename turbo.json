@@ -5,6 +5,9 @@
       "dependsOn": [
         "^build"
       ],
+      "env": [
+        "API_JSON_PATH"
+      ],
       "outputs": [
         "dist/**",
         ".next/**"
