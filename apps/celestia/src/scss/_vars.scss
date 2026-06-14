@@ -33,11 +33,14 @@ $modal-header-padding-y: 0.6rem;
 $alert-color-level: 6;
 $alert-border-level: $alert-color-level;
 
-$theme-colors: (
-  'ui': $ui,
-  'discord': $discord,
-  'deviantart': $deviantart,
-  'club': $club-blue,
+$theme-colors: map-merge(
+  $theme-colors,
+  (
+    'ui': $ui,
+    'discord': $discord,
+    'deviantart': $deviantart,
+    'club': $club-blue,
+  )
 );
 
 $main-margin: 0.5rem;
