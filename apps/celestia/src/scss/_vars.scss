@@ -33,6 +33,12 @@ $modal-header-padding-y: 0.6rem;
 $alert-color-level: 6;
 $alert-border-level: $alert-color-level;
 
+// Pull in Bootstrap's default $theme-colors (and the color variables it derives from) so the
+// map-merge below extends it rather than operating on an undefined variable. This file is
+// imported directly by some SCSS modules that don't import bootstrap-scss/variables first.
+@import 'bootstrap-scss/functions';
+@import 'bootstrap-scss/variables';
+
 $theme-colors: map-merge(
   $theme-colors,
   (
