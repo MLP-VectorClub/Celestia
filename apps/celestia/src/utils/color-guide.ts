@@ -103,14 +103,14 @@ interface CutieMarkMappingColor {
 }
 
 export interface CutieMarkColorMapping {
-  /* eslint-disable @typescript-eslint/naming-convention */
+   
   'Coat Outline': string;
   'Coat Shadow Outline': string;
   'Coat Fill': string;
   'Coat Shadow Fill': string;
   'Mane & Tail Outline': string;
   'Mane & Tail Fill': string;
-  /* eslint-enable @typescript-eslint/naming-convention */
+   
 }
 
 export const getColorMapping = (
@@ -152,7 +152,7 @@ export const getColorMapping = (
   };
 };
 
-/* eslint-disable no-bitwise */
+ 
 /**
  * Converts a set of rgb values to a single number for any purpose
  * @param r 0-255
@@ -166,7 +166,7 @@ export const convertNumberToRgb = (rgb: number): RgbColors => ({
   green: (rgb & 0xff00) >> 8,
   blue: rgb & 0xff,
 });
-/* eslint-enable no-bitwise */
+ 
 
 export const stringifyRgbNumber = (hexNumber: number): string => `#${padStart(hexNumber.toString(16).toUpperCase(), 6, '0')}`;
 

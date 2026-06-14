@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-var-requires -- require is required */
+ 
 const { NEXT_PUBLIC_CDN_DOMAIN, NEXT_PUBLIC_BACKEND_HOST, NEXT_PUBLIC_API_PREFIX } = process.env;
 const { platform } = require('os');
 const withPlugins = require('next-compose-plugins');
@@ -7,7 +7,7 @@ const withTM = require('next-transpile-modules')(['@mlp-vectorclub/ui']);
 const { promisify } = require('util');
 const execFile = promisify(require('child_process').execFile);
 const vercelConfig = require('./vercel.json');
-/* eslint-enable @typescript-eslint/no-var-requires */
+ 
 
 const devMode = process.env.NODE_ENV === 'development';
 
@@ -44,23 +44,26 @@ module.exports = withPlugins(
       domains: [NEXT_PUBLIC_CDN_DOMAIN, 'a.deviantart.net'],
     },
     async headers() {
-      return vercelConfig.headers.reduce((acc, config) => {
+      return vercelConfig.headers.reduce((acc, entry) => {
         // Allow all scripts in development mode
-        if (devMode) {
-          config.headers = config.headers.map((headerConfig) => {
-            if (/content-security-policy/i.test(headerConfig.key)) {
-              const value = headerConfig.value
-                .replace(/script-src [^;]+(;|$)/, `script-src * 'unsafe-inline' 'unsafe-hashes' 'unsafe-eval'$1`)
-                .replace(/((?:img|default)-src [^;]+)(;|$)/g, `$1 ${NEXT_PUBLIC_CDN_DOMAIN}$2`);
-              return {
-                ...headerConfig,
-                value,
-              };
-            }
+        const config = devMode
+          ? {
+            ...entry,
+            headers: entry.headers.map((headerConfig) => {
+              if (/content-security-policy/i.test(headerConfig.key)) {
+                const value = headerConfig.value
+                  .replace(/script-src [^;]+(;|$)/, `script-src * 'unsafe-inline' 'unsafe-hashes' 'unsafe-eval'$1`)
+                  .replace(/((?:img|default)-src [^;]+)(;|$)/g, `$1 ${NEXT_PUBLIC_CDN_DOMAIN}$2`);
+                return {
+                  ...headerConfig,
+                  value,
+                };
+              }
 
-            return headerConfig;
-          });
-        }
+              return headerConfig;
+            }),
+          }
+          : entry;
 
         if (config.source === '/(.*)') {
           acc.push({

@@ -3,7 +3,7 @@ const buildIdRegex = /^[a-f0-9]+;\d+$/i;
 export type BuildIdParseResult = string | { commitId: string; commitTime: Date };
 
 export const getBuildData: () => BuildIdParseResult = () => {
-  // eslint-disable-next-line no-underscore-dangle
+   
   const { buildId } = window.__NEXT_DATA__;
 
   if (!buildIdRegex.test(buildId)) {

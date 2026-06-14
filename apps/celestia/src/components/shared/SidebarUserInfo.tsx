@@ -18,7 +18,7 @@ const SidebarUserInfo: FC = () => {
   return (
     <div
       className={classNames(`logged-in provider-${user.avatarProvider}`, {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
+         
         'checking-auth': checkingAuth,
       })}
       title={checkingAuth ? t('common.sidebar.authCheck') : undefined}

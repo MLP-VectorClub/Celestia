@@ -35,15 +35,12 @@ export const ShowEntriesTable: FC<ShowEntriesTableProps> = ({ params, pageQueryP
                 <th
                   key={i}
                   className={classNames({
-                    /* eslint-disable @typescript-eslint/naming-convention */
                     'd-lg-none': col.only === 'mobile',
                     'd-none d-lg-table-cell': col.only === 'desktop',
-                    /* eslint-enable @typescript-eslint/naming-convention */
                   })}
                 >
                   <span
                     className={classNames({
-                      // eslint-disable-next-line @typescript-eslint/naming-convention
                       'd-none d-lg-inline': hasShortHeader,
                     })}
                   >

@@ -7,6 +7,7 @@ module.exports = {
       rule.use.forEach((moduleLoader) => {
         if (/css-loader[\\\/](?:cjs|dist|src)/.test(moduleLoader.loader)) {
           if (typeof moduleLoader.options.modules === 'object') {
+            // eslint-disable-next-line no-param-reassign -- mutating the webpack config in place is the documented pattern here
             moduleLoader.options.modules = {
               ...moduleLoader.options.modules,
               exportLocalsConvention: 'camelCaseOnly', // https://github.com/webpack-contrib/css-loader#exportlocalsconvention

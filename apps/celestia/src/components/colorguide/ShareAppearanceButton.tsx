@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useRef, useState } from 'react';
+import { FC, RefObject, useCallback, useRef, useState } from 'react';
 import { Button, FormGroup, InputGroup, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { SocialShareButtons } from 'src/components/colorguide/SocialShareButtons';
@@ -12,9 +12,9 @@ interface PropTypes {
 export const ShareAppearanceButton: FC<PropTypes> = ({ shortUrl }) => {
   const [shareOpen, setShareOpen] = useState(false);
   const [shareVisible, setShareVisible] = useState(false);
-  const copyButtonRef = useRef<HTMLButtonElement>(null) as React.RefObject<HTMLButtonElement>;
-  const urlInputRef = useRef<HTMLElement>(null) as React.RefObject<HTMLElement>;
-  const modalRef = useRef<HTMLElement>(null) as React.RefObject<HTMLElement>;
+  const copyButtonRef = useRef<HTMLButtonElement>(null) as RefObject<HTMLButtonElement>;
+  const urlInputRef = useRef<HTMLElement>(null) as RefObject<HTMLElement>;
+  const modalRef = useRef<HTMLElement>(null) as RefObject<HTMLElement>;
 
   const startSharing = useCallback(async () => {
     try {

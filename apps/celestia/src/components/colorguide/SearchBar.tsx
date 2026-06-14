@@ -1,10 +1,11 @@
-import React, {
+import {
   ChangeEventHandler,
   FC,
   FocusEvent,
   FormEventHandler,
   KeyboardEventHandler,
   MouseEventHandler,
+  RefObject,
   useCallback,
   useEffect,
   useRef,
@@ -42,7 +43,7 @@ const SearchBar: FC<PropTypes> = ({ initialQuery, guide }) => {
   const { results, status } = useGuideAutocomplete({ guide, q: acQuery });
   const searchInputRef = useRef<HTMLInputElement>(null);
   const resultsListRef = useRef<HTMLDivElement>(null);
-  const clearButtonRef = useRef<HTMLButtonElement>(null) as React.RefObject<HTMLButtonElement>;
+  const clearButtonRef = useRef<HTMLButtonElement>(null) as RefObject<HTMLButtonElement>;
 
   const handleAcQueryChange = useRef(debounce((query: string) => setAcQuery(query), 400));
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = useCallback(
@@ -154,7 +155,7 @@ const SearchBar: FC<PropTypes> = ({ initialQuery, guide }) => {
         }
       }
     };
-  // eslint-disable-next-line @typescript-eslint/no-inferrable-types
+   
   const setSearchState = useCallback((query: string = '') => {
     setSearchQuery(query);
     setAcQuery(query);
