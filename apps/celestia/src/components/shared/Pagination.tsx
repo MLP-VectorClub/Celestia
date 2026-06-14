@@ -31,7 +31,7 @@ const PageLink: FC<PageLinkProps> = ({ number, children, relevantProps, pagePara
   const query: ParsedUrlQuery = { ...linkParams, ...pageNumberProp };
 
   return (
-    <Link href={{ pathname: pathWithoutQueryString, query }} passHref>
+    <Link href={{ pathname: pathWithoutQueryString, query }} passHref shallow>
       {children}
     </Link>
   );
