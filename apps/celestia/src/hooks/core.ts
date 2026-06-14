@@ -5,8 +5,8 @@ import { useCallback, useEffect } from 'react';
 import { CoreSliceMirroredState } from 'src/store/slices';
 import { titleSetter } from 'src/utils/core';
 import { AppDispatch } from 'src/store';
-import { TFunction, useTranslation } from 'next-i18next/pages';
-import { PageTitle, Translatable } from 'src/types';
+import { useTranslations } from 'next-intl';
+import { PageTitle, Translatable, TFunction } from 'src/types';
 
 export function useCsrf() {
   const { data } = useQuery(ENDPOINTS.CSRF_INIT, csrfFetcher, {
@@ -35,7 +35,7 @@ export const isTranslatable = (value: Translatable | unknown): value is Translat
 export const translatableValue = (t: TFunction, value: PageTitle): string => (isTranslatable(value) ? t(value[0], value[1]) : value || '');
 
 export const useTitleSetter = (dispatch: AppDispatch, { title, breadcrumbs }: CoreSliceMirroredState): void => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   useEffect(() => {
     titleSetter({ dispatch }, { title: translatableValue(t, title) });
   }, [title, dispatch, t]);

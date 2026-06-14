@@ -8,10 +8,10 @@ import { authActions } from 'src/store/slices';
 import { useAuth } from 'src/hooks';
 import SingInForm from 'src/components/shared/forms/SignInForm';
 import RegisterForm from 'src/components/shared/forms/RegisterForm';
-import { useTranslation } from 'next-i18next/pages';
+import { useTranslations } from 'next-intl';
 
 const AuthModal: FC = () => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const { reset } = useForm({ criteriaMode: 'all' });
   const dispatch = useAppDispatch();
   const { signedIn } = useAuth();
@@ -33,7 +33,7 @@ const AuthModal: FC = () => {
 
   const toggleModal = () => dispatch(authModal.open ? authActions.closeAuthModal() : authActions.openAuthModal(null));
 
-  const modalTitle = authModal.side === AuthModalSide.SIGN_IN ? t('common:auth.signInTitle') : t('common:auth.signUpTitle');
+  const modalTitle = authModal.side === AuthModalSide.SIGN_IN ? t('common.auth.signInTitle') : t('common.auth.signUpTitle');
 
   const sides = {
     [AuthModalSide.SIGN_IN]: <SingInForm />,

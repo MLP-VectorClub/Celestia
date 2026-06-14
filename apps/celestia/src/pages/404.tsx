@@ -8,11 +8,11 @@ import { useTitleSetter } from 'src/hooks';
 import { useDispatch } from 'react-redux';
 import { NextPage } from 'next';
 import { Translatable } from 'src/types';
-import { useTranslation } from 'next-i18next/pages';
+import { useTranslations } from 'next-intl';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 const titleFactory: TitleFactory = () => {
-  const title: Translatable = ['common:titles.404'];
+  const title: Translatable = ['common.titles.404'];
   return {
     title,
     breadcrumbs: [{ label: 'Error' }, { label: title, active: true }],
@@ -20,7 +20,7 @@ const titleFactory: TitleFactory = () => {
 };
 
 const NotFound: NextPage = () => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const dispatch = useDispatch<AppDispatch>();
 
   const titleData = useMemo(titleFactory, []);
@@ -28,7 +28,7 @@ const NotFound: NextPage = () => {
 
   return (
     <Content>
-      <StandardHeading heading={t('common:error.404.heading')} lead={t('common:error.404.lead')} />
+      <StandardHeading heading={t('common.error.404.heading')} lead={t('common.error.404.lead')} />
     </Content>
   );
 };

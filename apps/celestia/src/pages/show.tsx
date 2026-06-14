@@ -6,7 +6,7 @@ import { Col, Row } from 'reactstrap';
 import ButtonCollection from 'src/components/shared/ButtonCollection';
 import { useAuth } from 'src/hooks';
 import { AddEntryButton } from 'src/components/show/AddEntryButton';
-import { Nullable, Translatable } from 'src/types';
+import { Nullable, SSRMessages, Translatable } from 'src/types';
 import { GetShowResult } from '@mlp-vectorclub/api-types';
 import { ShowEntriesTable, ShowEntriesTableProps } from 'src/components/show/ShowEntriesTable';
 import { useAppDispatch, wrapper } from 'src/store';
@@ -25,7 +25,7 @@ import {
   ShowNumberColumn,
   TitleAirDateColumn,
 } from 'src/components/show/columns';
-import { SSRConfig, useTranslation } from 'next-i18next/pages';
+import { useTranslations } from 'next-intl';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 interface ShowPageProps {
@@ -79,7 +79,7 @@ const OTHERS_TABLE_COLUMNS: ShowEntriesTableProps['columns'] = [
 ];
 
 const titleFactory: TitleFactory = () => {
-  const title: Translatable = ['common:titles.show'];
+  const title: Translatable = ['common.titles.show'];
   return {
     title,
     breadcrumbs: [
@@ -92,7 +92,7 @@ const titleFactory: TitleFactory = () => {
 };
 
 const ShowPage: NextPage<ShowPageProps> = ({ initialEpisodes, initialOthers }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const dispatch = useAppDispatch();
   const titleData = useMemo(titleFactory, []);
   useTitleSetter(dispatch, titleData);
@@ -101,10 +101,10 @@ const ShowPage: NextPage<ShowPageProps> = ({ initialEpisodes, initialOthers }) =
     <Content>
       <Row>
         <Col xs={12} xl className={`mb-3 mb-xl-0 ${styles.column}`}>
-          <StandardHeading heading={t('show:index.episodes.heading')} />
+          <StandardHeading heading={t('show.index.episodes.heading')} />
           {isStaff && (
             <ButtonCollection>
-              <AddEntryButton noun={t('show:index.episodes.addNoun')} />
+              <AddEntryButton noun={t('show.index.episodes.addNoun')} />
             </ButtonCollection>
           )}
           <ShowEntriesTable
@@ -115,10 +115,10 @@ const ShowPage: NextPage<ShowPageProps> = ({ initialEpisodes, initialOthers }) =
           />
         </Col>
         <Col xs={12} xl className={styles.column}>
-          <StandardHeading heading={t('show:index.others.heading')} />
+          <StandardHeading heading={t('show.index.others.heading')} />
           {isStaff && (
             <ButtonCollection>
-              <AddEntryButton noun={t('show:index.others.addNoun')} />
+              <AddEntryButton noun={t('show.index.others.addNoun')} />
             </ButtonCollection>
           )}
           <ShowEntriesTable columns={OTHERS_TABLE_COLUMNS} initialData={initialOthers} params={OTHERS_TABLE_PARAMS} />
@@ -130,7 +130,7 @@ const ShowPage: NextPage<ShowPageProps> = ({ initialEpisodes, initialOthers }) =
 
 export default ShowPage;
 
-export const getServerSideProps = wrapper.getServerSideProps<ShowPageProps & SSRConfig>((store) => async (ctx) => {
+export const getServerSideProps = wrapper.getServerSideProps<ShowPageProps & SSRMessages>((store) => async (ctx) => {
   const { query, locale } = ctx;
   const props: ShowPageProps = {
     initialOthers: null,

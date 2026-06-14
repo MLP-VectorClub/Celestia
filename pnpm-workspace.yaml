@@ -4,6 +4,7 @@ packages:
 
 allowBuilds:
   '@parcel/watcher': false
+  '@swc/core': false
   core-js: true
   es5-ext: true
   sharp: false

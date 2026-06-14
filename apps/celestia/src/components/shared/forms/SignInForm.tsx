@@ -27,7 +27,7 @@ import RevealPasswordButton from 'src/components/shared/RevealPasswordButton';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { signInThunk } from 'src/store/thunks';
 import { API_PREFIX } from 'src/config';
-import { useTranslation } from 'next-i18next/pages';
+import { useTranslations } from 'next-intl';
 import { useQueryClient } from 'react-query';
 
 enum INPUT_NAMES {
@@ -48,7 +48,7 @@ interface SocialPopupRef {
 }
 
 const SingInForm: FC = () => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const {
     register: r,
     handleSubmit,
@@ -171,18 +171,18 @@ const SingInForm: FC = () => {
     <Form onSubmit={handleSubmit(onSubmit)}>
       <p className="text-center">
         <a href="#" onClick={() => dispatch(authActions.openAuthModal(AuthModalSide.REGISTER))}>
-          {t('common:auth.noAccountYet')}
+          {t('common.auth.noAccountYet')}
         </a>
       </p>
 
       <p className="text-center text-info">
         <FontAwesomeIcon icon="info" className="mr-2" />
-        {t('common:auth.accountBenefits')}
+        {t('common.auth.accountBenefits')}
       </p>
 
       <FormGroup row>
         <Label htmlFor={INPUT_NAMES.EMAIL} className="text-right" sm={4}>
-          {t('common:auth.email')}
+          {t('common.auth.email')}
         </Label>
         <Col sm={8}>
           <Input
@@ -199,7 +199,7 @@ const SingInForm: FC = () => {
 
       <FormGroup row>
         <Label htmlFor={INPUT_NAMES.PASSWORD} className="text-right" sm={4}>
-          {t('common:auth.password')}
+          {t('common.auth.password')}
         </Label>
         <Col sm={8}>
           <InputGroup>
@@ -221,19 +221,19 @@ const SingInForm: FC = () => {
       <FormGroup>
         <div className="form-check">
           <Input type="checkbox" className="form-check-input" id="remember-me" {...r(INPUT_NAMES.REMEMBER)} />
-          <Label check htmlFor="remember-me" className="form-check-label">{t('common:auth.rememberMe')}</Label>
+          <Label check htmlFor="remember-me" className="form-check-label">{t('common.auth.rememberMe')}</Label>
         </div>
       </FormGroup>
 
       {signIn.error?.type === UnifiedErrorResponseTypes.AUTHENTICATION_ERROR && (
-        <Alert color="danger">{t('common:auth.invalidCredentials')}</Alert>
+        <Alert color="danger">{t('common.auth.invalidCredentials')}</Alert>
       )}
 
       {signIn.error?.type === UnifiedErrorResponseTypes.MESSAGE_ONLY && <Alert color="danger">{signIn.error.message}</Alert>}
 
       {signIn.error?.type === UnifiedErrorResponseTypes.RATE_LIMITED && (
         <Alert color="danger">
-          {t('common:auth.rateLimited', {
+          {t('common.auth.rateLimited', {
             count: signIn.error.retryAfter,
           })}
         </Alert>
@@ -243,17 +243,17 @@ const SingInForm: FC = () => {
         <Col>
           <Button color="ui" size="lg" disabled={isLoading || rateLimitTimeout.current !== null}>
             <InlineIcon first loading={isLoading} icon="sign-in-alt" />
-            {t('common:auth.signInButton')}
+            {t('common.auth.signInButton')}
           </Button>
         </Col>
         <Col className="text-right">
           <Button type="button" color="link" id="forgot-pw" aria-readonly="true">
-            {t('common:auth.forgotPassword')}
+            {t('common.auth.forgotPassword')}
           </Button>
           <UncontrolledTooltip target="forgot-pw" fade={false}>
             <>
               <InlineIcon icon="exclamation-triangle" color="warning" first />
-              {t('common:auth.pwResetNotYetAvailable')}
+              {t('common.auth.pwResetNotYetAvailable')}
             </>
           </UncontrolledTooltip>
         </Col>
@@ -261,10 +261,10 @@ const SingInForm: FC = () => {
 
       <FormGroup tag="fieldset" className="text-center border-top mt-3 pt-3">
         <legend className="text-uppercase w-auto mx-auto px-2">
-          <small>{t('common:auth.socialSignIn.alternatively')}</small>
+          <small>{t('common.auth.socialSignIn.alternatively')}</small>
         </legend>
         {map(SOCIAL_PROVIDERS, ({ name, renderIcon: RenderIcon }, provider: SocialProvider) => {
-          const text = t('common:auth.socialSignIn.signInWith', {
+          const text = t('common.auth.socialSignIn.signInWith', {
             provider: name,
           });
           return (

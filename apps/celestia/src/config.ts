@@ -1,7 +1,8 @@
 import { range } from 'lodash';
 import Axios from 'axios';
 import { GuideName } from '@mlp-vectorclub/api-types';
-import { AppI18nNamespaces } from 'react-i18next';
+
+export type AppI18nNamespaces = 'about' | 'colorGuide' | 'common' | 'connection' | 'oauth' | 'privacyPolicy' | 'show' | 'users';
 
 export const APP_NAME = 'MLP Vector Club';
 export const APP_DESCRIPTION = 'Handling requests, reservations & the Color Guide since 2015';

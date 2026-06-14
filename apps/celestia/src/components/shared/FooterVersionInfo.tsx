@@ -4,10 +4,10 @@ import FooterGitInfo from 'src/components/shared/FooterGitInfo';
 import FooterLastUpdateInfo from 'src/components/shared/FooterLastUpdateInfo';
 import { FC, MouseEventHandler, useCallback, useState } from 'react';
 import { useConnectionInfo } from 'src/hooks';
-import { useTranslation } from 'next-i18next/pages';
+import { useTranslations } from 'next-intl';
 
 const FooterVersionInfo: FC = () => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const connectionInfo = useConnectionInfo();
 
   const [gitInfoOpen, setGitInfoOpen] = useState(false);
@@ -25,7 +25,7 @@ const FooterVersionInfo: FC = () => {
         <InlineIcon icon={gitInfoOpen ? 'chevron-left' : 'chevron-right'} fixedWidth />
       </span>
       <UncontrolledTooltip target="git-info-toggle" placement="top" fade={false}>
-        {gitInfoOpen ? t('common:footer.hideGitInfo') : t('common:footer.showGitInfo')}
+        {gitInfoOpen ? t('common.footer.hideGitInfo') : t('common.footer.showGitInfo')}
       </UncontrolledTooltip>
       {gitInfoOpen ? <FooterGitInfo {...connectionInfo} /> : <FooterLastUpdateInfo {...connectionInfo} />}
     </>

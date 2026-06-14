@@ -6,7 +6,7 @@ import { mapRoleLabel, permission } from 'src/utils';
 import pluralize from 'pluralize';
 import GroupedUserList from 'src/components/users/GroupedUserList';
 import StaffMembersList from 'src/components/users/StaffMembersList';
-import { useTranslation } from 'next-i18next/pages';
+import { useTranslations } from 'next-intl';
 import StatusAlert from 'src/components/shared/StatusAlert';
 
 interface PropTypes {
@@ -19,11 +19,11 @@ type UsersByRole = Record<Role, PublicUser[]>;
 const ROLE_SECTIONS: Role[] = ['admin', 'staff', 'assistant', 'member'];
 
 const MemberList: FC<PropTypes> = ({ initialMembers, isStaff }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   // TODO Handle errors
   const { members, status } = useMembers(initialMembers);
   const membersByRole = useMemo(() => groupBy(members, (m) => m.role) as unknown as UsersByRole, [members]);
-  const loadingSubject = isStaff ? t('users:memberList.staff.loadingSubject') : t('users:memberList.public.loadingSubject');
+  const loadingSubject = isStaff ? t('users.memberList.staff.loadingSubject') : t('users.memberList.public.loadingSubject');
 
   return (
     <>

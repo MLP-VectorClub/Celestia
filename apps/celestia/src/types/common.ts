@@ -1,5 +1,11 @@
 import { GetUsersMeResult, User, ValidationErrorResponse } from '@mlp-vectorclub/api-types';
-import { TFunction } from 'next-i18next/pages';
+import { useTranslations } from 'next-intl';
+
+export type TFunction = ReturnType<typeof useTranslations>;
+
+export interface SSRMessages {
+  messages: Record<string, unknown>;
+}
 
 export enum Status {
   INIT,
@@ -88,7 +94,7 @@ export type UnifiedErrorResponse =
 export type FailsafeUser = GetUsersMeResult | (NullableProps<Omit<User, 'id'>, 'name' | 'avatarUrl' | 'email' | 'role'> & { id: null });
 
 type TFuncParams = Parameters<TFunction>;
-export type Translatable = [TFuncParams[0]] | [TFuncParams[0], Exclude<TFuncParams[2], string | undefined>];
+export type Translatable = [TFuncParams[0]] | [TFuncParams[0], Exclude<TFuncParams[1], undefined>];
 
 export type PageTitle = Nullable<string> | Translatable;
 

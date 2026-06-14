@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { Alert, Button, Col, Form, FormGroup, FormText, Input, InputGroup, Label } from 'reactstrap';
 import { useForm } from 'react-hook-form';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, ReactNode, useCallback, useEffect, useState } from 'react';
 import { RootState, useAppDispatch } from 'src/store';
 import { authActions } from 'src/store/slices';
 
@@ -14,7 +14,8 @@ import { combineErrors, validateEmail, validatePassword, validateRequired, valid
 import { Status, UnifiedErrorResponseTypes } from 'src/types/common';
 import { PATHS } from 'src/paths';
 import { AuthModalSide } from 'src/types/auth';
-import { TFunction, Trans, useTranslation } from 'next-i18next/pages';
+import { useTranslations } from 'next-intl';
+import { TFunction } from 'src/types';
 
 enum INPUT_NAMES {
   NAME = 'name',
@@ -23,14 +24,14 @@ enum INPUT_NAMES {
   PRIVACY = 'privacy_policy',
 }
 
-export const AcceptPrivacyPolicy: FC<{ t: TFunction }> = ({ t }) => (
-  <Trans t={t} i18nKey="common:auth.acceptPrivacyPolicy">
-    0
-    <ExternalLink href={PATHS.PRIVACY_POLICY} icon>
-      1
-    </ExternalLink>
-  </Trans>
-);
+export const AcceptPrivacyPolicy: FC<{ t: TFunction }> = ({ t }) =>
+  t.rich('common.auth.acceptPrivacyPolicy', {
+    link: (chunks: ReactNode) => (
+      <ExternalLink href={PATHS.PRIVACY_POLICY} icon>
+        {chunks}
+      </ExternalLink>
+    ),
+  });
 
 type FormFields = {
   [INPUT_NAMES.NAME]: string;
@@ -40,7 +41,7 @@ type FormFields = {
 };
 
 const RegisterForm: FC = () => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const {
     register: r,
     handleSubmit,
@@ -99,12 +100,12 @@ const RegisterForm: FC = () => {
     <Form onSubmit={handleSubmit(onSubmit)}>
       <p className="text-center">
         <a href="#" onClick={() => dispatch(authActions.openAuthModal(AuthModalSide.SIGN_IN))}>
-          {t('common:auth.alreadyHaveAccount')}
+          {t('common.auth.alreadyHaveAccount')}
         </a>
       </p>
 
       <FormGroup>
-        <Label htmlFor={INPUT_NAMES.NAME}>{t('common:auth.name')}</Label>
+        <Label htmlFor={INPUT_NAMES.NAME}>{t('common.auth.name')}</Label>
         <Input
           type="text"
           defaultValue=""
@@ -114,7 +115,7 @@ const RegisterForm: FC = () => {
           disabled={isLoading}
         />
         <FormText className="text-muted">
-          {t('common:auth.nameHelp', {
+          {t('common.auth.nameHelp', {
             min: nameValidation.minLength.value,
             max: nameValidation.maxLength.value,
           })}
@@ -124,7 +125,7 @@ const RegisterForm: FC = () => {
 
       <FormGroup row>
         <Label htmlFor={INPUT_NAMES.EMAIL} sm={12}>
-          {t('common:auth.email')}
+          {t('common.auth.email')}
         </Label>
         <Col sm={12}>
           <Input
@@ -135,14 +136,18 @@ const RegisterForm: FC = () => {
             invalid={INPUT_NAMES.EMAIL in errors}
             disabled={isLoading}
           />
-          <FormText className="text-muted">{t('common:auth.emailHelp')}</FormText>
+          <FormText className="text-muted">
+            {t.rich('common.auth.emailHelp', {
+              bold: (chunks: ReactNode) => <strong>{chunks}</strong>,
+            })}
+          </FormText>
           <BootstrapErrorMessages errors={errors} name={INPUT_NAMES.EMAIL} />
         </Col>
       </FormGroup>
 
       <FormGroup row>
         <Label htmlFor={INPUT_NAMES.PASSWORD} sm={12}>
-          {t('common:auth.password')}
+          {t('common.auth.password')}
         </Label>
         <Col sm={12}>
           <InputGroup>
@@ -158,7 +163,7 @@ const RegisterForm: FC = () => {
             <RevealPasswordButton passwordRevealed={passwordRevealed} setPasswordRevealed={setPasswordRevealed} />
           </InputGroup>
           <FormText className="text-muted">
-            {t('common:auth.passwordHelp', {
+            {t('common.auth.passwordHelp', {
               min: passwordValidation.minLength.value,
             })}
           </FormText>
@@ -188,7 +193,7 @@ const RegisterForm: FC = () => {
 
       {register.error?.type === UnifiedErrorResponseTypes.RATE_LIMITED && (
         <Alert color="danger">
-          {t('common:auth.rateLimited', {
+          {t('common.auth.rateLimited', {
             count: register.error.retryAfter,
           })}
         </Alert>
@@ -196,7 +201,7 @@ const RegisterForm: FC = () => {
 
       <Button color="ui" disabled={isLoading}>
         <InlineIcon first loading={isLoading} icon="user-plus" />
-        {t('common:auth.registerButton')}
+        {t('common.auth.registerButton')}
       </Button>
     </Form>
   );

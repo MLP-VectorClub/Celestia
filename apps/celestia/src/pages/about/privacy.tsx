@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { ReactNode, useMemo } from 'react';
 import { Alert } from 'reactstrap';
 import { APP_HOST } from 'src/config';
 import { useAppDispatch, wrapper } from 'src/store';
@@ -14,15 +14,15 @@ import { PATHS } from 'src/paths';
 import { useTitleSetter } from 'src/hooks/core';
 import { Translatable } from 'src/types';
 import { typedServerSideTranslations } from 'src/utils/i18n';
-import { Trans, useTranslation } from 'next-i18next/pages';
+import { useTranslations } from 'next-intl';
 
 const titleFactory: TitleFactory = () => {
-  const title: Translatable = ['common:titles.privacyPolicy'];
+  const title: Translatable = ['common.titles.privacyPolicy'];
   return {
     title,
     breadcrumbs: [
       {
-        label: ['common:titles.about'],
+        label: ['common.titles.about'],
         linkProps: {
           href: PATHS.ABOUT,
         },
@@ -36,7 +36,7 @@ const titleFactory: TitleFactory = () => {
 };
 
 const PrivacyPolicy: NextPage = () => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const dispatch = useAppDispatch();
   const titleData = useMemo(titleFactory, []);
   useTitleSetter(dispatch, titleData);
@@ -44,63 +44,64 @@ const PrivacyPolicy: NextPage = () => {
   return (
     <>
       <Alert color="warning" className="p-2 mb-2" fade={false}>
-        {t('privacyPolicy:notYetUpdated')}
+        {t('privacyPolicy.notYetUpdated')}
       </Alert>
       <Content className={styles.privacyPolicy}>
-        <StandardHeading heading={t('privacyPolicy:title')} lead={t('privacyPolicy:lead')} />
+        <StandardHeading heading={t('privacyPolicy.title')} lead={t('privacyPolicy.lead')} />
 
         <blockquote>
-          <Trans t={t} i18nKey="privacyPolicy:shortSummary">
-            <strong>0</strong>1
-          </Trans>
+          {t.rich('privacyPolicy.shortSummary', {
+            bold: (chunks: ReactNode) => <strong>{chunks}</strong>,
+          })}
         </blockquote>
 
         <p>
-          <Trans t={t} i18nKey="privacyPolicy:intro.p1" values={{ host: APP_HOST }}>
-            0<a href={APP_HOST}>1</a>2
-          </Trans>
+          {t.rich('privacyPolicy.intro.p1', {
+            host: APP_HOST,
+            link: (chunks: ReactNode) => <a href={APP_HOST}>{chunks}</a>,
+          })}
         </p>
-        <p>{t('privacyPolicy:intro.p2')}</p>
+        <p>{t('privacyPolicy.intro.p2')}</p>
 
-        <h2>{t('privacyPolicy:infoCollectionAndUse.heading')}</h2>
-        <p>{t('privacyPolicy:infoCollectionAndUse.p1')}</p>
-        <p>{t('privacyPolicy:infoCollectionAndUse.p2')}</p>
-        <p>{t('privacyPolicy:infoCollectionAndUse.p3')}</p>
-        <p>{t('privacyPolicy:infoCollectionAndUse.p4')}</p>
-        <p>{t('privacyPolicy:infoCollectionAndUse.p5')}</p>
-        <p>{t('privacyPolicy:infoCollectionAndUse.p6')}</p>
-        <p>{t('privacyPolicy:infoCollectionAndUse.p7')}</p>
+        <h2>{t('privacyPolicy.infoCollectionAndUse.heading')}</h2>
+        <p>{t('privacyPolicy.infoCollectionAndUse.p1')}</p>
+        <p>{t('privacyPolicy.infoCollectionAndUse.p2')}</p>
+        <p>{t('privacyPolicy.infoCollectionAndUse.p3')}</p>
+        <p>{t('privacyPolicy.infoCollectionAndUse.p4')}</p>
+        <p>{t('privacyPolicy.infoCollectionAndUse.p5')}</p>
+        <p>{t('privacyPolicy.infoCollectionAndUse.p6')}</p>
+        <p>{t('privacyPolicy.infoCollectionAndUse.p7')}</p>
 
-        <h2>{t('privacyPolicy:logData.heading')}</h2>
-        <p>{t('privacyPolicy:logData.p1')}</p>
-        <p>{t('privacyPolicy:logData.p2')}</p>
+        <h2>{t('privacyPolicy.logData.heading')}</h2>
+        <p>{t('privacyPolicy.logData.p1')}</p>
+        <p>{t('privacyPolicy.logData.p2')}</p>
 
-        <h2>{t('privacyPolicy:cookies.heading')}</h2>
-        <p>{t('privacyPolicy:cookies.p1')}</p>
-        <p>{t('privacyPolicy:cookies.p2')}</p>
-        <p>{t('privacyPolicy:cookies.p3')}</p>
-        <p>{t('privacyPolicy:cookies.p4')}</p>
+        <h2>{t('privacyPolicy.cookies.heading')}</h2>
+        <p>{t('privacyPolicy.cookies.p1')}</p>
+        <p>{t('privacyPolicy.cookies.p2')}</p>
+        <p>{t('privacyPolicy.cookies.p3')}</p>
+        <p>{t('privacyPolicy.cookies.p4')}</p>
 
-        <h2>{t('privacyPolicy:security.heading')}</h2>
-        <p>{t('privacyPolicy:security.p1')}</p>
+        <h2>{t('privacyPolicy.security.heading')}</h2>
+        <p>{t('privacyPolicy.security.p1')}</p>
         <p>
-          <Trans t={t} i18nKey="privacyPolicy:security.p2" values={{ host: APP_HOST }}>
-            0<ExternalLink href="https://www.cloudflare.com/security-policy/">1</ExternalLink>2
-          </Trans>
+          {t.rich('privacyPolicy.security.p2', {
+            link: (chunks: ReactNode) => <ExternalLink href="https://www.cloudflare.com/security-policy/">{chunks}</ExternalLink>,
+          })}
         </p>
-        <p>{t('privacyPolicy:security.p3')}</p>
-        <p>{t('privacyPolicy:security.p4')}</p>
+        <p>{t('privacyPolicy.security.p3')}</p>
+        <p>{t('privacyPolicy.security.p4')}</p>
 
-        <h2>{t('privacyPolicy:changes.heading')}</h2>
-        <p>{t('privacyPolicy:changes.p1')}</p>
-        <p>{t('privacyPolicy:changes.p2')}</p>
-        <p>{t('privacyPolicy:changes.p3')}</p>
+        <h2>{t('privacyPolicy.changes.heading')}</h2>
+        <p>{t('privacyPolicy.changes.p1')}</p>
+        <p>{t('privacyPolicy.changes.p2')}</p>
+        <p>{t('privacyPolicy.changes.p3')}</p>
 
-        <h2>{t('privacyPolicy:contact.heading')}</h2>
+        <h2>{t('privacyPolicy.contact.heading')}</h2>
         <p>
-          <Trans t={t} i18nKey="privacyPolicy:contact.p1">
-            0<ContactLink>1</ContactLink>2
-          </Trans>
+          {t.rich('privacyPolicy.contact.p1', {
+            link: (chunks: ReactNode) => <ContactLink>{chunks}</ContactLink>,
+          })}
         </p>
       </Content>
     </>

@@ -8,7 +8,7 @@ import { PATHS } from 'src/paths';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { UncontrolledTooltip } from 'reactstrap';
 import { format } from 'date-fns';
-import { useTranslation } from 'next-i18next/pages';
+import { useTranslations } from 'next-intl';
 
 export const EpisodeColumn: ShowTableColumnDefinition['renderContent'] = ({ entry }) => <>{episodeToString(entry)}</>;
 
@@ -19,12 +19,12 @@ export const EpisodeNumberColumn: ShowTableColumnDefinition['renderContent'] = (
 export const ShowNumberColumn: ShowTableColumnDefinition['renderContent'] = ({ entry }) => <>{entry.no}</>;
 
 export const TitleAirDateColumn: FC<{ entry: ShowListItem }> = ({ entry }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const { isStaff } = useAuth();
   const editButtonRef = useRef<HTMLButtonElement>(null) as React.RefObject<HTMLButtonElement>;
   const deleteButtonRef = useRef<HTMLButtonElement>(null) as React.RefObject<HTMLButtonElement>;
-  const typeName = t(`show:index.typeNames.${entry.type}`);
-  const airDateFormat = t(`show:index.airDateFormat`);
+  const typeName = t(`show.index.typeNames.${entry.type}`);
+  const airDateFormat = t(`show.index.airDateFormat`);
   return <>
     <div>
       <Link href={PATHS.EPISODE(entry)}>
@@ -36,13 +36,13 @@ export const TitleAirDateColumn: FC<{ entry: ShowListItem }> = ({ entry }) => {
             <InlineIcon icon="pencil-alt" />
           </span>
           <UncontrolledTooltip target={editButtonRef} fade={false} placement="top">
-            {t('show:index.edit', { typeName })}
+            {t('show.index.edit', { typeName })}
           </UncontrolledTooltip>
           <span className="p-2 text-danger faded" ref={deleteButtonRef}>
             <InlineIcon icon="times" />
           </span>
           <UncontrolledTooltip target={deleteButtonRef} fade={false} placement="top">
-            {t('show:index.delete', { typeName })}
+            {t('show.index.delete', { typeName })}
           </UncontrolledTooltip>
         </span>
       )}

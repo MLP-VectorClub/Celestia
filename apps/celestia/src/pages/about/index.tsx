@@ -23,7 +23,7 @@ import { titleSetter } from 'src/utils/core';
 import { NextPage } from 'next';
 import { PATHS } from 'src/paths';
 import { Translatable } from 'src/types';
-import { Trans, useTranslation } from 'next-i18next/pages';
+import { useTranslations } from 'next-intl';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 const AppPageLink: FC<PropsWithChildren<{ href: string }>> = ({ children, href }) => (
@@ -37,7 +37,7 @@ const ChildfreeFavme: FunctionComponent<FavMeProps & { content: ReactNode }> = (
 );
 
 const titleFactory: TitleFactory = () => {
-  const title: Translatable = ['common:titles.about'];
+  const title: Translatable = ['common.titles.about'];
   return {
     title,
     breadcrumbs: [{ label: title, active: true }],
@@ -47,123 +47,130 @@ const titleFactory: TitleFactory = () => {
 // TODO Eliminate all remaining hard-coded copy text
 
 const AboutPage: NextPage = () => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const dispatch = useAppDispatch();
   const titleData = useMemo(titleFactory, []);
   useTitleSetter(dispatch, titleData);
 
-  const heading = (
-    <Trans t={t} i18nKey="about:website" values={{ linkText: DEVIANTART_GROUP_NAME }}>
-      <ExternalLink href={DEVIANTART_GROUP_URL}>0</ExternalLink>1
-    </Trans>
-  );
+  const heading = t.rich('about.website', {
+    linkText: DEVIANTART_GROUP_NAME,
+    link: (chunks: ReactNode) => <ExternalLink href={DEVIANTART_GROUP_URL}>{chunks}</ExternalLink>,
+  });
 
   return (
     <Content>
       <div className="d-flex justify-content-center">
         <Image src="/img/logo.svg" alt="MLP Vector Club Website Logo" id="about-logo" width={200} height={200} priority unoptimized />
       </div>
-      <StandardHeading heading={heading} lead={t('about:tagline')} />
+      <StandardHeading heading={heading} lead={t('about.tagline')} />
       <section className="what-s-this-site-">
-        <h2 id="what-s-this-site-">{t('about:whatsThisSite.title')}</h2>
-        <p>{t('about:whatsThisSite.p1')}</p>
-        <p>{t('about:whatsThisSite.p2')}</p>
+        <h2 id="what-s-this-site-">{t('about.whatsThisSite.title')}</h2>
+        <p>{t('about.whatsThisSite.p1')}</p>
+        <p>{t('about.whatsThisSite.p2')}</p>
       </section>
       <section className="attributions">
-        <h2>{t('about:attributions.title')}</h2>
+        <h2>{t('about.attributions.title')}</h2>
         <p>
-          <Trans t={t} i18nKey="about:attributions.github">
-            0<a href={`${GITHUB_URL}#attributions`}>GitHub page</a>1
-          </Trans>
+          {t.rich('about.attributions.github', {
+            link: (chunks: ReactNode) => <a href={`${GITHUB_URL}#attributions`}>{chunks}</a>,
+          })}
         </p>
         <p>
-          <Trans t={t} i18nKey="about:attributions.blendingCalc">
-            <AppPageLink href={PATHS.BLENDING}>0</AppPageLink>1<ExternalLink href="https://github.com/dasprid">2</ExternalLink>
-          </Trans>
+          {t.rich('about.attributions.blendingCalc', {
+            calc: (chunks: ReactNode) => <AppPageLink href={PATHS.BLENDING}>{chunks}</AppPageLink>,
+            author: (chunks: ReactNode) => <ExternalLink href="https://github.com/dasprid">{chunks}</ExternalLink>,
+          })}
           <br />
 
-          <Trans t={t} i18nKey="about:attributions.headingFont" values={{ linkText: 'Celestia Medium Redux' }}>
-            <strong>0</strong>
-            <ExternalLink href="http://www.mattyhex.net/CMR/">1</ExternalLink>
-          </Trans>
+          {t.rich('about.attributions.headingFont', {
+            linkText: 'Celestia Medium Redux',
+            bold: (chunks: ReactNode) => <strong>{chunks}</strong>,
+            link: (chunks: ReactNode) => <ExternalLink href="http://www.mattyhex.net/CMR/">{chunks}</ExternalLink>,
+          })}
           <br />
 
-          <Trans t={t} i18nKey="about:attributions.daLogo" values={{ copyright: 'DeviantArt' }}>
-            <strong>0</strong>1<ExternalLink href="https://www.deviantart.com/">2</ExternalLink>
-          </Trans>
+          {t.rich('about.attributions.daLogo', {
+            copyright: 'DeviantArt',
+            bold: (chunks: ReactNode) => <strong>{chunks}</strong>,
+            link: (chunks: ReactNode) => <ExternalLink href="https://www.deviantart.com/">{chunks}</ExternalLink>,
+          })}
           <br />
 
-          <Trans t={t} i18nKey="about:attributions.aiLogo" values={{ copyright: 'Adobe Systems Inc.' }}>
-            <ExternalLink href="https://commons.wikimedia.org/wiki/File:Adobe_Illustrator_CC_icon.svg">0</ExternalLink>1
-          </Trans>
+          {t.rich('about.attributions.aiLogo', {
+            copyright: 'Adobe Systems Inc.',
+            link: (chunks: ReactNode) => (
+              <ExternalLink href="https://commons.wikimedia.org/wiki/File:Adobe_Illustrator_CC_icon.svg">{chunks}</ExternalLink>
+            ),
+          })}
           <br />
 
-          <Trans t={t} i18nKey="about:attributions.inkscapeLogo">
-            <ExternalLink href="https://commons.wikimedia.org/wiki/File:Inkscape_Logo.svg">0</ExternalLink>1
-          </Trans>
+          {t.rich('about.attributions.inkscapeLogo', {
+            link: (chunks: ReactNode) => <ExternalLink href="https://commons.wikimedia.org/wiki/File:Inkscape_Logo.svg">{chunks}</ExternalLink>,
+          })}
           <br />
 
-          <Trans t={t} i18nKey="about:attributions.ponyscapeLogo">
-            <ExternalLink href="https://www.deviantart.com/flutterguy317/art/Ponyscape-PNG-354658716">0</ExternalLink>
-            1
-            <DeviantLink username="flutterguy317" />
-          </Trans>
+          {t.rich('about.attributions.ponyscapeLogo', {
+            link: (chunks: ReactNode) => (
+              <ExternalLink href="https://www.deviantart.com/flutterguy317/art/Ponyscape-PNG-354658716">{chunks}</ExternalLink>
+            ),
+            author: () => <DeviantLink username="flutterguy317" />,
+          })}
           <br />
 
-          <Trans t={t} i18nKey="about:attributions.applicationLogo">
-            <strong>0</strong>1
-            <a href="https://www.deviantart.com/pirill-poveniy/art/Collab-Christmas-Vector-of-the-MLP-VC-Mascot-503196118">2</a>
-            3
-            <DeviantLink username="Pirill-Poveniy" />
-            5
-            <DeviantLink username="thediscorded" />
-            7
-            <DeviantLink username="masemj" />
-            9
-            <DeviantLink username="Ambassad0r" />
-            11
-            <a href="https://www.deviantart.com/ambassad0r/art/Penny-Curve-MLP-VectorClub-Mascot-2-0-568079382">12</a>
-            13
-            <DeviantLink username="Ambassad0r" />
-            15
-          </Trans>
+          {t.rich('about.attributions.applicationLogo', {
+            bold: (chunks: ReactNode) => <strong>{chunks}</strong>,
+            christmasLink: (chunks: ReactNode) => (
+              <a href="https://www.deviantart.com/pirill-poveniy/art/Collab-Christmas-Vector-of-the-MLP-VC-Mascot-503196118">
+                {chunks}
+              </a>
+            ),
+            author1: () => <DeviantLink username="Pirill-Poveniy" />,
+            author2: () => <DeviantLink username="thediscorded" />,
+            author3: () => <DeviantLink username="masemj" />,
+            author4: () => <DeviantLink username="Ambassad0r" />,
+            pennyLink: (chunks: ReactNode) => (
+              <a href="https://www.deviantart.com/ambassad0r/art/Penny-Curve-MLP-VectorClub-Mascot-2-0-568079382">{chunks}</a>
+            ),
+            author5: () => <DeviantLink username="Ambassad0r" />,
+          })}
           <br />
 
-          <Trans t={t} i18nKey="about:attributions.logoVectors.general" values={{ copyright: 'Hasbro Studios, LLC.' }}>
-            <strong>0</strong>1
-          </Trans>
+          {t.rich('about.attributions.logoVectors.general', {
+            copyright: 'Hasbro Studios, LLC.',
+            bold: (chunks: ReactNode) => <strong>{chunks}</strong>,
+          })}
           <ul>
             <li>
-              <Trans t={t} i18nKey="about:attributions.logoVectors.specific">
-                <ChildfreeFavme id="db60g3n" content={getGuideLabel('pony')} />
-                1
-                <DeviantLink username="drakizora" />
-              </Trans>
+              {t.rich('about.attributions.logoVectors.specific', {
+                favme: () => <ChildfreeFavme id="db60g3n" content={getGuideLabel('pony')} />,
+                author: () => <DeviantLink username="drakizora" />,
+              })}
             </li>
             <li>
-              <Trans t={t} i18nKey="about:attributions.logoVectors.specific">
-                <ChildfreeFavme id="d6923sw" content={getGuideLabel('eqg')} />
-                1
-                <DeviantLink username="Charleston-and-itchy" />
-              </Trans>
+              {t.rich('about.attributions.logoVectors.specific', {
+                favme: () => <ChildfreeFavme id="d6923sw" content={getGuideLabel('eqg')} />,
+                author: () => <DeviantLink username="Charleston-and-itchy" />,
+              })}
             </li>
             <li>
-              <Trans t={t} i18nKey="about:attributions.logoVectors.specific">
-                <ChildfreeFavme id="ddztpnc" content={getGuideLabel('pl')} />
-                1
-                <DeviantLink username="illumnious" />
-              </Trans>
+              {t.rich('about.attributions.logoVectors.specific', {
+                favme: () => <ChildfreeFavme id="ddztpnc" content={getGuideLabel('pl')} />,
+                author: () => <DeviantLink username="illumnious" />,
+              })}
             </li>
           </ul>
 
-          <Trans t={t} i18nKey="about:attributions.uiIcons" values={{ linkText: 'FontAwesome Free' }}>
-            <strong>0</strong>1<a href="https://fontawesome.com/license">2</a>
-          </Trans>
+          {t.rich('about.attributions.uiIcons', {
+            linkText: 'FontAwesome Free',
+            bold: (chunks: ReactNode) => <strong>{chunks}</strong>,
+            link: (chunks: ReactNode) => <a href="https://fontawesome.com/license">{chunks}</a>,
+          })}
           <br />
 
-          <Trans t={t} i18nKey="about:attributions.browserLogos.general" values={{ linkText: 'FontAwesome Free' }}>
-            <strong>0</strong>1<AppPageLink href={PATHS.ABOUT_CONNECTION}>2</AppPageLink>3
-          </Trans>
+          {t.rich('about.attributions.browserLogos.general', {
+            bold: (chunks: ReactNode) => <strong>{chunks}</strong>,
+            link: (chunks: ReactNode) => <AppPageLink href={PATHS.ABOUT_CONNECTION}>{chunks}</AppPageLink>,
+          })}
           <br />
         </p>
         <ul>
@@ -221,15 +228,15 @@ const AboutPage: NextPage = () => {
           <strong>Episode synopsis data</strong>
           {' is provided by '}
           <ExternalLink href="https://www.themoviedb.org/documentation/api">The Movie Database API</ExternalLink>
-          {`. ${t('common:tmdbDisclaimer')}`}
+          {`. ${t('common.tmdbDisclaimer')}`}
           <br />
           <strong>Coding, design & hosting:</strong> <ExternalLink href="https://went.tf">WentTheFox</ExternalLink>
         </p>
       </section>
       <section id="supported-providers">
-        <h2>{t('about:providers.title')}</h2>
+        <h2>{t('about.providers.title')}</h2>
         <div>
-          <p>{t('about:providers.p1')}</p>
+          <p>{t('about.providers.p1')}</p>
           <ul>
             <li>
               <a href="https://sta.sh/">Sta.sh</a>*
@@ -247,13 +254,13 @@ const AboutPage: NextPage = () => {
               <a href="https://app.prntscr.com/">LightShot</a>
             </li>
           </ul>
-          <p>{t('about:providers.asterisk')}</p>
+          <p>{t('about.providers.asterisk')}</p>
         </div>
       </section>
       <section>
-        <h2>{t('about:openSource.title')}</h2>
+        <h2>{t('about.openSource.title')}</h2>
         <div>
-          <p>{t('about:openSource.p1')}</p>
+          <p>{t('about.openSource.p1')}</p>
           <ul>
             <li>
               Frontend: <ExternalLink href={GITHUB_URL}>{PROJECT_NAME}</ExternalLink>
@@ -263,10 +270,9 @@ const AboutPage: NextPage = () => {
             </li>
           </ul>
           <p>
-            <Trans t={t} i18nKey="about:openSource.p2">
-              0
-              <InlineIcon icon="chevron-right" fixedWidth />2
-            </Trans>
+            {t.rich('about.openSource.p2', {
+              icon: () => <InlineIcon icon="chevron-right" fixedWidth />,
+            })}
           </p>
         </div>
       </section>

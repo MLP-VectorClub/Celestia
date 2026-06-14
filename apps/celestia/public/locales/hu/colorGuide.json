@@ -10,8 +10,8 @@
   },
   "changes": {
     "breadcrumb": "List of Major Changes",
-    "heading": "Major {{guideName}} Color Changes",
-    "title": "Page {{page}} - Major {{guideName}} Color Changes - Color Guide",
+    "heading": "Major {guideName} Color Changes",
+    "title": "Page {page} - Major {guideName} Color Changes - Color Guide",
     "loadingSubject": "major changes",
     "noResults": "There are no changes to display",
     "columns": {
@@ -21,9 +21,9 @@
     }
   },
   "fullList": {
-    "heading": "Complete {{guideName}} Character List",
-    "title": "Full List - {{guideName}} Color Guide",
-    "lead": "Sorted <1></1>",
+    "heading": "Complete {guideName} Character List",
+    "title": "Full List - {guideName} Color Guide",
+    "lead": "Sorted <dropdown></dropdown>",
     "sortOptionsHeader": "Sort by",
     "sortOptions": {
       "label": "alphabetically",

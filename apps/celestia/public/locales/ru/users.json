@@ -12,8 +12,7 @@
     }
   },
   "userList": {
-    "heading": "{{count}} Regular User",
-    "heading_plural": "{{count}} Regular Users",
+    "heading": "{count, plural, one {# Regular User} other {# Regular Users}}",
     "loadingSubject": "list of users"
   },
   "profile": {
