@@ -13,11 +13,11 @@ import { membersFetcher } from 'src/fetchers';
 import { TitleFactory } from 'src/types/title';
 import { titleSetter } from 'src/utils/core';
 import { NextPage } from 'next';
-import { useTranslation } from 'next-i18next/pages';
+import { useTranslations } from 'next-intl';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 const titleFactory: TitleFactory<{ isStaff?: boolean }> = ({ isStaff = false }) => {
-  const title: Translatable = [isStaff ? 'common:titles.users' : 'common:titles.clubMembers'];
+  const title: Translatable = [isStaff ? 'common.titles.users' : 'common.titles.clubMembers'];
   return {
     title,
     breadcrumbs: [
@@ -34,7 +34,7 @@ interface PropTypes {
 }
 
 const UsersIndexPage: NextPage<PropTypes> = ({ initialMembers }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const dispatch = useAppDispatch();
   const { isStaff } = useAuth();
 
@@ -42,8 +42,8 @@ const UsersIndexPage: NextPage<PropTypes> = ({ initialMembers }) => {
   useTitleSetter(dispatch, titleData);
 
   const headingProps: StandardHeadingProps = {
-    heading: isStaff ? t(`users:memberList.staff.heading`) : t(`users:memberList.public.heading`),
-    lead: isStaff ? t(`users:memberList.staff.lead`) : t(`users:memberList.public.lead`),
+    heading: isStaff ? t(`users.memberList.staff.heading`) : t(`users.memberList.public.heading`),
+    lead: isStaff ? t(`users.memberList.staff.lead`) : t(`users.memberList.public.lead`),
   };
 
   return (

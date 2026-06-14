@@ -8,7 +8,7 @@ import { AppDispatch, wrapper } from 'src/store';
 import { useTitleSetter } from 'src/hooks';
 import { TitleFactory } from 'src/types/title';
 import { titleSetter } from 'src/utils/core';
-import { useTranslation } from 'next-i18next/pages';
+import { useTranslations } from 'next-intl';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 interface PropTypes {
@@ -16,7 +16,7 @@ interface PropTypes {
 }
 
 const titleFactory: TitleFactory = () => {
-  const title: Translatable = ['common:error.withoutStatus'];
+  const title: Translatable = ['common.error.withoutStatus'];
   return {
     title,
     breadcrumbs: [{ label: 'Error' }, { label: title, active: true }],
@@ -24,7 +24,7 @@ const titleFactory: TitleFactory = () => {
 };
 
 const Error: NextPage<PropTypes> = () => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const dispatch = useDispatch<AppDispatch>();
 
   const titleData = useMemo(titleFactory, []);
@@ -32,7 +32,7 @@ const Error: NextPage<PropTypes> = () => {
 
   return (
     <Content>
-      <StandardHeading heading={t('common:error.withoutStatus')} />
+      <StandardHeading heading={t('common.error.withoutStatus')} />
     </Content>
   );
 };

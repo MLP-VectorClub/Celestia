@@ -4,7 +4,7 @@ import { coreActions } from 'src/store/slices';
 import { useAppDispatch, wrapper } from 'src/store';
 import { fixPath, getProfileTitle, handleDataFetchingError, mapRoleLabel } from 'src/utils';
 import { transformProfileParams, useAuth, useTitleSetter, useUser } from 'src/hooks';
-import { BreadcrumbEntry, Nullable, Optional } from 'src/types';
+import { BreadcrumbEntry, Nullable, Optional, SSRMessages } from 'src/types';
 import { GetUsersIdResult, PublicUser } from '@mlp-vectorclub/api-types';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import AvatarWrap from 'src/components/shared/AvatarWrap';
@@ -14,7 +14,7 @@ import { TitleFactory } from 'src/types/title';
 import { titleSetter } from 'src/utils/core';
 import { NextPage } from 'next';
 import { PATHS } from 'src/paths';
-import { SSRConfig, useTranslation } from 'next-i18next/pages';
+import { useTranslations } from 'next-intl';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 interface PropTypes {
@@ -23,7 +23,7 @@ interface PropTypes {
 
 const titleFactory: TitleFactory<Pick<PropTypes, 'initialUser'> & { isStaff?: boolean }> = ({ initialUser, isStaff = false }) => {
   const firstBreadcrumb: BreadcrumbEntry = {
-    label: ['users:profile.breadcrumb'],
+    label: ['users.profile.breadcrumb'],
   };
   if (isStaff) firstBreadcrumb.linkProps = { href: PATHS.USERS };
   return {
@@ -31,7 +31,7 @@ const titleFactory: TitleFactory<Pick<PropTypes, 'initialUser'> & { isStaff?: bo
     breadcrumbs: [
       firstBreadcrumb,
       {
-        label: initialUser ? initialUser.name : ['users:profile.unknownUser'],
+        label: initialUser ? initialUser.name : ['users.profile.unknownUser'],
         active: true,
       },
     ],
@@ -39,7 +39,7 @@ const titleFactory: TitleFactory<Pick<PropTypes, 'initialUser'> & { isStaff?: bo
 };
 
 const ProfilePage: NextPage<PropTypes> = ({ initialUser }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const dispatch = useAppDispatch();
   const { query } = useRouter();
   const { user } = useUser(transformProfileParams(query), initialUser || undefined);
@@ -55,7 +55,7 @@ const ProfilePage: NextPage<PropTypes> = ({ initialUser }) => {
 
   return (
     <Content>
-      {!user && <StandardHeading heading={t('users:profile.notFound')} lead={t('users:profile.checkYourSpelling')} />}
+      {!user && <StandardHeading heading={t('users.profile.notFound')} lead={t('users.profile.checkYourSpelling')} />}
       {user && (
         <>
           <div className="d-flex justify-content-center align-items-center mb-2">
@@ -68,7 +68,7 @@ const ProfilePage: NextPage<PropTypes> = ({ initialUser }) => {
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRConfig>((store) => async (ctx) => {
+export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRMessages>((store) => async (ctx) => {
   const { query, locale } = ctx;
 
   const params = transformProfileParams(query);

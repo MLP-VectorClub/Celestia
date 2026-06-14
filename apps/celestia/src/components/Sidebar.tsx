@@ -11,10 +11,10 @@ import SignInButton from 'src/components/shared/SignInButton';
 import SignOutButton from 'src/components/shared/SignOutButton';
 import { useAuth, useConnectionInfo } from 'src/hooks';
 import { FC } from 'react';
-import { useTranslation } from 'next-i18next/pages';
+import { useTranslations } from 'next-intl';
 
 const Sidebar: FC = () => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const { signedIn } = useAuth();
   const { backendDown } = useConnectionInfo();
 
@@ -28,8 +28,8 @@ const Sidebar: FC = () => {
 
       {backendDown && (
         <section className="signin">
-          <h2>{t('common:sidebar.welcome')}</h2>
-          <p>{t('common:sidebar.backendDown')}</p>
+          <h2>{t('common.sidebar.welcome')}</h2>
+          <p>{t('common.sidebar.backendDown')}</p>
         </section>
       )}
       {!backendDown && (
@@ -41,7 +41,7 @@ const Sidebar: FC = () => {
             <div className="mb-2">{signedIn ? <SignOutButton /> : <SignInButton />}</div>
             <Button color="discord" size="sm" tag={ExternalLink} href={DISCORD_INVITE_LINK}>
               <InlineIcon icon={['fab', 'discord']} first />
-              {t('common:sidebar.joinDiscord')}
+              {t('common.sidebar.joinDiscord')}
             </Button>
           </section>
           {/* Widgets will go here */}

@@ -12,12 +12,13 @@ import { useMemo } from 'react';
 import { NextPage } from 'next';
 import styles from 'modules/GuideIndexPage.module.scss';
 import { TitleFactory } from 'src/types/title';
+import { SSRMessages } from 'src/types';
 import { titleSetter } from 'src/utils/core';
 import { guideIndexFetcher } from 'src/fetchers';
 import { PATHS } from 'src/paths';
 import pluralize from 'pluralize';
 import { GuideIcon } from 'src/components/shared/GuideIcon';
-import { SSRConfig, useTranslation } from 'next-i18next/pages';
+import { useTranslations } from 'next-intl';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 interface PropTypes {
@@ -25,12 +26,12 @@ interface PropTypes {
 }
 
 const titleFactory: TitleFactory = () => ({
-  title: ['common:titles.colorGuideList'],
-  breadcrumbs: [{ label: ['colorGuide:index.breadcrumb'], active: true }],
+  title: ['common.titles.colorGuideList'],
+  breadcrumbs: [{ label: ['colorGuide.index.breadcrumb'], active: true }],
 });
 
 const GuideIndexPage: NextPage<PropTypes> = ({ initialData }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const dispatch = useAppDispatch();
   const data = useGuideIndex(initialData);
   const wipMeaning = 'wip-meaning';
@@ -40,7 +41,7 @@ const GuideIndexPage: NextPage<PropTypes> = ({ initialData }) => {
 
   return (
     <Content>
-      <StandardHeading heading={t('colorGuide:index.heading')} lead={t('colorGuide:index.lead')} />
+      <StandardHeading heading={t('colorGuide.index.heading')} lead={t('colorGuide.index.lead')} />
       <p className="text-center">
         Resources for developers: <ExternalLink href={API_DOCS_URL}>API</ExternalLink>{' '}
         <Badge tag="abbr" color="danger" id={wipMeaning}>
@@ -78,7 +79,7 @@ const GuideIndexPage: NextPage<PropTypes> = ({ initialData }) => {
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRConfig>((store) => async ({ locale, req }) => {
+export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRMessages>((store) => async ({ locale, req }) => {
   let initialData: GetColorGuideResult = {
     entryCounts: GUIDE_NAMES.reduce((acc, c) => ({ ...acc, [c]: 0 }), {} as Record<GuideName, number>),
   };

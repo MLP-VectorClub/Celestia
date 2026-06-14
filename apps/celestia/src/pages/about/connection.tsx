@@ -9,13 +9,13 @@ import Abbr from 'src/components/shared/Abbr';
 import { TitleFactory } from 'src/types/title';
 import { useAppDispatch, wrapper } from 'src/store';
 import { titleSetter } from 'src/utils/core';
-import { Nullable } from 'src/types/common';
+import { Nullable, SSRMessages } from 'src/types/common';
 import { GetAboutConnectionResult } from '@mlp-vectorclub/api-types';
 import { useConnectionInfo } from 'src/hooks/connection-info';
 import { MappedAboutConnectionResult } from 'src/types/api-alias';
 import { useTitleSetter } from 'src/hooks/core';
 import { connectionFetcher } from 'src/fetchers/connection-info';
-import { SSRConfig, useTranslation } from 'next-i18next/pages';
+import { useTranslations } from 'next-intl';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 interface PropTypes {
@@ -26,12 +26,12 @@ interface PropTypes {
 }
 
 const titleFactory: TitleFactory = () => ({
-  title: ['common:titles.connectionInfo'],
+  title: ['common.titles.connectionInfo'],
   breadcrumbs: [],
 });
 
 export const ConnectionPage: NextPage<PropTypes> = ({ connectingAddress, forwardedFor, userAgent, initialServerInfo }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const dispatch = useAppDispatch();
   const { serverInfo, fetching, backendDown, makeStale } = useConnectionInfo(initialServerInfo);
 
@@ -48,59 +48,59 @@ export const ConnectionPage: NextPage<PropTypes> = ({ connectingAddress, forward
       <Head>
         <meta name="robots" content="noindex" />
       </Head>
-      <StandardHeading heading={t('connection:heading')} />
+      <StandardHeading heading={t('connection.heading')} />
 
       <h3>
         Frontend: (<Abbr title="Server-Side Rendering">SSR</Abbr>)
       </h3>
       <p>
-        <strong>{t('connection:connectingAddress')}:</strong> <code>{JSON.stringify(connectingAddress)}</code>
+        <strong>{t('connection.connectingAddress')}:</strong> <code>{JSON.stringify(connectingAddress)}</code>
       </p>
       <p>
-        <strong>{t('connection:forwardedFor')}:</strong> <code>{JSON.stringify(forwardedFor)}</code>
+        <strong>{t('connection.forwardedFor')}:</strong> <code>{JSON.stringify(forwardedFor)}</code>
       </p>
       <p>
-        <strong>{t('connection:userAgent')}:</strong> <code>{JSON.stringify(userAgent)}</code>
+        <strong>{t('connection.userAgent')}:</strong> <code>{JSON.stringify(userAgent)}</code>
       </p>
 
       <h3>
-        Backend (<Abbr title={t('common:footer.apiMeaning')}>API</Abbr>){backendDown && <InlineIcon color="danger" icon="server" />}
+        Backend (<Abbr title={t('common.footer.apiMeaning')}>API</Abbr>){backendDown && <InlineIcon color="danger" icon="server" />}
         {fetching && <InlineIcon loading last />}
       </h3>
       <p>
-        <strong>{t('connection:commitId')}:</strong> <code>{JSON.stringify(getServerInfo('commitId'))}</code>
+        <strong>{t('connection.commitId')}:</strong> <code>{JSON.stringify(getServerInfo('commitId'))}</code>
       </p>
       <p>
-        <strong>{t('connection:commitTime')}:</strong> <code>{JSON.stringify(getServerInfo('commitTime'))}</code>
+        <strong>{t('connection.commitTime')}:</strong> <code>{JSON.stringify(getServerInfo('commitTime'))}</code>
       </p>
       <p>
-        <strong>{t('connection:connectingAddress')}:</strong> <code>{JSON.stringify(getServerInfo('ip'))}</code>
+        <strong>{t('connection.connectingAddress')}:</strong> <code>{JSON.stringify(getServerInfo('ip'))}</code>
       </p>
       <p>
-        <strong>{t('connection:forwardedFor')}:</strong> <code>{JSON.stringify(getServerInfo('proxiedIps'))}</code>
+        <strong>{t('connection.forwardedFor')}:</strong> <code>{JSON.stringify(getServerInfo('proxiedIps'))}</code>
       </p>
       <p>
-        <strong>{t('connection:userAgent')}:</strong> <code>{JSON.stringify(getServerInfo('userAgent'))}</code>
+        <strong>{t('connection.userAgent')}:</strong> <code>{JSON.stringify(getServerInfo('userAgent'))}</code>
       </p>
       <p>
-        <strong>{t('connection:deviceIdentifier')}:</strong>
+        <strong>{t('connection.deviceIdentifier')}:</strong>
         <code>{JSON.stringify(getServerInfo('deviceIdentifier'))}</code>
         <br />
         <span className="text-info">
           <InlineIcon icon="info" first />
-          {t('connection:deviceIdentifierInfo')}
+          {t('connection.deviceIdentifierInfo')}
         </span>
       </p>
 
       <Button onClick={makeStale} disabled={fetching}>
         <InlineIcon icon="sync" first loading={fetching} />
-        {t('connection:updateBackend')}
+        {t('connection.updateBackend')}
       </Button>
     </Content>
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRConfig>((store) => async ({ locale, req }) => {
+export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRMessages>((store) => async ({ locale, req }) => {
   const props: PropTypes = {
     connectingAddress: req.connection.remoteAddress || null,
     forwardedFor: req.headers['x-forwarded-for'] || null,

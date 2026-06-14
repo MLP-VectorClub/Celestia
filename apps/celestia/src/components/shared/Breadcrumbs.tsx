@@ -4,12 +4,12 @@ import Link from 'next/link';
 import { renderingStateSlice } from 'src/utils/store';
 import { FC } from 'react';
 import { translatableValue } from 'src/hooks';
-import { useTranslation } from 'next-i18next/pages';
+import { useTranslations } from 'next-intl';
 
 const ELEMENT_ID = 'breadcrumbs';
 
 const Breadcrumbs: FC = () => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const { breadcrumbs } = useAppSelector((state) => renderingStateSlice(state.core));
 
   // TODO Rich JSON+LD data for SEO

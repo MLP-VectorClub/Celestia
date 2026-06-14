@@ -10,14 +10,16 @@ import AuthModal from 'src/components/modals/AuthModal';
 import ProgressIndicator from 'src/components/ProgressIndicator';
 import Layout from 'src/components/Layout';
 import { LayoutContextProvider } from 'src/hooks';
-import { appWithTranslation } from 'next-i18next/pages';
+import { NextIntlClientProvider } from 'next-intl';
 import { AppComponent } from 'next/dist/shared/lib/router/router';
+import { useRouter } from 'next/router';
 import { queryClient } from 'src/store/queryClient';
 import { Provider } from 'react-redux';
 
 const Celestia: AppComponent = ({ Component, ...rest }) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- props type is a fixed "any" value
   const { store, props } = wrapper.useWrappedStore(rest);
+  const { locale } = useRouter();
   const [disabled, setLayoutDisabled] = useState(false);
   useRef(appLibrary);
 
@@ -26,20 +28,23 @@ const Celestia: AppComponent = ({ Component, ...rest }) => {
   return (
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- props type is a fixed "any" value
     <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <TitleManager />
-        <ProgressIndicator />
-        <LayoutContextProvider value={layoutContext}>
-          <Layout>
-            {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- props type is a fixed "any" value */}
-            <Component {...props.pageProps} />
-          </Layout>
-        </LayoutContextProvider>
-        <AuthModal />
-        {DEV_ENV && <ReactQueryDevtools position="top-right" initialIsOpen={false} />}
-      </QueryClientProvider>
+      {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- props type is a fixed "any" value */}
+      <NextIntlClientProvider locale={locale || 'en'} messages={props.pageProps.messages}>
+        <QueryClientProvider client={queryClient}>
+          <TitleManager />
+          <ProgressIndicator />
+          <LayoutContextProvider value={layoutContext}>
+            <Layout>
+              {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- props type is a fixed "any" value */}
+              <Component {...props.pageProps} />
+            </Layout>
+          </LayoutContextProvider>
+          <AuthModal />
+          {DEV_ENV && <ReactQueryDevtools position="top-right" initialIsOpen={false} />}
+        </QueryClientProvider>
+      </NextIntlClientProvider>
     </Provider>
   );
 };
 
-export default appWithTranslation(Celestia);
+export default Celestia;

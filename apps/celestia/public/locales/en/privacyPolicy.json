@@ -2,9 +2,9 @@
   "notYetUpdated": "This page has been copied verbatim from the previous site version and has not yet been updated to reflect the changes to the registration flow. Account creation is currently disabled until the application goes into beta testing, at which point this policy will be updated to reflect the changes.",
   "title": "Privacy Policy",
   "lead": "Last updated: May 13, 2018",
-  "shortSummary": "<0>TL;DR:</0> We don't want to invade on anyone's privacy and believe that information we do not directly need for the safe operation of the website should not be stored, and no information should be shared with or sold to 3rd parties. Don't deliberately give us any personally identifiable information, and your privacy is safe with us.",
+  "shortSummary": "<bold>TL;DR:</bold> We don't want to invade on anyone's privacy and believe that information we do not directly need for the safe operation of the website should not be stored, and no information should be shared with or sold to 3rd parties. Don't deliberately give us any personally identifiable information, and your privacy is safe with us.",
   "intro": {
-    "p1": "The MLP Vector Club (\"us\", \"we\", or \"our\") operates <1>{{host}}</1> (the \"Site\"). This page informs you of our policies regarding the collection, use and disclosure of Personal Information we receive from users of the Site.",
+    "p1": "The MLP Vector Club (\"us\", \"we\", or \"our\") operates <link>{host}</link> (the \"Site\"). This page informs you of our policies regarding the collection, use and disclosure of Personal Information we receive from users of the Site.",
     "p2": "We use your Personal Information only for providing and improving the Site. By using the Site, you agree to the collection and use of information in accordance with this policy."
   },
   "infoCollectionAndUse": {
@@ -32,7 +32,7 @@
   "security": {
     "heading": "Security",
     "p1": "The security of your Personal Information is important to us, but remember that no method of transmission over the Internet, or method of electronic storage, is 100% secure. While we strive to use commercially acceptable means to protect your Personal Information, we cannot guarantee its absolute security.",
-    "p2": "The Site makes use of HTTPS using modern TLS encryption suites to protect the integrity and secure transport of data between the browser and our Site. However, we make use of CloudFlare's Reverse Proxy service, meaning all data sent to our Site passes through their servers. CloudFlare operates under their own <1>privacy policy</1>.",
+    "p2": "The Site makes use of HTTPS using modern TLS encryption suites to protect the integrity and secure transport of data between the browser and our Site. However, we make use of CloudFlare's Reverse Proxy service, meaning all data sent to our Site passes through their servers. CloudFlare operates under their own <link>privacy policy</link>.",
     "p3": "When you use a compatible browser you will be connected to a Web Socket Server in order to receive updates to content on the page, including live notifications for signed in users. This feature cannot be turned off separately. Any PII this server receives (which is limited to your IP address) is discarded as soon as the connection is closed, typically by closing the browser window. The data exchange between the Web Socket Server and the Site is done locally and no PII is transmitted between the two parts of the application.",
     "p4": "In the event of a security breach all users will be notified within 24 hours of discovery through a notice posted on this website as well as a journal on DeviantArt."
   },
@@ -44,6 +44,6 @@
   },
   "contact": {
     "heading": "Contact Us",
-    "p1": "If you have any questions about this Privacy Policy or want to ask for the removal of any PII we store please contact us using any of the methods accessible from the <1>Contact</1> link in the footer."
+    "p1": "If you have any questions about this Privacy Policy or want to ask for the removal of any PII we store please contact us using any of the methods accessible from the <link>Contact</link> link in the footer."
   }
 }

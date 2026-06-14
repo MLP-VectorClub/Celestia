@@ -3,12 +3,12 @@ import { FC, JSX, MouseEventHandler, useCallback } from 'react';
 import { coreActions } from 'src/store/slices';
 import ExternalLink from 'src/components/shared/ExternalLink';
 import Link from 'next/link';
-import { useTranslation } from 'next-i18next/pages';
+import { useTranslations } from 'next-intl';
 import { PATHS } from 'src/paths';
 import { useAppDispatch } from 'src/store';
 
 const SidebarUsefulLinks: FC = () => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const dispatch = useAppDispatch();
   const { signedIn } = useAuth();
   const usefulLinks = useSidebarUsefulLinks(signedIn);
@@ -32,7 +32,7 @@ const SidebarUsefulLinks: FC = () => {
 
   return (
     <div className="links">
-      <h3>{t('common:sidebar.usefulLinks')}</h3>
+      <h3>{t('common.sidebar.usefulLinks')}</h3>
       <ul>
         {usefulLinks.map((el) => {
           let link: JSX.Element;

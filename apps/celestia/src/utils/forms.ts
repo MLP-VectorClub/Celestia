@@ -1,8 +1,7 @@
 import { FieldError, FieldErrors, FieldValues, ValidateResult } from 'react-hook-form';
-import { Nullable, UnifiedErrorResponse, UnifiedErrorResponseTypes } from 'src/types';
+import { Nullable, TFunction, UnifiedErrorResponse, UnifiedErrorResponseTypes } from 'src/types';
 import { ValidationErrorResponse } from '@mlp-vectorclub/api-types';
-import { TFunction } from 'next-i18next/pages';
-import { CustomTypeOptions } from 'react-i18next';
+import commonNs from '../../public/locales/en/common.json';
 
 export const combineErrors = <FormValues extends FieldValues = FieldValues>(
   clientErrors: FieldErrors<FormValues>,
@@ -26,33 +25,33 @@ export const combineErrors = <FormValues extends FieldValues = FieldValues>(
   return copy;
 };
 
-type ValidationI18nKeys = keyof CustomTypeOptions['resources']['common']['validation'] & string;
+type ValidationI18nKeys = keyof typeof commonNs.validation & string;
 
 export const validateRequired = (t: TFunction, key: ValidationI18nKeys = 'required') => ({
-  required: t(`common:validation.${key}`) as string,
+  required: t(`common.validation.${key}`) as string,
 });
 export const validateMinLength = (t: TFunction, count: number, key: ValidationI18nKeys = 'tooShort') => ({
   minLength: {
     value: count,
-    message: t(`common:validation.${key}`, { count }),
+    message: t(`common.validation.${key}`, { count }),
   },
 });
 export const validateMaxLength = (t: TFunction, count: number, key: ValidationI18nKeys = 'tooLong') => ({
   maxLength: {
     value: count,
-    message: t(`common:validation.${key}`, { count }),
+    message: t(`common.validation.${key}`, { count }),
   },
 });
 
 export const validateEmail = <T extends FieldValues>(t: TFunction) => ({
-  email: (value: T['email']) => /^[^@]+@[^@]+$/.test(value) || (t('common:validation.email') as string),
+  email: (value: T['email']) => /^[^@]+@[^@]+$/.test(value) || (t('common.validation.email') as string),
 });
 
 export const validateUserName = <T extends FieldValues>(t: TFunction, key: keyof T = 'name') => ({
   ...validateMinLength(t, 5),
   ...validateMaxLength(t, 20),
   validate: {
-    [key]: (value: T[typeof key]): ValidateResult => /^[A-Za-z\d_-]+$/.test(value) || (t('common:validation.format') as string),
+    [key]: (value: T[typeof key]): ValidateResult => /^[A-Za-z\d_-]+$/.test(value) || (t('common.validation.format') as string),
   },
 });
 

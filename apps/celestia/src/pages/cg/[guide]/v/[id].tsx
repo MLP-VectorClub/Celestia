@@ -2,7 +2,7 @@ import { NextPage } from 'next';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import { useAppDispatch, wrapper } from 'src/store';
 import { assembleSeoUrl, getAppearanceTitle, getGuideLabel, handleDataFetchingError, notFound, resolveGuideName } from 'src/utils';
-import { BreadcrumbEntry, Nullable, Optional } from 'src/types';
+import { BreadcrumbEntry, Nullable, Optional, SSRMessages } from 'src/types';
 import { DetailedAppearance, GetAppearancesIdResult, GuideName } from '@mlp-vectorclub/api-types';
 import { titleSetter } from 'src/utils/core';
 import Content from 'src/components/shared/Content';
@@ -27,7 +27,6 @@ import { AppearanceCutieMarks } from 'src/components/colorguide/AppearanceCutieM
 import { FeaturePlaceholder } from 'src/components/shared/FeaturePlaceholder';
 import { AppearanceColorGroups } from 'src/components/colorguide/AppearanceColorGroups';
 import { AppearanceNotes } from 'src/components/colorguide/AppearanceNotes';
-import { SSRConfig } from 'next-i18next/pages';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 interface PropTypes {
@@ -56,7 +55,7 @@ const titleFactory: TitleFactory<Pick<PropTypes, 'guide' | 'initialData'>> = ({ 
   const breadcrumbs: BreadcrumbEntry[] = [
     {
       linkProps: { href: PATHS.GUIDE_INDEX },
-      label: ['colorGuide:index.breadcrumb'],
+      label: ['colorGuide.index.breadcrumb'],
     },
     guideItem,
   ];
@@ -166,7 +165,7 @@ const AppearancePage: NextPage<PropTypes> = ({ guide, id, initialData }) => {
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRConfig>((store) => async (ctx) => {
+export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRMessages>((store) => async (ctx) => {
   const { query, req, locale } = ctx;
 
   const guide = resolveGuideName(query.guide) || null;

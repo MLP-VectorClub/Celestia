@@ -7,7 +7,7 @@ import { calculatePaginationItems, GO_TO_ITEM, PaginationProps } from 'src/utils
 import { ParsedUrlQuery } from 'querystring';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import classNames from 'classnames';
-import { useTranslation } from 'next-i18next/pages';
+import { useTranslations } from 'next-intl';
 
 type PageLinkProps = PropsWithChildren<{
   number: number;
@@ -45,7 +45,7 @@ interface GotoPaginationItemProps {
 }
 
 const GotoPaginationItem: FC<GotoPaginationItemProps> = ({ defaultValue, totalPages, pageParam, tooltipPos }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const linkRef = useRef<HTMLButtonElement>(null);
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [target, setTarget] = useState(defaultValue);
@@ -94,7 +94,7 @@ const GotoPaginationItem: FC<GotoPaginationItemProps> = ({ defaultValue, totalPa
           className="tooltip-go-to-page"
         >
           <div className="d-flex align-items-center">
-            <span className="mr-2">{t('common:pagination.page')}:</span>
+            <span className="mr-2">{t('common.pagination.page')}:</span>
             <Input
               className="mr-2"
               bsSize="sm"
@@ -107,7 +107,7 @@ const GotoPaginationItem: FC<GotoPaginationItemProps> = ({ defaultValue, totalPa
             />
             <PageLink number={target} pageParam={pageParam}>
               <Button size="sm" color="light" tag="a" onClick={toggleTooltip}>
-                {t('common:pagination.go')}
+                {t('common.pagination.go')}
               </Button>
             </PageLink>
           </div>

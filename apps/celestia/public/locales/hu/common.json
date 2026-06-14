@@ -16,12 +16,12 @@
   },
   "titles": {
     "colorGuides": "Color Guides",
-    "colorGuideByName": "{{guideName}} Color Guide",
-    "colorGuideByNameAndPage": "Page {{page}} - {{guideName}} Color Guide",
+    "colorGuideByName": "{guideName} Color Guide",
+    "colorGuideByNameAndPage": "Page {page} - {guideName} Color Guide",
     "colorGuideList": "Color Guide List",
     "profile": "Profile",
     "connectionInfo": "Connection Info",
-    "profileByName": "{{name}} - Profile",
+    "profileByName": "{name} - Profile",
     "yourProfile": "Your Profile",
     "show": "Show",
     "events": "Events",
@@ -37,7 +37,7 @@
     "home": "Home"
   },
   "error": {
-    "withStatus": "Error {{statusCode}}!",
+    "withStatus": "Error {statusCode}!",
     "withoutStatus": "Unknown Error!",
     "404": {
       "heading": "404 Not Found",
@@ -61,9 +61,9 @@
     "header": "Contact Us",
     "howTo": "How to contact us",
     "useAnyBelow": "You can use any of the following methods to reach out to us:",
-    "discord": "<0>Join our Discord server</0> and describe your issue/idea in the <2>#support</2> channel",
-    "deviantart": "<0>Send a note</0> to the group on DeviantArt",
-    "email": "<0>Send an e-mail</0> to {{email}}"
+    "discord": "<link>Join our Discord server</link> and describe your issue/idea in the <bold>#club-helpdesk</bold> channel",
+    "deviantart": "<link>Send a note</link> to the group on DeviantArt",
+    "email": "<link>Send an e-mail</link> to {email}"
   },
   "guestUserName": "Curious Pony",
   "roleLabel": {
@@ -82,31 +82,30 @@
     "alreadyHaveAccount": "Already have an account? Sign in here!",
     "accountBenefits": "An account allows you to customize the site's behavior, with many more features yet to come.",
     "name": "Display Name",
-    "nameHelp": "Only English letters, digits, dashes and underscores. Must be between {{min}} and {{max}} characters. Can be changed later.",
+    "nameHelp": "Only English letters, digits, dashes and underscores. Must be between {min} and {max} characters. Can be changed later.",
     "email": "E-Mail Address",
-    "emailHelp": "Use a valid e-mail address that can receive messages to ensure you do not lose access to your account. This address must be confirmed after signing up. <1>We will not send you spam.</1>",
+    "emailHelp": "Use a valid e-mail address that can receive messages to ensure you do not lose access to your account. This address must be confirmed after signing up. <bold>We will not send you spam.</bold>",
     "password": "Password",
-    "passwordHelp": "Must be at least {{min}} characters long and not commonly used.",
+    "passwordHelp": "Must be at least {min} characters long and not commonly used.",
     "rememberMe": "Keep me signed in",
     "signInButton": "Sign In",
     "registerButton": "Create Account",
     "invalidCredentials": "Incorrect e-mail address or password",
-    "rateLimited": "Too many signin attempts, please try again in {{count}} second",
-    "rateLimited_plural": "Too many signin attempts, please try again in {{count}} seconds",
+    "rateLimited": "Too many signin attempts, please try again in {count, plural, one {# second} other {# seconds}}",
     "hidePassword": "Hide Password",
     "showPassword": "Show Password",
     "forgotPassword": "Forgot password?",
     "pwResetNotYetAvailable": "The password reset feature is not available yet",
     "socialSignIn": {
       "alternatively": "alternatively",
-      "signInWith": "Sign in with {{provider}}"
+      "signInWith": "Sign in with {provider}"
     },
-    "acceptPrivacyPolicy": "I accept the <1>Privacy Policy</1>"
+    "acceptPrivacyPolicy": "I accept the <link>Privacy Policy</link>"
   },
   "validation": {
     "required": "Please fill in this field",
-    "tooLong": "Cannot be longer than {{count}} characters",
-    "tooShort": "Cannot be shorter than {{count}} characters",
+    "tooLong": "Cannot be longer than {count} characters",
+    "tooShort": "Cannot be shorter than {count} characters",
     "email": "Please enter a valid e-mail address",
     "acceptPrivacyPolicy": "You must accept the privacy policy",
     "format": "Please match the specified format"
@@ -114,9 +113,8 @@
   "pagination": {
     "page": "Page",
     "go": "Go",
-    "itemsPerPage": "Displaying {{count}} item/page",
-    "itemsPerPage_plural": "Displaying {{count}} items/page"
+    "itemsPerPage": "Displaying {count, plural, one {# item/page} other {# items/page}}"
   },
   "tmdbDisclaimer": "This product uses the TMDb API but is not endorsed or certified by TMDb.",
-  "wipNotice": "This website is a work-in-progress, for our current live site please visit <1>{{url}}</1>"
+  "wipNotice": "This website is a work-in-progress, for our current live site please visit <link>{url}</link>"
 }

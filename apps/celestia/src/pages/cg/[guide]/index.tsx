@@ -1,6 +1,6 @@
 import { Button } from 'reactstrap';
 import { useMemo } from 'react';
-import { Nullable, Optional } from 'src/types';
+import { Nullable, Optional, SSRMessages } from 'src/types';
 import { GetAppearancesPinnedResult, GetAppearancesResult, GuideName } from '@mlp-vectorclub/api-types';
 import { getGuideLabel, getGuideTitle, handleDataFetchingError, notFound, resolveGuideName } from 'src/utils';
 import { AppDispatch, wrapper } from 'src/store';
@@ -27,7 +27,6 @@ import PinnedAppearances from 'src/components/colorguide/PinnedAppearances';
 import SearchBar from 'src/components/colorguide/SearchBar';
 import { PATHS } from 'src/paths';
 import { validatePageParam } from 'src/utils/validate-page-param';
-import { SSRConfig } from 'next-i18next/pages';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 const titleFactory: TitleFactory<Omit<PropTypes, 'initialData'>> = ({ guide, page, q }) => {
@@ -37,7 +36,7 @@ const titleFactory: TitleFactory<Omit<PropTypes, 'initialData'>> = ({ guide, pag
     breadcrumbs: [
       {
         linkProps: { href: PATHS.GUIDE_INDEX },
-        label: ['colorGuide:index.breadcrumb'],
+        label: ['colorGuide.index.breadcrumb'],
       },
       { label: getGuideLabel(guide), active: true },
     ],
@@ -120,7 +119,7 @@ const ColorGuidePage: NextPage<PropTypes> = ({ guide, page, q, initialData }) =>
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRConfig>((store) => async (ctx) => {
+export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRMessages>((store) => async (ctx) => {
   const { query, req, locale } = ctx;
 
   const guide = resolveGuideName(query.guide) || null;

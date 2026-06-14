@@ -12,7 +12,7 @@ import StatusAlert from 'src/components/shared/StatusAlert';
 import { wrapper } from 'src/store';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { SSRConfig } from 'next-i18next/pages';
+import { SSRMessages } from 'src/types';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 interface PropTypes {
@@ -51,7 +51,7 @@ const LegacyAppearanceRedirect: NextPage<PropTypes> = ({ id }) => {
 
 export default LegacyAppearanceRedirect;
 
-export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRConfig>(() => async (ctx) => {
+export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRMessages>(() => async (ctx) => {
   const { query, req, locale } = ctx;
 
   if (typeof query.id !== 'string') {

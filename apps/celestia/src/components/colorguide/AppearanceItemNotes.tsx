@@ -4,12 +4,12 @@ import { Appearance } from '@mlp-vectorclub/api-types';
 import { processAppearanceNotes } from 'src/utils/html-parsers/appearance-notes-parser';
 import styles from 'modules/AppearanceNotes.module.scss';
 import { AppearanceNotesText } from 'src/components/colorguide/AppearanceNotesText';
-import { useTranslation } from 'next-i18next/pages';
+import { useTranslations } from 'next-intl';
 
 const cmSpacingClasses = 'ml-2 pl-2 border-left';
 
 const AppearanceItemNotes: FC<Pick<Appearance, 'notes' | 'hasCutieMarks'>> = ({ notes, hasCutieMarks }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const processedNotes = useMemo(() => (notes ? processAppearanceNotes(notes) : null), [notes]);
 
   return (
@@ -22,7 +22,7 @@ const AppearanceItemNotes: FC<Pick<Appearance, 'notes' | 'hasCutieMarks'>> = ({ 
               [cmSpacingClasses]: processedNotes !== null,
             })}
           >
-            {t('colorGuide:appearances.cmAvailable')}
+            {t('colorGuide.appearances.cmAvailable')}
           </span>
         )}
       </AppearanceNotesText>

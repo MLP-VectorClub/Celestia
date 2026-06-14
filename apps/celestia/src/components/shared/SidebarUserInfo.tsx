@@ -6,10 +6,10 @@ import LoadingRing from 'src/components/shared/LoadingRing';
 import AvatarWrap from 'src/components/shared/AvatarWrap';
 import ProfileLink from 'src/components/shared/ProfileLink';
 import { FC } from 'react';
-import { useTranslation } from 'next-i18next/pages';
+import { useTranslations } from 'next-intl';
 
 const SidebarUserInfo: FC = () => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const { authCheck, user, signedIn } = useAuth();
   const prefs = usePrefs(signedIn);
 
@@ -21,12 +21,12 @@ const SidebarUserInfo: FC = () => {
         // eslint-disable-next-line @typescript-eslint/naming-convention
         'checking-auth': checkingAuth,
       })}
-      title={checkingAuth ? t('common:sidebar.authCheck') : undefined}
+      title={checkingAuth ? t('common.sidebar.authCheck') : undefined}
     >
       <LoadingRing color="white" outline={false} className="spinner" />
       <AvatarWrap avatarProvider={user.avatarProvider} avatarUrl={user.avatarUrl} vectorApp={prefs?.p_vectorapp || null} size={50} />
       <div className="user-data">
-        <span className="user-name">{signedIn ? <ProfileLink {...user} /> : t('common:guestUserName')}</span>
+        <span className="user-name">{signedIn ? <ProfileLink {...user} /> : t('common.guestUserName')}</span>
         <span className="user-role">
           <span>{mapRoleLabel(t, user.role)}</span>
         </span>

@@ -27,7 +27,8 @@ import { TitleFactory } from 'src/types/title';
 import { titleSetter } from 'src/utils/core';
 import { PATHS } from 'src/paths';
 import ReturnToGuideButton from 'src/components/colorguide/ReturnToGuideButton';
-import { SSRConfig, Trans, useTranslation } from 'next-i18next/pages';
+import { useTranslations } from 'next-intl';
+import { SSRMessages } from 'src/types';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 interface PropTypes {
@@ -37,14 +38,14 @@ interface PropTypes {
 }
 
 const titleFactory: TitleFactory<Pick<PropTypes, 'guide'>> = ({ guide }) => {
-  const title: Translatable = ['colorGuide:fullList.title', { replace: { guideName: getGuideLabel(guide) } }];
+  const title: Translatable = ['colorGuide.fullList.title', { guideName: getGuideLabel(guide) }];
   const guideLinkProps = guide ? { href: PATHS.GUIDE(guide) } : undefined;
   return {
     title,
     breadcrumbs: [
       {
         linkProps: { href: PATHS.GUIDE_INDEX },
-        label: ['colorGuide:index.breadcrumb'],
+        label: ['colorGuide.index.breadcrumb'],
       },
       { linkProps: guideLinkProps, label: getGuideLabel(guide) },
       { label: 'Full List', active: true },
@@ -53,11 +54,11 @@ const titleFactory: TitleFactory<Pick<PropTypes, 'guide'>> = ({ guide }) => {
 };
 
 const FullGuidePage: NextPage<PropTypes> = ({ guide, sort, initialData }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const dispatch = useAppDispatch();
   const { isStaff } = useAuth();
   const data = useFullGuide({ guide, sort }, initialData || undefined);
-  const heading = t('colorGuide:fullList.heading', {
+  const heading = t('colorGuide.fullList.heading', {
     guideName: getGuideLabel(guide),
   });
 
@@ -67,7 +68,7 @@ const FullGuidePage: NextPage<PropTypes> = ({ guide, sort, initialData }) => {
   const SortDropdown: FC<{ sortI18n: FullGuideSortField }> = useCallback(
     ({ sortI18n }) => (
       <DropdownToggle color="white" className="font-italic">
-        {t(`colorGuide:fullList.sortOptions.${sortI18n}`)}
+        {t(`colorGuide.fullList.sortOptions.${sortI18n}`)}
         <InlineIcon icon="caret-down" last />
       </DropdownToggle>
     ),
@@ -86,12 +87,11 @@ const FullGuidePage: NextPage<PropTypes> = ({ guide, sort, initialData }) => {
         heading={heading}
         lead={
           <UncontrolledDropdown>
-            <Trans t={t} i18nKey="colorGuide:fullList.lead">
-              0
-              <SortDropdown sortI18n={sort} />
-            </Trans>
+            {t.rich('colorGuide.fullList.lead', {
+              dropdown: () => <SortDropdown sortI18n={sort} />,
+            })}
             <DropdownMenu>
-              <DropdownItem header>{t('colorGuide:fullList.sortOptionsHeader')}</DropdownItem>
+              <DropdownItem header>{t('colorGuide.fullList.sortOptionsHeader')}</DropdownItem>
               {sortOptions.map((sortBy) => (
                 <Link
                   key={sortBy}
@@ -99,7 +99,7 @@ const FullGuidePage: NextPage<PropTypes> = ({ guide, sort, initialData }) => {
                   passHref
                   legacyBehavior>
                   <DropdownItem tag="a" active={sortBy === sort}>
-                    {t(`colorGuide:fullList.sortOptions.${sortBy}`)}
+                    {t(`colorGuide.fullList.sortOptions.${sortBy}`)}
                   </DropdownItem>
                 </Link>
               ))}
@@ -112,7 +112,7 @@ const FullGuidePage: NextPage<PropTypes> = ({ guide, sort, initialData }) => {
         {isStaff && (
           <Button color="ui" size="sm" disabled>
             <InlineIcon icon="sort" first />
-            {t('colorGuide:fullList.reorder')}
+            {t('colorGuide.fullList.reorder')}
           </Button>
         )}
         <MajorChangesButton guide={guide} />
@@ -126,7 +126,7 @@ const FullGuidePage: NextPage<PropTypes> = ({ guide, sort, initialData }) => {
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRConfig>((store) => async (ctx) => {
+export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRMessages>((store) => async (ctx) => {
   const { query, locale } = ctx;
 
   const guide = resolveGuideName(query.guide) || null;

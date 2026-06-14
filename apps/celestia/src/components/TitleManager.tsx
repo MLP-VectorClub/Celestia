@@ -6,10 +6,10 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { assembleSeoUrl } from 'src/utils';
 import { translatableValue } from 'src/hooks';
-import { useTranslation } from 'next-i18next/pages';
+import { useTranslations } from 'next-intl';
 
 const TitleManager: FC = () => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const { asPath, defaultLocale, locale, locales } = useRouter();
   const { title } = useAppSelector((store) => renderingStateSlice(store.core));
 

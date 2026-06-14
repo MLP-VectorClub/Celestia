@@ -6,13 +6,13 @@ import { useAuth, useCsrf } from 'src/hooks';
 import LoadingRing from 'src/components/shared/LoadingRing';
 import TooltipContent from 'src/components/shared/TooltipContent';
 import { FC } from 'react';
-import { useTranslation } from 'next-i18next/pages';
+import { useTranslations } from 'next-intl';
 import { useAppDispatch } from 'src/store';
 
 const BUTTON_ID = 'signin';
 
 const SignInButton: FC = () => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const dispatch = useAppDispatch();
   const { authCheck } = useAuth();
   const csrf = useCsrf();
@@ -26,13 +26,13 @@ const SignInButton: FC = () => {
     <>
       <Button id={BUTTON_ID} disabled={disabled} onClick={openSignInModal}>
         <FontAwesomeIcon icon="sign-in-alt" className="mr-2" />
-        {t('common:sidebar.signIn')}
+        {t('common.sidebar.signIn')}
       </Button>
       {disabled && (
         <UncontrolledTooltip target={BUTTON_ID} container="sidebar" placement="bottom">
           <TooltipContent>
             <LoadingRing inline spaceRight />
-            {csrfLoading ? t('common:sidebar.csrfInitializing') : t('common:sidebar.authInitializing')}
+            {csrfLoading ? t('common.sidebar.csrfInitializing') : t('common.sidebar.authInitializing')}
           </TooltipContent>
         </UncontrolledTooltip>
       )}

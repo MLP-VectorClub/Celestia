@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires -- require is required */
 const { NEXT_PUBLIC_CDN_DOMAIN, NEXT_PUBLIC_BACKEND_HOST, NEXT_PUBLIC_API_PREFIX } = process.env;
 const { platform } = require('os');
-const { i18n } = require('./next-i18next.config.js');
 const withPlugins = require('next-compose-plugins');
 const withCamelCaseCSSModules = require('./utils/next-css-modules');
 const withTM = require('next-transpile-modules')(['@mlp-vectorclub/ui']);
@@ -23,7 +22,10 @@ module.exports = withPlugins(
     ],
   ],
   {
-    i18n,
+    i18n: {
+      locales: ['en'],
+      defaultLocale: 'en',
+    },
     generateBuildId: async () => {
       try {
         const gitArgs = ['log', '-1', '--date=short', '--pretty=%h;%ct'];

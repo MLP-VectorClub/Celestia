@@ -4,7 +4,7 @@ import StandardHeading from 'src/components/shared/StandardHeading';
 import { PATHS } from 'src/paths';
 import { getGuideLabel, handleDataFetchingError, notFound, resolveGuideName } from 'src/utils';
 import { useMemo } from 'react';
-import { Nullable, Optional, Translatable } from 'src/types';
+import { Nullable, Optional, SSRMessages, Translatable } from 'src/types';
 import { GetColorGuideMajorChangesResult, GuideName } from '@mlp-vectorclub/api-types';
 import { TitleFactory } from 'src/types/title';
 import { useMajorChanges, useTitleSetter } from 'src/hooks';
@@ -25,7 +25,7 @@ import { GuideNotFound } from 'src/components/colorguide/GuideNotFound';
 import ButtonCollection from 'src/components/shared/ButtonCollection';
 import ReturnToGuideButton from 'src/components/colorguide/ReturnToGuideButton';
 import StatusAlert from 'src/components/shared/StatusAlert';
-import { SSRConfig, useTranslation } from 'next-i18next/pages';
+import { useTranslations } from 'next-intl';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 interface PropTypes {
@@ -35,17 +35,17 @@ interface PropTypes {
 }
 
 const titleFactory: TitleFactory<Omit<PropTypes, 'initialData'>> = ({ guide, page }) => {
-  const title: Translatable = ['colorGuide:changes.title', { replace: { page, guideName: getGuideLabel(guide) } }];
+  const title: Translatable = ['colorGuide.changes.title', { page, guideName: getGuideLabel(guide) }];
   const guideLinkProps = guide ? { href: PATHS.GUIDE(guide) } : undefined;
   return {
     title,
     breadcrumbs: [
       {
         linkProps: { href: PATHS.GUIDE_INDEX },
-        label: ['colorGuide:index.breadcrumb'],
+        label: ['colorGuide.index.breadcrumb'],
       },
       { linkProps: guideLinkProps, label: getGuideLabel(guide) },
-      { label: ['colorGuide:changes.breadcrumb'], active: true },
+      { label: ['colorGuide.changes.breadcrumb'], active: true },
     ],
   };
 };
@@ -53,9 +53,9 @@ const titleFactory: TitleFactory<Omit<PropTypes, 'initialData'>> = ({ guide, pag
 const PAGING_RELEVANT_PROPS: string[] = [];
 
 const GuideChangesPage: NextPage<PropTypes> = ({ guide, page, initialData }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const dispatch = useDispatch<AppDispatch>();
-  const heading = t('colorGuide:changes.heading', {
+  const heading = t('colorGuide.changes.heading', {
     guideName: getGuideLabel(guide),
   });
   const data = useMajorChanges({ guide, page }, initialData || undefined);
@@ -73,7 +73,7 @@ const GuideChangesPage: NextPage<PropTypes> = ({ guide, page, initialData }) => 
         heading={heading}
         lead={
           data.pagination
-            ? t('common:pagination.itemsPerPage', {
+            ? t('common.pagination.itemsPerPage', {
                 count: data.pagination.itemsPerPage,
               })
             : null
@@ -83,17 +83,17 @@ const GuideChangesPage: NextPage<PropTypes> = ({ guide, page, initialData }) => 
         <ReturnToGuideButton guide={guide} />
       </ButtonCollection>
 
-      <StatusAlert status={data.status} subject={t('colorGuide:changes.loadingSubject')} />
-      {data.changes?.length === 0 && <NoResultsAlert message={t('colorGuide:changes.noResults')} />}
+      <StatusAlert status={data.status} subject={t('colorGuide.changes.loadingSubject')} />
+      {data.changes?.length === 0 && <NoResultsAlert message={t('colorGuide.changes.noResults')} />}
 
       {data.pagination && <Pagination {...data.pagination} relevantProps={PAGING_RELEVANT_PROPS} tooltipPos="bottom" />}
       {data.changes && (
         <Table borderless responsive className={styles.changes}>
           <thead>
             <tr>
-              <th>{t('colorGuide:changes.columns.appearance')}</th>
-              <th className="text-left">{t('colorGuide:changes.columns.reason')}</th>
-              <th>{t('colorGuide:changes.columns.created')}</th>
+              <th>{t('colorGuide.changes.columns.appearance')}</th>
+              <th className="text-left">{t('colorGuide.changes.columns.reason')}</th>
+              <th>{t('colorGuide.changes.columns.created')}</th>
             </tr>
           </thead>
           <tbody>
@@ -125,7 +125,7 @@ const GuideChangesPage: NextPage<PropTypes> = ({ guide, page, initialData }) => 
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRConfig>((store) => async (ctx) => {
+export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRMessages>((store) => async (ctx) => {
   const { query, req, locale } = ctx;
 
   const guide = resolveGuideName(query.guide) || null;

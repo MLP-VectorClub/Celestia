@@ -1,7 +1,7 @@
 {
   "index": {
-    "edit": "Edit {{typeName}}",
-    "delete": "Delete {{typeName}}",
+    "edit": "Edit {typeName}",
+    "delete": "Delete {typeName}",
     "typeNames": {
       "episode": "Episode",
       "movie": "Movie",
