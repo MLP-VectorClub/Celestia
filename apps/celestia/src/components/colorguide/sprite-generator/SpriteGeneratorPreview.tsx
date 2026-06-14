@@ -53,7 +53,7 @@ const remapColors = (ctx: CanvasRenderingContext2D, colors: Required<PropTypes>[
   let change = false;
   for (let i = 0; i < imageData.data.length; i += 4) {
     const alpha = imageData.data[i + 3];
-    // eslint-disable-next-line no-continue
+     
     if (alpha === 0) continue;
 
     const mapping = colors[convertRgbToNumber(imageData.data[i], imageData.data[i + 1], imageData.data[i + 2])];

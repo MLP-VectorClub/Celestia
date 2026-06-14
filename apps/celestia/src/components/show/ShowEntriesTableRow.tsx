@@ -12,10 +12,10 @@ export const ShowListItemRow: FC<{
       <td
         key={i}
         className={classNames(tdClassName, {
-          /* eslint-disable @typescript-eslint/naming-convention */
+           
           'd-lg-none': only === 'mobile',
           'd-none d-lg-table-cell': only === 'desktop',
-          /* eslint-enable @typescript-eslint/naming-convention */
+           
         })}
       >
         <Renderer entry={show} />

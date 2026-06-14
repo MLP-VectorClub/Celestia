@@ -34,11 +34,11 @@ const LoadingRing: FC<LoadingRingProps> = ({
       className={classNames(
         color && `text-${color}`,
         {
-          /* eslint-disable @typescript-eslint/naming-convention */
+           
           'mr-2': inline && spaceRight,
           'ml-2': inline && spaceLeft,
           'svg-inline--fa': inline,
-          /* eslint-enable @typescript-eslint/naming-convention */
+           
         },
         className
       )}

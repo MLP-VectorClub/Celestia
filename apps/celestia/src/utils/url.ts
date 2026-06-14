@@ -12,7 +12,7 @@ const queryWithArrays = <T extends ParamMap>(queryParams?: T): string => {
   const params = new URLSearchParams();
   each(queryParams, (value, key) => {
     if (Array.isArray(value)) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (value as any[]).forEach((el) => params.append(`${key}[]`, String(el)));
     } else if (value !== undefined && value !== null) {
       params.append(key, String(value));

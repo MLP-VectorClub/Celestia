@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, FC, FormEventHandler, MouseEventHandler, useCallback, useEffect, useRef, useState } from 'react';
+import { ChangeEventHandler, FC, FormEventHandler, MouseEventHandler, RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { Button, Col, Form, Input, Label, Progress, Row } from 'reactstrap';
 import { saveAs } from 'file-saver';
 import ExternalLink from 'src/components/shared/ExternalLink';
@@ -29,7 +29,7 @@ const DEFAULT_OPTIONS: SpriteGeneratorOptions = {
 };
 
 export const SpriteGenerator: FC = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null) as React.RefObject<HTMLCanvasElement>;
+  const canvasRef = useRef<HTMLCanvasElement>(null) as RefObject<HTMLCanvasElement>;
   const imageMap = useRef<SpriteGeneratorImageMap | undefined>(undefined);
   const [colorMap, setColorMap] = useState<SpriteGeneratorColorMap>(() => ({
     [SpriteGeneratorBaseColor.COAT_OUTLINE]: convertNumberToRgb(SpriteGeneratorBaseColor.COAT_OUTLINE),
@@ -47,8 +47,8 @@ export const SpriteGenerator: FC = () => {
   const [loadedImages, setLoadedImages] = useState(0);
   const [licenseAccepted, setLicenseAccepted] = useState(false);
   const [options, setOptions] = useState<SpriteGeneratorOptions>(DEFAULT_OPTIONS);
-  const copyButtonRef = useRef<HTMLButtonElement>(null) as React.RefObject<HTMLButtonElement>;
-  const attributionTextRef = useRef<HTMLSpanElement>(null) as React.RefObject<HTMLSpanElement>;
+  const copyButtonRef = useRef<HTMLButtonElement>(null) as RefObject<HTMLButtonElement>;
+  const attributionTextRef = useRef<HTMLSpanElement>(null) as RefObject<HTMLSpanElement>;
 
   useEffect(() => {
     let localLoadedImages = 0;
@@ -126,7 +126,7 @@ export const SpriteGenerator: FC = () => {
                 <p className={classNames('mb-2', loadingFailed ? 'text-danger' : 'text-ui')}>
                   <InlineIcon icon={loadingErrors ? 'exclamation-triangle' : 'info'} first />
                   {loadingErrors.current.length > 0 ? (
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                     
                     <>
                       Failed to load assets:
                       <ul>

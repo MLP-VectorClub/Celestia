@@ -3,7 +3,7 @@ import { defaultServices, UserService } from 'src/services';
 import { IncomingMessage } from 'http';
 import { GetUserPrefsMeRequest, UserPrefs } from '@mlp-vectorclub/api-types';
 
-// eslint-disable-next-line max-len
+ 
 export function prefsFetcher<K extends NonNullable<GetUserPrefsMeRequest['keys']>>(
   data?: { keys: K },
   req?: IncomingMessage

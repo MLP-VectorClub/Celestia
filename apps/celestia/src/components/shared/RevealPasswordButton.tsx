@@ -1,5 +1,5 @@
 import { Button, UncontrolledTooltip } from 'reactstrap';
-import React, { FC, useRef } from 'react';
+import { FC, RefObject, useRef } from 'react';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import TooltipContent from 'src/components/shared/TooltipContent';
 import { useTranslations } from 'next-intl';
@@ -11,7 +11,7 @@ interface RevealPasswordButtonProps {
 
 const RevealPasswordButton: FC<RevealPasswordButtonProps> = ({ setPasswordRevealed, passwordRevealed }) => {
   const t = useTranslations();
-  const revealBtnRef = useRef<HTMLButtonElement>(null) as React.RefObject<HTMLButtonElement>;
+  const revealBtnRef = useRef<HTMLButtonElement>(null) as RefObject<HTMLButtonElement>;
   return (
     <>
       <Button color="ui" outline onClick={() => setPasswordRevealed(!passwordRevealed)} innerRef={revealBtnRef}>
