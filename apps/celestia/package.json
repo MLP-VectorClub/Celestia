@@ -54,7 +54,7 @@
     "react-topbar-progress-indicator": "^4.1.1",
     "reactstrap": "^9.2.3",
     "rxjs": "^7.8.2",
-    "sass": "1.100.0",
+    "sass": "1.101.0",
     "tsconfig-paths": "^4.2.0"
   },
   "devDependencies": {
