@@ -7,6 +7,7 @@ import TitleManager from 'src/components/TitleManager';
 import { appLibrary } from '../fontawesome';
 import '../app.scss';
 import AuthModal from 'src/components/modals/AuthModal';
+import DeployBanner from 'src/components/shared/DeployBanner';
 import ProgressIndicator from 'src/components/ProgressIndicator';
 import Layout from 'src/components/Layout';
 import { LayoutContextProvider } from 'src/hooks';
@@ -32,6 +33,7 @@ const Celestia: AppComponent = ({ Component, ...rest }) => {
       <NextIntlClientProvider locale={locale || 'en'} messages={props.pageProps.messages}>
         <QueryClientProvider client={queryClient}>
           <TitleManager />
+          <DeployBanner />
           <ProgressIndicator />
           <LayoutContextProvider value={layoutContext}>
             <Layout>
