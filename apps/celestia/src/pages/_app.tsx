@@ -32,7 +32,8 @@ const Celestia: AppComponent = ({ Component, ...rest }) => {
   return (
     <Provider store={store}>
       {}
-      <NextIntlClientProvider locale={locale || 'en'} messages={props.pageProps.messages}>
+      {/* A fixed time zone keeps next-intl's output identical on the server and in the browser (dates are formatted with date-fns, not next-intl) */}
+      <NextIntlClientProvider locale={locale || 'en'} messages={props.pageProps.messages} timeZone="UTC">
         <QueryClientProvider client={queryClient}>
           <TitleManager />
           <DeployBanner />
