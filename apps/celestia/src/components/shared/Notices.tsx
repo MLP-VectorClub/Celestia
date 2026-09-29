@@ -9,7 +9,9 @@ import { useTranslations } from 'next-intl';
 const Notices: FC = () => {
   const t = useTranslations();
   const router = useRouter();
-  const url = OLD_SITE_HOST + router.asPath;
+  // Statically generated pages (like 404) were rendered with their route as the path, so only use
+  // the real path once the router is ready after hydration, or the link won't match the server HTML
+  const url = OLD_SITE_HOST + (router.isReady ? router.asPath : router.pathname);
   return (
     <div id="notices">
       <Alert color="warning" fade={false}>
