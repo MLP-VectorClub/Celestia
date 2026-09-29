@@ -21,3 +21,17 @@
     delaycompress
     copytruncate
 }
+
+# nginx's own error log for this site (error_log in the vhost) lives in its own directory so it can be
+# group-writable for www-data without making the pm2 directory above insecure for logrotate. It is
+# written by nginx as www-data, hence a separate stanza and a separate `su`. Same 14-day limit.
+@WORKTREE@/apps/celestia/logs/nginx/error.log {
+    su www-data www-data
+    daily
+    rotate 13
+    missingok
+    notifempty
+    compress
+    delaycompress
+    copytruncate
+}
