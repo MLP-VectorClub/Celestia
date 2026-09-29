@@ -1,21 +1,22 @@
-import Head from 'next/head';
 import { NextPage } from 'next';
+import { useTranslations } from 'next-intl';
+import Head from 'next/head';
 import { useCallback, useMemo } from 'react';
 import { Button } from 'reactstrap';
-import StandardHeading from 'src/components/shared/StandardHeading';
+
+import { GetAboutConnectionResult } from '@mlp-vectorclub/api-types';
+import Abbr from 'src/components/shared/Abbr';
 import Content from 'src/components/shared/Content';
 import InlineIcon from 'src/components/shared/InlineIcon';
-import Abbr from 'src/components/shared/Abbr';
-import { TitleFactory } from 'src/types/title';
-import { useAppDispatch, wrapper } from 'src/store';
-import { titleSetter } from 'src/utils/core';
-import { Nullable, SSRMessages } from 'src/types/common';
-import { GetAboutConnectionResult } from '@mlp-vectorclub/api-types';
-import { useConnectionInfo } from 'src/hooks/connection-info';
-import { MappedAboutConnectionResult } from 'src/types/api-alias';
-import { useTitleSetter } from 'src/hooks/core';
+import StandardHeading from 'src/components/shared/StandardHeading';
 import { connectionFetcher } from 'src/fetchers/connection-info';
-import { useTranslations } from 'next-intl';
+import { useConnectionInfo } from 'src/hooks/connection-info';
+import { useTitleSetter } from 'src/hooks/core';
+import { useAppDispatch, wrapper } from 'src/store';
+import { MappedAboutConnectionResult } from 'src/types/api-alias';
+import { Nullable, SSRMessages } from 'src/types/common';
+import { TitleFactory } from 'src/types/title';
+import { titleSetter } from 'src/utils/core';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 interface PropTypes {

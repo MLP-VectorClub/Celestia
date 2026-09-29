@@ -1,6 +1,7 @@
-import { coreActions } from 'src/store/slices';
 import { FC, MouseEventHandler, PropsWithChildren } from 'react';
+
 import { useAppDispatch } from 'src/store';
+import { coreActions } from 'src/store/slices';
 
 const ContactLink: FC<PropsWithChildren> = ({ children, ...rest }) => {
   const dispatch = useAppDispatch();

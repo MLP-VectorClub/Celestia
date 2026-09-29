@@ -1,4 +1,5 @@
 import Axios from 'axios';
+
 import {
   GetUserPrefsMeRequest,
   GetUserPrefsMeResult,
@@ -17,8 +18,8 @@ import {
   PostUsersSigninResult,
   PostUsersSignoutResult,
 } from '@mlp-vectorclub/api-types';
-import { ENDPOINTS } from 'src/utils';
 import { Service } from 'src/services/service-class';
+import { ENDPOINTS } from 'src/utils';
 
 export class UserService extends Service {
   static getMe = () => Axios.get<GetUsersMeResult>(ENDPOINTS.USERS_ME);

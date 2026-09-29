@@ -1,6 +1,7 @@
 import { GetServerSideProps, NextPage } from 'next';
-import { getHomeLink } from 'src/utils/path-utils';
+
 import { prefsFetcher } from 'src/fetchers';
+import { getHomeLink } from 'src/utils/path-utils';
 
 /**
  * This "component" redirects the user to their preferred home page

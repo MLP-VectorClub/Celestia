@@ -1,7 +1,8 @@
+import { useTranslations } from 'next-intl';
 import { FC, useMemo } from 'react';
+
 import TimeAgo from 'src/components/shared/TimeAgo';
 import { ServerInfoHookValue, useBuildData } from 'src/hooks';
-import { useTranslations } from 'next-intl';
 
 type PropTypes = Pick<ServerInfoHookValue, 'serverInfo'>;
 

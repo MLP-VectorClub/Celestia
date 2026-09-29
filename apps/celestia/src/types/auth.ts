@@ -1,5 +1,6 @@
-import { InlineIconProps } from 'src/types/component-props';
 import { FC } from 'react';
+
+import { InlineIconProps } from 'src/types/component-props';
 
 export enum AuthModalSide {
   SIGN_IN,

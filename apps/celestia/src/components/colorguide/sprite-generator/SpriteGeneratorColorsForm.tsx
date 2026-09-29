@@ -1,8 +1,9 @@
 import { Dispatch, FC, SetStateAction, useCallback, useMemo } from 'react';
 import { Col, FormGroup, Label, Row } from 'reactstrap';
+
+import { ColorInputGroup } from 'src/components/colorguide/ColorInputGroup';
 import { SpriteGeneratorBaseColor, SpriteGeneratorColorMap } from 'src/types/sprite-generator';
 import { hexToRgb, stringifyRgbKey, stringifyRgbNumber } from 'src/utils';
-import { ColorInputGroup } from 'src/components/colorguide/ColorInputGroup';
 
 const INPUT_NAMES: { [k in SpriteGeneratorBaseColor]: `color_${k}` } = {
   [SpriteGeneratorBaseColor.COAT_OUTLINE]: `color_${SpriteGeneratorBaseColor.COAT_OUTLINE}` as const,

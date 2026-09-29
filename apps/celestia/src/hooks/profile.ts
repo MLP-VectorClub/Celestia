@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { Optional } from 'src/types';
+
 import { PublicUser } from '@mlp-vectorclub/api-types';
-import { ENDPOINTS } from 'src/utils';
-import { useCsrf } from 'src/hooks/core';
 import { FetchUserParams, userFetcher } from 'src/fetchers';
+import { useCsrf } from 'src/hooks/core';
+import { Optional } from 'src/types';
+import { ENDPOINTS } from 'src/utils';
 
 interface UserHookValue {
   user?: PublicUser;

@@ -1,9 +1,10 @@
-import { FC } from 'react';
-import { GuideName } from '@mlp-vectorclub/api-types';
 import Link from 'next/link';
-import { PATHS } from 'src/paths';
+import { FC } from 'react';
 import { Button } from 'reactstrap';
+
+import { GuideName } from '@mlp-vectorclub/api-types';
 import InlineIcon from 'src/components/shared/InlineIcon';
+import { PATHS } from 'src/paths';
 
 const ReturnToGuideButton: FC<{ guide: GuideName }> = ({ guide }) => (
   <Link href={PATHS.GUIDE(guide)} passHref legacyBehavior>

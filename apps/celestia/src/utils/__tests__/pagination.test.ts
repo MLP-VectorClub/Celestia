@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { calculatePaginationItems, GO_TO_ITEM, PaginationItems } from 'src/utils/pagination';
+
+import { GO_TO_ITEM, PaginationItems, calculatePaginationItems } from 'src/utils/pagination';
 
 describe('calculatePaginationItems', () => {
   it('should return an array of numbers up to 6 items', () => {

@@ -1,4 +1,4 @@
-import { createSlice, isAction, PayloadAction } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice, isAction } from '@reduxjs/toolkit';
 import { HYDRATE } from 'next-redux-wrapper';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type

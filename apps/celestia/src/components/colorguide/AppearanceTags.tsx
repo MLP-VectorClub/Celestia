@@ -1,8 +1,9 @@
 import { FC } from 'react';
-import { Nullable } from 'src/types';
+
 import { GuideName, SlimGuideTag } from '@mlp-vectorclub/api-types';
-import InlineIcon from 'src/components/shared/InlineIcon';
 import AppearanceItemTags from 'src/components/colorguide/AppearanceItemTags';
+import InlineIcon from 'src/components/shared/InlineIcon';
+import { Nullable } from 'src/types';
 
 interface PropTypes {
   tags?: SlimGuideTag[];

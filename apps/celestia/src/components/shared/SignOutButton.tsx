@@ -1,11 +1,12 @@
-import { Button, Tooltip } from 'reactstrap';
-import { useSelector } from 'react-redux';
-import { FC, useState } from 'react';
-import { Status } from 'src/types';
-import { RootState, useAppDispatch } from 'src/store';
-import InlineIcon from 'src/components/shared/InlineIcon';
-import { signOutThunk } from 'src/store/thunks';
 import { useTranslations } from 'next-intl';
+import { FC, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Button, Tooltip } from 'reactstrap';
+
+import InlineIcon from 'src/components/shared/InlineIcon';
+import { RootState, useAppDispatch } from 'src/store';
+import { signOutThunk } from 'src/store/thunks';
+import { Status } from 'src/types';
 
 const BUTTON_ID = 'signout';
 

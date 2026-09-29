@@ -1,9 +1,10 @@
-import { createSlice, isAction, PayloadAction } from '@reduxjs/toolkit';
-import { HYDRATE } from 'next-redux-wrapper';
+import { PayloadAction, createSlice, isAction } from '@reduxjs/toolkit';
 import { omit } from 'lodash';
-import { renderingStateSlice } from 'src/utils/store';
+import { HYDRATE } from 'next-redux-wrapper';
+
 import { PageTitle } from 'src/types/common';
 import { BreadcrumbEntry } from 'src/types/core';
+import { renderingStateSlice } from 'src/utils/store';
 
 export interface CoreSliceMirroredState {
   breadcrumbs: BreadcrumbEntry[];

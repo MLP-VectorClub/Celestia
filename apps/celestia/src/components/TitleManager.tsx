@@ -1,12 +1,13 @@
-import { useAppSelector } from 'src/store';
-import { APP_DESCRIPTION, APP_NAME } from 'src/config';
-import { FC, useMemo } from 'react';
-import { renderingStateSlice } from 'src/utils/store';
+import { useTranslations } from 'next-intl';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { assembleSeoUrl } from 'src/utils';
+import { FC, useMemo } from 'react';
+
+import { APP_DESCRIPTION, APP_NAME } from 'src/config';
 import { translatableValue } from 'src/hooks';
-import { useTranslations } from 'next-intl';
+import { useAppSelector } from 'src/store';
+import { assembleSeoUrl } from 'src/utils';
+import { renderingStateSlice } from 'src/utils/store';
 
 const TitleManager: FC = () => {
   const t = useTranslations();

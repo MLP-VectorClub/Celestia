@@ -1,5 +1,6 @@
-import { FormFeedback } from 'reactstrap';
 import { FC } from 'react';
+import { FormFeedback } from 'reactstrap';
+
 import { ValidationErrorResponse } from '@mlp-vectorclub/api-types';
 
 interface PropTypes {

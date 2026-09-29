@@ -1,17 +1,18 @@
+import capitalize from 'capitalize';
+import Image from 'next/image';
+import pluralize from 'pluralize';
 import { FC } from 'react';
+import { Button, Card, CardBody } from 'reactstrap';
+
 import { Appearance, CutieMark } from '@mlp-vectorclub/api-types';
 import styles from 'modules/AppearanceCutieMarks.module.scss';
-import { Button, Card, CardBody } from 'reactstrap';
 import { CutieMarkPreview } from 'src/components/colorguide/CutieMarkPreview';
-import { useAuth } from 'src/hooks';
-import { createFavMeUrl, permission } from 'src/utils';
-import Image from 'next/image';
-import capitalize from 'capitalize';
 import ButtonCollection from 'src/components/shared/ButtonCollection';
 import InlineIcon from 'src/components/shared/InlineIcon';
-import pluralize from 'pluralize';
-import UserLinkWithAvatar from 'src/components/shared/UserLinkWithAvatar';
 import { ResponsiveContainer } from 'src/components/shared/ResponsiveContainer';
+import UserLinkWithAvatar from 'src/components/shared/UserLinkWithAvatar';
+import { useAuth } from 'src/hooks';
+import { createFavMeUrl, permission } from 'src/utils';
 
 interface PropTypes {
   label: string;

@@ -1,10 +1,11 @@
 import classNames from 'classnames';
+import { useTranslations } from 'next-intl';
 import { FC, useMemo } from 'react';
+
 import { Appearance } from '@mlp-vectorclub/api-types';
-import { processAppearanceNotes } from 'src/utils/html-parsers/appearance-notes-parser';
 import styles from 'modules/AppearanceNotes.module.scss';
 import { AppearanceNotesText } from 'src/components/colorguide/AppearanceNotesText';
-import { useTranslations } from 'next-intl';
+import { processAppearanceNotes } from 'src/utils/html-parsers/appearance-notes-parser';
 
 const cmSpacingClasses = 'ms-2 ps-2 border-start';
 

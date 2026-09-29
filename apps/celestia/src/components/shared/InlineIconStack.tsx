@@ -1,7 +1,8 @@
 import classNames from 'classnames';
-import { FC, memo, PropsWithChildren } from 'react';
-import { getInlineIconClasses } from 'src/utils';
+import { FC, PropsWithChildren, memo } from 'react';
+
 import LoadingRing from 'src/components/shared/LoadingRing';
+import { getInlineIconClasses } from 'src/utils';
 
 export type InlineIconStackProps = PropsWithChildren<{
   loading?: boolean;

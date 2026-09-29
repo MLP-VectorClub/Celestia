@@ -1,10 +1,11 @@
 import { FC, useCallback } from 'react';
-import { SpriteGeneratorBodyOptions, SpriteGeneratorEyeOptions, SpriteGeneratorOptions } from 'src/types/sprite-generator';
 import { Button, ButtonGroup, Col, FormGroup, Label } from 'reactstrap';
+
 import {
   SpriteGeneratorColorsForm,
   SpriteGeneratorColorsFormProps,
 } from 'src/components/colorguide/sprite-generator/SpriteGeneratorColorsForm';
+import { SpriteGeneratorBodyOptions, SpriteGeneratorEyeOptions, SpriteGeneratorOptions } from 'src/types/sprite-generator';
 
 interface PropTypes extends Pick<SpriteGeneratorColorsFormProps, 'colorMap' | 'setColorMap'> {
   options: SpriteGeneratorOptions;

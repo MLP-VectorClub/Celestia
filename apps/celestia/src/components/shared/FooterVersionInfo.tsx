@@ -1,10 +1,11 @@
-import InlineIcon from 'src/components/shared/InlineIcon';
+import { useTranslations } from 'next-intl';
+import { FC, MouseEventHandler, useCallback, useState } from 'react';
 import { UncontrolledTooltip } from 'reactstrap';
+
 import FooterGitInfo from 'src/components/shared/FooterGitInfo';
 import FooterLastUpdateInfo from 'src/components/shared/FooterLastUpdateInfo';
-import { FC, MouseEventHandler, useCallback, useState } from 'react';
+import InlineIcon from 'src/components/shared/InlineIcon';
 import { useConnectionInfo } from 'src/hooks';
-import { useTranslations } from 'next-intl';
 
 const FooterVersionInfo: FC = () => {
   const t = useTranslations();

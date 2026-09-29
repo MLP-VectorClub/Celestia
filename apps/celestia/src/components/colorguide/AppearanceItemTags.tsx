@@ -1,8 +1,9 @@
 import { FC, useMemo } from 'react';
-import { Nullable } from 'src/types';
+
 import { GuideName, SlimGuideTag } from '@mlp-vectorclub/api-types';
-import { Tag } from 'src/components/colorguide/Tag';
 import styles from 'modules/AppearanceTags.module.scss';
+import { Tag } from 'src/components/colorguide/Tag';
+import { Nullable } from 'src/types';
 import { sortTagsByType } from 'src/utils';
 
 interface PropTypes {

@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button } from 'reactstrap';
 import { FC, useEffect, useState } from 'react';
-import { debounceTime, tap } from 'rxjs/operators';
+import { Button } from 'reactstrap';
 import { fromEvent } from 'rxjs';
+import { debounceTime, tap } from 'rxjs/operators';
 
 const ToTheTopArrow: FC = () => {
   const [visible, setVisible] = useState(false);

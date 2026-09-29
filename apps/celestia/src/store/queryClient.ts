@@ -1,4 +1,5 @@
-import { keepPreviousData, QueryClient } from '@tanstack/react-query';
+import { QueryClient, keepPreviousData } from '@tanstack/react-query';
+
 import { IS_CLIENT_SIDE } from 'src/config';
 
 const makeQueryClient = () =>

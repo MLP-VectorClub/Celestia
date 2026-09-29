@@ -1,5 +1,6 @@
-import { GetUsersMeResult, User, ValidationErrorResponse } from '@mlp-vectorclub/api-types';
 import { useTranslations } from 'next-intl';
+
+import { GetUsersMeResult, User, ValidationErrorResponse } from '@mlp-vectorclub/api-types';
 
 export type TFunction = ReturnType<typeof useTranslations>;
 

@@ -1,9 +1,10 @@
-import { BACKEND_GITHUB_URL, BACKEND_PROJECT_NAME, GITHUB_URL, PROJECT_NAME } from 'src/config';
-import { UncontrolledTooltip } from 'reactstrap';
-import TimeAgo from 'src/components/shared/TimeAgo';
-import { ServerInfoHookValue, useBuildData } from 'src/hooks';
-import { FC, ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
+import { FC, ReactNode } from 'react';
+import { UncontrolledTooltip } from 'reactstrap';
+
+import TimeAgo from 'src/components/shared/TimeAgo';
+import { BACKEND_GITHUB_URL, BACKEND_PROJECT_NAME, GITHUB_URL, PROJECT_NAME } from 'src/config';
+import { ServerInfoHookValue, useBuildData } from 'src/hooks';
 
 type PropTypes = Pick<ServerInfoHookValue, 'serverInfo' | 'loading' | 'backendDown'>;
 

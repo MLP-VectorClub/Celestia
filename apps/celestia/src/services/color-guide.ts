@@ -1,4 +1,5 @@
 import Axios from 'axios';
+
 import {
   GetAppearancesAllRequest,
   GetAppearancesAllResult,
@@ -16,8 +17,8 @@ import {
   GetColorGuideMajorChangesResult,
   GetColorGuideResult,
 } from '@mlp-vectorclub/api-types';
-import { ENDPOINTS } from 'src/utils';
 import { Service } from 'src/services/service-class';
+import { ENDPOINTS } from 'src/utils';
 
 export class ColorGuideService extends Service {
   getAppearance = (data: GetAppearancesIdRequest) =>

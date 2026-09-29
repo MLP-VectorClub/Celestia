@@ -1,6 +1,6 @@
-import { JSX } from 'react';
 import HtmlToReact, { Parser as HtmlToReactParser, ProcessingInstruction } from 'html-to-react';
 import Link from 'next/link';
+import { JSX } from 'react';
 
 const allowedTags: { [k in keyof HTMLElementTagNameMap]?: true } = {
   strong: true,

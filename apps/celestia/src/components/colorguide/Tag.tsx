@@ -1,12 +1,13 @@
-import { FC, memo } from 'react';
-import { Nullable } from 'src/types';
-import { GuideName, SlimGuideTag, TagType } from '@mlp-vectorclub/api-types';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import classNames from 'classnames';
-import InlineIcon from 'src/components/shared/InlineIcon';
 import Link from 'next/link';
-import { PATHS } from 'src/paths';
+import { FC, memo } from 'react';
+
+import { GuideName, SlimGuideTag, TagType } from '@mlp-vectorclub/api-types';
 import styles from 'modules/Tag.module.scss';
+import InlineIcon from 'src/components/shared/InlineIcon';
+import { PATHS } from 'src/paths';
+import { Nullable } from 'src/types';
 
 const TAG_ICON_MAP: Record<TagType, IconProp> = {
   app: 'folder',

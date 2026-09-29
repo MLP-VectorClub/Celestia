@@ -1,7 +1,8 @@
-import { Status } from 'src/types';
 import { FetchStatus, QueryStatus } from '@tanstack/react-query';
-import { httpResponseMapper } from 'src/utils/common';
 import { AxiosResponse } from 'axios';
+
+import { Status } from 'src/types';
+import { httpResponseMapper } from 'src/utils/common';
 
 export function mapQueryStatus(status: QueryStatus, fetchStatus: FetchStatus) {
   switch (status) {

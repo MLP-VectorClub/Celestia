@@ -1,11 +1,12 @@
-import { FC, TimeHTMLAttributes, useEffect, useMemo, useState } from 'react';
-import { timer } from 'rxjs';
 import { formatDistanceToNow, isValid } from 'date-fns';
-import { distinctUntilChanged, map, tap } from 'rxjs/operators';
+import { FC, TimeHTMLAttributes, useEffect, useMemo, useState } from 'react';
 import { UncontrolledTooltip } from 'reactstrap';
-import { formatLongDate } from 'src/utils';
 import { UncontrolledTooltipProps } from 'reactstrap';
+import { timer } from 'rxjs';
+import { distinctUntilChanged, map, tap } from 'rxjs/operators';
+
 import TooltipContent from 'src/components/shared/TooltipContent';
+import { formatLongDate } from 'src/utils';
 
 interface PropTypes extends Omit<TimeHTMLAttributes<unknown>, 'datetime'> {
   date: Date | string;

@@ -1,3 +1,7 @@
+import classNames from 'classnames';
+import { debounce } from 'lodash';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import {
   ChangeEventHandler,
   FC,
@@ -11,18 +15,15 @@ import {
   useRef,
   useState,
 } from 'react';
-import { Nullable, Status } from 'src/types';
-import { GuideName } from '@mlp-vectorclub/api-types';
-import { useGuideAutocomplete } from 'src/hooks';
 import { Button, Col, Form, Input, InputGroup, ListGroupItem, Row, UncontrolledTooltip } from 'reactstrap';
-import InlineIcon from 'src/components/shared/InlineIcon';
-import Link from 'next/link';
+
+import { GuideName } from '@mlp-vectorclub/api-types';
 import styles from 'modules/SearchBar.module.scss';
-import { PATHS } from 'src/paths';
 import SpriteImage from 'src/components/colorguide/SpriteImage';
-import { debounce } from 'lodash';
-import classNames from 'classnames';
-import { useRouter } from 'next/router';
+import InlineIcon from 'src/components/shared/InlineIcon';
+import { useGuideAutocomplete } from 'src/hooks';
+import { PATHS } from 'src/paths';
+import { Nullable, Status } from 'src/types';
 
 interface PropTypes {
   initialQuery: string;

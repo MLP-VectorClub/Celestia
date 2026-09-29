@@ -1,17 +1,18 @@
 import { NextPage } from 'next';
+import { useTranslations } from 'next-intl';
+import Head from 'next/head';
+import { useMemo } from 'react';
+
+import { SpriteGenerator } from 'src/components/colorguide/sprite-generator/SpriteGenerator';
 import Content from 'src/components/shared/Content';
 import StandardHeading from 'src/components/shared/StandardHeading';
-import { SpriteGenerator } from 'src/components/colorguide/sprite-generator/SpriteGenerator';
-import { TitleFactory } from 'src/types/title';
-import { useMemo } from 'react';
-import { PATHS } from 'src/paths';
-import Head from 'next/head';
-import { assembleSeoUrl } from 'src/utils';
 import { useTitleSetter } from 'src/hooks';
+import { PATHS } from 'src/paths';
 import { useAppDispatch, wrapper } from 'src/store';
-import { titleSetter } from 'src/utils/core';
 import { Translatable } from 'src/types';
-import { useTranslations } from 'next-intl';
+import { TitleFactory } from 'src/types/title';
+import { assembleSeoUrl } from 'src/utils';
+import { titleSetter } from 'src/utils/core';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 const titleFactory: TitleFactory = () => {

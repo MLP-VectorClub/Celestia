@@ -1,18 +1,19 @@
-import { NextPage } from 'next';
-import { handleDataFetchingError, notFound } from 'src/utils';
-import { PreviewAppearance } from '@mlp-vectorclub/api-types';
-import { PATHS } from 'src/paths';
-import { appearanceLocationFetcher } from 'src/fetchers';
 import { StatusCodes } from 'http-status-codes';
-import { useAppearanceLocation } from 'src/hooks';
-import Content from 'src/components/shared/Content';
-import StandardHeading from 'src/components/shared/StandardHeading';
-import InlineIcon from 'src/components/shared/InlineIcon';
-import StatusAlert from 'src/components/shared/StatusAlert';
-import { wrapper } from 'src/store';
-import { useEffect } from 'react';
+import { NextPage } from 'next';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+
+import { PreviewAppearance } from '@mlp-vectorclub/api-types';
+import Content from 'src/components/shared/Content';
+import InlineIcon from 'src/components/shared/InlineIcon';
+import StandardHeading from 'src/components/shared/StandardHeading';
+import StatusAlert from 'src/components/shared/StatusAlert';
+import { appearanceLocationFetcher } from 'src/fetchers';
+import { useAppearanceLocation } from 'src/hooks';
+import { PATHS } from 'src/paths';
+import { wrapper } from 'src/store';
 import { SSRMessages } from 'src/types';
+import { handleDataFetchingError, notFound } from 'src/utils';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 interface PropTypes {

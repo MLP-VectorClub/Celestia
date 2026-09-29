@@ -1,5 +1,6 @@
-import { CSSProperties, FC, memo } from 'react';
 import classNames from 'classnames';
+import { CSSProperties, FC, memo } from 'react';
+
 import { Nullable } from 'src/types';
 
 export interface LoadingRingProps {

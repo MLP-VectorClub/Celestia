@@ -1,6 +1,7 @@
 import md5 from 'md5';
-import { Nullable, Numeric } from 'src/types';
+
 import { GUEST_AVATAR } from 'src/config';
+import { Nullable, Numeric } from 'src/types';
 import { buildUrl } from 'src/utils/url';
 
 interface GetAvatarOptions {

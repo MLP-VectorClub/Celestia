@@ -1,7 +1,8 @@
-import { GetAboutMembersResult } from '@mlp-vectorclub/api-types';
 import { useQuery } from '@tanstack/react-query';
-import { ENDPOINTS, mapQueryStatus } from 'src/utils';
+
+import { GetAboutMembersResult } from '@mlp-vectorclub/api-types';
 import { membersFetcher, usersFetcher } from 'src/fetchers';
+import { ENDPOINTS, mapQueryStatus } from 'src/utils';
 
 export function useMembers(initialData?: GetAboutMembersResult) {
   const {

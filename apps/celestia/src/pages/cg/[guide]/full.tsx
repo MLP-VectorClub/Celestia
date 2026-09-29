@@ -1,7 +1,26 @@
 import { NextPage } from 'next';
-import Content from 'src/components/shared/Content';
+import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { FC, useCallback, useMemo } from 'react';
+import { Button, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
+
+import { FullGuideSortField, GetAppearancesAllResult, GuideName } from '@mlp-vectorclub/api-types';
+import FullGuideGroups from 'src/components/colorguide/FullGuideGroups';
+import { GuideNotFound } from 'src/components/colorguide/GuideNotFound';
+import MajorChangesButton from 'src/components/colorguide/MajorChangesButton';
+import ReturnToGuideButton from 'src/components/colorguide/ReturnToGuideButton';
+import ButtonCollection from 'src/components/shared/ButtonCollection';
+import Content from 'src/components/shared/Content';
+import InlineIcon from 'src/components/shared/InlineIcon';
 import StandardHeading from 'src/components/shared/StandardHeading';
+import StatusAlert from 'src/components/shared/StatusAlert';
+import { fullGuideFetcher } from 'src/fetchers';
+import { useAuth, useFullGuide, useTitleSetter } from 'src/hooks';
+import { PATHS } from 'src/paths';
+import { useAppDispatch, wrapper } from 'src/store';
+import { Nullable, Optional, Translatable } from 'src/types';
+import { SSRMessages } from 'src/types';
+import { TitleFactory } from 'src/types/title';
 import {
   fullListSortOptionsMap,
   getGuideLabel,
@@ -10,25 +29,7 @@ import {
   notFound,
   resolveGuideName,
 } from 'src/utils';
-import { Nullable, Optional, Translatable } from 'src/types';
-import { FullGuideSortField, GetAppearancesAllResult, GuideName } from '@mlp-vectorclub/api-types';
-import { useAppDispatch, wrapper } from 'src/store';
-import { useAuth, useFullGuide, useTitleSetter } from 'src/hooks';
-import { GuideNotFound } from 'src/components/colorguide/GuideNotFound';
-import ButtonCollection from 'src/components/shared/ButtonCollection';
-import Link from 'next/link';
-import { Button, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
-import InlineIcon from 'src/components/shared/InlineIcon';
-import MajorChangesButton from 'src/components/colorguide/MajorChangesButton';
-import StatusAlert from 'src/components/shared/StatusAlert';
-import FullGuideGroups from 'src/components/colorguide/FullGuideGroups';
-import { fullGuideFetcher } from 'src/fetchers';
-import { TitleFactory } from 'src/types/title';
 import { titleSetter } from 'src/utils/core';
-import { PATHS } from 'src/paths';
-import ReturnToGuideButton from 'src/components/colorguide/ReturnToGuideButton';
-import { useTranslations } from 'next-intl';
-import { SSRMessages } from 'src/types';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 interface PropTypes {

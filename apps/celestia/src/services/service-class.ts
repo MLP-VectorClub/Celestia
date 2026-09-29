@@ -1,6 +1,7 @@
-import { IncomingMessage } from 'http';
 import { AxiosRequestConfig } from 'axios';
+import { IncomingMessage } from 'http';
 import { pick } from 'lodash';
+
 import { APP_HOST } from 'src/config';
 
 export class Service {

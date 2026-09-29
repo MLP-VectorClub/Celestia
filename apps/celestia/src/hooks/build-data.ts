@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from 'react';
+
 import { BuildIdParseResult, getBuildData } from 'src/utils';
 
 let cachedBuildData: BuildIdParseResult | undefined;

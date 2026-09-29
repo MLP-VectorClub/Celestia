@@ -1,14 +1,15 @@
+import { useTranslations } from 'next-intl';
+import { FC, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
-import { useForm } from 'react-hook-form';
-import { FC, useEffect } from 'react';
-import { RootState, useAppDispatch } from 'src/store';
-import { AuthModalSide } from 'src/types';
-import { authActions } from 'src/store/slices';
-import { useAuth } from 'src/hooks';
-import SingInForm from 'src/components/shared/forms/SignInForm';
+
 import RegisterForm from 'src/components/shared/forms/RegisterForm';
-import { useTranslations } from 'next-intl';
+import SingInForm from 'src/components/shared/forms/SignInForm';
+import { useAuth } from 'src/hooks';
+import { RootState, useAppDispatch } from 'src/store';
+import { authActions } from 'src/store/slices';
+import { AuthModalSide } from 'src/types';
 
 const AuthModal: FC = () => {
   const t = useTranslations();

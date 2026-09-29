@@ -1,7 +1,8 @@
-import { FC, PropsWithChildren } from 'react';
-import styles from 'modules/ButtonCollection.module.scss';
 import classNames from 'classnames';
+import { FC, PropsWithChildren } from 'react';
 import { ButtonToolbar } from 'reactstrap';
+
+import styles from 'modules/ButtonCollection.module.scss';
 
 interface PropTypes extends PropsWithChildren {
   className?: string;

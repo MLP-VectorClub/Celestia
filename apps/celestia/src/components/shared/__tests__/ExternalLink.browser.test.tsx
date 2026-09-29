@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
+
 import ExternalLink from 'src/components/shared/ExternalLink';
 
 describe('ExternalLink', () => {

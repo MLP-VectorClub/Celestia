@@ -1,7 +1,8 @@
+import classNames from 'classnames';
 import { FC } from 'react';
+
 import { ShowListItem } from '@mlp-vectorclub/api-types';
 import { ShowTableColumnDefinition } from 'src/types/show';
-import classNames from 'classnames';
 
 export const ShowListItemRow: FC<{
   show: ShowListItem;

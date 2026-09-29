@@ -1,14 +1,15 @@
-import { FC, JSX } from 'react';
-import { SlimAppearance } from '@mlp-vectorclub/api-types';
-import { Card, CardBody } from 'reactstrap';
-import Image from 'next/image';
-import { scaleResize } from 'src/utils';
-import Abbr from 'src/components/shared/Abbr';
-import Link from 'next/link';
-import styles from 'modules/FullGuideAppearanceList.module.scss';
 import classNames from 'classnames';
-import { PATHS } from 'src/paths';
+import Image from 'next/image';
+import Link from 'next/link';
+import { FC, JSX } from 'react';
+import { Card, CardBody } from 'reactstrap';
+
+import { SlimAppearance } from '@mlp-vectorclub/api-types';
+import styles from 'modules/FullGuideAppearanceList.module.scss';
 import { AppearancePreview } from 'src/components/colorguide/AppearancePreview';
+import Abbr from 'src/components/shared/Abbr';
+import { PATHS } from 'src/paths';
+import { scaleResize } from 'src/utils';
 
 const FullGuideAppearanceList: FC<{ appearances: SlimAppearance[] }> = ({ appearances }) => (
   <div className={styles.list}>

@@ -1,7 +1,8 @@
 import Axios from 'axios';
-import { ENDPOINTS } from 'src/utils';
+
 import { GetUsefulLinksSidebarResult } from '@mlp-vectorclub/api-types';
 import { Service } from 'src/services/service-class';
+import { ENDPOINTS } from 'src/utils';
 
 export class CoreService extends Service {
   static initCsrf = () => Axios.get<void>(ENDPOINTS.CSRF_INIT);

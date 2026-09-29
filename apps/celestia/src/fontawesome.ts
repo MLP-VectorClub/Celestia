@@ -1,6 +1,7 @@
 import { config, library } from '@fortawesome/fontawesome-svg-core';
-import { faDeviantart, faDiscord, faTelegram, faTwitter, faVk, faWhatsapp, IconDefinition } from '@fortawesome/free-brands-svg-icons';
+import { IconDefinition, faDeviantart, faDiscord, faTelegram, faTwitter, faVk, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import {
+  IconPack,
   faArrowCircleLeft,
   faArrowDown,
   faArrowUp,
@@ -51,7 +52,6 @@ import {
   faUserPlus,
   faUsers,
   faVideo,
-  IconPack,
 } from '@fortawesome/free-solid-svg-icons';
 
 // Tell Font Awesome to skip adding the CSS automatically since it's being imported

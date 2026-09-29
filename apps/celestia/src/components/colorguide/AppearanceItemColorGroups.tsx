@@ -1,7 +1,8 @@
+import { FC } from 'react';
+
 import { ColorGroup } from '@mlp-vectorclub/api-types';
 import styles from 'modules/CompactColorGroups.module.scss';
 import ColorSquare from 'src/components/colorguide/ColorSquare';
-import { FC } from 'react';
 
 interface PropTypes {
   colorGroups?: ColorGroup[];

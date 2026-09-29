@@ -1,11 +1,12 @@
-import { Modal, ModalBody, ModalHeader } from 'reactstrap';
+import { useTranslations } from 'next-intl';
+import { FC, ReactNode } from 'react';
 import { useSelector } from 'react-redux';
+import { Modal, ModalBody, ModalHeader } from 'reactstrap';
+
+import ExternalLink from 'src/components/shared/ExternalLink';
+import { DEVIANTART_GROUP_URL, DEV_EMAIL, DISCORD_INVITE_LINK } from 'src/config';
 import { RootState, useAppDispatch } from 'src/store';
 import { coreActions } from 'src/store/slices';
-import ExternalLink from 'src/components/shared/ExternalLink';
-import { DEV_EMAIL, DEVIANTART_GROUP_URL, DISCORD_INVITE_LINK } from 'src/config';
-import { FC, ReactNode } from 'react';
-import { useTranslations } from 'next-intl';
 
 const ContactModal: FC = () => {
   const t = useTranslations();

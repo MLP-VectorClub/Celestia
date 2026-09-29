@@ -1,11 +1,12 @@
-import { useAuth, useSidebarUsefulLinks } from 'src/hooks';
-import { FC, JSX, MouseEventHandler, useCallback } from 'react';
-import { coreActions } from 'src/store/slices';
-import ExternalLink from 'src/components/shared/ExternalLink';
-import Link from 'next/link';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+import { FC, JSX, MouseEventHandler, useCallback } from 'react';
+
+import ExternalLink from 'src/components/shared/ExternalLink';
+import { useAuth, useSidebarUsefulLinks } from 'src/hooks';
 import { PATHS } from 'src/paths';
 import { useAppDispatch } from 'src/store';
+import { coreActions } from 'src/store/slices';
 
 const SidebarUsefulLinks: FC = () => {
   const t = useTranslations();

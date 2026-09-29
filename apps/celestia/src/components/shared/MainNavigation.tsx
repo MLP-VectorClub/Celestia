@@ -1,14 +1,15 @@
-import { Nav, NavItem, NavLink } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FC } from 'react';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { DEVIANTART_GROUP_NAME, DEVIANTART_GROUP_URL } from 'src/config';
-import { useAuth, usePrefs } from 'src/hooks';
+import { FC } from 'react';
+import { Nav, NavItem, NavLink } from 'reactstrap';
+
 import ExternalLink from 'src/components/shared/ExternalLink';
 import InlineIcon from 'src/components/shared/InlineIcon';
-import { getDefaultGuideLink, getHomeLink, getProfileLink } from 'src/utils/path-utils';
+import { DEVIANTART_GROUP_NAME, DEVIANTART_GROUP_URL } from 'src/config';
+import { useAuth, usePrefs } from 'src/hooks';
 import { PATHS } from 'src/paths';
-import { useTranslations } from 'next-intl';
+import { getDefaultGuideLink, getHomeLink, getProfileLink } from 'src/utils/path-utils';
 
 const MainNavigation: FC = () => {
   const t = useTranslations();

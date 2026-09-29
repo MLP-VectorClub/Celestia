@@ -1,14 +1,15 @@
-import { ShowTableColumnDefinition } from 'src/types/show';
-import { episodeToString, seasonEpisodeToString } from 'src/utils/show';
-import { FC, RefObject, useRef } from 'react';
-import { ShowListItem } from '@mlp-vectorclub/api-types';
-import { useAuth } from 'src/hooks';
-import Link from 'next/link';
-import { PATHS } from 'src/paths';
-import InlineIcon from 'src/components/shared/InlineIcon';
-import { UncontrolledTooltip } from 'reactstrap';
 import { format } from 'date-fns';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+import { FC, RefObject, useRef } from 'react';
+import { UncontrolledTooltip } from 'reactstrap';
+
+import { ShowListItem } from '@mlp-vectorclub/api-types';
+import InlineIcon from 'src/components/shared/InlineIcon';
+import { useAuth } from 'src/hooks';
+import { PATHS } from 'src/paths';
+import { ShowTableColumnDefinition } from 'src/types/show';
+import { episodeToString, seasonEpisodeToString } from 'src/utils/show';
 
 export const EpisodeColumn: ShowTableColumnDefinition['renderContent'] = ({ entry }) => <>{episodeToString(entry)}</>;
 

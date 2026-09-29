@@ -1,5 +1,6 @@
-import { EventHandler, FC, FocusEventHandler, RefObject, SyntheticEvent, useCallback, useEffect } from 'react';
 import classNames from 'classnames';
+import { EventHandler, FC, FocusEventHandler, RefObject, SyntheticEvent, useCallback, useEffect } from 'react';
+
 import styles from 'modules/SpriteGeneratorPreview.module.scss';
 import {
   RgbColors,

@@ -1,8 +1,9 @@
-import styles from 'modules/SocialShareButtons.module.scss';
 import { FC, RefObject, useRef } from 'react';
 import { EmailShareButton, TelegramShareButton, TwitterShareButton, VKShareButton, WhatsappShareButton } from 'react-share';
-import InlineIcon from 'src/components/shared/InlineIcon';
 import { UncontrolledTooltip } from 'reactstrap';
+
+import styles from 'modules/SocialShareButtons.module.scss';
+import InlineIcon from 'src/components/shared/InlineIcon';
 
 interface PropTypes {
   url: string;

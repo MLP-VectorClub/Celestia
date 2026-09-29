@@ -1,12 +1,13 @@
-import { ENDPOINTS } from 'src/utils';
 import { useQuery } from '@tanstack/react-query';
-import { csrfFetcher, usefulLinksFetcher } from 'src/fetchers';
-import { useCallback, useEffect } from 'react';
-import { CoreSliceMirroredState } from 'src/store/slices';
-import { titleSetter } from 'src/utils/core';
-import { AppDispatch } from 'src/store';
 import { useTranslations } from 'next-intl';
-import { PageTitle, Translatable, TFunction } from 'src/types';
+import { useCallback, useEffect } from 'react';
+
+import { csrfFetcher, usefulLinksFetcher } from 'src/fetchers';
+import { AppDispatch } from 'src/store';
+import { CoreSliceMirroredState } from 'src/store/slices';
+import { PageTitle, TFunction, Translatable } from 'src/types';
+import { ENDPOINTS } from 'src/utils';
+import { titleSetter } from 'src/utils/core';
 
 export function useCsrf() {
   const { data } = useQuery({

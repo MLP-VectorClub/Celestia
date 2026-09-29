@@ -1,14 +1,15 @@
+import { NextPage } from 'next';
+import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
-import { Nullable, Translatable } from 'src/types';
+import { useDispatch } from 'react-redux';
+
 import Content from 'src/components/shared/Content';
 import StandardHeading from 'src/components/shared/StandardHeading';
-import { NextPage } from 'next';
-import { useDispatch } from 'react-redux';
-import { AppDispatch, wrapper } from 'src/store';
 import { useTitleSetter } from 'src/hooks';
+import { AppDispatch, wrapper } from 'src/store';
+import { Nullable, Translatable } from 'src/types';
 import { TitleFactory } from 'src/types/title';
 import { titleSetter } from 'src/utils/core';
-import { useTranslations } from 'next-intl';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 interface PropTypes {

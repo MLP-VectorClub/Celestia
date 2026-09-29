@@ -1,4 +1,9 @@
-import { Button, Input, Pagination as RSPagination, PaginationItem, PaginationLink, Tooltip } from 'reactstrap';
+import classNames from 'classnames';
+import { pickBy } from 'lodash';
+import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { ParsedUrlQuery } from 'querystring';
 import {
   ChangeEventHandler,
   FC,
@@ -11,14 +16,10 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useRouter } from 'next/router';
-import { pickBy } from 'lodash';
-import Link from 'next/link';
-import { calculatePaginationItems, GO_TO_ITEM, PaginationProps } from 'src/utils';
-import { ParsedUrlQuery } from 'querystring';
+import { Button, Input, PaginationItem, PaginationLink, Pagination as RSPagination, Tooltip } from 'reactstrap';
+
 import InlineIcon from 'src/components/shared/InlineIcon';
-import classNames from 'classnames';
-import { useTranslations } from 'next-intl';
+import { GO_TO_ITEM, PaginationProps, calculatePaginationItems } from 'src/utils';
 
 type PageLinkProps = PropsWithChildren<{
   number: number;

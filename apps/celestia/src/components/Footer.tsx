@@ -1,13 +1,14 @@
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { FC } from 'react';
+
+import ContactModal from 'src/components/ContactModal';
+import Abbr from 'src/components/shared/Abbr';
+import ContactLink from 'src/components/shared/ContactLink';
+import ExternalLink from 'src/components/shared/ExternalLink';
+import FooterVersionInfo from 'src/components/shared/FooterVersionInfo';
 import { API_DOCS_URL } from 'src/config';
 import { PATHS } from 'src/paths';
-import ContactLink from 'src/components/shared/ContactLink';
-import ContactModal from 'src/components/ContactModal';
-import ExternalLink from 'src/components/shared/ExternalLink';
-import Abbr from 'src/components/shared/Abbr';
-import FooterVersionInfo from 'src/components/shared/FooterVersionInfo';
-import { FC } from 'react';
-import { useTranslations } from 'next-intl';
 
 const Footer: FC = () => {
   const t = useTranslations();

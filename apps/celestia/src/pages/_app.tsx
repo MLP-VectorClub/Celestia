@@ -1,21 +1,24 @@
-import { useMemo, useRef, useState } from 'react';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { QueryClientProvider } from '@tanstack/react-query';
-import { DEV_ENV } from 'src/config';
-import { wrapper } from 'src/store';
-import TitleManager from 'src/components/TitleManager';
-import { appLibrary } from '../fontawesome';
 import '../app.scss';
-import AuthModal from 'src/components/modals/AuthModal';
-import DeployBanner from 'src/components/shared/DeployBanner';
-import ProgressIndicator from 'src/components/ProgressIndicator';
-import Layout from 'src/components/Layout';
-import { LayoutContextProvider } from 'src/hooks';
+
+import { QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { NextIntlClientProvider } from 'next-intl';
 import { AppComponent } from 'next/dist/shared/lib/router/router';
 import { useRouter } from 'next/router';
-import { getQueryClient } from 'src/store/queryClient';
+import { useMemo, useRef, useState } from 'react';
 import { Provider } from 'react-redux';
+
+import Layout from 'src/components/Layout';
+import ProgressIndicator from 'src/components/ProgressIndicator';
+import TitleManager from 'src/components/TitleManager';
+import AuthModal from 'src/components/modals/AuthModal';
+import DeployBanner from 'src/components/shared/DeployBanner';
+import { DEV_ENV } from 'src/config';
+import { LayoutContextProvider } from 'src/hooks';
+import { wrapper } from 'src/store';
+import { getQueryClient } from 'src/store/queryClient';
+
+import { appLibrary } from '../fontawesome';
 
 const Celestia: AppComponent = ({ Component, ...rest }) => {
   const { store, props } = wrapper.useWrappedStore(rest);

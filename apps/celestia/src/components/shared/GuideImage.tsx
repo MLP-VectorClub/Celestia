@@ -1,7 +1,8 @@
-import { GuideName } from '@mlp-vectorclub/api-types';
 import { FC, RefObject, useRef } from 'react';
-import { getGuideLabel } from 'src/utils';
 import { UncontrolledTooltip } from 'reactstrap';
+
+import { GuideName } from '@mlp-vectorclub/api-types';
+import { getGuideLabel } from 'src/utils';
 
 interface PropTypes {
   guide: GuideName;

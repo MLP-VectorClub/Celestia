@@ -1,17 +1,18 @@
+import { useTranslations } from 'next-intl';
+import { FC } from 'react';
 import { Button } from 'reactstrap';
-import MainNavigation from 'src/components/shared/MainNavigation';
-import SidebarUserInfo from 'src/components/shared/SidebarUserInfo';
+
 import ExternalLink from 'src/components/shared/ExternalLink';
-import { DISCORD_INVITE_LINK } from 'src/config';
-import SidebarNotifications from 'src/components/shared/SidebarNotifications';
-import HappeningSoon from 'src/components/widgets/HappeningSoon';
-import SidebarUsefulLinks from 'src/components/shared/SidebarUsefulLinks';
 import InlineIcon from 'src/components/shared/InlineIcon';
+import MainNavigation from 'src/components/shared/MainNavigation';
+import SidebarNotifications from 'src/components/shared/SidebarNotifications';
+import SidebarUsefulLinks from 'src/components/shared/SidebarUsefulLinks';
+import SidebarUserInfo from 'src/components/shared/SidebarUserInfo';
 import SignInButton from 'src/components/shared/SignInButton';
 import SignOutButton from 'src/components/shared/SignOutButton';
+import HappeningSoon from 'src/components/widgets/HappeningSoon';
+import { DISCORD_INVITE_LINK } from 'src/config';
 import { useAuth, useConnectionInfo } from 'src/hooks';
-import { FC } from 'react';
-import { useTranslations } from 'next-intl';
 
 const Sidebar: FC = () => {
   const t = useTranslations();

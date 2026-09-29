@@ -1,9 +1,14 @@
+import classNames from 'classnames';
+import { saveAs } from 'file-saver';
 import { ChangeEventHandler, FC, FormEventHandler, MouseEventHandler, RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { Button, Col, Form, Input, Label, Progress, Row } from 'reactstrap';
-import { saveAs } from 'file-saver';
-import ExternalLink from 'src/components/shared/ExternalLink';
+
+import { SpriteGeneratorCustomizer } from 'src/components/colorguide/sprite-generator/SpriteGeneratorCustomizer';
 import { SpriteGeneratorPreview } from 'src/components/colorguide/sprite-generator/SpriteGeneratorPreview';
+import ExternalLink from 'src/components/shared/ExternalLink';
 import InlineIcon from 'src/components/shared/InlineIcon';
+import { useCopyToClipboard } from 'src/hooks/copy';
+import { PATHS } from 'src/paths';
 import {
   SPRITE_GENERATOR_ASSETS,
   SpriteGeneratorBaseColor,
@@ -13,11 +18,7 @@ import {
   SpriteGeneratorImageMap,
   SpriteGeneratorOptions,
 } from 'src/types/sprite-generator';
-import classNames from 'classnames';
-import { SpriteGeneratorCustomizer } from 'src/components/colorguide/sprite-generator/SpriteGeneratorCustomizer';
 import { assembleSeoUrl, convertNumberToRgb } from 'src/utils';
-import { PATHS } from 'src/paths';
-import { useCopyToClipboard } from 'src/hooks/copy';
 
 const DEFAULT_OPTIONS: SpriteGeneratorOptions = {
   body: SpriteGeneratorBodyOptions.FEMALE,

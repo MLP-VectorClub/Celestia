@@ -1,7 +1,8 @@
-import { requestPromiseMapper } from 'src/utils';
-import { defaultServices, UserService } from 'src/services';
 import { IncomingMessage } from 'http';
+
 import { GetUserPrefsMeRequest, UserPrefs } from '@mlp-vectorclub/api-types';
+import { UserService, defaultServices } from 'src/services';
+import { requestPromiseMapper } from 'src/utils';
 
 export function prefsFetcher<K extends NonNullable<GetUserPrefsMeRequest['keys']>>(
   data?: { keys: K },

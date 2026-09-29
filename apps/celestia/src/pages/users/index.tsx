@@ -1,19 +1,20 @@
-import Content from 'src/components/shared/Content';
+import { NextPage } from 'next';
+import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
-import { Nullable, Optional, Translatable } from 'src/types';
+
 import { GetAboutMembersResult } from '@mlp-vectorclub/api-types';
-import { useAppDispatch, wrapper } from 'src/store';
-import { useAuth, useTitleSetter } from 'src/hooks';
+import styles from 'modules/UsersIndexPage.module.scss';
+import Content from 'src/components/shared/Content';
 import StandardHeading, { StandardHeadingProps } from 'src/components/shared/StandardHeading';
 import MemberList from 'src/components/users/MemberList';
 import { UserList } from 'src/components/users/UserList';
-import { handleDataFetchingError } from 'src/utils';
-import styles from 'modules/UsersIndexPage.module.scss';
 import { membersFetcher } from 'src/fetchers';
+import { useAuth, useTitleSetter } from 'src/hooks';
+import { useAppDispatch, wrapper } from 'src/store';
+import { Nullable, Optional, Translatable } from 'src/types';
 import { TitleFactory } from 'src/types/title';
+import { handleDataFetchingError } from 'src/utils';
 import { titleSetter } from 'src/utils/core';
-import { NextPage } from 'next';
-import { useTranslations } from 'next-intl';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 const titleFactory: TitleFactory<{ isStaff?: boolean }> = ({ isStaff = false }) => {

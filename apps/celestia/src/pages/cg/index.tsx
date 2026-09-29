@@ -1,24 +1,25 @@
+import { NextPage } from 'next';
+import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+import pluralize from 'pluralize';
+import { useMemo } from 'react';
+import { Badge, Card, CardBody, UncontrolledTooltip } from 'reactstrap';
+
+import { GetColorGuideResult, GuideName } from '@mlp-vectorclub/api-types';
+import styles from 'modules/GuideIndexPage.module.scss';
 import Content from 'src/components/shared/Content';
+import ExternalLink from 'src/components/shared/ExternalLink';
+import { GuideIcon } from 'src/components/shared/GuideIcon';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import { API_DOCS_URL, GUIDE_NAMES } from 'src/config';
-import ExternalLink from 'src/components/shared/ExternalLink';
-import { getGuideLabel } from 'src/utils';
-import Link from 'next/link';
-import { GetColorGuideResult, GuideName } from '@mlp-vectorclub/api-types';
-import { useGuideIndex, useTitleSetter } from 'src/hooks';
-import { useAppDispatch, wrapper } from 'src/store';
-import { Badge, Card, CardBody, UncontrolledTooltip } from 'reactstrap';
-import { useMemo } from 'react';
-import { NextPage } from 'next';
-import styles from 'modules/GuideIndexPage.module.scss';
-import { TitleFactory } from 'src/types/title';
-import { SSRMessages } from 'src/types';
-import { titleSetter } from 'src/utils/core';
 import { guideIndexFetcher } from 'src/fetchers';
+import { useGuideIndex, useTitleSetter } from 'src/hooks';
 import { PATHS } from 'src/paths';
-import pluralize from 'pluralize';
-import { GuideIcon } from 'src/components/shared/GuideIcon';
-import { useTranslations } from 'next-intl';
+import { useAppDispatch, wrapper } from 'src/store';
+import { SSRMessages } from 'src/types';
+import { TitleFactory } from 'src/types/title';
+import { getGuideLabel } from 'src/utils';
+import { titleSetter } from 'src/utils/core';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 interface PropTypes {

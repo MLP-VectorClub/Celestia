@@ -1,5 +1,5 @@
-import { requestPromiseMapper } from 'src/utils';
 import { AboutService, UserService } from 'src/services';
+import { requestPromiseMapper } from 'src/utils';
 
 export const membersFetcher = () => requestPromiseMapper(AboutService.getMembers());
 

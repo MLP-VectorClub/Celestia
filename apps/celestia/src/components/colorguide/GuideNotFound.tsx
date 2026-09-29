@@ -1,9 +1,10 @@
+import Link from 'next/link';
+import { FC } from 'react';
+import { Alert } from 'reactstrap';
+
 import Content from 'src/components/shared/Content';
 import StandardHeading from 'src/components/shared/StandardHeading';
-import { Alert } from 'reactstrap';
-import Link from 'next/link';
 import { PATHS } from 'src/paths';
-import { FC } from 'react';
 
 interface PropTypes {
   heading: string;

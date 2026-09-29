@@ -1,9 +1,10 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { MappedAboutConnectionResult, Optional, UnifiedErrorResponse, UnifiedErrorResponseTypes } from 'src/types';
+
 import { GetAboutConnectionResult } from '@mlp-vectorclub/api-types';
-import { ENDPOINTS } from 'src/utils';
-import { connectionFetcher } from 'src/fetchers';
 import { IS_CLIENT_SIDE } from 'src/config';
+import { connectionFetcher } from 'src/fetchers';
+import { MappedAboutConnectionResult, Optional, UnifiedErrorResponse, UnifiedErrorResponseTypes } from 'src/types';
+import { ENDPOINTS } from 'src/utils';
 
 export interface ServerInfoHookValue {
   serverInfo: Optional<MappedAboutConnectionResult>;

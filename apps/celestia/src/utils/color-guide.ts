@@ -1,8 +1,9 @@
-import { Nullable, Numeric, Optional } from 'src/types';
+import { padStart } from 'lodash';
+
 import { Appearance, FullGuideSortField, GuideName, PreviewAppearance, SlimGuideTag, TagType } from '@mlp-vectorclub/api-types';
 import { colorGuide } from 'src/strings';
+import { Nullable, Numeric, Optional } from 'src/types';
 import { RgbColors } from 'src/types/sprite-generator';
-import { padStart } from 'lodash';
 
 const guideNameMap: Record<GuideName, string> = {
   pony: 'Friendship is Magic',

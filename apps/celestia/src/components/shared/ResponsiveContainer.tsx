@@ -1,4 +1,4 @@
-import { CSSProperties, FC, memo, PropsWithChildren, useMemo } from 'react';
+import { CSSProperties, FC, PropsWithChildren, memo, useMemo } from 'react';
 
 const ResponsiveContainerComponent: FC<PropsWithChildren<{ width: number; height: number } | { size: number }>> = ({
   children,

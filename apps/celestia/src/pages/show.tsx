@@ -1,26 +1,27 @@
 import { NextPage } from 'next';
-import Content from 'src/components/shared/Content';
-import StandardHeading from 'src/components/shared/StandardHeading';
+import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { Col, Row } from 'reactstrap';
-import ButtonCollection from 'src/components/shared/ButtonCollection';
-import { useAuth } from 'src/hooks';
-import { AddEntryButton } from 'src/components/show/AddEntryButton';
-import { Nullable, SSRMessages, Translatable } from 'src/types';
+
 import { GetShowResult } from '@mlp-vectorclub/api-types';
-import { ShowEntriesTable, ShowEntriesTableProps } from 'src/components/show/ShowEntriesTable';
-import { useAppDispatch, wrapper } from 'src/store';
-import { TitleFactory } from 'src/types/title';
-import { titleSetter } from 'src/utils/core';
-import { useTitleSetter } from 'src/hooks/core';
-import { ShowTableColumnDefinition } from 'src/types/show';
 import styles from 'modules/ShowPage.module.scss';
-import { handleDataFetchingError } from 'src/utils';
-import { showListFetcher } from 'src/fetchers/show';
-import { validatePageParam } from 'src/utils/validate-page-param';
+import ButtonCollection from 'src/components/shared/ButtonCollection';
+import Content from 'src/components/shared/Content';
+import StandardHeading from 'src/components/shared/StandardHeading';
+import { AddEntryButton } from 'src/components/show/AddEntryButton';
+import { ShowEntriesTable, ShowEntriesTableProps } from 'src/components/show/ShowEntriesTable';
 import { EpisodeColumn, EpisodeNumberColumn, SeasonColumn, ShowNumberColumn, TitleAirDateColumn } from 'src/components/show/columns';
-import { useTranslations } from 'next-intl';
+import { showListFetcher } from 'src/fetchers/show';
+import { useAuth } from 'src/hooks';
+import { useTitleSetter } from 'src/hooks/core';
+import { useAppDispatch, wrapper } from 'src/store';
+import { Nullable, SSRMessages, Translatable } from 'src/types';
+import { ShowTableColumnDefinition } from 'src/types/show';
+import { TitleFactory } from 'src/types/title';
+import { handleDataFetchingError } from 'src/utils';
+import { titleSetter } from 'src/utils/core';
 import { typedServerSideTranslations } from 'src/utils/i18n';
+import { validatePageParam } from 'src/utils/validate-page-param';
 
 interface ShowPageProps {
   initialEpisodes: Nullable<GetShowResult>;

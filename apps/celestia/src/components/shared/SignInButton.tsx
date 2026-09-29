@@ -1,13 +1,14 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useTranslations } from 'next-intl';
+import { FC } from 'react';
 import { Button, UncontrolledTooltip } from 'reactstrap';
-import { AuthModalSide, Status } from 'src/types';
-import { authActions } from 'src/store/slices';
-import { useAuth, useCsrf } from 'src/hooks';
+
 import LoadingRing from 'src/components/shared/LoadingRing';
 import TooltipContent from 'src/components/shared/TooltipContent';
-import { FC } from 'react';
-import { useTranslations } from 'next-intl';
+import { useAuth, useCsrf } from 'src/hooks';
 import { useAppDispatch } from 'src/store';
+import { authActions } from 'src/store/slices';
+import { AuthModalSide, Status } from 'src/types';
 
 const BUTTON_ID = 'signin';
 

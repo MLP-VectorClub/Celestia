@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { showListFetcher } from 'src/fetchers/show';
-import { GetShowRequest, GetShowResult } from '@mlp-vectorclub/api-types';
-import { ENDPOINTS } from 'src/utils';
 import { useMemo } from 'react';
+
+import { GetShowRequest, GetShowResult } from '@mlp-vectorclub/api-types';
+import { showListFetcher } from 'src/fetchers/show';
+import { ENDPOINTS } from 'src/utils';
 
 export const useShowList = (params: GetShowRequest, initialData?: GetShowResult) => {
   const key = ENDPOINTS.SHOW(params);

@@ -1,9 +1,10 @@
-import { QueryClient } from '@tanstack/react-query';
-import { ENDPOINTS, requestPromiseMapper } from 'src/utils';
-import { UserService } from 'src/services';
-import { PostUsersRequest, PostUsersSigninRequest, User } from '@mlp-vectorclub/api-types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { QueryClient } from '@tanstack/react-query';
+
+import { PostUsersRequest, PostUsersSigninRequest, User } from '@mlp-vectorclub/api-types';
+import { UserService } from 'src/services';
 import { WithAppThunkExtra } from 'src/store/thunkTypes';
+import { ENDPOINTS, requestPromiseMapper } from 'src/utils';
 
 const thunkModule = 'auth';
 

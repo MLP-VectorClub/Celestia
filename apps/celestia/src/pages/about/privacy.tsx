@@ -1,20 +1,21 @@
+import { NextPage } from 'next';
+import { useTranslations } from 'next-intl';
 import { ReactNode, useMemo } from 'react';
 import { Alert } from 'reactstrap';
-import { APP_HOST } from 'src/config';
-import { useAppDispatch, wrapper } from 'src/store';
+
+import styles from 'modules/PrivacyPolicy.module.scss';
+import ContactLink from 'src/components/shared/ContactLink';
 import Content from 'src/components/shared/Content';
 import ExternalLink from 'src/components/shared/ExternalLink';
-import ContactLink from 'src/components/shared/ContactLink';
 import StandardHeading from 'src/components/shared/StandardHeading';
-import styles from 'modules/PrivacyPolicy.module.scss';
+import { APP_HOST } from 'src/config';
+import { useTitleSetter } from 'src/hooks/core';
+import { PATHS } from 'src/paths';
+import { useAppDispatch, wrapper } from 'src/store';
+import { Translatable } from 'src/types';
 import { TitleFactory } from 'src/types/title';
 import { titleSetter } from 'src/utils/core';
-import { NextPage } from 'next';
-import { PATHS } from 'src/paths';
-import { useTitleSetter } from 'src/hooks/core';
-import { Translatable } from 'src/types';
 import { typedServerSideTranslations } from 'src/utils/i18n';
-import { useTranslations } from 'next-intl';
 
 const titleFactory: TitleFactory = () => {
   const title: Translatable = ['common.titles.privacyPolicy'];

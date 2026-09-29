@@ -1,8 +1,9 @@
-import { configureStore, type Store, type ThunkDispatch, type UnknownAction } from '@reduxjs/toolkit';
-import { createWrapper, MakeStore } from 'next-redux-wrapper';
-import { rootReducer } from 'src/store/rootReducer';
+import { type Store, type ThunkDispatch, type UnknownAction, configureStore } from '@reduxjs/toolkit';
+import { MakeStore, createWrapper } from 'next-redux-wrapper';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+
 import { getQueryClient } from 'src/store/queryClient';
-import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
+import { rootReducer } from 'src/store/rootReducer';
 import { WithAppThunkExtra } from 'src/store/thunkTypes';
 
 const createStore = () => {

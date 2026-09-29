@@ -1,10 +1,11 @@
-import { Alert } from 'reactstrap';
-import InlineIcon from 'src/components/shared/InlineIcon';
-import ExternalLink from 'src/components/shared/ExternalLink';
-import { OLD_SITE_HOST } from 'src/config';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { FC, ReactNode } from 'react';
-import { useTranslations } from 'next-intl';
+import { Alert } from 'reactstrap';
+
+import ExternalLink from 'src/components/shared/ExternalLink';
+import InlineIcon from 'src/components/shared/InlineIcon';
+import { OLD_SITE_HOST } from 'src/config';
 
 const Notices: FC = () => {
   const t = useTranslations();

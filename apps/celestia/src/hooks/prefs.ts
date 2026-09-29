@@ -1,8 +1,9 @@
-import { ENDPOINTS } from 'src/utils';
 import { useQuery } from '@tanstack/react-query';
-import { prefsFetcher } from 'src/fetchers';
-import { UserPrefs } from '@mlp-vectorclub/api-types';
 import { useCallback } from 'react';
+
+import { UserPrefs } from '@mlp-vectorclub/api-types';
+import { prefsFetcher } from 'src/fetchers';
+import { ENDPOINTS } from 'src/utils';
 
 export function usePrefs(enabled: boolean): UserPrefs | undefined {
   const fetcher = useCallback(() => prefsFetcher()(), []);

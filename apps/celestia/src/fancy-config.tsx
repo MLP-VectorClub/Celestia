@@ -1,7 +1,8 @@
-import InlineIcon from 'src/components/shared/InlineIcon';
-import { SocialProvider } from '@mlp-vectorclub/api-types';
-import { SocialProviderConfig } from 'src/types/auth';
 import type { IconName } from '@fortawesome/fontawesome-common-types';
+
+import { SocialProvider } from '@mlp-vectorclub/api-types';
+import InlineIcon from 'src/components/shared/InlineIcon';
+import { SocialProviderConfig } from 'src/types/auth';
 
 /**
  * @fileOverview This file is meant to house configuration options that could not be placed into config.ts

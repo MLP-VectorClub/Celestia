@@ -1,23 +1,24 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useQueryClient } from '@tanstack/react-query';
+import { map } from 'lodash';
+import { useTranslations } from 'next-intl';
 import { FC, MouseEventHandler, useCallback, useEffect, useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { Alert, Button, Col, Form, FormGroup, Input, InputGroup, Label, Row, UncontrolledTooltip } from 'reactstrap';
-import { useForm } from 'react-hook-form';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { map } from 'lodash';
 import { fromEvent } from 'rxjs';
-import { RootState, useAppDispatch } from 'src/store';
-import { AuthModalSide, Nullable, Status, UnifiedErrorResponseTypes } from 'src/types';
+
 import { SocialProvider } from '@mlp-vectorclub/api-types';
-import { authActions } from 'src/store/slices';
-import { combineErrors, ENDPOINTS, popupOpenCenter, validateEmail, validatePassword, validateRequired } from 'src/utils';
-import { SOCIAL_PROVIDERS } from 'src/fancy-config';
 import BootstrapErrorMessages from 'src/components/shared/BootstrapErrorMessages';
-import RevealPasswordButton from 'src/components/shared/RevealPasswordButton';
 import InlineIcon from 'src/components/shared/InlineIcon';
-import { signInThunk } from 'src/store/thunks';
+import RevealPasswordButton from 'src/components/shared/RevealPasswordButton';
 import { API_PREFIX } from 'src/config';
-import { useTranslations } from 'next-intl';
-import { useQueryClient } from '@tanstack/react-query';
+import { SOCIAL_PROVIDERS } from 'src/fancy-config';
+import { RootState, useAppDispatch } from 'src/store';
+import { authActions } from 'src/store/slices';
+import { signInThunk } from 'src/store/thunks';
+import { AuthModalSide, Nullable, Status, UnifiedErrorResponseTypes } from 'src/types';
+import { ENDPOINTS, combineErrors, popupOpenCenter, validateEmail, validatePassword, validateRequired } from 'src/utils';
 
 enum INPUT_NAMES {
   EMAIL = 'email',

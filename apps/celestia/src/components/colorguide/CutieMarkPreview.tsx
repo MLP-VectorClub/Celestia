@@ -1,7 +1,8 @@
+import { uniqueId } from 'lodash';
 import { FC, useMemo } from 'react';
+
 import { Appearance, CutieMark, CutieMarkFacing } from '@mlp-vectorclub/api-types';
 import { CutieMarkColorMapping, getColorMapping } from 'src/utils';
-import { uniqueId } from 'lodash';
 
 interface CMPreviewPaths {
   tail: string;

@@ -1,13 +1,14 @@
-import { GetAboutMembersResult, PublicUser, Role } from '@mlp-vectorclub/api-types';
-import { useMembers } from 'src/hooks/users';
-import { FC, useMemo } from 'react';
 import { groupBy } from 'lodash';
-import { mapRoleLabel, permission } from 'src/utils';
+import { useTranslations } from 'next-intl';
 import pluralize from 'pluralize';
+import { FC, useMemo } from 'react';
+
+import { GetAboutMembersResult, PublicUser, Role } from '@mlp-vectorclub/api-types';
+import StatusAlert from 'src/components/shared/StatusAlert';
 import GroupedUserList from 'src/components/users/GroupedUserList';
 import StaffMembersList from 'src/components/users/StaffMembersList';
-import { useTranslations } from 'next-intl';
-import StatusAlert from 'src/components/shared/StatusAlert';
+import { useMembers } from 'src/hooks/users';
+import { mapRoleLabel, permission } from 'src/utils';
 
 interface PropTypes {
   initialMembers?: GetAboutMembersResult;

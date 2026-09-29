@@ -1,5 +1,5 @@
-import { FC, useEffect, useState } from 'react';
 import { Router } from 'next/router';
+import { FC, useEffect, useState } from 'react';
 import TopBarProgress from 'react-topbar-progress-indicator';
 
 TopBarProgress.config({

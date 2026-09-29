@@ -1,6 +1,7 @@
 import { each, trim } from 'lodash';
-import { Numeric } from 'src/types';
+
 import { FavMe } from '@mlp-vectorclub/api-types';
+import { Numeric } from 'src/types';
 
 export const makeUrlSafe = (input: string): string => trim(input.replace(/[^A-Za-z\d-]/g, '-').replace(/-+/g, '-'), '-');
 

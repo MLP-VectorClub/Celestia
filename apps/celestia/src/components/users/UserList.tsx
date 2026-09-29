@@ -1,8 +1,9 @@
-import { useUsers } from 'src/hooks/users';
-import GroupedUserList from 'src/components/users/GroupedUserList';
-import { FC } from 'react';
 import { useTranslations } from 'next-intl';
+import { FC } from 'react';
+
 import StatusAlert from 'src/components/shared/StatusAlert';
+import GroupedUserList from 'src/components/users/GroupedUserList';
+import { useUsers } from 'src/hooks/users';
 
 export const UserList: FC<{ enabled: boolean }> = ({ enabled }) => {
   const t = useTranslations();

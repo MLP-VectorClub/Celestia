@@ -1,15 +1,16 @@
-import { Card, CardBody, Col, Row, UncontrolledTooltip } from 'reactstrap';
-import { FC, RefObject, useMemo, useRef } from 'react';
-import { Nullable } from 'src/types';
-import { Appearance, GuideName } from '@mlp-vectorclub/api-types';
-import AppearanceItemNotes from 'src/components/colorguide/AppearanceItemNotes';
-import SpriteImage from 'src/components/colorguide/SpriteImage';
-import AppearanceItemColorGroups from 'src/components/colorguide/AppearanceItemColorGroups';
-import InlineIcon from 'src/components/shared/InlineIcon';
-import styles from 'modules/AppearanceItem.module.scss';
-import AppearanceItemTags from 'src/components/colorguide/AppearanceItemTags';
 import Link from 'next/link';
+import { FC, RefObject, useMemo, useRef } from 'react';
+import { Card, CardBody, Col, Row, UncontrolledTooltip } from 'reactstrap';
+
+import { Appearance, GuideName } from '@mlp-vectorclub/api-types';
+import styles from 'modules/AppearanceItem.module.scss';
+import AppearanceItemColorGroups from 'src/components/colorguide/AppearanceItemColorGroups';
+import AppearanceItemNotes from 'src/components/colorguide/AppearanceItemNotes';
+import AppearanceItemTags from 'src/components/colorguide/AppearanceItemTags';
+import SpriteImage from 'src/components/colorguide/SpriteImage';
+import InlineIcon from 'src/components/shared/InlineIcon';
 import { PATHS } from 'src/paths';
+import { Nullable } from 'src/types';
 
 export interface AppearanceItemProps {
   appearance: Appearance;

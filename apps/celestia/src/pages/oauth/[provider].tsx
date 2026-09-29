@@ -1,24 +1,25 @@
-import { useEffect, useMemo, useRef } from 'react';
-import { useRouter } from 'next/router';
-import { NextPage } from 'next';
-import { Alert, Button } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { OAuthErrorTypes, SSRMessages, Status, Translatable, UnifiedErrorResponseTypes } from 'src/types';
+import { useQueryClient } from '@tanstack/react-query';
+import { NextPage } from 'next';
+import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/router';
+import { useEffect, useMemo, useRef } from 'react';
+import { Alert, Button } from 'reactstrap';
+
 import { User } from '@mlp-vectorclub/api-types';
-import { useLayout, useOAuth, useTitleSetter } from 'src/hooks';
-import { ENDPOINTS, setResponseStatus } from 'src/utils';
 import Center from 'src/components/shared/Center';
-import StandardHeading from 'src/components/shared/StandardHeading';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import LoadingRing from 'src/components/shared/LoadingRing';
+import StandardHeading from 'src/components/shared/StandardHeading';
+import { useLayout, useOAuth, useTitleSetter } from 'src/hooks';
+import { PATHS } from 'src/paths';
+import { useAppDispatch, wrapper } from 'src/store';
+import { OAuthErrorTypes, SSRMessages, Status, Translatable, UnifiedErrorResponseTypes } from 'src/types';
 import { TitleFactory } from 'src/types/title';
+import { ENDPOINTS, setResponseStatus } from 'src/utils';
 import { getOAuthProvider } from 'src/utils/auth';
 import { titleSetter } from 'src/utils/core';
-import { useAppDispatch, wrapper } from 'src/store';
-import { PATHS } from 'src/paths';
-import { useTranslations } from 'next-intl';
 import { typedServerSideTranslations } from 'src/utils/i18n';
-import { useQueryClient } from '@tanstack/react-query';
 
 const titleFactory: TitleFactory<{ provider?: string }> = (query) => {
   const provider = getOAuthProvider(query.provider);

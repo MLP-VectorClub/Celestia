@@ -1,12 +1,13 @@
+import pluralize from 'pluralize';
 import { FC } from 'react';
+import { Button, Card, CardBody, Col, Row } from 'reactstrap';
+
 import { ColorGroup } from '@mlp-vectorclub/api-types';
 import styles from 'modules/AppearanceColorGroups.module.scss';
-import { Button, Card, CardBody, Col, Row } from 'reactstrap';
 import { ColorListItem } from 'src/components/colorguide/ColorListItem';
-import { useAuth, usePrefs } from 'src/hooks';
-import pluralize from 'pluralize';
-import InlineIcon from 'src/components/shared/InlineIcon';
 import ButtonCollection from 'src/components/shared/ButtonCollection';
+import InlineIcon from 'src/components/shared/InlineIcon';
+import { useAuth, usePrefs } from 'src/hooks';
 
 interface PropTypes {
   colorGroups?: ColorGroup[];

@@ -1,21 +1,21 @@
+import { useTranslations } from 'next-intl';
+import { FC, ReactNode, useCallback, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { Alert, Button, Col, Form, FormGroup, FormText, Input, InputGroup, Label } from 'reactstrap';
-import { useForm } from 'react-hook-form';
-import { FC, ReactNode, useCallback, useEffect, useState } from 'react';
+
+import BootstrapErrorMessages from 'src/components/shared/BootstrapErrorMessages';
+import ExternalLink from 'src/components/shared/ExternalLink';
+import InlineIcon from 'src/components/shared/InlineIcon';
+import RevealPasswordButton from 'src/components/shared/RevealPasswordButton';
+import { PATHS } from 'src/paths';
 import { RootState, useAppDispatch } from 'src/store';
 import { authActions } from 'src/store/slices';
-
-import ExternalLink from 'src/components/shared/ExternalLink';
-import BootstrapErrorMessages from 'src/components/shared/BootstrapErrorMessages';
-import RevealPasswordButton from 'src/components/shared/RevealPasswordButton';
-import InlineIcon from 'src/components/shared/InlineIcon';
 import { registerThunk } from 'src/store/thunks';
-import { combineErrors, validateEmail, validatePassword, validateRequired, validateUserName } from 'src/utils/forms';
-import { Status, UnifiedErrorResponseTypes } from 'src/types/common';
-import { PATHS } from 'src/paths';
-import { AuthModalSide } from 'src/types/auth';
-import { useTranslations } from 'next-intl';
 import { TFunction } from 'src/types';
+import { AuthModalSide } from 'src/types/auth';
+import { Status, UnifiedErrorResponseTypes } from 'src/types/common';
+import { combineErrors, validateEmail, validatePassword, validateRequired, validateUserName } from 'src/utils/forms';
 
 enum INPUT_NAMES {
   NAME = 'name',

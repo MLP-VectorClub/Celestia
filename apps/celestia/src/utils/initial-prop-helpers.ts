@@ -1,6 +1,7 @@
-import { GetServerSidePropsContext, GetServerSidePropsResult, Redirect } from 'next';
 import { mapValues, omit, omitBy } from 'lodash';
+import { GetServerSidePropsContext, GetServerSidePropsResult, Redirect } from 'next';
 import { parseRelativeUrl } from 'next/dist/shared/lib/router/utils/parse-relative-url';
+
 import { buildUrl } from 'src/utils/url';
 
 export const setResponseStatus = (ctx: GetServerSidePropsContext, statusCode: number) => {

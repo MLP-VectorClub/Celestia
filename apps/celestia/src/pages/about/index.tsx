@@ -1,5 +1,15 @@
-import { FC, FunctionComponent, PropsWithChildren, ReactNode, useMemo } from 'react';
+import { NextPage } from 'next';
+import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import Link from 'next/link';
+import { FC, FunctionComponent, PropsWithChildren, ReactNode, useMemo } from 'react';
+
+import Content from 'src/components/shared/Content';
+import DeviantLink from 'src/components/shared/DeviantLink';
+import ExternalLink from 'src/components/shared/ExternalLink';
+import FavMe, { FavMeProps } from 'src/components/shared/FavMe';
+import InlineIcon from 'src/components/shared/InlineIcon';
+import StandardHeading from 'src/components/shared/StandardHeading';
 import {
   BACKEND_GITHUB_URL,
   BACKEND_PROJECT_NAME,
@@ -8,22 +18,13 @@ import {
   GITHUB_URL,
   PROJECT_NAME,
 } from 'src/config';
-import { useAppDispatch, wrapper } from 'src/store';
-import { getGuideLabel } from 'src/utils';
-import Content from 'src/components/shared/Content';
-import ExternalLink from 'src/components/shared/ExternalLink';
-import DeviantLink from 'src/components/shared/DeviantLink';
-import FavMe, { FavMeProps } from 'src/components/shared/FavMe';
-import StandardHeading from 'src/components/shared/StandardHeading';
-import Image from 'next/image';
-import InlineIcon from 'src/components/shared/InlineIcon';
 import { useTitleSetter } from 'src/hooks';
-import { TitleFactory } from 'src/types/title';
-import { titleSetter } from 'src/utils/core';
-import { NextPage } from 'next';
 import { PATHS } from 'src/paths';
+import { useAppDispatch, wrapper } from 'src/store';
 import { Translatable } from 'src/types';
-import { useTranslations } from 'next-intl';
+import { TitleFactory } from 'src/types/title';
+import { getGuideLabel } from 'src/utils';
+import { titleSetter } from 'src/utils/core';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 const AppPageLink: FC<PropsWithChildren<{ href: string }>> = ({ children, href }) => <Link href={href}>{children}</Link>;

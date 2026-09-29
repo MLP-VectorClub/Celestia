@@ -1,8 +1,9 @@
-import { Button, UncontrolledTooltip } from 'reactstrap';
+import { useTranslations } from 'next-intl';
 import { FC, RefObject, useRef } from 'react';
+import { Button, UncontrolledTooltip } from 'reactstrap';
+
 import InlineIcon from 'src/components/shared/InlineIcon';
 import TooltipContent from 'src/components/shared/TooltipContent';
-import { useTranslations } from 'next-intl';
 
 interface RevealPasswordButtonProps {
   setPasswordRevealed: (value: boolean) => void;

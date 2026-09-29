@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
 import { Router } from 'next/router';
+import { useEffect, useState } from 'react';
 
 const HEALTH_CHECK_PATH = '/favicon.ico';
 const POLL_INTERVAL_MS = 4000;

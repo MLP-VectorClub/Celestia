@@ -1,7 +1,8 @@
-import { Status } from 'src/types';
-import { Alert } from 'reactstrap';
-import InlineIcon from 'src/components/shared/InlineIcon';
 import { FC, ReactNode } from 'react';
+import { Alert } from 'reactstrap';
+
+import InlineIcon from 'src/components/shared/InlineIcon';
+import { Status } from 'src/types';
 
 interface PropTypes {
   status: Status;

@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+
 import { RgbColors } from 'src/types/sprite-generator';
 import { convertNumberToRgb, convertRgbToNumber, hexToRgb, stringifyRgbNumber } from 'src/utils/color-guide';
 

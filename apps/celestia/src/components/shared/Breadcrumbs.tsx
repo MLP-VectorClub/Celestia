@@ -1,10 +1,11 @@
-import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
-import { useAppSelector } from 'src/store';
-import Link from 'next/link';
-import { renderingStateSlice } from 'src/utils/store';
-import { FC } from 'react';
-import { translatableValue } from 'src/hooks';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+import { FC } from 'react';
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
+
+import { translatableValue } from 'src/hooks';
+import { useAppSelector } from 'src/store';
+import { renderingStateSlice } from 'src/utils/store';
 
 const ELEMENT_ID = 'breadcrumbs';
 

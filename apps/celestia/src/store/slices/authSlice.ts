@@ -1,8 +1,9 @@
-import { createSlice, isAction, PayloadAction } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice, isAction } from '@reduxjs/toolkit';
 import { HYDRATE } from 'next-redux-wrapper';
-import { AuthModalSide, FailsafeUser, Nullable, Status, UnifiedErrorResponse } from 'src/types';
+
 import { User } from '@mlp-vectorclub/api-types';
 import { registerThunk, signInThunk, signOutThunk } from 'src/store/thunks';
+import { AuthModalSide, FailsafeUser, Nullable, Status, UnifiedErrorResponse } from 'src/types';
 
 export interface AuthState {
   signIn: {

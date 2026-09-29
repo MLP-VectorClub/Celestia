@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { ParsedUrlQuery } from 'querystring';
-import { ENDPOINTS, mapQueryStatus } from 'src/utils';
-import { Status, UnifiedErrorResponse } from 'src/types';
-import { PostUsersOauthSigninProviderRequest, PostUsersOauthSigninProviderResult, SocialProvider } from '@mlp-vectorclub/api-types';
-import { useAuth } from 'src/hooks/auth';
-import { oauthRegistrationFetcher } from 'src/fetchers';
 import { useCallback } from 'react';
+
+import { PostUsersOauthSigninProviderRequest, PostUsersOauthSigninProviderResult, SocialProvider } from '@mlp-vectorclub/api-types';
 import { IS_CLIENT_SIDE } from 'src/config';
+import { oauthRegistrationFetcher } from 'src/fetchers';
+import { useAuth } from 'src/hooks/auth';
+import { Status, UnifiedErrorResponse } from 'src/types';
+import { ENDPOINTS, mapQueryStatus } from 'src/utils';
 
 export function useOAuth(query: ParsedUrlQuery) {
   const { authCheck, user } = useAuth();

@@ -1,6 +1,7 @@
-import { useSelector } from 'react-redux';
-import { RootState } from 'src/store';
 import { FC } from 'react';
+import { useSelector } from 'react-redux';
+
+import { RootState } from 'src/store';
 
 const SidebarNotifications: FC = () => {
   const { notifications } = useSelector((state: RootState) => state.auth);

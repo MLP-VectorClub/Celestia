@@ -1,9 +1,10 @@
-import { FC, memo } from 'react';
 import classNames from 'classnames';
-import { Nullable } from 'src/types';
+import Image from 'next/image';
+import { FC, memo } from 'react';
+
 import { AvatarProvider, VectorApp } from '@mlp-vectorclub/api-types';
 import { GUEST_AVATAR } from 'src/config';
-import Image from 'next/image';
+import { Nullable } from 'src/types';
 
 interface PropTypes {
   avatarUrl: Nullable<string>;

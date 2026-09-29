@@ -1,14 +1,14 @@
+import classNames from 'classnames';
+import Head from 'next/head';
 import { FC, PropsWithChildren, useEffect } from 'react';
 
-import Head from 'next/head';
-import classNames from 'classnames';
-import Header from 'src/components/Header';
 import Footer from 'src/components/Footer';
+import Header from 'src/components/Header';
+import { Main } from 'src/components/Main';
 import Sidebar from 'src/components/Sidebar';
-import { useLayout } from 'src/hooks';
 import Breadcrumbs from 'src/components/shared/Breadcrumbs';
 import Notices from 'src/components/shared/Notices';
-import { Main } from 'src/components/Main';
+import { useLayout } from 'src/hooks';
 
 const layoutDisabledClass = 'layout-disabled';
 

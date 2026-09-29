@@ -1,9 +1,10 @@
-import { FC, useMemo } from 'react';
-import ColorSquare from 'src/components/colorguide/ColorSquare';
-import { Color } from '@mlp-vectorclub/api-types';
-import { hexToRgb } from 'src/utils';
 import classNames from 'classnames';
+import { FC, useMemo } from 'react';
+
+import { Color } from '@mlp-vectorclub/api-types';
 import styles from 'modules/ColorListItem.module.scss';
+import ColorSquare from 'src/components/colorguide/ColorSquare';
+import { hexToRgb } from 'src/utils';
 
 interface PropTypes {
   color: Color;

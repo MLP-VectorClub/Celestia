@@ -1,5 +1,6 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { Status } from 'src/types';
+import { useCallback } from 'react';
+
 import {
   GetAppearancesAllRequest,
   GetAppearancesAllResult,
@@ -17,25 +18,25 @@ import {
   GetColorGuideMajorChangesResult,
   GetColorGuideResult,
 } from '@mlp-vectorclub/api-types';
-import { ENDPOINTS, mapQueryStatus } from 'src/utils';
 import {
-  appearanceFetcher,
   AppearanceFetcherParams,
-  appearanceLocationFetcher,
   AppearanceLocationFetcherParams,
-  fullGuideFetcher,
   FullGuideFetcherParams,
-  guideAutocompleteFetcher,
   GuideAutocompleteFetcherParams,
-  guideFetcher,
   GuideFetcherParams,
+  MajorChangesFetcherParams,
+  PinnedAppearancesFetcherParams,
+  appearanceFetcher,
+  appearanceLocationFetcher,
+  fullGuideFetcher,
+  guideAutocompleteFetcher,
+  guideFetcher,
   guideIndexFetcher,
   majorChangesFetcher,
-  MajorChangesFetcherParams,
   pinnedAppearancesFetcher,
-  PinnedAppearancesFetcherParams,
 } from 'src/fetchers';
-import { useCallback } from 'react';
+import { Status } from 'src/types';
+import { ENDPOINTS, mapQueryStatus } from 'src/utils';
 
 interface GuideHookValue extends Partial<GetAppearancesResult> {
   status: Status;

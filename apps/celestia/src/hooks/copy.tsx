@@ -1,5 +1,5 @@
-import { JSX, RefObject, useCallback, useEffect, useMemo, useState } from 'react';
 import ClipboardJS from 'clipboard';
+import { JSX, RefObject, useCallback, useEffect, useMemo, useState } from 'react';
 import { Tooltip } from 'reactstrap';
 
 interface CopyToClipboardHook {

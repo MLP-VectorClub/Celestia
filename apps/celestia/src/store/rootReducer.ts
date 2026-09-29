@@ -1,6 +1,7 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import coreReducer from 'src/store/slices/coreSlice';
+
 import authReducer from 'src/store/slices/authSlice';
+import coreReducer from 'src/store/slices/coreSlice';
 import profileReducer from 'src/store/slices/profileSlice';
 
 export const rootReducer = combineReducers({

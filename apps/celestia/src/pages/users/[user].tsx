@@ -1,20 +1,21 @@
-import { useEffect, useMemo } from 'react';
+import { NextPage } from 'next';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
-import { coreActions } from 'src/store/slices';
-import { useAppDispatch, wrapper } from 'src/store';
-import { fixPath, getProfileTitle, handleDataFetchingError, mapRoleLabel } from 'src/utils';
-import { transformProfileParams, useAuth, useTitleSetter, useUser } from 'src/hooks';
-import { BreadcrumbEntry, Nullable, Optional, SSRMessages } from 'src/types';
+import { useEffect, useMemo } from 'react';
+
 import { GetUsersIdResult, PublicUser } from '@mlp-vectorclub/api-types';
-import StandardHeading from 'src/components/shared/StandardHeading';
 import AvatarWrap from 'src/components/shared/AvatarWrap';
 import Content from 'src/components/shared/Content';
+import StandardHeading from 'src/components/shared/StandardHeading';
 import { userFetcher } from 'src/fetchers';
-import { TitleFactory } from 'src/types/title';
-import { titleSetter } from 'src/utils/core';
-import { NextPage } from 'next';
+import { transformProfileParams, useAuth, useTitleSetter, useUser } from 'src/hooks';
 import { PATHS } from 'src/paths';
-import { useTranslations } from 'next-intl';
+import { useAppDispatch, wrapper } from 'src/store';
+import { coreActions } from 'src/store/slices';
+import { BreadcrumbEntry, Nullable, Optional, SSRMessages } from 'src/types';
+import { TitleFactory } from 'src/types/title';
+import { fixPath, getProfileTitle, handleDataFetchingError, mapRoleLabel } from 'src/utils';
+import { titleSetter } from 'src/utils/core';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 interface PropTypes {

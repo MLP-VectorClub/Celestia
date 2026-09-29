@@ -1,12 +1,13 @@
 import classNames from 'classnames';
-import { mapRoleLabel } from 'src/utils';
-import { Status } from 'src/types';
-import { useAuth, usePrefs } from 'src/hooks';
-import LoadingRing from 'src/components/shared/LoadingRing';
-import AvatarWrap from 'src/components/shared/AvatarWrap';
-import ProfileLink from 'src/components/shared/ProfileLink';
-import { FC } from 'react';
 import { useTranslations } from 'next-intl';
+import { FC } from 'react';
+
+import AvatarWrap from 'src/components/shared/AvatarWrap';
+import LoadingRing from 'src/components/shared/LoadingRing';
+import ProfileLink from 'src/components/shared/ProfileLink';
+import { useAuth, usePrefs } from 'src/hooks';
+import { Status } from 'src/types';
+import { mapRoleLabel } from 'src/utils';
 
 const SidebarUserInfo: FC = () => {
   const t = useTranslations();

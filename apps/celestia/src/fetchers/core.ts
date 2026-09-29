@@ -1,6 +1,7 @@
-import { requestPromiseMapper } from 'src/utils';
-import { CoreService, defaultServices } from 'src/services';
 import { IncomingMessage } from 'http';
+
+import { CoreService, defaultServices } from 'src/services';
+import { requestPromiseMapper } from 'src/utils';
 
 export const csrfFetcher = () => CoreService.initCsrf().then((r) => r.status === 204);
 

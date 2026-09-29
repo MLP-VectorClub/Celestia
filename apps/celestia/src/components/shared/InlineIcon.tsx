@@ -1,9 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
-import { forwardRef, ForwardRefRenderFunction, memo } from 'react';
-import { getInlineIconClasses } from 'src/utils';
-import { InlineIconProps } from 'src/types/component-props';
+import { ForwardRefRenderFunction, forwardRef, memo } from 'react';
+
 import LoadingRing from 'src/components/shared/LoadingRing';
+import { InlineIconProps } from 'src/types/component-props';
+import { getInlineIconClasses } from 'src/utils';
 
 const InlineIcon: ForwardRefRenderFunction<SVGSVGElement, InlineIconProps> = (
   { icon, loading = false, last = false, first = false, color, className, ...faProps },

@@ -1,8 +1,9 @@
-import { BarePublicUser } from '@mlp-vectorclub/api-types';
 import { groupBy } from 'lodash';
 import { FC, useMemo } from 'react';
-import UserLink from 'src/components/shared/UserLink';
+
+import { BarePublicUser } from '@mlp-vectorclub/api-types';
 import styles from 'modules/GroupedUserList.module.scss';
+import UserLink from 'src/components/shared/UserLink';
 
 const ORDER_STRING = '#ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const getFirstLetter = (user: BarePublicUser): string => (/^[a-z]/i.test(user.name) ? user.name[0].toUpperCase() : '#');

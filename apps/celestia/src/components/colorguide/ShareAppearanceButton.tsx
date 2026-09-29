@@ -1,8 +1,9 @@
 import { FC, RefObject, useCallback, useRef, useState } from 'react';
 import { Button, FormGroup, InputGroup, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import InlineIcon from 'src/components/shared/InlineIcon';
-import { SocialShareButtons } from 'src/components/colorguide/SocialShareButtons';
+
 import styles from 'modules/ShareAppearanceButton.module.scss';
+import { SocialShareButtons } from 'src/components/colorguide/SocialShareButtons';
+import InlineIcon from 'src/components/shared/InlineIcon';
 import { useCopyToClipboard } from 'src/hooks/copy';
 
 interface PropTypes {

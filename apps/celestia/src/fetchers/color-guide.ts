@@ -1,4 +1,5 @@
-import { NullableProps } from 'src/types';
+import { IncomingMessage } from 'http';
+
 import {
   GetAppearancesAllRequest,
   GetAppearancesAutocompleteRequest,
@@ -8,9 +9,9 @@ import {
   GetAppearancesRequest,
   GetColorGuideMajorChangesRequest,
 } from '@mlp-vectorclub/api-types';
-import { requestPromiseMapper } from 'src/utils';
 import { ColorGuideService, defaultServices } from 'src/services';
-import { IncomingMessage } from 'http';
+import { NullableProps } from 'src/types';
+import { requestPromiseMapper } from 'src/utils';
 
 export type GuideFetcherParams = NullableProps<GetAppearancesRequest, 'guide'>;
 
