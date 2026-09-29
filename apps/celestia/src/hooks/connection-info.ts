@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { MappedAboutConnectionResult, Optional, UnifiedErrorResponse, UnifiedErrorResponseTypes } from 'src/types';
 import { GetAboutConnectionResult } from '@mlp-vectorclub/api-types';
 import { ENDPOINTS } from 'src/utils';
@@ -20,7 +20,9 @@ export function useConnectionInfo(initialData?: GetAboutConnectionResult): Serve
     isFetching: fetching,
     data,
     error,
-  } = useQuery<GetAboutConnectionResult, UnifiedErrorResponse>(key, connectionFetcher, {
+  } = useQuery<GetAboutConnectionResult, UnifiedErrorResponse>({
+    queryKey: [key],
+    queryFn: connectionFetcher,
     enabled: IS_CLIENT_SIDE,
     initialData,
     refetchInterval: 60e3,
@@ -40,7 +42,7 @@ export function useConnectionInfo(initialData?: GetAboutConnectionResult): Serve
     serverInfo,
     backendDown: !loading && error?.type === UnifiedErrorResponseTypes.BACKEND_DOWN,
     makeStale: () => {
-      void queryClient.invalidateQueries(key);
+      void queryClient.invalidateQueries({ queryKey: [key] });
     },
   };
 }

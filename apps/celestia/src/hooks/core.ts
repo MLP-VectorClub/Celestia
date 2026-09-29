@@ -1,5 +1,5 @@
 import { ENDPOINTS } from 'src/utils';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { csrfFetcher, usefulLinksFetcher } from 'src/fetchers';
 import { useCallback, useEffect } from 'react';
 import { CoreSliceMirroredState } from 'src/store/slices';
@@ -9,7 +9,9 @@ import { useTranslations } from 'next-intl';
 import { PageTitle, Translatable, TFunction } from 'src/types';
 
 export function useCsrf() {
-  const { data } = useQuery(ENDPOINTS.CSRF_INIT, csrfFetcher, {
+  const { data } = useQuery({
+    queryKey: [ENDPOINTS.CSRF_INIT],
+    queryFn: csrfFetcher,
     staleTime: 3600e3,
     refetchOnWindowFocus: false,
   });
@@ -19,7 +21,9 @@ export function useCsrf() {
 
 export function useSidebarUsefulLinks(enabled: boolean) {
   const fetcher = useCallback(() => usefulLinksFetcher()(), []);
-  const { data } = useQuery(ENDPOINTS.USEFUL_LINKS_SIDEBAR, fetcher, {
+  const { data } = useQuery({
+    queryKey: [ENDPOINTS.USEFUL_LINKS_SIDEBAR],
+    queryFn: fetcher,
     enabled,
   });
 

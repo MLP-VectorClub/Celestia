@@ -18,7 +18,7 @@ import { useAppDispatch, wrapper } from 'src/store';
 import { PATHS } from 'src/paths';
 import { useTranslations } from 'next-intl';
 import { typedServerSideTranslations } from 'src/utils/i18n';
-import { useQueryClient } from 'react-query';
+import { useQueryClient } from '@tanstack/react-query';
 
 const titleFactory: TitleFactory<{ provider?: string }> = (query) => {
   const provider = getOAuthProvider(query.provider);
@@ -60,7 +60,7 @@ const OAuthPage: NextPage = () => {
   useEffect(() => {
     if (!success) return;
 
-    void queryClient.invalidateQueries(ENDPOINTS.USERS_ME);
+    void queryClient.invalidateQueries({ queryKey: [ENDPOINTS.USERS_ME] });
   }, [queryClient, success]);
 
   useEffect(() => {

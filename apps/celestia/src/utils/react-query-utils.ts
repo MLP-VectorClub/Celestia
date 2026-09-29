@@ -1,14 +1,13 @@
 import { Status } from 'src/types';
-import { QueryStatus } from 'react-query';
+import { FetchStatus, QueryStatus } from '@tanstack/react-query';
 import { httpResponseMapper } from 'src/utils/common';
 import { AxiosResponse } from 'axios';
 
-export function mapQueryStatus(status: QueryStatus) {
+export function mapQueryStatus(status: QueryStatus, fetchStatus: FetchStatus) {
   switch (status) {
-    case 'idle':
-      return Status.INIT;
-    case 'loading':
-      return Status.LOAD;
+    case 'pending':
+      // A pending query that isn't fetching is disabled and hasn't started yet
+      return fetchStatus === 'idle' ? Status.INIT : Status.LOAD;
     case 'success':
       return Status.SUCCESS;
     case 'error':

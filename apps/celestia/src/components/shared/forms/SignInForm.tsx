@@ -28,7 +28,7 @@ import InlineIcon from 'src/components/shared/InlineIcon';
 import { signInThunk } from 'src/store/thunks';
 import { API_PREFIX } from 'src/config';
 import { useTranslations } from 'next-intl';
-import { useQueryClient } from 'react-query';
+import { useQueryClient } from '@tanstack/react-query';
 
 enum INPUT_NAMES {
   EMAIL = 'email',
@@ -130,7 +130,7 @@ const SingInForm: FC = () => {
                 clearInterval(socialAuthPopup.current.timer);
                 socialAuthPopup.current.timer = null;
               }
-              void queryClient.invalidateQueries(ENDPOINTS.USERS_ME);
+              void queryClient.invalidateQueries({ queryKey: [ENDPOINTS.USERS_ME] });
             }
           } catch (err) {
             /* ignore */

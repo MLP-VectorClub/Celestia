@@ -1,12 +1,14 @@
 import { ENDPOINTS } from 'src/utils';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { prefsFetcher } from 'src/fetchers';
 import { UserPrefs } from '@mlp-vectorclub/api-types';
 import { useCallback } from 'react';
 
 export function usePrefs(enabled: boolean): UserPrefs | undefined {
   const fetcher = useCallback(() => prefsFetcher()(), []);
-  const { data } = useQuery(ENDPOINTS.USER_PREFS_ME(), fetcher, {
+  const { data } = useQuery({
+    queryKey: [ENDPOINTS.USER_PREFS_ME()],
+    queryFn: fetcher,
     enabled,
     refetchOnWindowFocus: 'always',
   });

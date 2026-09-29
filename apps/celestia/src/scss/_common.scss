@@ -137,8 +137,3 @@ time[id] {
     text-decoration: none;
   }
 }
-
-// Prevent RQDt from blocking the entire right edge of the page
-.ReactQueryDevtools button[style*='top:0'] {
-  bottom: initial !important;
-}

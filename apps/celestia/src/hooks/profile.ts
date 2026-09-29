@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { Optional } from 'src/types';
 import { PublicUser } from '@mlp-vectorclub/api-types';
 import { ENDPOINTS } from 'src/utils';
@@ -39,7 +39,9 @@ export const getUserFetcherKey = (params: FetchUserParams) => {
 export function useUser(params: FetchUserParams, initialData?: PublicUser): UserHookValue {
   const csrf = useCsrf();
   const key = getUserFetcherKey(params);
-  const { data, error: userError } = useQuery(key, userFetcher(params), {
+  const { data, error: userError } = useQuery({
+    queryKey: [key],
+    queryFn: userFetcher(params),
     enabled: csrf,
     initialData,
   });

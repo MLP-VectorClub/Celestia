@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { ParsedUrlQuery } from 'querystring';
 import { ENDPOINTS, mapQueryStatus } from 'src/utils';
 import { Status, UnifiedErrorResponse } from 'src/types';
@@ -14,12 +14,14 @@ export function useOAuth(query: ParsedUrlQuery) {
     provider: query.provider as SocialProvider,
   });
   const fetcher = useCallback(() => oauthRegistrationFetcher(query as unknown as PostUsersOauthSigninProviderRequest)(), [query]);
-  const { status, data, error } = useQuery<PostUsersOauthSigninProviderResult, UnifiedErrorResponse>(key, fetcher, {
+  const { status, fetchStatus, data, error } = useQuery<PostUsersOauthSigninProviderResult, UnifiedErrorResponse>({
+    queryKey: [key],
+    queryFn: fetcher,
     enabled: authCheck.status === Status.FAILURE && 'provider' in query && 'code' in query && IS_CLIENT_SIDE,
     retry: false,
     refetchOnWindowFocus: false,
     refetchIntervalInBackground: false,
   });
 
-  return { status: mapQueryStatus(status), data, error, user };
+  return { status: mapQueryStatus(status, fetchStatus), data, error, user };
 }

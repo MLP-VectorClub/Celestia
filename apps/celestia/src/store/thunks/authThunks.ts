@@ -1,4 +1,4 @@
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 import { ENDPOINTS, requestPromiseMapper } from 'src/utils';
 import { UserService } from 'src/services';
 import { PostUsersRequest, PostUsersSigninRequest, User } from '@mlp-vectorclub/api-types';
@@ -19,7 +19,7 @@ export const signInThunk = createAsyncThunk<User, PostUsersSigninRequest, WithAp
       await requestPromiseMapper(UserService.signIn(params));
       const data = await requestPromiseMapper(UserService.getMe());
 
-      extra.queryCache.setQueryData(ENDPOINTS.USERS_ME, data);
+      extra.queryCache.setQueryData([ENDPOINTS.USERS_ME], data);
       invalidateUserSpecificQueries(extra.queryCache);
       return data;
     } catch (e) {
@@ -34,7 +34,7 @@ export const signOutThunk = createAsyncThunk<void, void, WithAppThunkExtra>(
     try {
       await requestPromiseMapper(UserService.signOut());
 
-      extra.queryCache.setQueryData(ENDPOINTS.USERS_ME, undefined);
+      extra.queryCache.setQueryData([ENDPOINTS.USERS_ME], undefined);
       invalidateUserSpecificQueries(extra.queryCache);
     } catch (e) {
       return rejectWithValue(e);
@@ -49,7 +49,7 @@ export const registerThunk = createAsyncThunk<User, PostUsersRequest, WithAppThu
       await requestPromiseMapper(UserService.register(params));
       const data = await requestPromiseMapper(UserService.getMe());
 
-      extra.queryCache.setQueryData(ENDPOINTS.USERS_ME, data);
+      extra.queryCache.setQueryData([ENDPOINTS.USERS_ME], data);
       invalidateUserSpecificQueries(extra.queryCache);
       return data;
     } catch (e) {

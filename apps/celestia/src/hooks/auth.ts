@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { FailsafeUser, Status, UnifiedErrorResponse, UnifiedErrorResponseTypes } from 'src/types';
 import { ENDPOINTS, mapQueryStatus, permission } from 'src/utils';
 import { useCsrf } from 'src/hooks/core';
@@ -27,9 +27,12 @@ export function useAuth(): CurrentUserHookValue {
   const csrf = useCsrf();
   const {
     status,
+    fetchStatus,
     data: user,
     isError,
-  } = useQuery(ENDPOINTS.USERS_ME, currentUserFetcher, {
+  } = useQuery({
+    queryKey: [ENDPOINTS.USERS_ME],
+    queryFn: currentUserFetcher,
     enabled: csrf,
     retry: (_failureCount, error: UnifiedErrorResponse) => error.type !== UnifiedErrorResponseTypes.AUTHENTICATION_ERROR,
   });
@@ -41,7 +44,7 @@ export function useAuth(): CurrentUserHookValue {
     user: signedIn ? user! : guestUser,
     isStaff: signedIn && permission(user!.role, 'staff'),
     authCheck: {
-      status: mapQueryStatus(status),
+      status: mapQueryStatus(status, fetchStatus),
     },
   };
 }

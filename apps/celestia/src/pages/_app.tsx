@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from 'react';
-import { ReactQueryDevtools } from 'react-query/devtools';
-import { QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { DEV_ENV } from 'src/config';
 import { wrapper } from 'src/store';
 import TitleManager from 'src/components/TitleManager';
@@ -42,7 +42,7 @@ const Celestia: AppComponent = ({ Component, ...rest }) => {
             </Layout>
           </LayoutContextProvider>
           <AuthModal />
-          {DEV_ENV && <ReactQueryDevtools position="top-right" initialIsOpen={false} />}
+          {DEV_ENV && <ReactQueryDevtools buttonPosition="top-right" initialIsOpen={false} />}
         </QueryClientProvider>
       </NextIntlClientProvider>
     </Provider>

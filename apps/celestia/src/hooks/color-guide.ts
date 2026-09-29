@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { Status } from 'src/types';
 import {
   GetAppearancesAllRequest,
@@ -43,14 +43,16 @@ interface GuideHookValue extends Partial<GetAppearancesResult> {
 
 export function useGuide(params: GuideFetcherParams, initialData?: GetAppearancesResult): GuideHookValue {
   const fetcher = useCallback(() => guideFetcher(params)(), [params]);
-  const { status, data } = useQuery(ENDPOINTS.APPEARANCES(params as GetAppearancesRequest), fetcher, {
+  const { status, fetchStatus, data } = useQuery({
+    queryKey: [ENDPOINTS.APPEARANCES(params as GetAppearancesRequest)],
+    queryFn: fetcher,
     enabled: Boolean(params.guide),
     initialData,
   });
 
   return {
     ...data,
-    status: mapQueryStatus(status),
+    status: mapQueryStatus(status, fetchStatus),
   };
 }
 
@@ -62,27 +64,35 @@ interface GuideAutocompleteHookValue {
 export function useGuideAutocomplete(params: GuideAutocompleteFetcherParams): GuideAutocompleteHookValue {
   const fetcher = useCallback(() => guideAutocompleteFetcher(params)(), [params]);
   const haveQuery = Boolean(params.q && params.q.length > 0);
-  const { status, data } = useQuery(ENDPOINTS.APPEARANCES_AUTOCOMPLETE(params as GetAppearancesAutocompleteRequest), fetcher, {
+  const { status, fetchStatus, data } = useQuery({
+    queryKey: [ENDPOINTS.APPEARANCES_AUTOCOMPLETE(params as GetAppearancesAutocompleteRequest)],
+    queryFn: fetcher,
     enabled: Boolean(params.guide && haveQuery),
-    keepPreviousData: haveQuery,
+    placeholderData: haveQuery ? keepPreviousData : undefined,
   });
 
   return {
     results: data,
-    status: mapQueryStatus(status),
+    status: mapQueryStatus(status, fetchStatus),
   };
 }
 
 export function useGuideIndex(initialData?: GetColorGuideResult) {
   const fetcher = useCallback(() => guideIndexFetcher()(), []);
-  const { data } = useQuery(ENDPOINTS.GUIDE_INDEX, fetcher, { initialData });
+  const { data } = useQuery({
+    queryKey: [ENDPOINTS.GUIDE_INDEX],
+    queryFn: fetcher,
+    initialData,
+  });
 
   return data;
 }
 
 export function useFullGuide(params: FullGuideFetcherParams, initialData?: GetAppearancesAllResult) {
   const fetcher = useCallback(() => fullGuideFetcher(params)(), [params]);
-  const { data, status } = useQuery(ENDPOINTS.APPEARANCES_FULL(params as GetAppearancesAllRequest), fetcher, {
+  const { data, status, fetchStatus } = useQuery({
+    queryKey: [ENDPOINTS.APPEARANCES_FULL(params as GetAppearancesAllRequest)],
+    queryFn: fetcher,
     enabled: Boolean(params.guide),
     initialData,
   });
@@ -90,13 +100,17 @@ export function useFullGuide(params: FullGuideFetcherParams, initialData?: GetAp
   return {
     appearances: data?.appearances,
     groups: data?.groups,
-    status: mapQueryStatus(status),
+    status: mapQueryStatus(status, fetchStatus),
   };
 }
 
 export function usePinnedAppearances(params: PinnedAppearancesFetcherParams, initialData?: GetAppearancesPinnedResult) {
   const fetcher = useCallback(() => pinnedAppearancesFetcher(params)(), [params]);
-  const { data } = useQuery(ENDPOINTS.APPEARANCES_PINNED(params as GetAppearancesPinnedRequest), fetcher, { initialData });
+  const { data } = useQuery({
+    queryKey: [ENDPOINTS.APPEARANCES_PINNED(params as GetAppearancesPinnedRequest)],
+    queryFn: fetcher,
+    initialData,
+  });
 
   return data;
 }
@@ -107,11 +121,15 @@ interface MajorChangesHookValue extends Partial<GetColorGuideMajorChangesResult>
 
 export function useMajorChanges(params: MajorChangesFetcherParams, initialData?: GetColorGuideMajorChangesResult): MajorChangesHookValue {
   const fetcher = useCallback(() => majorChangesFetcher(params)(), [params]);
-  const { data, status } = useQuery(ENDPOINTS.GUIDE_MAJOR_CHANGES(params as GetColorGuideMajorChangesRequest), fetcher, { initialData });
+  const { data, status, fetchStatus } = useQuery({
+    queryKey: [ENDPOINTS.GUIDE_MAJOR_CHANGES(params as GetColorGuideMajorChangesRequest)],
+    queryFn: fetcher,
+    initialData,
+  });
 
   return {
     ...data,
-    status: mapQueryStatus(status),
+    status: mapQueryStatus(status, fetchStatus),
   };
 }
 
@@ -125,14 +143,16 @@ export function useAppearanceLocation(
   initialData?: GetAppearancesIdLocateResult
 ): AppearanceLocationHookValue {
   const fetcher = useCallback(() => appearanceLocationFetcher(params)(), [params]);
-  const { data, status } = useQuery(ENDPOINTS.APPEARANCE_LOCATE(params as GetAppearancesIdLocateRequest), fetcher, {
+  const { data, status, fetchStatus } = useQuery({
+    queryKey: [ENDPOINTS.APPEARANCE_LOCATE(params as GetAppearancesIdLocateRequest)],
+    queryFn: fetcher,
     enabled: Boolean(params.id),
     initialData,
   });
 
   return {
     appearance: data,
-    status: mapQueryStatus(status),
+    status: mapQueryStatus(status, fetchStatus),
   };
 }
 
@@ -143,13 +163,15 @@ interface DetailedAppearanceHookValue {
 
 export function useDetailedAppearance(params: AppearanceFetcherParams, initialData?: GetAppearancesIdResult): DetailedAppearanceHookValue {
   const fetcher = useCallback(() => appearanceFetcher(params)(), [params]);
-  const { data, status } = useQuery(ENDPOINTS.APPEARANCE(params as GetAppearancesIdRequest), fetcher, {
+  const { data, status, fetchStatus } = useQuery({
+    queryKey: [ENDPOINTS.APPEARANCE(params as GetAppearancesIdRequest)],
+    queryFn: fetcher,
     enabled: Boolean(params.id),
     initialData,
   });
 
   return {
     appearance: data,
-    status: mapQueryStatus(status),
+    status: mapQueryStatus(status, fetchStatus),
   };
 }
