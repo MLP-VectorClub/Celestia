@@ -5,6 +5,10 @@
       "dependsOn": [
         "^build"
       ],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env*"
+      ],
       "env": [
         "API_JSON_PATH",
         "BUILD_GIT_INFO"
