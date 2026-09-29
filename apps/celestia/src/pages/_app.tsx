@@ -18,7 +18,6 @@ import { queryClient } from 'src/store/queryClient';
 import { Provider } from 'react-redux';
 
 const Celestia: AppComponent = ({ Component, ...rest }) => {
-   
   const { store, props } = wrapper.useWrappedStore(rest);
   const { locale } = useRouter();
   const [disabled, setLayoutDisabled] = useState(false);
@@ -27,9 +26,8 @@ const Celestia: AppComponent = ({ Component, ...rest }) => {
   const layoutContext = useMemo(() => ({ disabled, setLayoutDisabled }), [disabled, setLayoutDisabled]);
 
   return (
-     
     <Provider store={store}>
-      { }
+      {}
       <NextIntlClientProvider locale={locale || 'en'} messages={props.pageProps.messages}>
         <QueryClientProvider client={queryClient}>
           <TitleManager />
@@ -37,7 +35,7 @@ const Celestia: AppComponent = ({ Component, ...rest }) => {
           <ProgressIndicator />
           <LayoutContextProvider value={layoutContext}>
             <Layout>
-              { }
+              {}
               <Component {...props.pageProps} />
             </Layout>
           </LayoutContextProvider>

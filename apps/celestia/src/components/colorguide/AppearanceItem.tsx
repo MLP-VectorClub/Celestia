@@ -50,9 +50,7 @@ const AppearanceItem: FC<AppearanceItemProps> = ({ appearance, pinned = false, g
                   </UncontrolledTooltip>
                 </>
               )}
-              <Link href={appearanceLink}>
-                {appearance.label}
-              </Link>
+              <Link href={appearanceLink}>{appearance.label}</Link>
             </h5>
             <AppearanceItemNotes notes={appearance.notes} hasCutieMarks={appearance.hasCutieMarks} />
             <AppearanceItemTags tags={appearance.tags} guide={guide} />

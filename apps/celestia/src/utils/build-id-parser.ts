@@ -3,7 +3,6 @@ const buildIdRegex = /^[a-f0-9]+;\d+$/i;
 export type BuildIdParseResult = string | { commitId: string; commitTime: Date };
 
 export const getBuildData: () => BuildIdParseResult = () => {
-   
   const { buildId } = window.__NEXT_DATA__;
 
   if (!buildIdRegex.test(buildId)) {

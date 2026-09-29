@@ -18,7 +18,6 @@ const SidebarUserInfo: FC = () => {
   return (
     <div
       className={classNames(`logged-in provider-${user.avatarProvider}`, {
-         
         'checking-auth': checkingAuth,
       })}
       title={checkingAuth ? t('common.sidebar.authCheck') : undefined}

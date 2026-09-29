@@ -26,11 +26,7 @@ import { Translatable } from 'src/types';
 import { useTranslations } from 'next-intl';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
-const AppPageLink: FC<PropsWithChildren<{ href: string }>> = ({ children, href }) => (
-  <Link href={href}>
-    {children}
-  </Link>
-);
+const AppPageLink: FC<PropsWithChildren<{ href: string }>> = ({ children, href }) => <Link href={href}>{children}</Link>;
 
 const ChildfreeFavme: FunctionComponent<FavMeProps & { content: ReactNode }> = ({ content, ...props }) => (
   <FavMe {...props}>{content}</FavMe>
@@ -105,7 +101,9 @@ const AboutPage: NextPage = () => {
           <br />
 
           {t.rich('about.attributions.inkscapeLogo', {
-            link: (chunks: ReactNode) => <ExternalLink href="https://commons.wikimedia.org/wiki/File:Inkscape_Logo.svg">{chunks}</ExternalLink>,
+            link: (chunks: ReactNode) => (
+              <ExternalLink href="https://commons.wikimedia.org/wiki/File:Inkscape_Logo.svg">{chunks}</ExternalLink>
+            ),
           })}
           <br />
 
@@ -120,9 +118,7 @@ const AboutPage: NextPage = () => {
           {t.rich('about.attributions.applicationLogo', {
             bold: (chunks: ReactNode) => <strong>{chunks}</strong>,
             christmasLink: (chunks: ReactNode) => (
-              <a href="https://www.deviantart.com/pirill-poveniy/art/Collab-Christmas-Vector-of-the-MLP-VC-Mascot-503196118">
-                {chunks}
-              </a>
+              <a href="https://www.deviantart.com/pirill-poveniy/art/Collab-Christmas-Vector-of-the-MLP-VC-Mascot-503196118">{chunks}</a>
             ),
             author1: () => <DeviantLink username="Pirill-Poveniy" />,
             author2: () => <DeviantLink username="thediscorded" />,

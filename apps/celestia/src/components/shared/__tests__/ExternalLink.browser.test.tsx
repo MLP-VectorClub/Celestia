@@ -16,7 +16,7 @@ describe('ExternalLink', () => {
     const screen = await render(
       <ExternalLink href="https://example.com" blank={false}>
         Example
-      </ExternalLink>,
+      </ExternalLink>
     );
     const link = screen.getByRole('link', { name: 'Example' });
 
@@ -28,7 +28,7 @@ describe('ExternalLink', () => {
     const screen = await render(
       <ExternalLink href="https://example.com" tag="span" title="Example title">
         Example
-      </ExternalLink>,
+      </ExternalLink>
     );
 
     await expect.element(screen.getByTitle('Example title')).toHaveTextContent('Example');

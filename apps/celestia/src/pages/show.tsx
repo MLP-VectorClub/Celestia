@@ -18,13 +18,7 @@ import styles from 'modules/ShowPage.module.scss';
 import { handleDataFetchingError } from 'src/utils';
 import { showListFetcher } from 'src/fetchers/show';
 import { validatePageParam } from 'src/utils/validate-page-param';
-import {
-  EpisodeColumn,
-  EpisodeNumberColumn,
-  SeasonColumn,
-  ShowNumberColumn,
-  TitleAirDateColumn,
-} from 'src/components/show/columns';
+import { EpisodeColumn, EpisodeNumberColumn, SeasonColumn, ShowNumberColumn, TitleAirDateColumn } from 'src/components/show/columns';
 import { useTranslations } from 'next-intl';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 

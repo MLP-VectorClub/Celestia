@@ -49,13 +49,16 @@ export const SpriteGeneratorColorsForm: FC<SpriteGeneratorColorsFormProps> = ({ 
 
   const inputValues = useMemo(
     () =>
-      Object.keys(INPUT_NAMES).reduce((acc, c) => {
-        const key = c as unknown as keyof SpriteGeneratorColorMap;
-        return {
-          ...acc,
-          [key]: (key in colorMap && stringifyRgbKey(colorMap, key)) || stringifyRgbNumber(parseInt(c, 10)),
-        };
-      }, {} as Record<SpriteGeneratorBaseColor, string>),
+      Object.keys(INPUT_NAMES).reduce(
+        (acc, c) => {
+          const key = c as unknown as keyof SpriteGeneratorColorMap;
+          return {
+            ...acc,
+            [key]: (key in colorMap && stringifyRgbKey(colorMap, key)) || stringifyRgbNumber(parseInt(c, 10)),
+          };
+        },
+        {} as Record<SpriteGeneratorBaseColor, string>
+      ),
     [colorMap]
   );
   const baseColors = useMemo<SpriteGeneratorBaseColor[]>(

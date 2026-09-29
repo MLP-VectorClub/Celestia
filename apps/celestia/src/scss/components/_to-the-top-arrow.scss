@@ -11,7 +11,9 @@
   right: -$header-height;
   color: #fff;
   opacity: 0;
-  transition: opacity 0.1s linear, right 0.1s linear;
+  transition:
+    opacity 0.1s linear,
+    right 0.1s linear;
   width: $header-height;
   height: $header-height;
   cursor: pointer;

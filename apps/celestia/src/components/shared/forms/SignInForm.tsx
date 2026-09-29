@@ -1,17 +1,6 @@
 import { FC, MouseEventHandler, useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import {
-  Alert,
-  Button,
-  Col,
-  Form,
-  FormGroup,
-  Input,
-  InputGroup,
-  Label,
-  Row,
-  UncontrolledTooltip,
-} from 'reactstrap';
+import { Alert, Button, Col, Form, FormGroup, Input, InputGroup, Label, Row, UncontrolledTooltip } from 'reactstrap';
 import { useForm } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { map } from 'lodash';
@@ -221,7 +210,9 @@ const SingInForm: FC = () => {
       <FormGroup>
         <div className="form-check">
           <Input type="checkbox" className="form-check-input" id="remember-me" {...r(INPUT_NAMES.REMEMBER)} />
-          <Label check htmlFor="remember-me" className="form-check-label">{t('common.auth.rememberMe')}</Label>
+          <Label check htmlFor="remember-me" className="form-check-label">
+            {t('common.auth.rememberMe')}
+          </Label>
         </div>
       </FormGroup>
 

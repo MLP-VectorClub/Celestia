@@ -103,14 +103,12 @@ interface CutieMarkMappingColor {
 }
 
 export interface CutieMarkColorMapping {
-   
   'Coat Outline': string;
   'Coat Shadow Outline': string;
   'Coat Fill': string;
   'Coat Shadow Fill': string;
   'Mane & Tail Outline': string;
   'Mane & Tail Fill': string;
-   
 }
 
 export const getColorMapping = (
@@ -152,7 +150,6 @@ export const getColorMapping = (
   };
 };
 
- 
 /**
  * Converts a set of rgb values to a single number for any purpose
  * @param r 0-255
@@ -166,7 +163,6 @@ export const convertNumberToRgb = (rgb: number): RgbColors => ({
   green: (rgb & 0xff00) >> 8,
   blue: rgb & 0xff,
 });
- 
 
 export const stringifyRgbNumber = (hexNumber: number): string => `#${padStart(hexNumber.toString(16).toUpperCase(), 6, '0')}`;
 

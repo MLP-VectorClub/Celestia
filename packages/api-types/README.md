@@ -20,9 +20,7 @@ In your TypeScript code, simply import the necessary types from the package:
 ```ts
 import { Appearance } from '@mlp-vectorclub/api-types';
 
-const value: Appearance = {
-  /* … */
-};
+const value: Appearance = {/* … */};
 ```
 
 ## Building

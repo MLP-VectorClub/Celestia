@@ -18,9 +18,7 @@ const RevealPasswordButton: FC<RevealPasswordButtonProps> = ({ setPasswordReveal
         <InlineIcon icon={passwordRevealed ? 'eye-slash' : 'eye'} fixedWidth />
       </Button>
       <UncontrolledTooltip target={revealBtnRef} fade={false}>
-        <TooltipContent>
-          {passwordRevealed ? t('common.auth.hidePassword') : t('common.auth.showPassword')}
-        </TooltipContent>
+        <TooltipContent>{passwordRevealed ? t('common.auth.hidePassword') : t('common.auth.showPassword')}</TooltipContent>
       </UncontrolledTooltip>
     </>
   );

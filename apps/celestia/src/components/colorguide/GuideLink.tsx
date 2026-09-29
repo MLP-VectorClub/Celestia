@@ -10,7 +10,5 @@ interface PropTypes {
 }
 
 export const GuideLink: FC<PropTypes> = ({ name, title = false }) => (
-  <Link href={PATHS.GUIDE(name)}>
-    {title ? getGuideTitle(name) : getGuideLabel(name)}
-  </Link>
+  <Link href={PATHS.GUIDE(name)}>{title ? getGuideTitle(name) : getGuideLabel(name)}</Link>
 );

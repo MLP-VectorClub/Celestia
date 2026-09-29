@@ -155,7 +155,7 @@ const SearchBar: FC<PropTypes> = ({ initialQuery, guide }) => {
         }
       }
     };
-   
+
   const setSearchState = useCallback((query: string = '') => {
     setSearchQuery(query);
     setAcQuery(query);

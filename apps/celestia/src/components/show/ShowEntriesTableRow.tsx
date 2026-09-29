@@ -12,10 +12,8 @@ export const ShowListItemRow: FC<{
       <td
         key={i}
         className={classNames(tdClassName, {
-           
           'd-lg-none': only === 'mobile',
           'd-none d-lg-table-cell': only === 'desktop',
-           
         })}
       >
         <Renderer entry={show} />

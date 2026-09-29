@@ -93,11 +93,7 @@ const FullGuidePage: NextPage<PropTypes> = ({ guide, sort, initialData }) => {
             <DropdownMenu>
               <DropdownItem header>{t('colorGuide.fullList.sortOptionsHeader')}</DropdownItem>
               {sortOptions.map((sortBy) => (
-                <Link
-                  key={sortBy}
-                  href={PATHS.GUIDE_FULL(guide, { sort_by: sortBy })}
-                  passHref
-                  legacyBehavior>
+                <Link key={sortBy} href={PATHS.GUIDE_FULL(guide, { sort_by: sortBy })} passHref legacyBehavior>
                   <DropdownItem tag="a" active={sortBy === sort}>
                     {t(`colorGuide.fullList.sortOptions.${sortBy}`)}
                   </DropdownItem>

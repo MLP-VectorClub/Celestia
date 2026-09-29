@@ -126,7 +126,6 @@ export const SpriteGenerator: FC = () => {
                 <p className={classNames('mb-2', loadingFailed ? 'text-danger' : 'text-ui')}>
                   <InlineIcon icon={loadingErrors ? 'exclamation-triangle' : 'info'} first />
                   {loadingErrors.current.length > 0 ? (
-                     
                     <>
                       Failed to load assets:
                       <ul>

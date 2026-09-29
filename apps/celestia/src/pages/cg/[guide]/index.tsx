@@ -84,11 +84,7 @@ const ColorGuidePage: NextPage<PropTypes> = ({ guide, page, q, initialData }) =>
           <ExternalLink href="http://fav.me/d7120l1">EQG</ExternalLink>
         </small>
         <br />
-        Can't find links that were here previously? Some links were moved to the{' '}
-        <Link href={PATHS.GUIDE_INDEX}>
-          guide list
-        </Link>
-        .
+        Can't find links that were here previously? Some links were moved to the <Link href={PATHS.GUIDE_INDEX}>guide list</Link>.
       </p>
       <ButtonCollection>
         {isStaff && (

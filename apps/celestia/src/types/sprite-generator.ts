@@ -46,16 +46,14 @@ export enum SpriteGeneratorIrisOptions {
 type SpriteGeneratorMaleBodyEyeOptions = SpriteGeneratorEyeOptions.EYES_MALE_12 | SpriteGeneratorEyeOptions.EYES_MALE_3;
 
 type SpriteGeneratorFemaleBodyEyeOptions =
-  | SpriteGeneratorEyeOptions.EYES_FEMALE_1
-  | SpriteGeneratorEyeOptions.EYES_FEMALE_2
-  | SpriteGeneratorEyeOptions.EYES_FEMALE_3;
+  SpriteGeneratorEyeOptions.EYES_FEMALE_1 | SpriteGeneratorEyeOptions.EYES_FEMALE_2 | SpriteGeneratorEyeOptions.EYES_FEMALE_3;
 
 type SpriteGeneratorBodyEyeOptions<T> = {
   eye: T extends { body: SpriteGeneratorBodyOptions.MALE }
     ? SpriteGeneratorMaleBodyEyeOptions
     : T extends { body: SpriteGeneratorBodyOptions.FEMALE }
-    ? SpriteGeneratorFemaleBodyEyeOptions
-    : SpriteGeneratorEyeOptions;
+      ? SpriteGeneratorFemaleBodyEyeOptions
+      : SpriteGeneratorEyeOptions;
 };
 
 type SpriteGeneratorOptionsBase = {

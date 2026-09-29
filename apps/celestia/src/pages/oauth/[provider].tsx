@@ -48,8 +48,8 @@ const OAuthPage: NextPage = () => {
       closeFnRef.current = parent.close
         ? () => parent.close()
         : window.opener !== null && 'close' in window.opener
-        ? () => (window.opener as Window).close()
-        : null;
+          ? () => (window.opener as Window).close()
+          : null;
     } catch (e) {
       /* ignored */
     }
@@ -95,7 +95,8 @@ const OAuthPage: NextPage = () => {
 
   const unknownError = t('oauth.errorTypes.unknown_error');
   const knownErrorTypes: string[] = Object.values(OAuthErrorTypes);
-  const heading = typeof query.error === 'string' && knownErrorTypes.includes(query.error) ? t(`oauth.errorTypes.${query.error}`) : unknownError;
+  const heading =
+    typeof query.error === 'string' && knownErrorTypes.includes(query.error) ? t(`oauth.errorTypes.${query.error}`) : unknownError;
 
   return (
     <Center color="danger" header={header} className="text-center">

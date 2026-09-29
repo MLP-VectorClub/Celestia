@@ -83,9 +83,7 @@ const AppearancePage: NextPage<PropTypes> = ({ guide, id, initialData }) => {
         ? {
             description: `Show accurate colors for "${appearance.label}" from the MLP-VectorClub's Official Color Guide`,
             canonical: assembleSeoUrl(PATHS.APPEARANCE(appearance)),
-            ogImage: appearance.sprite
-              ? { width: 600, height: 600, url: appearance.sprite.path }
-              : undefined,
+            ogImage: appearance.sprite ? { width: 600, height: 600, url: appearance.sprite.path } : undefined,
           }
         : null,
     [appearance]

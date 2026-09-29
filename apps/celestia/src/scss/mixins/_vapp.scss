@@ -11,7 +11,10 @@
   &.reserver .da-userlink {
     border-color: color.mix(#93a98f, $RBorder, 70%);
     background: color.mix(#d2dfc5, $RGradTop, 70%);
-    transition: border-color 0.2s ease-in-out, background-color 0.2s ease-in-out, color 0.2s linear !important;
+    transition:
+      border-color 0.2s ease-in-out,
+      background-color 0.2s ease-in-out,
+      color 0.2s linear !important;
 
     > .avatar {
       transition: opacity 0.2s ease-in-out;

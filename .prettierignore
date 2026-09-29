@@ -1,2 +1,4 @@
 **/dist/
 .next/
+# Generated and rewritten by Next.js on every build
+next-env.d.ts

@@ -6,12 +6,8 @@ import { AppearancePreview } from 'src/components/colorguide/AppearancePreview';
 import styles from 'modules/AppearanceLink.module.scss';
 
 export const AppearanceLink: FC<PreviewAppearance> = ({ id, label, guide, previewData }) => (
-  (<Link
-    href={PATHS.APPEARANCE({ id, label, guide })}
-    className={styles.appearanceLink}>
-
+  <Link href={PATHS.APPEARANCE({ id, label, guide })} className={styles.appearanceLink}>
     <AppearancePreview data={previewData} className={styles.appearancePreview} />
     <span className="appearance-name">{label}</span>
-
-  </Link>)
+  </Link>
 );

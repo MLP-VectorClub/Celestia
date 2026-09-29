@@ -4,5 +4,7 @@
   font-family: 'Celestia';
   font-display: swap;
   src: url('/static/fonts/Celestia Redux Alternate.ttf');
-  src: local('Celestia Redux Alternate'), url('/static/fonts/Celestia Redux Alternate.ttf') format('truetype');
+  src:
+    local('Celestia Redux Alternate'),
+    url('/static/fonts/Celestia Redux Alternate.ttf') format('truetype');
 }

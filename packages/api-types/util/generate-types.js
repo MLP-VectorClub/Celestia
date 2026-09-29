@@ -79,23 +79,21 @@ function generateIndex(schema) {
 
       // Response types
       const responses = op.responses || {};
-      const successCodes = Object.keys(responses).filter((c) => c.startsWith('2')).sort();
+      const successCodes = Object.keys(responses)
+        .filter((c) => c.startsWith('2'))
+        .sort();
       if (successCodes.length > 0) {
         const primaryCode = successCodes[0];
         const primaryResp = responses[primaryCode];
         const hasJson = primaryResp.content?.['application/json'];
-        const resultType = hasJson
-          ? `operations['${opId}']['responses'][${primaryCode}]['content']['application/json']`
-          : 'undefined';
+        const resultType = hasJson ? `operations['${opId}']['responses'][${primaryCode}]['content']['application/json']` : 'undefined';
         lines.push(`export type ${opId}Result = ${resultType};`);
 
         // Additional 2xx codes
         for (const code of successCodes.slice(1)) {
           const resp = responses[code];
           const hasJsonAlt = resp.content?.['application/json'];
-          const altType = hasJsonAlt
-            ? `operations['${opId}']['responses'][${code}]['content']['application/json']`
-            : 'undefined';
+          const altType = hasJsonAlt ? `operations['${opId}']['responses'][${code}]['content']['application/json']` : 'undefined';
           lines.push(`export type ${opId}${code} = ${altType};`);
         }
       }
