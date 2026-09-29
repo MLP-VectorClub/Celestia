@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { calculatePaginationItems, GO_TO_ITEM, PaginationItems } from 'src/utils/pagination';
 
 describe('calculatePaginationItems', () => {

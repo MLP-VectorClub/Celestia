@@ -6,8 +6,8 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint .",
-    "test": "jest --ci",
-    "test:watch": "jest --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "reload": "pm2 reload pm2.json"
   },
   "dependencies": {
@@ -68,7 +68,6 @@
     "@types/express": "^5.0.6",
     "@types/file-saver": "^2.0.7",
     "@types/hoist-non-react-statics": "^3.3.7",
-    "@types/jest": "^30.0.0",
     "@types/lodash": "^4.17.25",
     "@types/md5": "^2.3.6",
     "@types/node": "^26.5.1",
@@ -92,14 +91,13 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-webpack-plugin": "^6.0.0",
     "immer": "^11.1.18",
-    "jest": "^30.5.1",
     "next-transpile-modules": "^10.0.1",
     "node-fetch": "^3.3.2",
     "redux": "^5.0.1",
     "sync-request": "^6.1.0",
-    "ts-jest": "^29.4.12",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.70.0"
+    "typescript-eslint": "^8.70.0",
+    "vitest": "^5.0.1"
   },
   "license": "MIT",
   "private": true

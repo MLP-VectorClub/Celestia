@@ -6,7 +6,6 @@
       "src/*": ["./src/*"],
       "modules/*": ["./src/scss/modules/*"]
     },
-    "types": ["jest"],
     "incremental": true,
     "preserveSymlinks": true,
     "rootDir": "."
