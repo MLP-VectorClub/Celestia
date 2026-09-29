@@ -61,9 +61,6 @@
   "devDependencies": {
     "@mlp-vectorclub/tsconfig": "workspace:*",
     "@mlp-vectorclub/ui": "workspace:*",
-    "@testing-library/dom": "^10.4.2",
-    "@testing-library/jest-dom": "^7.0.1",
-    "@testing-library/react": "^16.3.3",
     "@types/capitalize": "^2.0.2",
     "@types/cookie-parser": "^1.4.10",
     "@types/express": "^5.0.6",
