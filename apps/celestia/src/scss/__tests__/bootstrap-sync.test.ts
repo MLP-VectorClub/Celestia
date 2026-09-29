@@ -15,7 +15,9 @@ const compileValues = (source: string): Record<string, string> => {
   return Object.fromEntries([...block.matchAll(/^\s+([\w-]+): (.+);$/gm)].map(([, name, value]) => [name, value]));
 };
 
-describe('Bootstrap values copied into our SCSS', () => {
+// Each test compiles all of Bootstrap (up to twice), which can take several seconds on slower CI
+// runners with coverage enabled, well past Vitest's 5s default
+describe('Bootstrap values copied into our SCSS', { timeout: 30_000 }, () => {
   it('should keep _bootstrap-defaults.scss in sync with the configured Bootstrap', () => {
     const values = compileValues(`
       @use 'sass:map';
