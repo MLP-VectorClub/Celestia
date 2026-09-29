@@ -1,7 +1,5 @@
-@import '../vars';
-@import 'bootstrap-scss/functions';
-@import 'bootstrap-scss/variables';
-@import 'bootstrap-scss/mixins';
+@use '../breakpoints' as *;
+@use '../vars' as *;
 
 .guideList {
   display: flex;
@@ -31,7 +29,7 @@
     padding: 10px;
     height: 100%;
 
-    @include media-breakpoint-down(md) {
+    @include media-breakpoint-down(lg) {
       display: flex;
       flex-flow: row nowrap;
       align-items: center;

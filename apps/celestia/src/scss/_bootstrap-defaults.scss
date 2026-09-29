@@ -1,0 +1,9 @@
+// Bootstrap values used by CSS modules, which can't load _bootstrap.scss without emitting all of
+// Bootstrap's CSS into each module. Kept in sync with the configured Bootstrap by the scss test.
+$black: #000;
+$border-width: 1px;
+$border-color: #dee2e6;
+$font-family-base: var(--bs-font-sans-serif);
+$btn-border-radius: var(--bs-border-radius);
+$btn-focus-width: 0.25rem;
+$zindex-dropdown: 1000;

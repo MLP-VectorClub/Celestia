@@ -1,0 +1,46 @@
+// Bootstrap 5.3 isn't written as Sass modules yet, so it's loaded here as one configured module.
+// Loading this emits all of Bootstrap's CSS, so only the global stylesheet (app.scss) and the
+// partials it loads may use it. CSS modules use _breakpoints.scss and _bootstrap-defaults.scss.
+@use 'vars';
+
+@forward 'bootstrap-scss/bootstrap' with (
+  $primary: vars.$primary,
+  $secondary: vars.$secondary,
+  $info: vars.$info,
+  // Bootstrap's default map (its success/warning/danger/light/dark values are copied from
+  // bootstrap-scss/_variables.scss, kept in sync by the scss test) plus our own colors
+  $theme-colors: (
+      'primary': vars.$primary,
+      'secondary': vars.$secondary,
+      'success': #198754,
+      'info': vars.$info,
+      'warning': #ffc107,
+      'danger': #dc3545,
+      'light': #f8f9fa,
+      'dark': #212529,
+      'ui': vars.$ui,
+      'discord': vars.$discord,
+      'deviantart': vars.$deviantart,
+      'club': vars.$club-blue,
+    ),
+  $grid-breakpoints: vars.$grid-breakpoints,
+  $link-color: vars.$link-color,
+  $link-hover-color: vars.$link-hover-color,
+  $component-active-bg: vars.$component-active-bg,
+  $font-family-monospace: vars.$font-family-monospace,
+  $font-family-sans-serif: vars.$font-family-sans-serif,
+  $headings-font-family: vars.$headings-font-family,
+  $breadcrumb-padding-y: vars.$breadcrumb-padding-y,
+  $breadcrumb-padding-x: vars.$breadcrumb-padding-x,
+  $breadcrumb-border-radius: vars.$breadcrumb-border-radius,
+  $breadcrumb-bg: vars.$breadcrumb-bg,
+  $breadcrumb-active-color: vars.$breadcrumb-active-color,
+  $breadcrumb-divider-color: vars.$breadcrumb-divider-color,
+  $navbar-dark-color: vars.$navbar-dark-color,
+  $navbar-padding-y: vars.$navbar-padding-y,
+  $modal-backdrop-bg: vars.$modal-backdrop-bg,
+  $modal-backdrop-opacity: vars.$modal-backdrop-opacity,
+  $modal-header-padding-y: vars.$modal-header-padding-y,
+  $code-color: vars.$code-color,
+  $min-contrast-ratio: vars.$min-contrast-ratio
+);

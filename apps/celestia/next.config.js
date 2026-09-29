@@ -43,6 +43,11 @@ module.exports = withPlugins(
     images: {
       domains: [NEXT_PUBLIC_CDN_DOMAIN, 'a.deviantart.net'],
     },
+    sassOptions: {
+      // Bootstrap 5.3's own SCSS still uses deprecated Sass features (fixed upstream in Bootstrap 6);
+      // this only hides warnings from inside node_modules, ours are still reported
+      quietDeps: true,
+    },
     async headers() {
       return vercelConfig.headers.reduce((acc, entry) => {
         // Allow all scripts in development mode

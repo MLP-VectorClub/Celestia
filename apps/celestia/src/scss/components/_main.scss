@@ -1,3 +1,7 @@
+@use '../breakpoints' as *;
+@use '../mixins' as *;
+@use '../vars' as *;
+
 #main {
   position: relative;
   z-index: 1;

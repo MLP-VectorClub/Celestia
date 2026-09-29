@@ -1,3 +1,9 @@
+@use '../bootstrap' as bs;
+@use '../breakpoints' as *;
+@use '../functions' as *;
+@use '../mixins' as *;
+@use '../vars' as *;
+
 #header {
   position: fixed;
   z-index: 4;
@@ -14,7 +20,7 @@
   border: 0;
   display: inline-block;
   position: absolute;
-  left: $nav-link-padding-y;
+  left: bs.$nav-link-padding-y;
 
   @include media-breakpoint-up($sidebar-breakpoint-up) {
     display: none;
@@ -22,7 +28,7 @@
 }
 
 .navbar {
-  @include media-breakpoint-down(md) {
+  @include media-breakpoint-down(lg) {
     padding-top: 0.156rem;
     padding-bottom: 0.156rem;
   }
@@ -38,7 +44,7 @@
     color: #000 !important;
   }
 
-  @include media-breakpoint-down(md) {
+  @include media-breakpoint-down(lg) {
     margin-left: auto !important;
     margin-right: auto !important;
     font-size: rem(28px);

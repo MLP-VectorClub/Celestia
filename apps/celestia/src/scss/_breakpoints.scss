@@ -1,0 +1,16 @@
+// Bootstrap's breakpoint mixins bound to our $grid-breakpoints. Unlike _bootstrap.scss this
+// emits no CSS, so CSS modules can use it too.
+@use 'bootstrap-scss/mixins' as bs-mixins;
+@use 'vars';
+
+@mixin media-breakpoint-up($name) {
+  @include bs-mixins.media-breakpoint-up($name, vars.$grid-breakpoints) {
+    @content;
+  }
+}
+
+@mixin media-breakpoint-down($name) {
+  @include bs-mixins.media-breakpoint-down($name, vars.$grid-breakpoints) {
+    @content;
+  }
+}

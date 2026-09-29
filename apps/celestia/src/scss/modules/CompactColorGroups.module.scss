@@ -1,6 +1,5 @@
-@import '../vars';
-@import 'bootstrap-scss/functions';
-@import 'bootstrap-scss/variables';
+@use 'sass:color';
+@use '../bootstrap-defaults' as bs;
 
 .compactColorGroups {
   display: flex;
@@ -12,8 +11,8 @@
     justify-content: center;
     align-items: center;
     padding: 0.25rem 0.35rem;
-    border: $border-width solid $border-color;
-    background-color: mix($border-color, white, 35%);
+    border: bs.$border-width solid bs.$border-color;
+    background-color: color.mix(bs.$border-color, white, 35%);
     margin-bottom: 0.3rem;
 
     &:not(:last-child) {

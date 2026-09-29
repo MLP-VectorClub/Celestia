@@ -1,4 +1,6 @@
-@mixin link($color: $link-color, $hover: $link-hover-color) {
+@use '../vars';
+
+@mixin link($color: vars.$link-color, $hover: vars.$link-hover-color) {
   color: $color;
   text-decoration: none !important;
   transition: color 0.2s linear;

@@ -1,8 +1,5 @@
-@import '../vars';
-@import 'bootstrap-scss/functions';
-@import 'bootstrap-scss/variables';
-@import 'bootstrap-scss/mixins';
-@import 'bootstrap-scss/list-group';
+@use '../bootstrap-defaults' as bs;
+@use '../breakpoints' as *;
 
 .searchBarCol {
   @include media-breakpoint-up(xl) {
@@ -27,7 +24,7 @@
 
 .acResults {
   position: absolute;
-  z-index: $zindex-dropdown;
+  z-index: bs.$zindex-dropdown;
   width: 100%;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
@@ -42,8 +39,12 @@
   flex-flow: row nowrap;
   align-items: center;
 
+  // Same as Bootstrap's .list-group-item.active
   &:hover {
-    @extend .list-group-item, .active;
+    z-index: 2;
+    color: var(--bs-list-group-active-color);
+    background-color: var(--bs-list-group-active-bg);
+    border-color: var(--bs-list-group-active-border-color);
   }
 }
 

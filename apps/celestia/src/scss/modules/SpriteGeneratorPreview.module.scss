@@ -1,7 +1,4 @@
-@import '../vars';
-@import 'bootstrap-scss/functions';
-@import 'bootstrap-scss/variables';
-@import 'bootstrap-scss/mixins';
+@use '../breakpoints' as *;
 
 .preview {
   background: url(/img/transparency.svg) repeat center;

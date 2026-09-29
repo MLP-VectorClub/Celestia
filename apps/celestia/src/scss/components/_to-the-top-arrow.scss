@@ -1,8 +1,12 @@
+@use '../bootstrap' as bs;
+@use '../breakpoints' as *;
+@use '../functions' as *;
+
 #to-the-top {
   $header-height: header-height();
   display: block;
   position: absolute;
-  z-index: $zindex-fixed + 1;
+  z-index: bs.$zindex-fixed + 1;
   top: 0;
   right: -$header-height;
   color: #fff;

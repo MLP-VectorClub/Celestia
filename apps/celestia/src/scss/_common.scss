@@ -1,3 +1,9 @@
+@use 'bootstrap' as bs;
+@use 'breakpoints' as *;
+@use 'functions' as *;
+@use 'mixins' as *;
+@use 'vars' as *;
+
 html {
   background-color: $SidebarBackground;
   min-height: 100vh;
@@ -12,7 +18,7 @@ body {
     padding-top: header-height();
   }
 
-  @include media-breakpoint-down(md) {
+  @include media-breakpoint-down(lg) {
     overflow: initial;
 
     &:before {
@@ -42,7 +48,7 @@ body {
 }
 
 .faded {
-  opacity: $btn-disabled-opacity;
+  opacity: bs.$btn-disabled-opacity;
 }
 
 #content > :last-child {
@@ -51,7 +57,7 @@ body {
 
 // Bootstrap dropdown overrides
 .dropdown-header {
-  font-family: $font-family-base !important;
+  font-family: bs.$font-family-base !important;
 }
 
 // Bootstrap modal overrides
@@ -68,22 +74,12 @@ body {
   .h4,
   .h5,
   .h6 {
-    font-family: $font-family-base !important;
+    font-family: bs.$font-family-base !important;
   }
 }
 
-.modal-header {
-  .modal-title {
-    font-weight: normal !important;
-    padding: $modal-header-padding-y $modal-header-padding-x;
-  }
-
-  .close {
-    opacity: 1;
-    margin: 0 !important;
-    padding: $modal-header-padding-y $modal-header-padding-x;
-    line-height: $headings-line-height;
-  }
+.modal-header .modal-title {
+  font-weight: normal !important;
 }
 
 .modal-content {
@@ -91,7 +87,7 @@ body {
   border-bottom-right-radius: 0 !important;
 }
 
-@each $color, $value in $theme-colors {
+@each $color, $value in bs.$theme-colors {
   .modal-#{$color} {
     @if ($color != 'ui') {
       color: $value !important;
@@ -105,10 +101,12 @@ body {
 
     .modal-header {
       background-color: $value !important;
+      color: bs.color-contrast($value) !important;
 
-      &,
-      .close {
-        color: color-contrast($value) !important;
+      @if bs.color-contrast($value) == bs.$white {
+        .btn-close {
+          @include bs.btn-close-white;
+        }
       }
     }
   }

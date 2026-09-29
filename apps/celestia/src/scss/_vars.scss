@@ -1,3 +1,6 @@
+// Our design tokens. Bootstrap overrides among these are passed to Bootstrap in _bootstrap.scss.
+@use 'sass:color';
+
 $primary: #2c73b1;
 $secondary: #696e73;
 $ui: #357;
@@ -6,10 +9,14 @@ $info: #02a;
 $club-blue: #1e3db3;
 $discord: #7289da;
 $deviantart: #05cc47;
-$primary-dark: darken($primary, 20);
+$primary-dark: color.adjust($primary, $lightness: -20%, $space: hsl);
 
-$link-color: $primary;
 $component-active-bg: $ui;
+
+// Bootstrap 5 only puts white text on a color if the contrast ratio is above this (default 4.5),
+// otherwise black. At 2, every theme color gets the same text color as Bootstrap 4 gave it,
+// including white on the Discord and DeviantArt brand colors.
+$min-contrast-ratio: 2;
 
 $font-family-monospace: 'Consolas', monospace;
 $font-family-sans-serif: 'Arimo', sans-serif;
@@ -27,27 +34,7 @@ $navbar-dark-color: #fff;
 
 $modal-backdrop-bg: #fff;
 $modal-backdrop-opacity: 0.9;
-$modal-header-padding: 0;
 $modal-header-padding-y: 0.6rem;
-
-$alert-color-level: 6;
-$alert-border-level: $alert-color-level;
-
-// Pull in Bootstrap's default $theme-colors (and the color variables it derives from) so the
-// map-merge below extends it rather than operating on an undefined variable. This file is
-// imported directly by some SCSS modules that don't import bootstrap-scss/variables first.
-@import 'bootstrap-scss/functions';
-@import 'bootstrap-scss/variables';
-
-$theme-colors: map-merge(
-  $theme-colors,
-  (
-    'ui': $ui,
-    'discord': $discord,
-    'deviantart': $deviantart,
-    'club': $club-blue,
-  )
-);
 
 $main-margin: 0.5rem;
 $sidebar-width: 20.625rem;
@@ -57,13 +44,14 @@ $content-outline: rgba(188, 188, 188, 0.8);
 $content-bg: rgba(255, 255, 255, 0.75);
 
 $link-color: #337287;
-$link-hover-color: desaturate(lighten($link-color, 13), 7);
-$link-color-light: lighten($link-color, 30);
-$link-hover-color-light: lighten($link-hover-color, 37);
+$link-hover-color: color.adjust(color.adjust($link-color, $lightness: 13%, $space: hsl), $saturation: -7%, $space: hsl);
+$link-color-light: color.adjust($link-color, $lightness: 30%, $space: hsl);
+$link-hover-color-light: color.adjust($link-hover-color, $lightness: 37%, $space: hsl);
 
 $sidebar-breakpoint-up: lg;
-$sidebar-breakpoint-down: md;
-$SidebarBackground: darken($primary, 24);
+// Bootstrap 5 media-breakpoint-down(lg) means below lg, so this and $sidebar-breakpoint-up split at the same width
+$sidebar-breakpoint-down: lg;
+$SidebarBackground: color.adjust($primary, $lightness: -24%, $space: hsl);
 $SidebarWidth: 330px;
 $MainMargin: 8px;
 $SidebarContentColor: rgba(white, 0.75);
@@ -72,17 +60,17 @@ $SidebarContentBackground: rgba(white, 0.1);
 
 $navbar-padding-y: 0.313rem;
 
-$code-color: adjust-hue($club-blue, -40);
+$code-color: color.adjust($club-blue, $hue: -40deg, $space: hsl);
 
 $tag-color-base: #0c70b1;
 $tag-color-default: gray;
 $tag-color-category: $tag-color-base;
-$tag-color-species: adjust_hue($tag-color-base, -80);
-$tag-color-gender: adjust_hue($tag-color-base, 60);
-$tag-color-clothing: adjust_hue($tag-color-base, 120);
-$tag-color-warning: adjust_hue($tag-color-base, 160);
-$tag-color-episode: adjust_hue($tag-color-base, 190);
-$tag-color-character: adjust_hue($tag-color-base, 240);
+$tag-color-species: color.adjust($tag-color-base, $hue: -80deg, $space: hsl);
+$tag-color-gender: color.adjust($tag-color-base, $hue: 60deg, $space: hsl);
+$tag-color-clothing: color.adjust($tag-color-base, $hue: 120deg, $space: hsl);
+$tag-color-warning: color.adjust($tag-color-base, $hue: 160deg, $space: hsl);
+$tag-color-episode: color.adjust($tag-color-base, $hue: 190deg, $space: hsl);
+$tag-color-character: color.adjust($tag-color-base, $hue: 240deg, $space: hsl);
 
 $grid-breakpoints: (
   xs: 0,

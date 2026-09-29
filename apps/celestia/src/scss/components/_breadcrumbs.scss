@@ -1,3 +1,6 @@
+@use '../breakpoints' as *;
+@use '../vars' as *;
+
 #breadcrumbs {
   position: relative;
   color: #fff;

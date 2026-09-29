@@ -1,9 +1,12 @@
+@use '../bootstrap' as bs;
+@use '../vars' as *;
+
 #content {
   border-radius: 5px;
   border: 1px solid $content-outline;
   background-color: $content-bg;
   padding: 1rem;
-  color: $black;
+  color: bs.$black;
   box-sizing: border-box;
   width: 100%;
 

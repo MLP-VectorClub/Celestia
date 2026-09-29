@@ -1,14 +1,16 @@
+@use 'sass:color';
+
 // Vector app styles
 @mixin vapp($Base, $imgname) {
-  $RGradTop: lighten($Base, 40);
-  $RBorder: desaturate(lighten($Base, 20), 40);
+  $RGradTop: color.adjust($Base, $lightness: 40%, $space: hsl);
+  $RBorder: color.adjust(color.adjust($Base, $lightness: 20%, $space: hsl), $saturation: -40%, $space: hsl);
   &.avatar-wrap {
     border-color: $RBorder;
-    background-color: lighten($RGradTop, 5);
+    background-color: color.adjust($RGradTop, $lightness: 5%, $space: hsl);
   }
   &.reserver .da-userlink {
-    border-color: mix(#93a98f, $RBorder, 70%);
-    background: mix(#d2dfc5, $RGradTop, 70%);
+    border-color: color.mix(#93a98f, $RBorder, 70%);
+    background: color.mix(#d2dfc5, $RGradTop, 70%);
     transition: border-color 0.2s ease-in-out, background-color 0.2s ease-in-out, color 0.2s linear !important;
 
     > .avatar {
@@ -48,8 +50,8 @@
         $spacearound: $avatarsize - $size - ($border * 2);
         width: $size;
         height: $size;
-        top: $spacearound/2;
-        left: $spacearound/2;
+        top: $spacearound * 0.5;
+        left: $spacearound * 0.5;
       }
 
       > .avatar {
@@ -62,8 +64,8 @@
       $spacearound: $avatarsize - $size - ($border * 2);
       width: $size;
       height: $size;
-      top: $spacearound/2;
-      left: $spacearound/2;
+      top: $spacearound * 0.5;
+      left: $spacearound * 0.5;
     }
   }
 }

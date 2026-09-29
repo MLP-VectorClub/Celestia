@@ -1,9 +1,11 @@
+@use '../bootstrap' as bs;
+
 #deploy-banner {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: $zindex-fixed + 2;
+  z-index: bs.$zindex-fixed + 2;
 
   .alert {
     border-radius: 0;

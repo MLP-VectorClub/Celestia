@@ -1,24 +1,16 @@
-@import 'bootstrap-scss/functions';
-@import 'bootstrap-scss/variables';
+@use 'scss/fonts';
+@use 'scss/bootstrap';
+@use 'scss/components/avatar-wrap';
+@use 'scss/components/breadcrumbs';
+@use 'scss/components/content';
+@use 'scss/components/deploy-banner';
+@use 'scss/components/footer';
+@use 'scss/components/header';
+@use 'scss/components/main';
+@use 'scss/components/pagination';
+@use 'scss/components/sidebar';
+@use 'scss/components/to-the-top-arrow';
+@use 'scss/components/notices';
+@use 'scss/common';
 
-@import 'scss/vars';
-@import 'scss/fonts';
-
-@import 'bootstrap-scss/bootstrap';
 @import '@fortawesome/fontawesome-svg-core/styles.css';
-
-@import 'scss/functions';
-@import 'scss/mixins';
-@import 'scss/components/avatar-wrap';
-@import 'scss/components/breadcrumbs';
-@import 'scss/components/content';
-@import 'scss/components/deploy-banner';
-@import 'scss/components/footer';
-@import 'scss/components/header';
-@import 'scss/components/main';
-@import 'scss/components/pagination';
-@import 'scss/components/sidebar';
-@import 'scss/components/to-the-top-arrow';
-@import 'scss/components/notices';
-
-@import 'scss/common';

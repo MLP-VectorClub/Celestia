@@ -1,7 +1,6 @@
-@import '../vars';
-@import 'bootstrap-scss/functions';
-@import 'bootstrap-scss/variables';
-@import '../mixins/reserve-button';
+@use 'sass:color';
+@use '../mixins/reserve-button' as *;
+@use '../vars' as *;
 
 .userLinkWithAvatar {
   $image-height: 1.5em;
@@ -20,7 +19,7 @@
   border-width: $border-size;
 
   &.local {
-    background: lighten($primary, 47);
+    background: color.adjust($primary, $lightness: 47%, $space: hsl);
     border-color: $primary;
   }
 

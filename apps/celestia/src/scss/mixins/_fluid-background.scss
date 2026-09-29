@@ -1,4 +1,6 @@
-@mixin fluid-background($color: $primary, $opacity: .88) {
+@use '../vars';
+
+@mixin fluid-background($color: vars.$primary, $opacity: 0.88) {
   background-color: rgba($color, $opacity);
   backdrop-filter: blur(5px);
 }

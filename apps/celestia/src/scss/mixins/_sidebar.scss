@@ -1,8 +1,11 @@
+@use '../breakpoints' as *;
+@use '../vars';
+
 @mixin sidebar-open {
   body.sidebar-open {
     @content;
   }
-  @include media-breakpoint-up($sidebar-breakpoint-up) {
+  @include media-breakpoint-up(vars.$sidebar-breakpoint-up) {
     @content;
   }
 }
@@ -11,7 +14,7 @@
   body:not(.sidebar-open) {
     @content;
   }
-  @include media-breakpoint-down($sidebar-breakpoint-down) {
+  @include media-breakpoint-down(vars.$sidebar-breakpoint-down) {
     @content;
   }
 }

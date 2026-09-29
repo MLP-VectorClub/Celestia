@@ -1,6 +1,4 @@
-@import '../vars';
-@import 'bootstrap-scss/functions';
-@import 'bootstrap-scss/variables';
+@use '../bootstrap-defaults' as bs;
 
 .list {
   display: flex;
@@ -28,13 +26,13 @@
 }
 
 .label {
-  font-family: $font-family-base !important;
+  font-family: bs.$font-family-base !important;
   font-weight: bold;
 }
 
 .aka {
   display: block;
-  color: $black;
+  color: bs.$black;
   font-size: 0.7rem;
   font-weight: bold;
 }

@@ -1,4 +1,4 @@
-@import '../mixins/lazy-opacity';
+@use '../mixins/lazy-opacity' as *;
 
 .spriteImage {
   height: 150px;

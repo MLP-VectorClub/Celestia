@@ -1,7 +1,5 @@
-@import '../vars';
-@import 'bootstrap-scss/functions';
-@import 'bootstrap-scss/variables';
-@import '../mixins/clearfix';
+@use '../mixins/clearfix' as *;
+@use '../vars' as *;
 
 .letterGroup {
   display: block;

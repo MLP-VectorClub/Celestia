@@ -1,12 +1,12 @@
-@import '../vars';
-@import 'bootstrap-scss/functions';
-@import 'bootstrap-scss/variables';
-@import 'bootstrap-scss/mixins';
+@use 'sass:color';
+@use '../bootstrap-defaults' as bs;
+@use '../vars' as *;
 
 @mixin tag-variant($color: $tag-color-default) {
-  $border: mix(white, $color, 10%);
-  $background: lighten($color, 50%);
-  $background-hover: desaturate(darken($background, 5%), 20%);
+  $border: color.mix(white, $color, 10%);
+  // lighten() used to cap lightness at 100%; color.adjust() doesn't, so clip it back into range
+  $background: color.to-gamut(color.adjust($color, $lightness: 50%, $space: hsl), $method: clip);
+  $background-hover: color.adjust(color.adjust($background, $lightness: -5%, $space: hsl), $saturation: -20%, $space: hsl);
 
   background-color: $background;
 
@@ -21,16 +21,13 @@
   }
 
   &:focus {
-    @if $enable-shadows {
-      @include box-shadow($btn-box-shadow, 0 0 0 $btn-focus-width rgba(mix(color-contrast($background), $border, 15%), 0.5));
-    } @else {
-      box-shadow: 0 0 0 $btn-focus-width rgba(mix(color-contrast($background), $border, 15%), 0.5);
-    }
+    // Tag backgrounds are always lightened by 50%, so Bootstrap's color-contrast() would pick black
+    box-shadow: 0 0 0 bs.$btn-focus-width rgba(color.mix(black, $border, 15%), 0.5);
   }
 }
 
 .tag {
-  border-radius: $btn-border-radius;
+  border-radius: bs.$btn-border-radius;
   border: 1px solid;
   box-sizing: border-box;
   display: inline-block;
