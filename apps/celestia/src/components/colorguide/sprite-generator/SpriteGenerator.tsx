@@ -123,7 +123,7 @@ export const SpriteGenerator: FC = () => {
             />
             {loading && (
               <div className="mt-2 text-center">
-                <p className={classNames('mb-2', loadingFailed ? 'text-danger' : 'text-ui')}>
+                <div className={classNames('mb-2', loadingFailed ? 'text-danger' : 'text-ui')}>
                   <InlineIcon icon={loadingErrors ? 'exclamation-triangle' : 'info'} first />
                   {loadingErrors.current.length > 0 ? (
                     <>
@@ -137,7 +137,7 @@ export const SpriteGenerator: FC = () => {
                   ) : (
                     'Loading assets…'
                   )}
-                </p>
+                </div>
                 <Progress
                   value={(loadedImages / SPRITE_GENERATOR_ASSETS.length) * 100}
                   animated={!loadingFailed}

@@ -135,27 +135,28 @@ const AboutPage: NextPage = () => {
             copyright: 'Hasbro Studios, LLC.',
             bold: (chunks: ReactNode) => <strong>{chunks}</strong>,
           })}
-          <ul>
-            <li>
-              {t.rich('about.attributions.logoVectors.specific', {
-                favme: () => <ChildfreeFavme id="db60g3n" content={getGuideLabel('pony')} />,
-                author: () => <DeviantLink username="drakizora" />,
-              })}
-            </li>
-            <li>
-              {t.rich('about.attributions.logoVectors.specific', {
-                favme: () => <ChildfreeFavme id="d6923sw" content={getGuideLabel('eqg')} />,
-                author: () => <DeviantLink username="Charleston-and-itchy" />,
-              })}
-            </li>
-            <li>
-              {t.rich('about.attributions.logoVectors.specific', {
-                favme: () => <ChildfreeFavme id="ddztpnc" content={getGuideLabel('pl')} />,
-                author: () => <DeviantLink username="illumnious" />,
-              })}
-            </li>
-          </ul>
-
+        </p>
+        <ul>
+          <li>
+            {t.rich('about.attributions.logoVectors.specific', {
+              favme: () => <ChildfreeFavme id="db60g3n" content={getGuideLabel('pony')} />,
+              author: () => <DeviantLink username="drakizora" />,
+            })}
+          </li>
+          <li>
+            {t.rich('about.attributions.logoVectors.specific', {
+              favme: () => <ChildfreeFavme id="d6923sw" content={getGuideLabel('eqg')} />,
+              author: () => <DeviantLink username="Charleston-and-itchy" />,
+            })}
+          </li>
+          <li>
+            {t.rich('about.attributions.logoVectors.specific', {
+              favme: () => <ChildfreeFavme id="ddztpnc" content={getGuideLabel('pl')} />,
+              author: () => <DeviantLink username="illumnious" />,
+            })}
+          </li>
+        </ul>
+        <p>
           {t.rich('about.attributions.uiIcons', {
             linkText: 'FontAwesome Free',
             bold: (chunks: ReactNode) => <strong>{chunks}</strong>,

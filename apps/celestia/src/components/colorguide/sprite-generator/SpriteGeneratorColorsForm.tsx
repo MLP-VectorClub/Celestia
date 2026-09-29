@@ -1,5 +1,5 @@
 import { Dispatch, FC, SetStateAction, useCallback, useMemo } from 'react';
-import { Col, Form, FormGroup, Label, Row } from 'reactstrap';
+import { Col, FormGroup, Label, Row } from 'reactstrap';
 import { SpriteGeneratorBaseColor, SpriteGeneratorColorMap } from 'src/types/sprite-generator';
 import { hexToRgb, stringifyRgbKey, stringifyRgbNumber } from 'src/utils';
 import { ColorInputGroup } from 'src/components/colorguide/ColorInputGroup';
@@ -76,8 +76,9 @@ export const SpriteGeneratorColorsForm: FC<SpriteGeneratorColorsFormProps> = ({ 
     ],
     [magicAura, middleIrisGradient]
   );
+  // Rendered inside SpriteGenerator's <Form>, and forms can't be nested
   return (
-    <Form>
+    <div>
       <h3>Colors</h3>
       <Row>
         {baseColors.map((baseColor) => (
@@ -98,6 +99,6 @@ export const SpriteGeneratorColorsForm: FC<SpriteGeneratorColorsFormProps> = ({ 
           </Col>
         ))}
       </Row>
-    </Form>
+    </div>
   );
 };
