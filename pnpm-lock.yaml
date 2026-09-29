@@ -104,9 +104,6 @@ importers:
       next:
         specifier: ^16.3.5
         version: 16.3.5(@babel/core@7.29.7(supports-color@10.2.2))(@types/node@26.5.1)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(sass@1.104.1)
-      next-compose-plugins:
-        specifier: ^2.2.1
-        version: 2.2.1
       next-fonts:
         specifier: ^1.5.1
         version: 1.5.1(webpack@5.107.2)
@@ -252,9 +249,6 @@ importers:
       immer:
         specifier: ^11.1.18
         version: 11.1.18
-      next-transpile-modules:
-        specifier: ^10.0.1
-        version: 10.0.1
       node-fetch:
         specifier: ^3.3.2
         version: 3.3.2
@@ -3054,9 +3048,6 @@ packages:
   neo-async@2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
 
-  next-compose-plugins@2.2.1:
-    resolution: {integrity: sha512-OjJ+fV15FXO2uQXQagLD4C0abYErBjyjE0I0FHpOEIB8upw0hg1ldFP6cqHTJBH1cZqy96OeR3u1dJ+Ez2D4Bg==}
-
   next-fonts@1.5.1:
     resolution: {integrity: sha512-pgEJ40xO1oRhM6RqhQJ9CzuZOFp6Zq+aAD/V1P9sq/wdepvLzhFxDm3lCZNoE7+78NSuMKgT6b1qeXSsqWuUMQ==}
     peerDependencies:
@@ -3083,9 +3074,6 @@ packages:
     peerDependencies:
       next: '>=13.4.0'
       react: '>=18.2.0'
-
-  next-transpile-modules@10.0.1:
-    resolution: {integrity: sha512-4VX/LCMofxIYAVV58UmD+kr8jQflpLWvas/BQ4Co0qWLWzVh06FoZkECkrX5eEZT6oJFqie6+kfbTA3EZCVtdQ==}
 
   next@16.3.5:
     resolution: {integrity: sha512-MdtsTgzyfCPRLC6uJ1mN8ao7lyJ4BB0U6Inhnx3gta1UcCIdHK3yxLG0E8OWQteWD8/Q0qb8A5o7wJaL8M9y2w==}
@@ -6919,8 +6907,6 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  next-compose-plugins@2.2.1: {}
-
   next-fonts@1.5.1(webpack@5.107.2):
     dependencies:
       file-loader: 6.2.0(webpack@5.107.2)
@@ -6956,10 +6942,6 @@ snapshots:
     dependencies:
       next: 16.3.5(@babel/core@7.29.7(supports-color@10.2.2))(@types/node@26.5.1)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(sass@1.104.1)
       react: 19.3.0
-
-  next-transpile-modules@10.0.1:
-    dependencies:
-      enhanced-resolve: 5.25.1
 
   next@16.3.5(@babel/core@7.29.7(supports-color@10.2.2))(@types/node@26.5.1)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(sass@1.104.1):
     dependencies:
