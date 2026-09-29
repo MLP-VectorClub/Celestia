@@ -1,5 +1,4 @@
 const { NEXT_PUBLIC_CDN_DOMAIN, NEXT_PUBLIC_BACKEND_HOST, NEXT_PUBLIC_API_PREFIX } = process.env;
-const { platform } = require('os');
 const withPlugins = require('next-compose-plugins');
 const withCamelCaseCSSModules = require('./utils/next-css-modules');
 const withTM = require('next-transpile-modules')(['@mlp-vectorclub/ui']);
@@ -25,9 +24,14 @@ module.exports = withPlugins(
       defaultLocale: 'en',
     },
     generateBuildId: async () => {
+      // Deploys pass the deployed commit explicitly (see deploy.conf): the deploy worktree isn't the
+      // git repo, so asking git from here could describe some other checkout
+      if (process.env.BUILD_GIT_INFO) {
+        console.log(`Using build ID from BUILD_GIT_INFO: ${process.env.BUILD_GIT_INFO}`);
+        return process.env.BUILD_GIT_INFO;
+      }
       try {
-        const gitArgs = ['log', '-1', '--date=short', '--pretty=%h;%ct'];
-        const { stdout } = await (platform() === 'win32' ? execFile('git', gitArgs) : execFile('env', ['-i', 'git', ...gitArgs]));
+        const { stdout } = await execFile('git', ['log', '-1', '--pretty=%h;%ct']);
         const buildId = stdout.trim();
         console.log(`Generated build ID: ${buildId}`);
         return buildId;

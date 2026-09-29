@@ -6,7 +6,8 @@
         "^build"
       ],
       "env": [
-        "API_JSON_PATH"
+        "API_JSON_PATH",
+        "BUILD_GIT_INFO"
       ],
       "outputs": [
         "dist/**",
