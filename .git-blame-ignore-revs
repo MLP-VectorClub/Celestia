@@ -3,3 +3,6 @@
 
 # Reformat the codebase with Prettier
 e78bd4dc31056c3b1207b3cd3100364e0c49c886
+
+# Sort imports with Prettier
+1fca479009796f625ab411addc93f0fd424c57f7
