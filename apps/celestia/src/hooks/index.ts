@@ -1,4 +1,5 @@
 export * from 'src/hooks/auth';
+export * from 'src/hooks/build-data';
 export * from 'src/hooks/color-guide';
 export * from 'src/hooks/connection-info';
 export * from 'src/hooks/core';

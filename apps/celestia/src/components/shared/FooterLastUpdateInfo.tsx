@@ -1,16 +1,13 @@
 import { FC, useMemo } from 'react';
 import TimeAgo from 'src/components/shared/TimeAgo';
-import { ServerInfoHookValue } from 'src/hooks';
-import { getBuildData } from 'src/utils';
-import { IS_CLIENT_SIDE } from 'src/config';
+import { ServerInfoHookValue, useBuildData } from 'src/hooks';
 import { useTranslations } from 'next-intl';
-
-const buildData = IS_CLIENT_SIDE ? getBuildData() : null;
 
 type PropTypes = Pick<ServerInfoHookValue, 'serverInfo'>;
 
 const FooterLastUpdateInfo: FC<PropTypes> = ({ serverInfo }) => {
   const t = useTranslations();
+  const buildData = useBuildData();
   const latestDate = useMemo<Date | undefined>(() => {
     const dates: Date[] = [];
     if (buildData && typeof buildData !== 'string') dates.push(buildData.commitTime);
@@ -18,7 +15,7 @@ const FooterLastUpdateInfo: FC<PropTypes> = ({ serverInfo }) => {
 
     if (dates.length < 2) return dates[0];
     return dates.sort((a, b) => b.getTime() - a.getTime()).shift();
-  }, [serverInfo]);
+  }, [buildData, serverInfo]);
 
   return (
     <span id="update-info">

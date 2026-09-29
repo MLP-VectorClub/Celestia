@@ -1,17 +1,15 @@
-import { BACKEND_GITHUB_URL, BACKEND_PROJECT_NAME, GITHUB_URL, IS_CLIENT_SIDE, PROJECT_NAME } from 'src/config';
+import { BACKEND_GITHUB_URL, BACKEND_PROJECT_NAME, GITHUB_URL, PROJECT_NAME } from 'src/config';
 import { UncontrolledTooltip } from 'reactstrap';
 import TimeAgo from 'src/components/shared/TimeAgo';
-import { ServerInfoHookValue } from 'src/hooks';
-import { getBuildData } from 'src/utils';
+import { ServerInfoHookValue, useBuildData } from 'src/hooks';
 import { FC, ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
-
-const buildData = IS_CLIENT_SIDE ? getBuildData() : null;
 
 type PropTypes = Pick<ServerInfoHookValue, 'serverInfo' | 'loading' | 'backendDown'>;
 
 const FooterGitInfo: FC<PropTypes> = ({ serverInfo, loading, backendDown }) => {
   const t = useTranslations();
+  const buildData = useBuildData();
   let commitHash: ReactNode = null;
   let commitTime: ReactNode = null;
   if (buildData && typeof buildData !== 'string') {
