@@ -5,13 +5,11 @@
   "tabWidth": 2,
   "trailingComma": "es5",
   "quoteProps": "as-needed",
-  "importOrder": [
-    "^(!?@mlp-vectorclub|src|module)/(.*)$",
-    "^@mlp-vectorclub(.*)$",
-    "^.[./]"
-  ],
+  "plugins": ["@trivago/prettier-plugin-sort-imports"],
+  "importOrder": ["^(@mlp-vectorclub|src|modules)/(.*)$", "^[./]"],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
+  "importOrderSideEffects": false,
   "overrides": [
     {
       "files": ".prettierrc",
