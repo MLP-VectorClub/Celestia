@@ -2,7 +2,7 @@ import { AxiosError } from 'axios';
 import { range as _range, get } from 'lodash';
 import { GetServerSidePropsContext } from 'next';
 
-import { APP_HOST, IS_CLIENT_SIDE } from 'src/config';
+import { APP_HOST } from 'src/config';
 import { UnifiedErrorResponse, UnifiedErrorResponseTypes, isValidationErrorResponse } from 'src/types';
 import { setResponseStatus } from 'src/utils/initial-prop-helpers';
 
@@ -79,11 +79,9 @@ export const httpResponseMapper = (err: AxiosError | unknown): UnifiedErrorRespo
   }
 };
 
-export const assembleSeoUrl = (pathname?: string): string => {
-  const protocol = IS_CLIENT_SIDE ? location.protocol : 'https:';
-  const host = IS_CLIENT_SIDE ? location.host : undefined;
-  return `${host ? `${protocol}//${host}` : APP_HOST}${pathname || ''}`;
-};
+// Always the configured host, never the browser's location: these URLs are canonical/share links,
+// and rendering something different in the browser than on the server breaks hydration
+export const assembleSeoUrl = (pathname?: string): string => `${APP_HOST}${pathname || ''}`;
 
 export const handleDataFetchingError = (ctx: GetServerSidePropsContext, e: unknown): void => {
   if (e instanceof Error && 'response' in e) {
