@@ -164,7 +164,7 @@ export const SpriteGenerator: FC = () => {
       <p className="text-info">
         <InlineIcon icon="info" first fixedWidth />
         Attribution example:
-        <span className="user-select-all p-1 ml-2 border rounded" ref={attributionTextRef}>
+        <span className="user-select-all p-1 ms-2 border rounded" ref={attributionTextRef}>
           Base generated on the MLP-VectorClub's website at {assembleSeoUrl(PATHS.GUIDE_SPRITE)}
         </span>
         <Button type="button" size="sm" color="link" innerRef={copyButtonRef} onMouseLeave={clearCopyStatus}>

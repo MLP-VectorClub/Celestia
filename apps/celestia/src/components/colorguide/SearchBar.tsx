@@ -270,7 +270,7 @@ const SearchBar: FC<PropTypes> = ({ initialQuery, guide }) => {
                           id={acOptionId(i)}
                         >
                           <SpriteImage sprite={r.sprite} height={32} />
-                          <span className={`${styles.acResultLabel} ml-2`}>{r.label}</span>
+                          <span className={`${styles.acResultLabel} ms-2`}>{r.label}</span>
                         </ListGroupItem>
                       </Link>
                     ))}

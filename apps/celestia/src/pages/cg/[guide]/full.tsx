@@ -67,7 +67,7 @@ const FullGuidePage: NextPage<PropTypes> = ({ guide, sort, initialData }) => {
 
   const SortDropdown: FC<{ sortI18n: FullGuideSortField }> = useCallback(
     ({ sortI18n }) => (
-      <DropdownToggle color="white" className="font-italic">
+      <DropdownToggle color="white" className="fst-italic">
         {t(`colorGuide.fullList.sortOptions.${sortI18n}`)}
         <InlineIcon icon="caret-down" last />
       </DropdownToggle>

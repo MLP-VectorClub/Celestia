@@ -43,7 +43,7 @@ export const AppearanceCutieMarks: FC<PropTypes> = ({ label, cutieMarks, colorGr
               <CardBody className="p-2">
                 <span className={styles.title} id={cmTitleId}>
                   {isDeveloper && (
-                    <span className="text-muted mr-2" aria-hidden="true">
+                    <span className="text-muted me-2" aria-hidden="true">
                       #{cm.id}
                     </span>
                   )}
@@ -81,7 +81,7 @@ export const AppearanceCutieMarks: FC<PropTypes> = ({ label, cutieMarks, colorGr
                 </ButtonCollection>
                 {cm.contributor && (
                   <div className={styles.byLine}>
-                    <span className="mr-2">By</span>
+                    <span className="me-2">By</span>
                     <UserLinkWithAvatar {...cm.contributor} />
                   </div>
                 )}

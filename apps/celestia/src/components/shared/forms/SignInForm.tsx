@@ -176,12 +176,12 @@ const SingInForm: FC = () => {
       </p>
 
       <p className="text-center text-info">
-        <FontAwesomeIcon icon="info" className="mr-2" />
+        <FontAwesomeIcon icon="info" className="me-2" />
         {t('common.auth.accountBenefits')}
       </p>
 
       <FormGroup row>
-        <Label htmlFor={INPUT_NAMES.EMAIL} className="text-right" sm={4}>
+        <Label htmlFor={INPUT_NAMES.EMAIL} className="text-end" sm={4}>
           {t('common.auth.email')}
         </Label>
         <Col sm={8}>
@@ -198,7 +198,7 @@ const SingInForm: FC = () => {
       </FormGroup>
 
       <FormGroup row>
-        <Label htmlFor={INPUT_NAMES.PASSWORD} className="text-right" sm={4}>
+        <Label htmlFor={INPUT_NAMES.PASSWORD} className="text-end" sm={4}>
           {t('common.auth.password')}
         </Label>
         <Col sm={8}>
@@ -246,7 +246,7 @@ const SingInForm: FC = () => {
             {t('common.auth.signInButton')}
           </Button>
         </Col>
-        <Col className="text-right">
+        <Col className="text-end">
           <Button type="button" color="link" id="forgot-pw" aria-readonly="true">
             {t('common.auth.forgotPassword')}
           </Button>
@@ -260,7 +260,7 @@ const SingInForm: FC = () => {
       </Row>
 
       <FormGroup tag="fieldset" className="text-center border-top mt-3 pt-3">
-        <legend className="text-uppercase w-auto mx-auto px-2">
+        <legend className="text-uppercase float-none w-auto mx-auto px-2">
           <small>{t('common.auth.socialSignIn.alternatively')}</small>
         </legend>
         {map(SOCIAL_PROVIDERS, ({ name, renderIcon: RenderIcon }, provider: SocialProvider) => {

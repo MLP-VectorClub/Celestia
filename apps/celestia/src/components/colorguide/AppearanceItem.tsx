@@ -35,7 +35,7 @@ const AppearanceItem: FC<AppearanceItemProps> = ({ appearance, pinned = false, g
         <Row noGutters>
           {appearance.sprite && (
             <Col xs="auto">
-              <div className="pr-3" role="presentation">
+              <div className="pe-3" role="presentation">
                 <SpriteImage sprite={appearance.sprite} />
               </div>
             </Col>

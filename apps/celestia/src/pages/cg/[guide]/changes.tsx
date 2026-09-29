@@ -92,7 +92,7 @@ const GuideChangesPage: NextPage<PropTypes> = ({ guide, page, initialData }) => 
           <thead>
             <tr>
               <th>{t('colorGuide.changes.columns.appearance')}</th>
-              <th className="text-left">{t('colorGuide.changes.columns.reason')}</th>
+              <th className="text-start">{t('colorGuide.changes.columns.reason')}</th>
               <th>{t('colorGuide.changes.columns.created')}</th>
             </tr>
           </thead>
@@ -102,7 +102,7 @@ const GuideChangesPage: NextPage<PropTypes> = ({ guide, page, initialData }) => 
                 <td>
                   <AppearanceLink {...c.appearance} />
                 </td>
-                <td className="text-left">{c.reason}</td>
+                <td className="text-start">{c.reason}</td>
                 <td>
                   <div>
                     <InlineIcon icon="clock" first />

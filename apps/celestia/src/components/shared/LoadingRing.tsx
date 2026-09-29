@@ -35,8 +35,8 @@ const LoadingRing: FC<LoadingRingProps> = ({
         color && `text-${color}`,
         {
            
-          'mr-2': inline && spaceRight,
-          'ml-2': inline && spaceLeft,
+          'me-2': inline && spaceRight,
+          'ms-2': inline && spaceLeft,
           'svg-inline--fa': inline,
            
         },

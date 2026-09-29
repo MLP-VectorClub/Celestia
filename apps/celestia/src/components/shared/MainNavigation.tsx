@@ -83,7 +83,7 @@ const MainNavigation: FC = () => {
       </NavItem>
       <NavItem>
         <ExternalLink className="nav-link" href={DEVIANTART_GROUP_URL}>
-          <span className="mr-1">{DEVIANTART_GROUP_NAME}</span>
+          <span className="me-1">{DEVIANTART_GROUP_NAME}</span>
           <FontAwesomeIcon icon="external-link-alt" size="sm" />
         </ExternalLink>
       </NavItem>

@@ -28,7 +28,7 @@ const SignOutButton: FC = () => {
       </Button>
       <Tooltip isOpen={signOutConfirm} target={BUTTON_ID} container="sidebar" placement="bottom">
         <p className="mb-1">{t('common.sidebar.confirmSignOut')}</p>
-        <Button size="sm" color="success" onClick={handleSignOut} className="mr-2">
+        <Button size="sm" color="success" onClick={handleSignOut} className="me-2">
           <InlineIcon icon="check" fixedWidth />
         </Button>
         <Button size="sm" color="danger" onClick={() => setSignOutConfirm(false)}>

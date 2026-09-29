@@ -31,7 +31,7 @@ export const TitleAirDateColumn: FC<{ entry: ShowListItem }> = ({ entry }) => {
         {entry.title}
       </Link>
       {isStaff && (
-        <span className="ml-2">
+        <span className="ms-2">
           <span className="p-2 text-info faded" ref={editButtonRef}>
             <InlineIcon icon="pencil-alt" />
           </span>

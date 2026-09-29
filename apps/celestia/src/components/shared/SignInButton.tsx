@@ -25,7 +25,7 @@ const SignInButton: FC = () => {
   return (
     <>
       <Button id={BUTTON_ID} disabled={disabled} onClick={openSignInModal}>
-        <FontAwesomeIcon icon="sign-in-alt" className="mr-2" />
+        <FontAwesomeIcon icon="sign-in-alt" className="me-2" />
         {t('common.sidebar.signIn')}
       </Button>
       {disabled && (

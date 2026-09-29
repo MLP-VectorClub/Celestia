@@ -32,7 +32,7 @@ const FullGuideAppearanceList: FC<{ appearances: SlimAppearance[] }> = ({ appear
 
       return (
         <Link key={a.id} href={PATHS.APPEARANCE(a)} passHref legacyBehavior>
-          <Card color="link" tag="a" className="mr-2 mb-2">
+          <Card color="link" tag="a" className="me-2 mb-2">
             <CardBody className={classNames('p-2', styles.cardBody)}>
               {sprite}
               <h3 className={classNames('h5 mb-0', styles.label)}>{a.label}</h3>

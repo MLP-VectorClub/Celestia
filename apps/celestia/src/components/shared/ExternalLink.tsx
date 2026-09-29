@@ -15,7 +15,7 @@ const ExternalLink: FC<PropTypes> = ({ children, tag = null, href, className, bl
   return (
     <Tag href={href} id={id} className={className} title={title} {...additionalProps}>
       {children}
-      {icon && <FontAwesomeIcon size="sm" icon="external-link-alt" className="ml-2" />}
+      {icon && <FontAwesomeIcon size="sm" icon="external-link-alt" className="ms-2" />}
     </Tag>
   );
 };

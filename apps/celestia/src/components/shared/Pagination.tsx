@@ -94,9 +94,9 @@ const GotoPaginationItem: FC<GotoPaginationItemProps> = ({ defaultValue, totalPa
           className="tooltip-go-to-page"
         >
           <div className="d-flex align-items-center">
-            <span className="mr-2">{t('common.pagination.page')}:</span>
+            <span className="me-2">{t('common.pagination.page')}:</span>
             <Input
-              className="mr-2"
+              className="me-2"
               bsSize="sm"
               type="number"
               min="1"

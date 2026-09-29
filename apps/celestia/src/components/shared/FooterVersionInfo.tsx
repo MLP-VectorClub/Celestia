@@ -21,7 +21,7 @@ const FooterVersionInfo: FC = () => {
 
   return (
     <>
-      <span id="git-info-toggle" className="mr-2" onClick={toggleGitInfo}>
+      <span id="git-info-toggle" className="me-2" onClick={toggleGitInfo}>
         <InlineIcon icon={gitInfoOpen ? 'chevron-left' : 'chevron-right'} fixedWidth />
       </span>
       <UncontrolledTooltip target="git-info-toggle" placement="top" fade={false}>

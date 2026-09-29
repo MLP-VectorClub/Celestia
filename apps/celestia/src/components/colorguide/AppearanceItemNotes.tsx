@@ -6,7 +6,7 @@ import styles from 'modules/AppearanceNotes.module.scss';
 import { AppearanceNotesText } from 'src/components/colorguide/AppearanceNotesText';
 import { useTranslations } from 'next-intl';
 
-const cmSpacingClasses = 'ml-2 pl-2 border-left';
+const cmSpacingClasses = 'ms-2 ps-2 border-start';
 
 const AppearanceItemNotes: FC<Pick<Appearance, 'notes' | 'hasCutieMarks'>> = ({ notes, hasCutieMarks }) => {
   const t = useTranslations();
