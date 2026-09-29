@@ -1,13 +1,14 @@
 import { configureStore, type Store, type ThunkDispatch, type UnknownAction } from '@reduxjs/toolkit';
 import { createWrapper, MakeStore } from 'next-redux-wrapper';
 import { rootReducer } from 'src/store/rootReducer';
-import { queryClient } from 'src/store/queryClient';
+import { getQueryClient } from 'src/store/queryClient';
 import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
 import { WithAppThunkExtra } from 'src/store/thunkTypes';
 
 const createStore = () => {
   const extraArgument: WithAppThunkExtra['extra'] = {
-    queryCache: queryClient,
+    // Thunks using this only run in the browser, where this is the same client _app provides
+    queryCache: getQueryClient(),
   };
   return configureStore({
     reducer: rootReducer,

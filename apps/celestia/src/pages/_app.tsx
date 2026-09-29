@@ -14,13 +14,14 @@ import { LayoutContextProvider } from 'src/hooks';
 import { NextIntlClientProvider } from 'next-intl';
 import { AppComponent } from 'next/dist/shared/lib/router/router';
 import { useRouter } from 'next/router';
-import { queryClient } from 'src/store/queryClient';
+import { getQueryClient } from 'src/store/queryClient';
 import { Provider } from 'react-redux';
 
 const Celestia: AppComponent = ({ Component, ...rest }) => {
   const { store, props } = wrapper.useWrappedStore(rest);
   const { locale } = useRouter();
   const [disabled, setLayoutDisabled] = useState(false);
+  const [queryClient] = useState(getQueryClient);
   useRef(appLibrary);
 
   const layoutContext = useMemo(() => ({ disabled, setLayoutDisabled }), [disabled, setLayoutDisabled]);
