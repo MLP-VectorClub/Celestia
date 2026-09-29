@@ -1,5 +1,8 @@
 import { fileURLToPath } from 'node:url';
+import { playwright } from '@vitest/browser-playwright';
 import { defineConfig } from 'vitest/config';
+
+const browserTests = 'src/**/*.browser.test.{ts,tsx}';
 
 export default defineConfig({
   resolve: {
@@ -7,9 +10,39 @@ export default defineConfig({
       src: fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  // tsconfig.json keeps "jsx": "preserve" for Next.js, so compile JSX here instead
+  oxc: {
+    jsx: { runtime: 'automatic' },
+  },
   test: {
-    environment: 'node',
-    include: ['src/**/*.test.{ts,tsx}'],
+    projects: [
+      {
+        extends: true,
+        test: {
+          name: 'unit',
+          environment: 'node',
+          include: ['src/**/*.test.{ts,tsx}'],
+          exclude: [browserTests],
+        },
+      },
+      {
+        extends: true,
+        // Pre-bundle up front, otherwise Vite reloads the page mid-run when it discovers them
+        optimizeDeps: {
+          include: ['react', 'react-dom/client', 'react/jsx-dev-runtime', 'vitest-browser-react'],
+        },
+        test: {
+          name: 'browser',
+          include: [browserTests],
+          browser: {
+            enabled: true,
+            provider: playwright(),
+            headless: true,
+            instances: [{ browser: 'chromium' }],
+          },
+        },
+      },
+    ],
     coverage: {
       provider: 'v8',
       include: ['src/**/*.{ts,tsx}'],

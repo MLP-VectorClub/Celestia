@@ -7,7 +7,6 @@
       "modules/*": ["./src/scss/modules/*"]
     },
     "incremental": true,
-    "preserveSymlinks": true,
     "rootDir": "."
   },
   "exclude": ["node_modules", "dist", ".next", "out"],

@@ -79,6 +79,7 @@
     "@types/webpack-env": "^1.18.8",
     "@typescript-eslint/eslint-plugin": "^8.70.0",
     "@typescript-eslint/parser": "^8.70.0",
+    "@vitest/browser-playwright": "^5.0.1",
     "@vitest/coverage-v8": "^5.0.1",
     "bootstrap": "^5.3.8",
     "eslint": "^9.39.5",
@@ -95,11 +96,13 @@
     "immer": "^11.1.18",
     "next-transpile-modules": "^10.0.1",
     "node-fetch": "^3.3.2",
+    "playwright": "^1.63.0",
     "redux": "^5.0.1",
     "sync-request": "^6.1.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.70.0",
-    "vitest": "^5.0.1"
+    "vitest": "^5.0.1",
+    "vitest-browser-react": "^2.3.0"
   },
   "license": "MIT",
   "private": true
