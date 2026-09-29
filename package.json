@@ -11,6 +11,7 @@
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
     "test": "turbo run test",
+    "test:coverage": "turbo run test:coverage",
     "reload": "turbo run reload",
     "format": "prettier --write \"**/*.{js,ts,tsx,md,scss}\""
   },

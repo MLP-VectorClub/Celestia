@@ -8,6 +8,7 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "reload": "pm2 reload pm2.json"
   },
   "dependencies": {
@@ -78,6 +79,7 @@
     "@types/webpack-env": "^1.18.8",
     "@typescript-eslint/eslint-plugin": "^8.70.0",
     "@typescript-eslint/parser": "^8.70.0",
+    "@vitest/coverage-v8": "^5.0.1",
     "bootstrap": "^5.3.8",
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.3.5",

@@ -10,7 +10,7 @@ const typeCheckedRules = tseslint.configs.recommended
 
 export default [
   {
-    ignores: ['node_modules', '.next', 'out', 'dist'],
+    ignores: ['node_modules', '.next', 'out', 'dist', 'coverage'],
   },
   ...nextConfig,
   {
