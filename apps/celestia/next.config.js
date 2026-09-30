@@ -1,5 +1,4 @@
 const { NEXT_PUBLIC_CDN_DOMAIN, NEXT_PUBLIC_BACKEND_HOST, NEXT_PUBLIC_API_PREFIX } = process.env;
-const { webpack } = require('./utils/next-css-modules');
 const { promisify } = require('util');
 const execFile = promisify(require('child_process').execFile);
 const vercelConfig = require('./vercel.json');
@@ -10,7 +9,6 @@ const devMode = process.env.NODE_ENV === 'development';
 module.exports = {
   reactStrictMode: true,
   transpilePackages: ['@mlp-vectorclub/ui'],
-  webpack,
   i18n: {
     locales: ['en'],
     defaultLocale: 'en',
