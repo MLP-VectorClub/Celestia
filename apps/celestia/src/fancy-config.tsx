@@ -1,7 +1,7 @@
 import type { IconName } from '@fortawesome/fontawesome-common-types';
 
-import { SocialProvider } from '@mlp-vectorclub/api-types';
 import InlineIcon from 'src/components/shared/InlineIcon';
+import { SocialProvider } from 'src/types/auth';
 import { SocialProviderConfig } from 'src/types/auth';
 
 /**

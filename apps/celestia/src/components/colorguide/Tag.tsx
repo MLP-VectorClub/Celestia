@@ -3,11 +3,12 @@ import classNames from 'classnames';
 import Link from 'next/link';
 import { FC, memo } from 'react';
 
-import { GuideName, SlimGuideTag, TagType } from '@mlp-vectorclub/api-types';
+import { GuideName, SlimGuideTag } from '@mlp-vectorclub/api-types';
 import styles from 'modules/Tag.module.scss';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { PATHS } from 'src/paths';
 import { Nullable } from 'src/types';
+import { TagType } from 'src/types/api-alias';
 
 const TAG_ICON_MAP: Record<TagType, IconProp> = {
   app: 'folder',
@@ -34,7 +35,7 @@ interface PropTypes {
 
 const TagComponent: FC<PropTypes> = ({ tag, className, guide = null }) => {
   const tagTypeClass = tag.type && tag.type in TAG_CLASS_MAP && TAG_CLASS_MAP[tag.type];
-  const finalClassName = classNames(styles.tag, tagTypeClass, { [styles.synonym]: tag.synonymOf }, className);
+  const finalClassName = classNames(styles.tag, tagTypeClass, { [styles.synonym]: 'synonymOf' in tag && tag.synonymOf }, className);
   const content = (
     <>
       {tag.type && <InlineIcon icon={TAG_ICON_MAP[tag.type]} first />}

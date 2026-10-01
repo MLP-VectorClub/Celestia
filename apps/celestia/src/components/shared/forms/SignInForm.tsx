@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux';
 import { Alert, Button, Col, Form, FormGroup, Input, InputGroup, Label, Row, UncontrolledTooltip } from 'reactstrap';
 import { fromEvent } from 'rxjs';
 
-import { SocialProvider } from '@mlp-vectorclub/api-types';
 import BootstrapErrorMessages from 'src/components/shared/BootstrapErrorMessages';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import RevealPasswordButton from 'src/components/shared/RevealPasswordButton';
@@ -18,6 +17,7 @@ import { RootState, useAppDispatch } from 'src/store';
 import { authActions } from 'src/store/slices';
 import { signInThunk } from 'src/store/thunks';
 import { AuthModalSide, Nullable, Status, UnifiedErrorResponseTypes } from 'src/types';
+import { SocialProvider } from 'src/types/auth';
 import { ENDPOINTS, combineErrors, popupOpenCenter, validateEmail, validatePassword, validateRequired } from 'src/utils';
 
 enum INPUT_NAMES {

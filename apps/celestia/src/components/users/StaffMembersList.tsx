@@ -1,8 +1,8 @@
 import { FC } from 'react';
 
-import { PublicUser } from '@mlp-vectorclub/api-types';
 import styles from 'modules/StaffMembersList.module.scss';
 import UserLinkWithAvatar from 'src/components/shared/UserLinkWithAvatar';
+import { PublicUser } from 'src/types/api-alias';
 
 const StaffMembersList: FC<{ members: PublicUser[] }> = ({ members }) => (
   <div className={styles.staffBlock}>

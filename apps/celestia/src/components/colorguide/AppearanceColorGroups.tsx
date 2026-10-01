@@ -61,7 +61,7 @@ export const AppearanceColorGroups: FC<PropTypes> = ({ colorGroups }) => {
                 )}
                 <ul className="m-0 p-0">
                   {cg.colors.map((c) => (
-                    <ColorListItem key={c.id} color={c} hideColorInfo={prefs?.cg_hideclrinfo} />
+                    <ColorListItem key={c.id} color={c} hideColorInfo={Boolean(prefs?.cg_hideclrinfo)} />
                   ))}
                 </ul>
               </CardBody>

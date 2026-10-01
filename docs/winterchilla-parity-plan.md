@@ -35,6 +35,16 @@ Decisions from the Winterchilla side:
 Phase 0 therefore starts with: point `API_JSON_PATH` at the regenerated spec, rebuild `api-types`, and fix the 101 errors (many are renames; the auth ones
 need Luna types). Keep the spec pinned (commit hash) in `packages/api-types/README`, regenerate deliberately.
 
+### Phase 0 status (2026-10-01)
+
+Done: types regenerated from Winterchilla `1073e4fb` (`API_JSON_PATH` is a local, git-ignored `.env`; point it at Winterchilla's `public/dist/api.json`),
+`tsc`, lint, vitest and `next build` are green. Compat layer: `src/types/api-alias.ts` (renamed contract types, hand-written `UserPrefs` from Winterchilla's
+`UserPrefs::DEFAULTS`, temporary `PagedAppearancesResult`), `src/types/auth.ts` (Luna-owned auth types), `currentUserFetcher` unwraps `{user, sessionUpdating}` and
+tolerates Luna's current flat shape. Behavior changes: sprites are built from `GET /appearances/{id}/sprite?size&hash` in a square box (no aspect ratio in the
+contract), the full list sorts client-side (no `groups`, no sort parameter), the autocomplete dropdown links to the `url` it is given and has no image, the
+appearance page takes `guide` from the URL, the connection page no longer shows `deviceIdentifier`, prefs are 0/1 integers. Open items sent to Winterchilla:
+`pagination` missing on `AppearanceList`, `guide`/`previewData`/sprite URL+aspect ratio, full-list ordering and grouping, autocomplete shape, prefs typing.
+
 ## 2. Page inventory
 
 Legend: ✅ exists in Celestia · 🟡 exists but a stub or incomplete · ❌ missing · ⛔ not ported (Twig/server concern).

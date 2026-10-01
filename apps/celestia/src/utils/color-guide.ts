@@ -1,9 +1,12 @@
 import { padStart } from 'lodash';
 
-import { Appearance, FullGuideSortField, GuideName, PreviewAppearance, SlimGuideTag, TagType } from '@mlp-vectorclub/api-types';
+import { Appearance, GuideName, PreviewAppearance, SlimAppearance, SlimGuideTag, Sprite } from '@mlp-vectorclub/api-types';
+import { API_PREFIX } from 'src/config';
 import { colorGuide } from 'src/strings';
 import { Nullable, Numeric, Optional } from 'src/types';
+import { FullGuideSortField, TagType } from 'src/types/api-alias';
 import { RgbColors } from 'src/types/sprite-generator';
+import { buildUrl } from 'src/utils/url';
 
 const guideNameMap: Record<GuideName, string> = {
   pony: 'Friendship is Magic',
@@ -193,3 +196,29 @@ export const hexToRgb = (hex: string): RgbColors | null => {
  * @param rgb
  */
 export const yiq = (rgb: RgbColors): number => (rgb.red * 299 + rgb.green * 587 + rgb.blue * 114) / 1000;
+
+/**
+ * The contract's `Sprite` only carries a hash; the image itself is `GET /appearances/{id}/sprite` (300 or 600 px, `hash` busts caches)
+ */
+export const getSpriteUrl = (appearanceId: number, sprite: Pick<Sprite, 'hash'>, size: 300 | 600 = 300): string =>
+  `${API_PREFIX}${buildUrl(`/appearances/${appearanceId}/sprite`, { size, hash: sprite.hash })}`;
+
+/**
+ * The contract has no explicit relevance ordering parameter for the full list, so `relevance` keeps the order the API returned
+ */
+export const sortFullGuide = <T extends Pick<SlimAppearance, 'label' | 'createdAt'>>(appearances: T[], sort: FullGuideSortField): T[] => {
+  switch (sort) {
+    case 'label':
+      return [...appearances].sort((a, b) => a.label.localeCompare(b.label));
+    case 'added':
+      return [...appearances].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    default:
+      return appearances;
+  }
+};
+
+/** Character tags that the label does not already mention, to show as "AKA" */
+export const getNonObviousCharacterTags = (appearance: Pick<SlimAppearance, 'label' | 'tags'>): string[] => {
+  const lowerCaseLabel = appearance.label.toLowerCase();
+  return appearance.tags.filter((t) => t.type === 'char' && !lowerCaseLabel.includes(t.name.toLowerCase())).map((t) => t.name);
+};

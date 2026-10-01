@@ -9,16 +9,16 @@ import {
   GetUsersIdResult,
   GetUsersMeResult,
   GetUsersResult,
-  GetUsersTokensResult,
-  PostUsersOauthSigninProviderRequest,
-  PostUsersOauthSigninProviderResult,
-  PostUsersRequest,
-  PostUsersResult,
-  PostUsersSigninRequest,
-  PostUsersSigninResult,
   PostUsersSignoutResult,
 } from '@mlp-vectorclub/api-types';
 import { Service } from 'src/services/service-class';
+import { GetUsersTokensResult, PostUsersResult, PostUsersSigninResult } from 'src/types/auth';
+import {
+  PostUsersOauthSigninProviderRequest,
+  PostUsersOauthSigninProviderResult,
+  PostUsersRequest,
+  PostUsersSigninRequest,
+} from 'src/types/auth';
 import { ENDPOINTS } from 'src/utils';
 
 export class UserService extends Service {

@@ -2,9 +2,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FC } from 'react';
 
-import { PublicUser } from '@mlp-vectorclub/api-types';
 import styles from 'modules/UserLinkWithAvatar.module.scss';
 import { ResponsiveContainer } from 'src/components/shared/ResponsiveContainer';
+import { PublicUser } from 'src/types/api-alias';
 import { getProfileLink } from 'src/utils/path-utils';
 
 const UserLinkWithAvatar: FC<PublicUser> = ({ id, name, avatarUrl }) => (

@@ -40,7 +40,7 @@ const SidebarUsefulLinks: FC = () => {
           const externalUrl = /^https?:\/\//.test(el.url);
           if (externalUrl) {
             link = (
-              <ExternalLink href={el.url} title={el.title}>
+              <ExternalLink href={el.url} title={el.title ?? undefined}>
                 {el.label}
               </ExternalLink>
             );
@@ -49,17 +49,17 @@ const SidebarUsefulLinks: FC = () => {
             if (actionDispatcher) {
               link =
                 el.url === '#sprite-tpl' ? (
-                  <Link href={PATHS.GUIDE_SPRITE} title={el.title}>
+                  <Link href={PATHS.GUIDE_SPRITE} title={el.title ?? undefined}>
                     {el.label}
                   </Link>
                 ) : (
-                  <a href={el.url} onClick={dispatchActionByAnchor(el.url)} title={el.title}>
+                  <a href={el.url} onClick={dispatchActionByAnchor(el.url)} title={el.title ?? undefined}>
                     {el.label}
                   </a>
                 );
             } else {
               link = (
-                <Link href={el.url} title={el.title}>
+                <Link href={el.url} title={el.title ?? undefined}>
                   {el.label}
                 </Link>
               );

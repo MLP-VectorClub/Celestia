@@ -1,6 +1,7 @@
 import { isEmpty, mapValues, omit, omitBy } from 'lodash';
 
-import { FullGuideSortField, GuideName, PreviewAppearance, PublicUser, ShowListItem } from '@mlp-vectorclub/api-types';
+import { GuideName, PreviewAppearance, ShowListItem } from '@mlp-vectorclub/api-types';
+import { FullGuideSortField, PublicUser } from 'src/types/api-alias';
 import { Numeric } from 'src/types/common';
 import { seasonEpisodeToString } from 'src/utils/show';
 import { buildUrl, makeUrlSafe, pathSegmentWithId } from 'src/utils/url';
@@ -12,7 +13,7 @@ export const PATHS = {
   ROOT: '/',
   ABOUT: '/about',
   ADMIN: '/admin',
-  APPEARANCE: ({ id, label, guide }: PreviewAppearance) => `/cg/${guide}/v/${pathSegmentWithId(id, label)}`,
+  APPEARANCE: ({ id, label, guide }: Pick<PreviewAppearance, 'id' | 'label' | 'guide'>) => `/cg/${guide}/v/${pathSegmentWithId(id, label)}`,
   SHORT_APPEARANCE: ({ id, label }: Pick<PreviewAppearance, 'id' | 'label'>) => `/cg/v/${pathSegmentWithId(id, label)}`,
   BLENDING: '/blending',
   EVENTS: '/events',

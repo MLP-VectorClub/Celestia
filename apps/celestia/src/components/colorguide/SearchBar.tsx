@@ -19,7 +19,6 @@ import { Button, Col, Form, Input, InputGroup, ListGroupItem, Row, UncontrolledT
 
 import { GuideName } from '@mlp-vectorclub/api-types';
 import styles from 'modules/SearchBar.module.scss';
-import SpriteImage from 'src/components/colorguide/SpriteImage';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { useGuideAutocomplete } from 'src/hooks';
 import { PATHS } from 'src/paths';
@@ -257,7 +256,7 @@ const SearchBar: FC<PropTypes> = ({ initialQuery, guide }) => {
                       search results page. This box can be closed with <kbd>Esc</kbd>
                     </ListGroupItem>
                     {results!.map((r, i) => (
-                      <Link key={r.id} href={PATHS.APPEARANCE(r)} passHref legacyBehavior>
+                      <Link key={r.url} href={r.url ?? PATHS.GUIDE_INDEX} passHref legacyBehavior>
                         <ListGroupItem
                           tag="a"
                           className={`${RESULT_ITEM_CLASS} p-2`}
@@ -270,7 +269,6 @@ const SearchBar: FC<PropTypes> = ({ initialQuery, guide }) => {
                           aria-label={r.label}
                           id={acOptionId(i)}
                         >
-                          <SpriteImage sprite={r.sprite} height={32} />
                           <span className={`${styles.acResultLabel} ms-2`}>{r.label}</span>
                         </ListGroupItem>
                       </Link>

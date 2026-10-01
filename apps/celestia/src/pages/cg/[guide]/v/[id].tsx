@@ -20,6 +20,7 @@ import { FeaturePlaceholder } from 'src/components/shared/FeaturePlaceholder';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import StatusAlert from 'src/components/shared/StatusAlert';
+import { APP_HOST } from 'src/config';
 import { appearanceFetcher } from 'src/fetchers';
 import { useAuth, useDetailedAppearance, useTitleSetter } from 'src/hooks';
 import { PATHS } from 'src/paths';
@@ -27,6 +28,7 @@ import { useAppDispatch, wrapper } from 'src/store';
 import { BreadcrumbEntry, Nullable, Optional, SSRMessages } from 'src/types';
 import { TitleFactory } from 'src/types/title';
 import { assembleSeoUrl, getAppearanceTitle, getGuideLabel, handleDataFetchingError, notFound, resolveGuideName } from 'src/utils';
+import { getSpriteUrl } from 'src/utils/color-guide';
 import { titleSetter } from 'src/utils/core';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
@@ -73,7 +75,9 @@ const titleFactory: TitleFactory<Pick<PropTypes, 'guide' | 'initialData'>> = ({ 
 
 const AppearancePage: NextPage<PropTypes> = ({ guide, id, initialData }) => {
   const { isStaff } = useAuth();
-  const { appearance, status } = useDetailedAppearance({ id }, initialData.appearance || undefined);
+  const { appearance: fetchedAppearance, status } = useDetailedAppearance({ id }, initialData.appearance || undefined);
+  // The contract's appearance has no `guide` of its own, the URL is the source of truth
+  const appearance = useMemo(() => (fetchedAppearance ? { ...fetchedAppearance, guide } : undefined), [fetchedAppearance, guide]);
   const dispatch = useAppDispatch();
   const titleData = useMemo(() => titleFactory({ initialData, guide }), [guide, initialData]);
   useTitleSetter(dispatch, titleData);
@@ -84,7 +88,9 @@ const AppearancePage: NextPage<PropTypes> = ({ guide, id, initialData }) => {
         ? {
             description: `Show accurate colors for "${appearance.label}" from the MLP-VectorClub's Official Color Guide`,
             canonical: assembleSeoUrl(PATHS.APPEARANCE(appearance)),
-            ogImage: appearance.sprite ? { width: 600, height: 600, url: appearance.sprite.path } : undefined,
+            ogImage: appearance.sprite
+              ? { width: 600, height: 600, url: `${APP_HOST}${getSpriteUrl(appearance.id, appearance.sprite, 600)}` }
+              : undefined,
           }
         : null,
     [appearance]
@@ -112,7 +118,7 @@ const AppearancePage: NextPage<PropTypes> = ({ guide, id, initialData }) => {
       )}
       {appearance.sprite && (
         <div className={styles.spriteImage}>
-          <SpriteImage sprite={appearance.sprite} height={300} />
+          <SpriteImage appearanceId={appearance.id} sprite={appearance.sprite} height={300} />
         </div>
       )}
       <StandardHeading

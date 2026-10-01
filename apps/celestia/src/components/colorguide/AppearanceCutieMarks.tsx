@@ -22,7 +22,7 @@ interface PropTypes {
 
 export const AppearanceCutieMarks: FC<PropTypes> = ({ label, cutieMarks, colorGroups }) => {
   const { user } = useAuth();
-  const isDeveloper = user.role && permission('developer', user.role);
+  const isDeveloper = user.role && permission(user.role, 'developer');
 
   if (!cutieMarks || cutieMarks.length === 0) return null;
 

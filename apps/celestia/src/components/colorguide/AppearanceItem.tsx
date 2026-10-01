@@ -23,7 +23,7 @@ const PINNED_TOOLTIP = 'Pinned';
 const AppearanceItem: FC<AppearanceItemProps> = ({ appearance, pinned = false, guide }) => {
   const pinRef = useRef<SVGSVGElement>(null);
 
-  const appearanceLink = useMemo(() => PATHS.APPEARANCE(appearance), [appearance]);
+  const appearanceLink = useMemo(() => PATHS.APPEARANCE({ ...appearance, guide: guide ?? null }), [appearance, guide]);
 
   return (
     <Card
@@ -37,7 +37,7 @@ const AppearanceItem: FC<AppearanceItemProps> = ({ appearance, pinned = false, g
           {appearance.sprite && (
             <Col xs="auto">
               <div className="pe-3" role="presentation">
-                <SpriteImage sprite={appearance.sprite} />
+                <SpriteImage appearanceId={appearance.id} sprite={appearance.sprite} />
               </div>
             </Col>
           )}

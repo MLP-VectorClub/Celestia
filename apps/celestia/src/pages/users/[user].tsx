@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo } from 'react';
 
-import { GetUsersIdResult, PublicUser } from '@mlp-vectorclub/api-types';
+import { GetUsersIdResult } from '@mlp-vectorclub/api-types';
 import AvatarWrap from 'src/components/shared/AvatarWrap';
 import Content from 'src/components/shared/Content';
 import StandardHeading from 'src/components/shared/StandardHeading';
@@ -13,6 +13,7 @@ import { PATHS } from 'src/paths';
 import { useAppDispatch, wrapper } from 'src/store';
 import { coreActions } from 'src/store/slices';
 import { BreadcrumbEntry, Nullable, Optional, SSRMessages } from 'src/types';
+import { PublicUser } from 'src/types/api-alias';
 import { TitleFactory } from 'src/types/title';
 import { fixPath, getProfileTitle, handleDataFetchingError, mapRoleLabel } from 'src/utils';
 import { titleSetter } from 'src/utils/core';

@@ -1,7 +1,8 @@
-import { DatabaseRole } from '@mlp-vectorclub/api-types';
 import { FailsafeUser, Nullable } from 'src/types';
+import { DatabaseRole } from 'src/types/api-alias';
 
 export const ROLE_LIST: { [k in DatabaseRole]: number } = {
+  guest: 0,
   user: 1,
   member: 2,
   assistant: 3,

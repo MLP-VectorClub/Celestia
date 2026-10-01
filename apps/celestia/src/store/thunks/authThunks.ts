@@ -1,9 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { QueryClient } from '@tanstack/react-query';
 
-import { PostUsersRequest, PostUsersSigninRequest, User } from '@mlp-vectorclub/api-types';
+import { User } from '@mlp-vectorclub/api-types';
+import { currentUserFetcher } from 'src/fetchers/auth';
 import { UserService } from 'src/services';
 import { WithAppThunkExtra } from 'src/store/thunkTypes';
+import { PostUsersRequest, PostUsersSigninRequest } from 'src/types/auth';
 import { ENDPOINTS, requestPromiseMapper } from 'src/utils';
 
 const thunkModule = 'auth';
@@ -18,7 +20,7 @@ export const signInThunk = createAsyncThunk<User, PostUsersSigninRequest, WithAp
   async (params, { rejectWithValue, extra }) => {
     try {
       await requestPromiseMapper(UserService.signIn(params));
-      const data = await requestPromiseMapper(UserService.getMe());
+      const data = await currentUserFetcher();
 
       extra.queryCache.setQueryData([ENDPOINTS.USERS_ME], data);
       invalidateUserSpecificQueries(extra.queryCache);
@@ -48,7 +50,7 @@ export const registerThunk = createAsyncThunk<User, PostUsersRequest, WithAppThu
   async (params, { rejectWithValue, extra }) => {
     try {
       await requestPromiseMapper(UserService.register(params));
-      const data = await requestPromiseMapper(UserService.getMe());
+      const data = await currentUserFetcher();
 
       extra.queryCache.setQueryData([ENDPOINTS.USERS_ME], data);
       invalidateUserSpecificQueries(extra.queryCache);

@@ -1,6 +1,6 @@
 import {
-  GetAppearancesAllRequest,
   GetAppearancesAutocompleteRequest,
+  GetAppearancesFullRequest,
   GetAppearancesIdLocateRequest,
   GetAppearancesIdRequest,
   GetAppearancesIdSpriteRequest,
@@ -11,8 +11,8 @@ import {
   GetUserPrefsMeRequest,
   GetUsersDaUsernameRequest,
   GetUsersIdRequest,
-  GetUsersOauthSigninProviderRequest,
 } from '@mlp-vectorclub/api-types';
+import { GetUsersOauthSigninProviderRequest } from 'src/types/auth';
 import { buildUrl } from 'src/utils/url';
 
 export const ENDPOINTS = {
@@ -35,7 +35,7 @@ export const ENDPOINTS = {
   GUIDE_MAJOR_CHANGES: (params: GetColorGuideMajorChangesRequest) => buildUrl(`/color-guide/major-changes`, params),
   APPEARANCE: (params: GetAppearancesIdRequest) => buildUrl(`/appearances/${params.id}`),
   APPEARANCES: (params: GetAppearancesRequest) => buildUrl(`/appearances`, params),
-  APPEARANCES_FULL: (params: GetAppearancesAllRequest) => buildUrl(`/appearances/full`, params),
+  APPEARANCES_FULL: (params: GetAppearancesFullRequest) => buildUrl(`/appearances/full`, params),
   APPEARANCE_SPRITE: (params: GetAppearancesIdSpriteRequest) => buildUrl(`/appearances/${params.id}/sprite`, params),
   APPEARANCE_LOCATE: (data: GetAppearancesIdLocateRequest) => buildUrl(`/appearances/${data.id}/locate`),
   APPEARANCES_PINNED: (params: GetAppearancesPinnedRequest) => buildUrl(`/appearances/pinned`, params),

@@ -1,10 +1,11 @@
 import { IncomingMessage } from 'http';
 
-import { GetUserPrefsMeRequest, UserPrefs } from '@mlp-vectorclub/api-types';
+import { GetUserPrefsMeRequest } from '@mlp-vectorclub/api-types';
 import { UserService, defaultServices } from 'src/services';
+import { UserPrefs } from 'src/types/api-alias';
 import { requestPromiseMapper } from 'src/utils';
 
-export function prefsFetcher<K extends NonNullable<GetUserPrefsMeRequest['keys']>>(
+export function prefsFetcher<K extends ReadonlyArray<keyof UserPrefs>>(
   data?: { keys: K },
   req?: IncomingMessage
 ): () => Promise<Pick<UserPrefs, K[number]>>;

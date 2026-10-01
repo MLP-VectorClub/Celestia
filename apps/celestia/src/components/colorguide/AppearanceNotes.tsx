@@ -1,12 +1,12 @@
 import { FC, useMemo } from 'react';
 
-import { AppearanceOnly } from '@mlp-vectorclub/api-types';
+import { SlimAppearance } from '@mlp-vectorclub/api-types';
 import styles from 'modules/AppearancePage.module.scss';
 import { AppearanceNotesText } from 'src/components/colorguide/AppearanceNotesText';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { processAppearanceNotes } from 'src/utils/html-parsers/appearance-notes-parser';
 
-export const AppearanceNotes: FC<Pick<Partial<AppearanceOnly>, 'notes'>> = ({ notes }) => {
+export const AppearanceNotes: FC<Pick<Partial<SlimAppearance>, 'notes'>> = ({ notes }) => {
   const processedNotes = useMemo(() => (notes ? processAppearanceNotes(notes) : null), [notes]);
 
   if (processedNotes === null) return null;

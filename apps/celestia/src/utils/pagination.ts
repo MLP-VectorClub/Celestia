@@ -1,12 +1,12 @@
 import { range, uniq } from 'lodash';
 
-import { PageData } from '@mlp-vectorclub/api-types';
+import { Pagination } from '@mlp-vectorclub/api-types';
 
 export const GO_TO_ITEM = '\u{2026}';
 
 export type PaginationItems = Array<number | typeof GO_TO_ITEM>;
 
-type PageDataRelevantProps = Pick<PageData['pagination'], 'currentPage' | 'totalPages'>;
+type PageDataRelevantProps = Pick<Pagination, 'currentPage' | 'totalPages'>;
 
 export interface PaginationProps extends PageDataRelevantProps {
   relevantProps?: string[];

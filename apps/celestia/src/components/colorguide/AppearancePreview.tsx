@@ -1,11 +1,10 @@
 import classNames from 'classnames';
 import { FC, memo } from 'react';
 
-import { AppearancePreviewData } from '@mlp-vectorclub/api-types';
 import styles from 'modules/AppearancePreview.module.scss';
 
 interface PropTypes {
-  data?: AppearancePreviewData;
+  data?: string[];
   className: string;
 }
 

@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { FC, useCallback, useMemo } from 'react';
 import { Button, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 
-import { FullGuideSortField, GetAppearancesAllResult, GuideName } from '@mlp-vectorclub/api-types';
-import FullGuideGroups from 'src/components/colorguide/FullGuideGroups';
+import { GetAppearancesFullResult, GuideName } from '@mlp-vectorclub/api-types';
+import FullGuideAppearanceList from 'src/components/colorguide/FullGuideAppearanceList';
 import { GuideNotFound } from 'src/components/colorguide/GuideNotFound';
 import MajorChangesButton from 'src/components/colorguide/MajorChangesButton';
 import ReturnToGuideButton from 'src/components/colorguide/ReturnToGuideButton';
@@ -20,6 +20,7 @@ import { PATHS } from 'src/paths';
 import { useAppDispatch, wrapper } from 'src/store';
 import { Nullable, Optional, Translatable } from 'src/types';
 import { SSRMessages } from 'src/types';
+import { FullGuideSortField } from 'src/types/api-alias';
 import { TitleFactory } from 'src/types/title';
 import {
   fullListSortOptionsMap,
@@ -29,13 +30,14 @@ import {
   notFound,
   resolveGuideName,
 } from 'src/utils';
+import { sortFullGuide } from 'src/utils/color-guide';
 import { titleSetter } from 'src/utils/core';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
 interface PropTypes {
   guide: Nullable<GuideName>;
   sort: FullGuideSortField;
-  initialData: Nullable<GetAppearancesAllResult>;
+  initialData: Nullable<GetAppearancesFullResult>;
 }
 
 const titleFactory: TitleFactory<Pick<PropTypes, 'guide'>> = ({ guide }) => {
@@ -58,7 +60,8 @@ const FullGuidePage: NextPage<PropTypes> = ({ guide, sort, initialData }) => {
   const t = useTranslations();
   const dispatch = useAppDispatch();
   const { isStaff } = useAuth();
-  const data = useFullGuide({ guide, sort }, initialData || undefined);
+  const data = useFullGuide({ guide }, initialData || undefined);
+  const sortedAppearances = useMemo(() => data.appearances && sortFullGuide(data.appearances, sort), [data.appearances, sort]);
   const heading = t('colorGuide.fullList.heading', {
     guideName: getGuideLabel(guide),
   });
@@ -116,9 +119,7 @@ const FullGuidePage: NextPage<PropTypes> = ({ guide, sort, initialData }) => {
       </ButtonCollection>
 
       <StatusAlert status={data.status} subject="list of all entries" />
-      {typeof data.appearances !== 'undefined' && typeof data.groups !== 'undefined' && (
-        <FullGuideGroups appearances={data.appearances} groups={data.groups} />
-      )}
+      {sortedAppearances && <FullGuideAppearanceList appearances={sortedAppearances} />}
     </Content>
   );
 };
@@ -133,10 +134,10 @@ export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRMess
 
   const sort: FullGuideSortField = isValidFullListSortOption(query.sort_by) ? query.sort_by : 'relevance';
 
-  let initialData: Optional<GetAppearancesAllResult>;
+  let initialData: Optional<GetAppearancesFullResult>;
   if (guide) {
     try {
-      initialData = await fullGuideFetcher({ guide, sort })();
+      initialData = await fullGuideFetcher({ guide })();
     } catch (e) {
       handleDataFetchingError(ctx, e);
     }

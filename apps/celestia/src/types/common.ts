@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 
-import { GetUsersMeResult, User, ValidationErrorResponse } from '@mlp-vectorclub/api-types';
+import { User, ValidationErrorResponse } from '@mlp-vectorclub/api-types';
 
 export type TFunction = ReturnType<typeof useTranslations>;
 
@@ -92,7 +92,7 @@ export type UnifiedErrorResponse =
       type: UnifiedErrorResponseTypes.VALIDATION_ERROR;
     } & ValidationErrorResponse);
 
-export type FailsafeUser = GetUsersMeResult | (NullableProps<Omit<User, 'id'>, 'name' | 'avatarUrl' | 'email' | 'role'> & { id: null });
+export type FailsafeUser = User | (NullableProps<Omit<User, 'id'>, 'name' | 'avatarUrl' | 'role'> & { id: null });
 
 type TFuncParams = Parameters<TFunction>;
 export type Translatable = [TFuncParams[0]] | [TFuncParams[0], Exclude<TFuncParams[1], undefined>];

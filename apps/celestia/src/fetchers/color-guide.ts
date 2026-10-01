@@ -1,8 +1,8 @@
 import { IncomingMessage } from 'http';
 
 import {
-  GetAppearancesAllRequest,
   GetAppearancesAutocompleteRequest,
+  GetAppearancesFullRequest,
   GetAppearancesIdLocateRequest,
   GetAppearancesIdRequest,
   GetAppearancesPinnedRequest,
@@ -33,14 +33,14 @@ export const guideAutocompleteFetcher = (params: GuideAutocompleteFetcherParams,
   return requestPromiseMapper(service.getAutocompleteAppearances(params as GetAppearancesAutocompleteRequest));
 };
 
-export type FullGuideFetcherParams = NullableProps<GetAppearancesAllRequest, 'guide'>;
+export type FullGuideFetcherParams = NullableProps<GetAppearancesFullRequest, 'guide'>;
 
 export const fullGuideFetcher = (params: FullGuideFetcherParams, req?: IncomingMessage) => () => {
   if (!params.guide) return Promise.resolve(undefined);
 
   const service: ColorGuideService = req ? new ColorGuideService(req) : defaultServices.colorGuide;
 
-  return requestPromiseMapper(service.getFullList(params as GetAppearancesAllRequest));
+  return requestPromiseMapper(service.getFullList(params as GetAppearancesFullRequest));
 };
 
 export const guideIndexFetcher = (req?: IncomingMessage) => () => {

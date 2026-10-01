@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button } from 'reactstrap';
 
-import { GetAppearancesPinnedResult, GetAppearancesResult, GuideName } from '@mlp-vectorclub/api-types';
+import { GetAppearancesPinnedResult, GuideName } from '@mlp-vectorclub/api-types';
 import AppearanceItem from 'src/components/colorguide/AppearanceItem';
 import { GuideNotFound } from 'src/components/colorguide/GuideNotFound';
 import MajorChangesButton from 'src/components/colorguide/MajorChangesButton';
@@ -24,6 +24,7 @@ import { useAuth, useGuide, usePrefs, useTitleSetter } from 'src/hooks';
 import { PATHS } from 'src/paths';
 import { AppDispatch, wrapper } from 'src/store';
 import { Nullable, Optional, SSRMessages } from 'src/types';
+import { PagedAppearancesResult } from 'src/types/api-alias';
 import { TitleFactory } from 'src/types/title';
 import { getGuideLabel, getGuideTitle, handleDataFetchingError, notFound, resolveGuideName } from 'src/utils';
 import { titleSetter } from 'src/utils/core';
@@ -49,7 +50,7 @@ interface PropTypes {
   page: number;
   q: string;
   initialData: {
-    appearances: Nullable<GetAppearancesResult>;
+    appearances: Nullable<PagedAppearancesResult>;
     pinnedAppearances: Nullable<GetAppearancesPinnedResult>;
   };
 }
@@ -131,7 +132,7 @@ export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRMess
     q = query.q.trim();
   }
 
-  let appearances: Optional<GetAppearancesResult>;
+  let appearances: Optional<PagedAppearancesResult>;
   let pinnedAppearances: Optional<GetAppearancesPinnedResult>;
   if (guide) {
     try {

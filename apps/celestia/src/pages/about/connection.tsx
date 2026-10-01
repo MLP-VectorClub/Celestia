@@ -83,15 +83,6 @@ export const ConnectionPage: NextPage<PropTypes> = ({ connectingAddress, forward
       <p>
         <strong>{t('connection.userAgent')}:</strong> <code>{JSON.stringify(getServerInfo('userAgent'))}</code>
       </p>
-      <p>
-        <strong>{t('connection.deviceIdentifier')}:</strong>
-        <code>{JSON.stringify(getServerInfo('deviceIdentifier'))}</code>
-        <br />
-        <span className="text-info">
-          <InlineIcon icon="info" first />
-          {t('connection.deviceIdentifierInfo')}
-        </span>
-      </p>
 
       <Button onClick={makeStale} disabled={fetching}>
         <InlineIcon icon="sync" first loading={fetching} />

@@ -3,28 +3,29 @@ import { FC } from 'react';
 
 import { Sprite } from '@mlp-vectorclub/api-types';
 import styles from 'modules/SpriteColumn.module.scss';
-import { scaleResize } from 'src/utils';
+import { getSpriteUrl } from 'src/utils/color-guide';
 
 interface PropTypes {
+  appearanceId: number;
   sprite: Sprite | null;
   height?: number;
 }
 
-const SpriteImage: FC<PropTypes> = ({ sprite, height = 150 }) => {
+/**
+ * The contract does not send an aspect ratio, so the sprite is fitted into a square of the requested size
+ */
+const SpriteImage: FC<PropTypes> = ({ appearanceId, sprite, height = 150 }) => {
   if (!sprite) {
     return null;
   }
 
-  const [aspectWidth, aspectHeight] = sprite.aspectRatio;
-
-  const spriteStyle = scaleResize(aspectWidth, aspectHeight, 'height', height);
-
   return (
     <Image
       className={styles.spriteImage}
-      src={sprite.path}
-      width={spriteStyle.width}
-      height={spriteStyle.height}
+      src={getSpriteUrl(appearanceId, sprite, height > 300 ? 600 : 300)}
+      width={height}
+      height={height}
+      style={{ objectFit: 'contain' }}
       unoptimized
       alt="Sprite image"
     />

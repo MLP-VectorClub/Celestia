@@ -2,10 +2,10 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useCallback } from 'react';
 
 import {
-  GetAppearancesAllRequest,
-  GetAppearancesAllResult,
   GetAppearancesAutocompleteRequest,
   GetAppearancesAutocompleteResult,
+  GetAppearancesFullRequest,
+  GetAppearancesFullResult,
   GetAppearancesIdLocateRequest,
   GetAppearancesIdLocateResult,
   GetAppearancesIdRequest,
@@ -13,7 +13,6 @@ import {
   GetAppearancesPinnedRequest,
   GetAppearancesPinnedResult,
   GetAppearancesRequest,
-  GetAppearancesResult,
   GetColorGuideMajorChangesRequest,
   GetColorGuideMajorChangesResult,
   GetColorGuideResult,
@@ -36,13 +35,14 @@ import {
   pinnedAppearancesFetcher,
 } from 'src/fetchers';
 import { Status } from 'src/types';
+import { PagedAppearancesResult } from 'src/types/api-alias';
 import { ENDPOINTS, mapQueryStatus } from 'src/utils';
 
-interface GuideHookValue extends Partial<GetAppearancesResult> {
+interface GuideHookValue extends Partial<PagedAppearancesResult> {
   status: Status;
 }
 
-export function useGuide(params: GuideFetcherParams, initialData?: GetAppearancesResult): GuideHookValue {
+export function useGuide(params: GuideFetcherParams, initialData?: PagedAppearancesResult): GuideHookValue {
   const fetcher = useCallback(() => guideFetcher(params)(), [params]);
   const { status, fetchStatus, data } = useQuery({
     queryKey: [ENDPOINTS.APPEARANCES(params as GetAppearancesRequest)],
@@ -89,10 +89,10 @@ export function useGuideIndex(initialData?: GetColorGuideResult) {
   return data;
 }
 
-export function useFullGuide(params: FullGuideFetcherParams, initialData?: GetAppearancesAllResult) {
+export function useFullGuide(params: FullGuideFetcherParams, initialData?: GetAppearancesFullResult) {
   const fetcher = useCallback(() => fullGuideFetcher(params)(), [params]);
   const { data, status, fetchStatus } = useQuery({
-    queryKey: [ENDPOINTS.APPEARANCES_FULL(params as GetAppearancesAllRequest)],
+    queryKey: [ENDPOINTS.APPEARANCES_FULL(params as GetAppearancesFullRequest)],
     queryFn: fetcher,
     enabled: Boolean(params.guide),
     initialData,
@@ -100,7 +100,6 @@ export function useFullGuide(params: FullGuideFetcherParams, initialData?: GetAp
 
   return {
     appearances: data?.appearances,
-    groups: data?.groups,
     status: mapQueryStatus(status, fetchStatus),
   };
 }

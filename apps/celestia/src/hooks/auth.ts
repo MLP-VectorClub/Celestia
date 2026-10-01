@@ -8,10 +8,9 @@ import { ENDPOINTS, mapQueryStatus, permission } from 'src/utils';
 const guestUser: FailsafeUser = {
   id: null,
   name: null,
-  email: null,
   role: null,
   avatarUrl: null,
-  avatarProvider: 'gravatar',
+  avatarProvider: 'deviantart',
 };
 
 interface CurrentUserHookValue {
