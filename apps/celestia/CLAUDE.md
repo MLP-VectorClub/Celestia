@@ -1,1 +1,61 @@
 @AGENTS.md
+
+# Celestia: working notes
+
+Next.js (pages router, SSR) front end for the MLP Vector Club. It is being brought to parity with **Winterchilla** (the PHP/Twig site, API contract in
+`Winterchilla/public/dist/api.json`, behaviour pinned by `Winterchilla/tests/Browser/*`) on top of **Luna** (Laravel back end). The full plan, page inventory,
+status per phase and verification method live in [`docs/winterchilla-parity-plan.md`](../../docs/winterchilla-parity-plan.md); keep that file and this one in sync.
+
+## Ground rules
+
+- Types come from the contract: `packages/api-types` is generated from `api.json` (`API_JSON_PATH` in the git-ignored `packages/api-types/.env`, `pnpm build` there; `dist` is
+  git-ignored). Regenerate and fix `tsc` whenever Winterchilla ships a spec change. Luna owns auth (`/sanctum/csrf-cookie`, `/users/signin`, OAuth, tokens): those types are
+  hand-written in `src/types/auth.ts`; contract names that changed are mapped in `src/types/api-alias.ts`.
+- Build the UI from data. Winterchilla's rendered-HTML fields (`li`, `html`, `cgs`, `section`, `render`, `newhtml`, …) are not part of the contract: ignore them and refetch.
+- Reads: `getServerSideProps` → fetcher (`src/fetchers/content.ts`, `ResourceService` forwards the visitor's cookie/authorization) → React Query hydration via hooks
+  (`src/hooks/content.ts`). Writes: `useApiMutation` (`src/hooks/mutation.ts`) + a service in `src/services`; errors become `UnifiedErrorResponse`, show them with `describeApiError` /
+  `fieldErrors`; invalidate the affected query keys instead of patching from responses.
+- Send **JSON bodies, flags as 1/0** (Winterchilla reads JSON `false` as truthy). Always send an appearance's current `guide` on `PUT /appearances/{id}`.
+- `GET /config` is fetched once and cached (`configFetcher`, `useConfig`); regex patterns are `{source, flags}` → `compilePatterns`. Do not port Winterchilla's `export_vars`.
+- Do not deploy or touch production; the user decides that. Commit identity and trailers follow the session instructions.
+
+## Built (all compile, lint, unit tests and `next build` pass)
+
+- **Foundation:** contract types + compat layer, `/config`, resource fetchers/hooks, `useApiMutation`, `DialogProvider` (`useDialog().confirm`), `FormDialog`, `TransferList`.
+- **Read pages:** `/` redirect, `/show` list, `/episode/[id]` (`latest`, `S#E#`, numeric; canonical redirect), `/movie/[id]`, `/special/[id]`, `/events`, `/event/[id]`, `/cg`,
+  `/cg/[guide]` (+ `full` with server sort and groups, `changes`, `tags`, `v/[id]`), `/cg/v/[id]` short link, `/users`, `/users/[user]` (profile, contributions, personal guides,
+  awaiting approval), `/users/[user]/contrib/[type]`, `/users/[user]/cg`, `/users/[user]/cg/point-history`, `/users/[user]/cg/v/[id]`, about pages, `/oauth/[provider]`.
+- **Member writes:** post actions on show pages (reserve, finish with reserver-overwrite retry, approve, unfinish, remove approval, cancel reservation, delete request), add request /
+  reservation with image check, episode voting, account page (`/users/[user]/account`: preferences, Discord sync/unlink, sign out everywhere).
+- **Guide editing** (appearance page): metadata, tags, sprite upload/remove, pin/unpin, delete, color groups (create, edit, delete, re-order, apply template), related appearances and
+  linked shows.
+
+## Left to do
+
+- Cutie mark editor (`/appearances/{id}/cutie-marks`, `sanitize-svg`); full-list drag-and-drop (`PUT /appearances/order`).
+- Staff/admin: tag admin, show admin (create/edit/delete, prefill), user roles and personal-guide points, logs, notices, useful links, site settings, dev tools.
+- Pages not started: `/s/{id}` share redirect (needs a data-only `GET /posts/{id}/location`), `/episodes|movies/{page}` redirects, blending/picker tools, `/muffin-rating`, `/manifest`.
+  Dropped on purpose (not in the contract): PCG admin list, tag changes, browser-recognition, `/u/{uuid}`, appearance PNG/GPL exports (compose from `colorGroups`), sessions list.
+- Post edit/image/unbreak/staff reservations, event writes (disabled server-side), account password and e-mail (Luna's flows, Winterchilla's are `x-internal`).
+- Real sign-in: Celestia still uses Luna's flow; auth state is client-only (SSR shows the signed-out shell on account pages).
+- Nothing in the editing/write UI has been clicked through in a browser yet (no extension was available): only request shapes were exercised against the APIs.
+- i18n: new strings exist for `en` only (Crowdin handles the rest); several appearance-page strings are still hard-coded English.
+
+## Verifying locally
+
+- Unit/lint/types/build: `pnpm test`, `pnpm exec eslint .`, `pnpm exec tsc --noEmit`, `pnpm build` (run in this directory).
+- **Winterchilla API:** from a git worktree of Winterchilla `origin/main` (symlink `vendor`, copy `.env`; do not `git pull` in the shared tree) run
+  `scripts/serve-seeded-api.sh <port> <database>` (never port 8765 or `winterchilla_test`). Seeded logins `/test-login/9001` (user), `9002` (admin), `9003`. It wants a
+  `CSRF_TOKEN` request parameter, so writes from Celestia need a small proxy that maps Sanctum's `XSRF-TOKEN` cookie / `X-XSRF-TOKEN` header onto it.
+- **Luna API:** Luna's `scripts/serve-contract.sh` (default `http://127.0.0.1:8766`, no `/api/v0` prefix); bearer token from `POST /test/login/{id}`.
+- Run Celestia against either without touching `.env`:
+  `NEXT_PUBLIC_BACKEND_HOST=<api base> NEXT_PUBLIC_FRONTEND_HOST=http://127.0.0.1:3100 NEXT_PUBLIC_CDN_DOMAIN=127.0.0.1 NEXT_PUBLIC_API_PREFIX=/api pnpm exec next dev -p 3100 -H 127.0.0.1`
+  (only one dev server per checkout). Elasticsearch-backed pages (guide search, autocomplete) answer 503 without ES.
+- Contract check: validate GET responses against `api.json` with Ajv (strip `additionalProperties: false`, convert `nullable`); this found most spec/runtime mismatches reported so far.
+
+## Open issues reported to the other sessions (not fixed on this side)
+
+- Winterchilla: `PUT /appearances/{id}` without `guide` orphans the appearance; JSON `false` is truthy; `p_homelastep`/`p_hidepcg`/`ep_noappprev` unnormalized; `allowOverwriteReserver`
+  missing from the documented finish body; `PUT /users/{id}/preferences/{key}` body (`value`) undocumented; `p_vectorapp` options not exposed.
+- Luna: `/appearances/full` items lack `tags`/`notes` (full list page 500s); `ownerId` missing on `PreviewAppearance` payloads; `p_vectorapp` null instead of string; posts, Discord,
+  cutie marks still being built.
