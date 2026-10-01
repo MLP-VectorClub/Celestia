@@ -8,6 +8,7 @@ import { DetailedAppearance, GuideName } from '@mlp-vectorclub/api-types';
 import styles from 'modules/AppearancePage.module.scss';
 import { AppearanceColorGroups } from 'src/components/colorguide/AppearanceColorGroups';
 import { AppearanceCutieMarks } from 'src/components/colorguide/AppearanceCutieMarks';
+import { AppearanceEditActions } from 'src/components/colorguide/AppearanceEditActions';
 import { AppearanceLink } from 'src/components/colorguide/AppearanceLink';
 import { AppearanceNotes } from 'src/components/colorguide/AppearanceNotes';
 import AppearanceTags from 'src/components/colorguide/AppearanceTags';
@@ -21,7 +22,7 @@ import InlineIcon from 'src/components/shared/InlineIcon';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import StatusAlert from 'src/components/shared/StatusAlert';
 import { APP_HOST } from 'src/config';
-import { useAuth, useDetailedAppearance } from 'src/hooks';
+import { useDetailedAppearance } from 'src/hooks';
 import { PATHS } from 'src/paths';
 import { Nullable } from 'src/types';
 import { assembleSeoUrl } from 'src/utils';
@@ -41,7 +42,6 @@ interface SeoData {
 }
 
 export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppearance }) => {
-  const { isStaff } = useAuth();
   const { appearance, status } = useDetailedAppearance({ id }, initialAppearance || undefined);
 
   const seoData = useMemo<SeoData | null>(
@@ -107,18 +107,7 @@ export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppe
           Download swatch file
         </Button>
         {shortUrl && <ShareAppearanceButton shortUrl={shortUrl} />}
-        {isStaff && (
-          <>
-            <Button color="ui" size="sm" disabled>
-              <InlineIcon icon="pencil-alt" first />
-              Edit metadata
-            </Button>
-            <Button color="danger" size="sm" disabled>
-              <InlineIcon icon="trash" first />
-              Delete appearance
-            </Button>
-          </>
-        )}
+        <AppearanceEditActions appearance={appearance} />
       </ButtonCollection>
 
       <StatusAlert status={status} subject="appearance" />

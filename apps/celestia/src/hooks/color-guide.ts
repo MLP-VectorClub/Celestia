@@ -110,6 +110,7 @@ export function usePinnedAppearances(params: PinnedAppearancesFetcherParams, ini
   const { data } = useQuery({
     queryKey: [ENDPOINTS.APPEARANCES_PINNED(params as GetAppearancesPinnedRequest)],
     queryFn: fetcher,
+    enabled: Boolean(params.guide),
     initialData,
   });
 
