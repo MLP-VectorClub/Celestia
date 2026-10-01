@@ -50,7 +50,7 @@ Built (read-only, SSR with React Query hydration, `tsc`/lint/vitest/build green,
 cache + pattern compiler (unit tested), `ResourceService`/`content` fetchers and hooks, `/events`, `/event/[id]`, `/cg/[guide]/tags`, full profile
 (`/users/[user]`: previous names, Discord, personal guides, awaiting approval, contribution counts), `/users/[user]/contrib/[type]`, `/users/[user]/cg`,
 `/users/[user]/cg/point-history`, `/users/[user]/cg/v/[id]` (shares `AppearanceView` with `/cg/[guide]/v/[id]`, which now shows related shows and related
-appearances). Not done yet from phase 1: episode/movie page and its redirects (`/show/latest`, season/episode filters are available), `/s/{id}`, `/episodes|movies/{page}` redirects.
+appearances). Also built: `/episode/[id]`, `/movie/[id]`, `/special/[id]` (resolves `latest`, `S#E#` and numeric IDs, canonical redirect, related appearances, vote results, request and reservation lists as data; no actions yet). Not done yet from phase 1: `/s/{id}`, `/episodes|movies/{page}` redirects.
 Notes: event entry images are remote URLs (check the CSP `img-src` before relying on them); the short link `/cg/v/{id}` now resolves through the full appearance because
 `PreviewAppearance` (locate) has no owner for personal-guide appearances.
 

@@ -7,6 +7,12 @@ import {
   GetEventsIdResult,
   GetEventsRequest,
   GetEventsResult,
+  GetPostsRequest,
+  GetPostsResult,
+  GetShowIdRequest,
+  GetShowIdResult,
+  GetShowIdVoteRequest,
+  GetShowIdVoteResult,
   GetTagsRequest,
   GetTagsResult,
   GetUsersIdContributionsTypeRequest,
@@ -25,9 +31,13 @@ import {
   eventsFetcher,
   personalGuideFetcher,
   pointHistoryFetcher,
+  postsFetcher,
   profileFetcher,
+  showFetcher,
+  showVoteFetcher,
   tagsFetcher,
 } from 'src/fetchers';
+import { ShowEntry } from 'src/types/api-alias';
 import { ENDPOINTS, mapQueryStatus } from 'src/utils';
 import { compilePatterns } from 'src/utils/config';
 
@@ -113,4 +123,31 @@ export function usePointHistory(
     initialData,
   });
   return { data, status: mapQueryStatus(status, fetchStatus) };
+}
+
+export function useShowEntry(params: GetShowIdRequest, initialData?: GetShowIdResult) {
+  const { data, status, fetchStatus } = useQuery({
+    queryKey: [ENDPOINTS.SHOW_BY_ID(params)],
+    queryFn: showFetcher(params),
+    initialData,
+  });
+  return { show: data?.show as ShowEntry | undefined, status: mapQueryStatus(status, fetchStatus) };
+}
+
+export function useShowVotes(params: GetShowIdVoteRequest, initialData?: GetShowIdVoteResult) {
+  const { data, status, fetchStatus } = useQuery({
+    queryKey: [ENDPOINTS.SHOW_VOTE(params)],
+    queryFn: showVoteFetcher(params),
+    initialData,
+  });
+  return { votes: data?.data, status: mapQueryStatus(status, fetchStatus) };
+}
+
+export function usePosts(params: GetPostsRequest, initialData?: GetPostsResult) {
+  const { data, status, fetchStatus } = useQuery({
+    queryKey: [ENDPOINTS.POSTS(params)],
+    queryFn: postsFetcher(params),
+    initialData,
+  });
+  return { posts: data?.posts, status: mapQueryStatus(status, fetchStatus) };
 }

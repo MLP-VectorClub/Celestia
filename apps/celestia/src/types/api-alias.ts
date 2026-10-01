@@ -3,6 +3,7 @@ import {
   GetAboutConnectionResult,
   GetAppearancesFullRequest,
   GetAppearancesFullResult,
+  GetShowIdResult,
   GetUsersMeResult,
   GetUsersResult,
   SlimGuideTag,
@@ -29,5 +30,7 @@ export type CutieMarkFacing = CutieMark['facing'];
 export type VectorApp = string;
 export type { UserPrefs } from '@mlp-vectorclub/api-types';
 export type CurrentUser = GetUsersMeResult['user'];
+/** The contract's `Show` schema does not mark anything as required, but every entry the API sends has all of its properties */
+export type ShowEntry = Required<GetShowIdResult['show']>;
 export type FullGuideSortField = NonNullable<GetAppearancesFullRequest['sort']>;
 export type FullGuideAppearance = GetAppearancesFullResult['appearances'][number];

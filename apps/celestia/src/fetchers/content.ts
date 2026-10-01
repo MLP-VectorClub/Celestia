@@ -6,6 +6,15 @@ import {
   GetEventsIdResult,
   GetEventsRequest,
   GetEventsResult,
+  GetPostsRequest,
+  GetPostsResult,
+  GetShowIdRequest,
+  GetShowIdResult,
+  GetShowIdVoteRequest,
+  GetShowIdVoteResult,
+  GetShowLatestResult,
+  GetShowRequest,
+  GetShowResult,
   GetTagsRequest,
   GetTagsResult,
   GetUsersIdContributionsTypeRequest,
@@ -60,3 +69,17 @@ export const personalGuideFetcher = (params: GetUsersIdPersonalGuideAppearancesR
 
 export const pointHistoryFetcher = (params: GetUsersIdPersonalGuidePointHistoryRequest, req?: IncomingMessage) => () =>
   fetchResource<GetUsersIdPersonalGuidePointHistoryResult>(ENDPOINTS.USER_PCG_POINT_HISTORY(params), req);
+
+export const showFetcher = (params: GetShowIdRequest, req?: IncomingMessage) => () =>
+  fetchResource<GetShowIdResult>(ENDPOINTS.SHOW_BY_ID(params), req);
+
+export const latestShowFetcher = (req?: IncomingMessage) => () => fetchResource<GetShowLatestResult>(ENDPOINTS.SHOW_LATEST, req);
+
+export const showVoteFetcher = (params: GetShowIdVoteRequest, req?: IncomingMessage) => () =>
+  fetchResource<GetShowIdVoteResult>(ENDPOINTS.SHOW_VOTE(params), req);
+
+export const postsFetcher = (params: GetPostsRequest, req?: IncomingMessage) => () =>
+  fetchResource<GetPostsResult>(ENDPOINTS.POSTS(params), req);
+
+export const showListLookupFetcher = (params: GetShowRequest, req?: IncomingMessage) => () =>
+  fetchResource<GetShowResult>(ENDPOINTS.SHOW(params), req);

@@ -77,5 +77,9 @@ export const PATHS = {
   PCG_APPEARANCE: (ownerId: Numeric, { id, label }: Pick<PreviewAppearance, 'id' | 'label'>) =>
     `/users/${ownerId}/cg/v/${pathSegmentWithId(id, label)}`,
   USER_LONG: ({ id, name }: PublicUser) => `/users/${pathSegmentWithId(id, name)}`,
-  EPISODE: (show: ShowListItem) => `/episode/${seasonEpisodeToString(show)}-${makeUrlSafe(show.title)}`,
+  /** Episodes are addressed by season and episode, everything else (movies, specials) by its ID */
+  EPISODE: (show: Pick<ShowListItem, 'id' | 'season' | 'episode' | 'parts' | 'title'> & { type: string }) =>
+    show.type === 'episode' && show.season !== null && show.episode !== null
+      ? `/episode/${seasonEpisodeToString(show)}-${makeUrlSafe(show.title)}`
+      : `/${show.type}/${pathSegmentWithId(show.id, show.title)}`,
 };

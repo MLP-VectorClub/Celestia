@@ -1,0 +1,126 @@
+import { format } from 'date-fns';
+import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+import { FC, useMemo } from 'react';
+import { Progress } from 'reactstrap';
+
+import { GetPostsResult, GetShowIdResult, GetShowIdVoteResult } from '@mlp-vectorclub/api-types';
+import { AppearanceLink } from 'src/components/colorguide/AppearanceLink';
+import Content from 'src/components/shared/Content';
+import StandardHeading from 'src/components/shared/StandardHeading';
+import StatusAlert from 'src/components/shared/StatusAlert';
+import { PostList } from 'src/components/show/PostList';
+import { useShowEntry, useShowVotes, useTitleSetter } from 'src/hooks';
+import { PATHS } from 'src/paths';
+import { useAppDispatch } from 'src/store';
+import { Nullable, Translatable } from 'src/types';
+import { ShowEntry } from 'src/types/api-alias';
+import { TitleFactory } from 'src/types/title';
+import { seasonEpisodeToString } from 'src/utils/show';
+
+export interface ShowEntryPageProps {
+  id: number;
+  initialShow: Nullable<GetShowIdResult>;
+  initialRequests: Nullable<GetPostsResult>;
+  initialReservations: Nullable<GetPostsResult>;
+  initialVotes: Nullable<GetShowIdVoteResult>;
+}
+
+export const showTitleFactory: TitleFactory<{ show: Nullable<ShowEntry> }> = ({ show }) => {
+  const label: string | Translatable = show ? show.title : ['show.entry.notFound'];
+  return {
+    title: label,
+    breadcrumbs: [
+      { linkProps: { href: PATHS.SHOW }, label: ['common.titles.show'] },
+      { label, active: true },
+    ],
+  };
+};
+
+const VoteResults: FC<{ votes: Record<string, number> }> = ({ votes }) => {
+  const t = useTranslations();
+  const total = Object.values(votes).reduce((sum, n) => sum + n, 0);
+  if (total === 0) return <p className="text-muted">{t('show.entry.noVotes')}</p>;
+  return (
+    <div>
+      {[5, 4, 3, 2, 1].map((score) => {
+        const count = votes[String(score)] ?? 0;
+        return (
+          <div key={score} className="d-flex align-items-center mb-1">
+            <span className="me-2" style={{ width: '5rem' }}>
+              {t('show.entry.scoreLabel', { score })}
+            </span>
+            <Progress value={(count / total) * 100} className="flex-grow-1 me-2" />
+            <span>{count}</span>
+          </div>
+        );
+      })}
+      <small className="text-muted">{t('show.entry.voteCount', { count: total })}</small>
+    </div>
+  );
+};
+
+export const ShowEntryPage: FC<ShowEntryPageProps> = ({ id, initialShow, initialRequests, initialReservations, initialVotes }) => {
+  const t = useTranslations();
+  const dispatch = useAppDispatch();
+  const { show, status } = useShowEntry({ id }, initialShow || undefined);
+  const { votes } = useShowVotes({ id }, initialVotes || undefined);
+
+  const titleData = useMemo(() => showTitleFactory({ show: show || null }), [show]);
+  useTitleSetter(dispatch, titleData);
+
+  if (!show) {
+    return (
+      <Content>
+        <StandardHeading heading={t('show.entry.notFound')} lead={t('show.entry.checkYourSpelling')} />
+        <StatusAlert status={status} subject={t('show.entry.loadingSubject')} />
+      </Content>
+    );
+  }
+
+  const code = show.type === 'episode' ? seasonEpisodeToString(show) : null;
+  return (
+    <Content>
+      <StandardHeading
+        heading={show.title}
+        lead={
+          <>
+            {code && `${code} · `}
+            <time dateTime={show.airs}>
+              {show.aired ? t('show.entry.aired') : t('show.entry.willAir')}{' '}
+              {format(new Date(show.airs ?? show.willAir), t('show.index.airDateFormat'))}
+            </time>
+          </>
+        }
+      />
+      {show.notes && <p className="text-center">{show.notes}</p>}
+
+      <section>
+        <h2>{t('show.entry.relatedAppearances')}</h2>
+        {show.relatedAppearances.length === 0 ? (
+          <p className="text-muted">{t('show.entry.noRelatedAppearances')}</p>
+        ) : (
+          <ul className="list-unstyled">
+            {show.relatedAppearances.map((appearance) => (
+              <li key={appearance.id}>
+                <AppearanceLink {...appearance} />
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      {show.aired && show.type === 'episode' && votes && (
+        <section>
+          <h2>{t('show.entry.votes')}</h2>
+          <VoteResults votes={votes} />
+        </section>
+      )}
+
+      <PostList showId={id} kind="request" initialData={initialRequests || undefined} />
+      <PostList showId={id} kind="reservation" initialData={initialReservations || undefined} />
+
+      <Link href={PATHS.SHOW}>{t('show.entry.backToList')}</Link>
+    </Content>
+  );
+};

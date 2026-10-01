@@ -17,5 +17,42 @@
       "addNoun": "Entry"
     },
     "airDateFormat": "EEEE, do MMMM yyyy, H:mm:ss"
+  },
+  "entry": {
+    "notFound": "Show entry not found",
+    "checkYourSpelling": "Please check the URL for any typos",
+    "aired": "Aired",
+    "willAir": "Will air",
+    "airs": "Airs",
+    "backToList": "All shows",
+    "relatedAppearances": "Characters and appearances",
+    "noRelatedAppearances": "No color guide entries are linked to this entry yet",
+    "votes": "Ratings",
+    "noVotes": "Nobody has rated this yet",
+    "voteCount": "{count, plural, one {# vote} other {# votes}}",
+    "scoreLabel": "{score, plural, one {# star} other {# stars}}",
+    "loadingSubject": "show entry",
+    "breadcrumb": "Show",
+    "unknownType": "Show entry"
+  },
+  "post": {
+    "requestsHeading": "Requests",
+    "reservationsHeading": "Reservations",
+    "noRequests": "There are no requests yet",
+    "noReservations": "There are no reservations yet",
+    "loadingSubject": "posts",
+    "requested": "Requested",
+    "reserved": "Added",
+    "by": "by",
+    "reservedBy": "Reserved by",
+    "finishedAs": "Finished as",
+    "approved": "Approved",
+    "broken": "Image unavailable",
+    "overdue": "Overdue",
+    "types": {
+      "chr": "Character",
+      "obj": "Object",
+      "bg": "Background"
+    }
   }
 }
