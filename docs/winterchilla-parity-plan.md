@@ -74,7 +74,15 @@ Built: `useApiMutation` (API errors become `UnifiedErrorResponse`, `describeApiE
 `FormDialog`, `PostService`, post actions on every post (reserve, mark finished with the reserver-overwrite retry, approve, unfinish, remove approval, cancel
 reservation, delete request) driven by `getPostActions` (unit tested), add request / add reservation dialogs with image check, and voting on aired episodes.
 Verified request shapes and conflicts with a Sanctum-style cookie + `X-XSRF-TOKEN` client against the seeded API (through a throwaway proxy that turns the header into
-Winterchilla's `CSRF_TOKEN` parameter); the UI itself was not clicked through (no browser extension available). Also built: the account page (`/users/[user]/account`: preference switches/selects through `PUT /users/{id}/preferences/{key}`, Discord sync/unlink, sign out everywhere; password and e-mail stay with Luna). Its content is client-rendered (auth state is not available during SSR yet), so it was only checked for compilation and the SSR shell. Next: guide editing (appearance meta, tags, color groups, sprite, cutie marks, relations).
+Winterchilla's `CSRF_TOKEN` parameter); the UI itself was not clicked through (no browser extension available). Also built: the account page (`/users/[user]/account`: preference switches/selects through `PUT /users/{id}/preferences/{key}`, Discord sync/unlink, sign out everywhere; password and e-mail stay with Luna). Its content is client-rendered (auth state is not available during SSR yet), so it was only checked for compilation and the SSR shell. 
+### Phase 3 status (2026-10-01)
+
+Built (guide editing on the appearance page, gated by `canEdit` / staff role): metadata (always sends the current `guide`: omitting it moves the appearance to a
+personal guide on Winterchilla), tags (plain text with `origTags`), sprite upload/remove, pin/unpin, delete, color group create/edit/delete/re-order/apply template,
+related appearances and linked shows (transfer list). Not done: cutie mark editor (`/cutie-marks`, `sanitize-svg`), full-list drag-and-drop ordering (`PUT /appearances/order`),
+tag admin, show admin, user role / PCG points, logs, notices, useful links, settings.
+Checked: request bodies of these flows against Luna (`:8766`, bearer token) and Winterchilla (`:8768` through the CSRF proxy); UI not clicked through.
+
 
 ## 2. Page inventory
 

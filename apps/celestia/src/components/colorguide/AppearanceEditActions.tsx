@@ -4,6 +4,7 @@ import { Alert, Button } from 'reactstrap';
 
 import { DetailedAppearance } from '@mlp-vectorclub/api-types';
 import { AppearanceMetaDialog } from 'src/components/colorguide/AppearanceMetaDialog';
+import { AppearanceRelationsDialog } from 'src/components/colorguide/AppearanceRelationsDialog';
 import { AppearanceTagsDialog } from 'src/components/colorguide/AppearanceTagsDialog';
 import { SpriteDialog } from 'src/components/colorguide/SpriteDialog';
 import InlineIcon from 'src/components/shared/InlineIcon';
@@ -13,7 +14,7 @@ import { PATHS } from 'src/paths';
 import { AppearanceEditService } from 'src/services/appearance-edit';
 import { ENDPOINTS } from 'src/utils';
 
-type Dialogs = 'meta' | 'tags' | 'sprite' | null;
+type Dialogs = 'meta' | 'tags' | 'sprite' | 'relations' | 'shows' | null;
 
 /**
  * Editing controls of the appearance page. `canEdit` comes from the API, staff-only actions are additionally gated by role
@@ -55,6 +56,18 @@ export const AppearanceEditActions: FC<{ appearance: DetailedAppearance }> = ({ 
         <InlineIcon icon="image" first />
         Sprite
       </Button>
+      {appearance.guide !== null && (
+        <Button color="ui" size="sm" onClick={() => setOpen('relations')}>
+          <InlineIcon icon="link" first />
+          Related
+        </Button>
+      )}
+      {isStaff && (
+        <Button color="ui" size="sm" onClick={() => setOpen('shows')}>
+          <InlineIcon icon="video" first />
+          Shows
+        </Button>
+      )}
       {pinnable && (
         <Button color="ui" size="sm" onClick={() => pinToggle.mutate()} disabled={pinToggle.isPending}>
           {isPinned ? 'Unpin' : 'Pin'}
@@ -87,6 +100,17 @@ export const AppearanceEditActions: FC<{ appearance: DetailedAppearance }> = ({ 
       )}
       <AppearanceMetaDialog appearance={appearance} isOpen={open === 'meta'} onClose={() => setOpen(null)} />
       <AppearanceTagsDialog appearanceId={appearance.id} isOpen={open === 'tags'} onClose={() => setOpen(null)} />
+      {appearance.guide !== null && (
+        <AppearanceRelationsDialog
+          appearanceId={appearance.id}
+          kind="relations"
+          isOpen={open === 'relations'}
+          onClose={() => setOpen(null)}
+        />
+      )}
+      {isStaff && (
+        <AppearanceRelationsDialog appearanceId={appearance.id} kind="shows" isOpen={open === 'shows'} onClose={() => setOpen(null)} />
+      )}
       <SpriteDialog
         appearanceId={appearance.id}
         hasSprite={Boolean(appearance.sprite)}
