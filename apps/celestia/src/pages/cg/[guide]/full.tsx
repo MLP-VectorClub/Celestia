@@ -5,7 +5,7 @@ import { FC, useCallback, useMemo } from 'react';
 import { Button, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 
 import { GetAppearancesFullResult, GuideName } from '@mlp-vectorclub/api-types';
-import FullGuideAppearanceList from 'src/components/colorguide/FullGuideAppearanceList';
+import FullGuideGroups from 'src/components/colorguide/FullGuideGroups';
 import { GuideNotFound } from 'src/components/colorguide/GuideNotFound';
 import MajorChangesButton from 'src/components/colorguide/MajorChangesButton';
 import ReturnToGuideButton from 'src/components/colorguide/ReturnToGuideButton';
@@ -30,7 +30,6 @@ import {
   notFound,
   resolveGuideName,
 } from 'src/utils';
-import { sortFullGuide } from 'src/utils/color-guide';
 import { titleSetter } from 'src/utils/core';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
@@ -60,8 +59,7 @@ const FullGuidePage: NextPage<PropTypes> = ({ guide, sort, initialData }) => {
   const t = useTranslations();
   const dispatch = useAppDispatch();
   const { isStaff } = useAuth();
-  const data = useFullGuide({ guide }, initialData || undefined);
-  const sortedAppearances = useMemo(() => data.appearances && sortFullGuide(data.appearances, sort), [data.appearances, sort]);
+  const data = useFullGuide({ guide, sort }, initialData || undefined);
   const heading = t('colorGuide.fullList.heading', {
     guideName: getGuideLabel(guide),
   });
@@ -119,7 +117,9 @@ const FullGuidePage: NextPage<PropTypes> = ({ guide, sort, initialData }) => {
       </ButtonCollection>
 
       <StatusAlert status={data.status} subject="list of all entries" />
-      {sortedAppearances && <FullGuideAppearanceList appearances={sortedAppearances} />}
+      {typeof data.appearances !== 'undefined' && typeof data.groups !== 'undefined' && (
+        <FullGuideGroups appearances={data.appearances} groups={data.groups} />
+      )}
     </Content>
   );
 };
@@ -137,7 +137,7 @@ export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRMess
   let initialData: Optional<GetAppearancesFullResult>;
   if (guide) {
     try {
-      initialData = await fullGuideFetcher({ guide })();
+      initialData = await fullGuideFetcher({ guide, sort })();
     } catch (e) {
       handleDataFetchingError(ctx, e);
     }

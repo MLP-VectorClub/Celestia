@@ -23,7 +23,7 @@ const PINNED_TOOLTIP = 'Pinned';
 const AppearanceItem: FC<AppearanceItemProps> = ({ appearance, pinned = false, guide }) => {
   const pinRef = useRef<SVGSVGElement>(null);
 
-  const appearanceLink = useMemo(() => PATHS.APPEARANCE({ ...appearance, guide: guide ?? null }), [appearance, guide]);
+  const appearanceLink = useMemo(() => PATHS.APPEARANCE({ ...appearance, guide: appearance.guide ?? guide ?? null }), [appearance, guide]);
 
   return (
     <Card

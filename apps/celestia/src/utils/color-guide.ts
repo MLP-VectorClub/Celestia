@@ -203,20 +203,6 @@ export const yiq = (rgb: RgbColors): number => (rgb.red * 299 + rgb.green * 587 
 export const getSpriteUrl = (appearanceId: number, sprite: Pick<Sprite, 'hash'>, size: 300 | 600 = 300): string =>
   `${API_PREFIX}${buildUrl(`/appearances/${appearanceId}/sprite`, { size, hash: sprite.hash })}`;
 
-/**
- * The contract has no explicit relevance ordering parameter for the full list, so `relevance` keeps the order the API returned
- */
-export const sortFullGuide = <T extends Pick<SlimAppearance, 'label' | 'createdAt'>>(appearances: T[], sort: FullGuideSortField): T[] => {
-  switch (sort) {
-    case 'label':
-      return [...appearances].sort((a, b) => a.label.localeCompare(b.label));
-    case 'added':
-      return [...appearances].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-    default:
-      return appearances;
-  }
-};
-
 /** Character tags that the label does not already mention, to show as "AKA" */
 export const getNonObviousCharacterTags = (appearance: Pick<SlimAppearance, 'label' | 'tags'>): string[] => {
   const lowerCaseLabel = appearance.label.toLowerCase();

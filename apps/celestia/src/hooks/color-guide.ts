@@ -13,6 +13,7 @@ import {
   GetAppearancesPinnedRequest,
   GetAppearancesPinnedResult,
   GetAppearancesRequest,
+  GetAppearancesResult,
   GetColorGuideMajorChangesRequest,
   GetColorGuideMajorChangesResult,
   GetColorGuideResult,
@@ -35,14 +36,13 @@ import {
   pinnedAppearancesFetcher,
 } from 'src/fetchers';
 import { Status } from 'src/types';
-import { PagedAppearancesResult } from 'src/types/api-alias';
 import { ENDPOINTS, mapQueryStatus } from 'src/utils';
 
-interface GuideHookValue extends Partial<PagedAppearancesResult> {
+interface GuideHookValue extends Partial<GetAppearancesResult> {
   status: Status;
 }
 
-export function useGuide(params: GuideFetcherParams, initialData?: PagedAppearancesResult): GuideHookValue {
+export function useGuide(params: GuideFetcherParams, initialData?: GetAppearancesResult): GuideHookValue {
   const fetcher = useCallback(() => guideFetcher(params)(), [params]);
   const { status, fetchStatus, data } = useQuery({
     queryKey: [ENDPOINTS.APPEARANCES(params as GetAppearancesRequest)],
@@ -100,6 +100,7 @@ export function useFullGuide(params: FullGuideFetcherParams, initialData?: GetAp
 
   return {
     appearances: data?.appearances,
+    groups: data?.groups,
     status: mapQueryStatus(status, fetchStatus),
   };
 }

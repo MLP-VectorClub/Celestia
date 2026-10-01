@@ -1,0 +1,26 @@
+import { keyBy } from 'lodash';
+import { FC, useMemo } from 'react';
+
+import { GetAppearancesFullResult, SlimAppearance } from '@mlp-vectorclub/api-types';
+import FullGuideAppearanceList from 'src/components/colorguide/FullGuideAppearanceList';
+
+const FullGuideGroups: FC<GetAppearancesFullResult> = ({ appearances, groups }) => {
+  const appearanceRecord = useMemo<Record<number, SlimAppearance>>(() => keyBy(appearances, 'id'), [appearances]);
+
+  if (groups.length === 0) {
+    return <FullGuideAppearanceList appearances={appearances} />;
+  }
+
+  return (
+    <>
+      {groups.map((g) => (
+        <section key={g.name}>
+          <h2>{g.name}</h2>
+          <FullGuideAppearanceList appearances={g.appearanceIds.map((id) => appearanceRecord[id])} />
+        </section>
+      ))}
+    </>
+  );
+};
+
+export default FullGuideGroups;

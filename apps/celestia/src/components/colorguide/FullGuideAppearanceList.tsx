@@ -30,13 +30,13 @@ const FullGuideAppearanceList: FC<{ appearances: SlimAppearance[] }> = ({ appear
           </div>
         );
       } else {
-        sprite = <AppearancePreview className={classNames('mb-2', styles.appearancePreview)} />;
+        sprite = <AppearancePreview data={a.previewData} className={classNames('mb-2', styles.appearancePreview)} />;
       }
 
       const nonObviousCharacterTags = getNonObviousCharacterTags(a);
 
       return (
-        <Link key={a.id} href={PATHS.SHORT_APPEARANCE(a)} passHref legacyBehavior>
+        <Link key={a.id} href={PATHS.APPEARANCE(a)} passHref legacyBehavior>
           <Card color="link" tag="a" className="me-2 mb-2">
             <CardBody className={classNames('p-2', styles.cardBody)}>
               {sprite}

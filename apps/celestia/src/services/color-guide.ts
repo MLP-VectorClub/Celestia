@@ -12,20 +12,19 @@ import {
   GetAppearancesPinnedRequest,
   GetAppearancesPinnedResult,
   GetAppearancesRequest,
+  GetAppearancesResult,
   GetColorGuideMajorChangesRequest,
   GetColorGuideMajorChangesResult,
   GetColorGuideResult,
 } from '@mlp-vectorclub/api-types';
 import { Service } from 'src/services/service-class';
-import { PagedAppearancesResult } from 'src/types/api-alias';
 import { ENDPOINTS } from 'src/utils';
 
 export class ColorGuideService extends Service {
   getAppearance = (data: GetAppearancesIdRequest) =>
     Axios.get<GetAppearancesIdResult>(ENDPOINTS.APPEARANCE(data), this.getRequestOptions());
 
-  getAppearances = (data: GetAppearancesRequest) =>
-    Axios.get<PagedAppearancesResult>(ENDPOINTS.APPEARANCES(data), this.getRequestOptions());
+  getAppearances = (data: GetAppearancesRequest) => Axios.get<GetAppearancesResult>(ENDPOINTS.APPEARANCES(data), this.getRequestOptions());
 
   getIndexData = () => Axios.get<GetColorGuideResult>(ENDPOINTS.GUIDE_INDEX, this.getRequestOptions());
 

@@ -75,9 +75,7 @@ const titleFactory: TitleFactory<Pick<PropTypes, 'guide' | 'initialData'>> = ({ 
 
 const AppearancePage: NextPage<PropTypes> = ({ guide, id, initialData }) => {
   const { isStaff } = useAuth();
-  const { appearance: fetchedAppearance, status } = useDetailedAppearance({ id }, initialData.appearance || undefined);
-  // The contract's appearance has no `guide` of its own, the URL is the source of truth
-  const appearance = useMemo(() => (fetchedAppearance ? { ...fetchedAppearance, guide } : undefined), [fetchedAppearance, guide]);
+  const { appearance, status } = useDetailedAppearance({ id }, initialData.appearance || undefined);
   const dispatch = useAppDispatch();
   const titleData = useMemo(() => titleFactory({ initialData, guide }), [guide, initialData]);
   useTitleSetter(dispatch, titleData);
@@ -125,7 +123,7 @@ const AppearancePage: NextPage<PropTypes> = ({ guide, id, initialData }) => {
         heading={appearance.label}
         lead={
           <>
-            from the <GuideLink name={appearance.guide} title />
+            from the <GuideLink name={appearance.guide ?? guide} title />
           </>
         }
       />
@@ -155,7 +153,7 @@ const AppearancePage: NextPage<PropTypes> = ({ guide, id, initialData }) => {
 
       <StatusAlert status={status} subject="appearance" />
 
-      <AppearanceTags tags={appearance.tags} guide={appearance.guide} />
+      <AppearanceTags tags={appearance.tags} guide={appearance.guide ?? guide} />
       <h2>
         <InlineIcon icon="video" first size="xs" />
         Featured in
