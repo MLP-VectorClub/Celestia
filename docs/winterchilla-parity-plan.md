@@ -54,6 +54,20 @@ appearances). Also built: `/episode/[id]`, `/movie/[id]`, `/special/[id]` (resol
 Notes: event entry images are remote URLs (check the CSP `img-src` before relying on them); the short link `/cg/v/{id}` now resolves through the full appearance because
 `PreviewAppearance` (locate) has no owner for personal-guide appearances.
 
+### Verifying against a local API
+
+Winterchilla ships `scripts/serve-seeded-api.sh [port] [database]` (a throwaway seeded API on its own port and database; never port 8765 or `winterchilla_test`).
+Run it from a git worktree of Winterchilla `origin/main` (symlink `vendor`, copy `.env`), then start Celestia against it without touching `.env`:
+
+```sh
+NEXT_PUBLIC_BACKEND_HOST=http://127.0.0.1:8766/api/v0 NEXT_PUBLIC_FRONTEND_HOST=http://localhost:3100 \
+NEXT_PUBLIC_CDN_DOMAIN=127.0.0.1 NEXT_PUBLIC_API_PREFIX=/api pnpm exec next dev -p 3100 -H 127.0.0.1
+```
+
+Sign in as a seeded user by visiting `http://127.0.0.1:8766/test-login/9001` (user), `9002` (admin) or `9003`; the `access` cookie is host-wide, so Celestia on
+`127.0.0.1:3100` forwards it. Responses can also be checked against `api.json` (an Ajv script over the GET endpoints found that the API disagrees with the spec in a few
+places, see the Winterchilla handoff). Elasticsearch-backed pages (guide search, autocomplete) answer 503 without ES.
+
 ## 2. Page inventory
 
 Legend: ✅ exists in Celestia · 🟡 exists but a stub or incomplete · ❌ missing · ⛔ not ported (Twig/server concern).

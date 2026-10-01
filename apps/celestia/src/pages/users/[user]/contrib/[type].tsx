@@ -66,7 +66,11 @@ const ContributionsPage: NextPage<PropTypes> = ({ userId, type, page, user, init
         heading={t('users.contributions.heading', { name: user?.name ?? '' })}
         lead={t(`users.contributions.types.${type}`)}
       />
-      <StatusAlert status={status} subject={t('users.contributions.loadingSubject')} />
+      <StatusAlert
+        status={status}
+        subject={t('users.contributions.loadingSubject')}
+        errorMessage={type === 'requests' ? t('users.contributions.restricted') : undefined}
+      />
       {data?.items.length === 0 && <NoResultsAlert message={t('users.contributions.empty')} />}
       {data && data.items.length > 0 && (
         <>

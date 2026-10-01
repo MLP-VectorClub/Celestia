@@ -5,7 +5,9 @@ import { parseUserIdParam } from 'src/utils/profile';
 
 describe('PATHS.EPISODE', () => {
   it('addresses episodes by season and episode', () => {
-    expect(PATHS.EPISODE({ id: 7, type: 'episode', season: 2, episode: 3, parts: 1, title: "Hearth's Warming" })).toBe('/episode/S2E3-Hearth-s-Warming');
+    expect(PATHS.EPISODE({ id: 7, type: 'episode', season: 2, episode: 3, parts: 1, title: "Hearth's Warming" })).toBe(
+      '/episode/S2E3-Hearth-s-Warming'
+    );
   });
 
   it('addresses two-parters by their range', () => {
@@ -15,7 +17,9 @@ describe('PATHS.EPISODE', () => {
   });
 
   it('addresses movies and specials by ID', () => {
-    expect(PATHS.EPISODE({ id: 12, type: 'movie', season: null, episode: null, parts: null, title: 'The Movie' })).toBe('/movie/12-The-Movie');
+    expect(PATHS.EPISODE({ id: 12, type: 'movie', season: null, episode: null, parts: null, title: 'The Movie' })).toBe(
+      '/movie/12-The-Movie'
+    );
     expect(PATHS.EPISODE({ id: 13, type: 'special', season: null, episode: null, parts: null, title: 'Spec' })).toBe('/special/13-Spec');
   });
 });

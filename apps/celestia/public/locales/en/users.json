@@ -44,7 +44,8 @@
       "finished-posts": "Finished posts",
       "fulfilled-requests": "Fulfilled requests"
     },
-    "breadcrumb": "Contributions"
+    "breadcrumb": "Contributions",
+    "restricted": "This list is only visible to the user and to staff"
   },
   "personalGuide": {
     "heading": "{name}'s Personal Color Guide",
