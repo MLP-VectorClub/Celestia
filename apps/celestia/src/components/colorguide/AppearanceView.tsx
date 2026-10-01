@@ -130,7 +130,7 @@ export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppe
       )}
       <AppearanceNotes notes={appearance.notes} />
       <AppearanceCutieMarks label={appearance.label} cutieMarks={appearance.cutieMarks} colorGroups={appearance.colorGroups} />
-      <AppearanceColorGroups colorGroups={appearance.colorGroups} />
+      <AppearanceColorGroups colorGroups={appearance.colorGroups} appearanceId={appearance.id} canEdit={appearance.canEdit} />
       <h2>{pluralize('Related appearances', appearance.relatedAppearances.length)}</h2>
       {appearance.relatedAppearances.length === 0 ? (
         <p className="text-muted">No related appearances</p>
