@@ -19,6 +19,51 @@
     "notFound": "User not found",
     "checkYourSpelling": "Please check the URL for any typos",
     "breadcrumb": "Users",
-    "unknownUser": "Unknown User"
+    "unknownUser": "Unknown User",
+    "previousUsernames": "Previously known as",
+    "discordMember": "Member of the Discord server",
+    "contributions": "Contributions",
+    "viewAll": "View all",
+    "personalGuide": "Personal Color Guide",
+    "personalGuidePrivate": "This user keeps their personal guide private",
+    "noPersonalGuide": "No appearances yet",
+    "private": "Private",
+    "awaitingApproval": "Finished posts awaiting approval",
+    "pointHistory": "Point history",
+    "devLabelNote": "Shown with the site's developer label"
+  },
+  "contributions": {
+    "heading": "{name}'s contributions",
+    "empty": "Nothing here yet",
+    "loadingSubject": "contributions",
+    "backToProfile": "Back to profile",
+    "types": {
+      "cms-provided": "Cutie mark vectors provided",
+      "requests": "Requests",
+      "reservations": "Reservations",
+      "finished-posts": "Finished posts",
+      "fulfilled-requests": "Fulfilled requests"
+    },
+    "breadcrumb": "Contributions"
+  },
+  "personalGuide": {
+    "heading": "{name}'s Personal Color Guide",
+    "lead": "Appearances created by this user",
+    "empty": "There are no appearances in this guide yet",
+    "loadingSubject": "personal guide",
+    "private": "Private appearance",
+    "breadcrumb": "Personal Color Guide",
+    "pointHistory": "Point history",
+    "canManage": "You can add and edit appearances in this guide"
+  },
+  "pointHistory": {
+    "heading": "{name}'s point history",
+    "empty": "No point changes recorded",
+    "loadingSubject": "point history",
+    "amount": "Amount",
+    "reason": "Reason",
+    "when": "When",
+    "breadcrumb": "Point history",
+    "forbidden": "Only the user and staff can see the point history"
   }
 }

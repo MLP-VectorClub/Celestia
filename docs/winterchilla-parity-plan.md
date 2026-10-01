@@ -44,6 +44,16 @@ and `next build` are green. Compat layer: `src/types/api-alias.ts` (renamed cont
 `guide`/`previewData` on appearances, boolean prefs from the `UserPrefs` schema. `connection` page lost `deviceIdentifier` (not in the contract).
 All gaps raised so far were answered by Winterchilla (see §8).
 
+### Phase 1 status (2026-10-01)
+
+Built (read-only, SSR with React Query hydration, `tsc`/lint/vitest/build green, **not yet exercised against a running API**): `useConfig` + `/config` server
+cache + pattern compiler (unit tested), `ResourceService`/`content` fetchers and hooks, `/events`, `/event/[id]`, `/cg/[guide]/tags`, full profile
+(`/users/[user]`: previous names, Discord, personal guides, awaiting approval, contribution counts), `/users/[user]/contrib/[type]`, `/users/[user]/cg`,
+`/users/[user]/cg/point-history`, `/users/[user]/cg/v/[id]` (shares `AppearanceView` with `/cg/[guide]/v/[id]`, which now shows related shows and related
+appearances). Not done yet from phase 1: episode/movie page and its redirects (`/show/latest`, season/episode filters are available), `/s/{id}`, `/episodes|movies/{page}` redirects.
+Notes: event entry images are remote URLs (check the CSP `img-src` before relying on them); the short link `/cg/v/{id}` now resolves through the full appearance because
+`PreviewAppearance` (locate) has no owner for personal-guide appearances.
+
 ## 2. Page inventory
 
 Legend: ✅ exists in Celestia · 🟡 exists but a stub or incomplete · ❌ missing · ⛔ not ported (Twig/server concern).

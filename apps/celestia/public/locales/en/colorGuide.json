@@ -37,5 +37,16 @@
   },
   "errors": {
     "unknownGuide": "There is no guide by the specified name"
+  },
+  "tags": {
+    "heading": "Tags",
+    "lead": "Every tag used in the color guide",
+    "empty": "There are no tags yet",
+    "loadingSubject": "list of tags",
+    "uses": "{count, plural, one {# use} other {# uses}}",
+    "synonymOf": "synonym of {name}",
+    "noType": "Untyped",
+    "breadcrumb": "Tags",
+    "edit": "Edit tags"
   }
 }

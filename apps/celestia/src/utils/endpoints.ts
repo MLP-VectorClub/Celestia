@@ -7,9 +7,16 @@ import {
   GetAppearancesPinnedRequest,
   GetAppearancesRequest,
   GetColorGuideMajorChangesRequest,
+  GetEventsIdRequest,
+  GetEventsRequest,
   GetShowRequest,
+  GetTagsRequest,
   GetUserPrefsMeRequest,
   GetUsersDaUsernameRequest,
+  GetUsersIdContributionsTypeRequest,
+  GetUsersIdPersonalGuideAppearancesRequest,
+  GetUsersIdPersonalGuidePointHistoryRequest,
+  GetUsersIdProfileRequest,
   GetUsersIdRequest,
 } from '@mlp-vectorclub/api-types';
 import { GetUsersOauthSigninProviderRequest } from 'src/types/auth';
@@ -49,4 +56,15 @@ export const ENDPOINTS = {
   */
   USEFUL_LINKS_SIDEBAR: `/useful-links/sidebar`,
   SHOW: (params: GetShowRequest) => buildUrl(`/show`, params),
+  CONFIG: `/config`,
+  EVENTS: (params?: GetEventsRequest) => buildUrl(`/events`, params),
+  EVENT: ({ id }: GetEventsIdRequest) => `/events/${id}`,
+  TAGS: (params?: GetTagsRequest) => buildUrl(`/tags`, params),
+  USER_PROFILE: ({ id }: GetUsersIdProfileRequest) => `/users/${id}/profile`,
+  USER_CONTRIBUTIONS: ({ id, type, ...params }: GetUsersIdContributionsTypeRequest) =>
+    buildUrl(`/users/${id}/contributions/${type}`, params),
+  USER_PCG_APPEARANCES: ({ id, ...params }: GetUsersIdPersonalGuideAppearancesRequest) =>
+    buildUrl(`/users/${id}/personal-guide/appearances`, params),
+  USER_PCG_POINT_HISTORY: ({ id, ...params }: GetUsersIdPersonalGuidePointHistoryRequest) =>
+    buildUrl(`/users/${id}/personal-guide/point-history`, params),
 };

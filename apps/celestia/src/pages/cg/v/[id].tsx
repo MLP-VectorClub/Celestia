@@ -3,12 +3,12 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { PreviewAppearance } from '@mlp-vectorclub/api-types';
+import { GetAppearancesIdResult } from '@mlp-vectorclub/api-types';
 import Content from 'src/components/shared/Content';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import StatusAlert from 'src/components/shared/StatusAlert';
-import { appearanceLocationFetcher } from 'src/fetchers';
+import { appearanceFetcher } from 'src/fetchers';
 import { useAppearanceLocation } from 'src/hooks';
 import { PATHS } from 'src/paths';
 import { wrapper } from 'src/store';
@@ -60,9 +60,10 @@ export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRMess
   }
   const id = Number.parseInt(query.id, 10);
 
-  let appearanceData: PreviewAppearance | undefined;
+  // The locate endpoint does not say which personal guide an appearance belongs to, the full appearance does
+  let appearanceData: GetAppearancesIdResult | undefined;
   try {
-    appearanceData = await appearanceLocationFetcher({ id }, req)();
+    appearanceData = await appearanceFetcher({ id }, req)();
   } catch (e) {
     handleDataFetchingError(ctx, e);
   }

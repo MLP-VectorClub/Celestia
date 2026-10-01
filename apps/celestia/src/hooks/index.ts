@@ -8,3 +8,4 @@ export * from 'src/hooks/layout';
 export * from 'src/hooks/oauth';
 export * from 'src/hooks/prefs';
 export * from 'src/hooks/profile';
+export * from 'src/hooks/content';

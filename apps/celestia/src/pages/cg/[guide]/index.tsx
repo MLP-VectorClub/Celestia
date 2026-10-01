@@ -100,6 +100,12 @@ const ColorGuidePage: NextPage<PropTypes> = ({ guide, page, q, initialData }) =>
             Full List
           </Button>
         </Link>
+        <Link href={PATHS.GUIDE_TAGS(guide)} passHref legacyBehavior>
+          <Button color="link" size="sm">
+            <InlineIcon icon="tags" first />
+            Tags
+          </Button>
+        </Link>
         <MajorChangesButton guide={guide} />
       </ButtonCollection>
 

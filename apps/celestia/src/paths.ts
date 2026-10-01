@@ -13,10 +13,15 @@ export const PATHS = {
   ROOT: '/',
   ABOUT: '/about',
   ADMIN: '/admin',
-  APPEARANCE: ({ id, label, guide }: Pick<PreviewAppearance, 'id' | 'label' | 'guide'>) => `/cg/${guide}/v/${pathSegmentWithId(id, label)}`,
+  /** Appearances of the personal guides have no guide of their own, they live under their owner instead */
+  APPEARANCE: ({ id, label, guide, ownerId }: Pick<PreviewAppearance, 'id' | 'label' | 'guide'> & { ownerId?: number | null }) =>
+    guide === null && typeof ownerId === 'number'
+      ? PATHS.PCG_APPEARANCE(ownerId, { id, label })
+      : `/cg/${guide}/v/${pathSegmentWithId(id, label)}`,
   SHORT_APPEARANCE: ({ id, label }: Pick<PreviewAppearance, 'id' | 'label'>) => `/cg/v/${pathSegmentWithId(id, label)}`,
   BLENDING: '/blending',
   EVENTS: '/events',
+  EVENT: ({ id, name }: { id: Numeric; name: string }) => `/event/${pathSegmentWithId(id, name)}`,
   GUIDE_INDEX: '/cg',
   GUIDE: (guide: GuideName, params?: { page?: string; q?: string }) => {
     let paramsCopy = params;
@@ -57,6 +62,7 @@ export const PATHS = {
     if (isEmpty(queryParams)) return path;
     return buildUrl(path, queryParams);
   },
+  GUIDE_TAGS: (guide: GuideName) => `/cg/${guide}/tags`,
   GUIDE_SPRITE: '/cg/sprite',
   LATEST_EPISODE: '/episode/latest',
   PRIVACY_POLICY: '/about/privacy',
@@ -65,6 +71,11 @@ export const PATHS = {
   USERS: '/users',
   USER_LEGACY: (username: string) => `/@${username}`,
   USER: (id: Numeric = '[user]') => `/users/${id}`,
+  USER_CONTRIB: (id: Numeric, type: string) => `/users/${id}/contrib/${type}`,
+  USER_PCG: (id: Numeric) => `/users/${id}/cg`,
+  USER_PCG_POINT_HISTORY: (id: Numeric) => `/users/${id}/cg/point-history`,
+  PCG_APPEARANCE: (ownerId: Numeric, { id, label }: Pick<PreviewAppearance, 'id' | 'label'>) =>
+    `/users/${ownerId}/cg/v/${pathSegmentWithId(id, label)}`,
   USER_LONG: ({ id, name }: PublicUser) => `/users/${pathSegmentWithId(id, name)}`,
   EPISODE: (show: ShowListItem) => `/episode/${seasonEpisodeToString(show)}-${makeUrlSafe(show.title)}`,
 };

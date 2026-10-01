@@ -5,3 +5,4 @@ export * from './oauth';
 export * from './prefs';
 export * from './profile';
 export * from './users';
+export * from './content';

@@ -1,0 +1,27 @@
+{
+  "list": {
+    "heading": "Events",
+    "lead": "Community collaborations and contests",
+    "empty": "There are no events yet",
+    "loadingSubject": "list of events",
+    "starts": "Starts",
+    "ends": "Ends",
+    "entryLimit": "{count, plural, one {# entry} other {# entries}} per user",
+    "unlimited": "No entry limit",
+    "finalized": "Finished",
+    "ongoing": "Ongoing",
+    "upcoming": "Upcoming"
+  },
+  "details": {
+    "notFound": "Event not found",
+    "checkYourSpelling": "Please check the URL for any typos",
+    "addedBy": "Added by {name}",
+    "winner": "Winning entry",
+    "entries": "{count, plural, =0 {No entries yet} one {# entry} other {# entries}}",
+    "noEntries": "Nobody has submitted an entry yet",
+    "submittedBy": "by {name}",
+    "backToList": "All events",
+    "entriesDisabled": "Submitting entries is currently disabled",
+    "loadingSubject": "event"
+  }
+}
