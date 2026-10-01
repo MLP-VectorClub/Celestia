@@ -2,7 +2,7 @@ import { format } from 'date-fns';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { FC, useMemo } from 'react';
-import { Progress } from 'reactstrap';
+import { Button, Progress } from 'reactstrap';
 
 import { GetPostsResult, GetShowIdResult, GetShowIdVoteResult } from '@mlp-vectorclub/api-types';
 import { AppearanceLink } from 'src/components/colorguide/AppearanceLink';
@@ -10,12 +10,14 @@ import Content from 'src/components/shared/Content';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import StatusAlert from 'src/components/shared/StatusAlert';
 import { PostList } from 'src/components/show/PostList';
-import { useShowEntry, useShowVotes, useTitleSetter } from 'src/hooks';
+import { describeApiError, useApiMutation, useAuth, useShowEntry, useShowVotes, useTitleSetter } from 'src/hooks';
 import { PATHS } from 'src/paths';
+import { PostService } from 'src/services/posts';
 import { useAppDispatch } from 'src/store';
 import { Nullable, Translatable } from 'src/types';
 import { ShowEntry } from 'src/types/api-alias';
 import { TitleFactory } from 'src/types/title';
+import { ENDPOINTS } from 'src/utils';
 import { seasonEpisodeToString } from 'src/utils/show';
 
 export interface ShowEntryPageProps {
@@ -35,6 +37,23 @@ export const showTitleFactory: TitleFactory<{ show: Nullable<ShowEntry> }> = ({ 
       { label, active: true },
     ],
   };
+};
+
+const VoteForm: FC<{ showId: number }> = ({ showId }) => {
+  const t = useTranslations();
+  const vote = useApiMutation((score: number) => PostService.vote(showId, score), { invalidate: [[ENDPOINTS.SHOW_VOTE({ id: showId })]] });
+  if (vote.isSuccess) return <p className="text-success">{t('show.entry.thanksForVoting')}</p>;
+  return (
+    <div className="mb-3">
+      <span className="me-2">{t('show.entry.rate')}</span>
+      {[1, 2, 3, 4, 5].map((score) => (
+        <Button key={score} size="sm" color="primary" outline className="me-1" onClick={() => vote.mutate(score)} disabled={vote.isPending}>
+          {score}
+        </Button>
+      ))}
+      {vote.error && <p className="text-danger mt-1 mb-0">{describeApiError(vote.error)}</p>}
+    </div>
+  );
 };
 
 const VoteResults: FC<{ votes: Record<string, number> }> = ({ votes }) => {
@@ -65,6 +84,7 @@ export const ShowEntryPage: FC<ShowEntryPageProps> = ({ id, initialShow, initial
   const dispatch = useAppDispatch();
   const { show, status } = useShowEntry({ id }, initialShow || undefined);
   const { votes } = useShowVotes({ id }, initialVotes || undefined);
+  const { signedIn } = useAuth();
 
   const titleData = useMemo(() => showTitleFactory({ show: show || null }), [show]);
   useTitleSetter(dispatch, titleData);
@@ -113,6 +133,7 @@ export const ShowEntryPage: FC<ShowEntryPageProps> = ({ id, initialShow, initial
       {show.aired && show.type === 'episode' && votes && (
         <section>
           <h2>{t('show.entry.votes')}</h2>
+          {signedIn && <VoteForm showId={id} />}
           <VoteResults votes={votes} />
         </section>
       )}

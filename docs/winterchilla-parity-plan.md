@@ -68,6 +68,14 @@ Sign in as a seeded user by visiting `http://127.0.0.1:8766/test-login/9001` (us
 `127.0.0.1:3100` forwards it. Responses can also be checked against `api.json` (an Ajv script over the GET endpoints found that the API disagrees with the spec in a few
 places, see the Winterchilla handoff). Elasticsearch-backed pages (guide search, autocomplete) answer 503 without ES.
 
+### Phase 2 status (2026-10-01)
+
+Built: `useApiMutation` (API errors become `UnifiedErrorResponse`, `describeApiError`/`fieldErrors`, 409 hints kept in `details`), `DialogProvider`/`useDialog().confirm`,
+`FormDialog`, `PostService`, post actions on every post (reserve, mark finished with the reserver-overwrite retry, approve, unfinish, remove approval, cancel
+reservation, delete request) driven by `getPostActions` (unit tested), add request / add reservation dialogs with image check, and voting on aired episodes.
+Verified request shapes and conflicts with a Sanctum-style cookie + `X-XSRF-TOKEN` client against the seeded API (through a throwaway proxy that turns the header into
+Winterchilla's `CSRF_TOKEN` parameter); the UI itself was not clicked through (no browser extension available). Next: account page (prefs), then guide editing.
+
 ## 2. Page inventory
 
 Legend: ✅ exists in Celestia · 🟡 exists but a stub or incomplete · ❌ missing · ⛔ not ported (Twig/server concern).

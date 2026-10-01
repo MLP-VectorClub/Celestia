@@ -7,6 +7,7 @@ import { PostItem } from '@mlp-vectorclub/api-types';
 import ExternalLink from 'src/components/shared/ExternalLink';
 import TimeAgo from 'src/components/shared/TimeAgo';
 import UserLink from 'src/components/shared/UserLink';
+import { PostActions } from 'src/components/show/PostActions';
 import { createFavMeUrl } from 'src/utils/url';
 
 /**
@@ -69,6 +70,7 @@ export const PostListItem: FC<{ post: PostItem }> = ({ post }) => {
             <ExternalLink href={createFavMeUrl(post.deviationId)}>{createFavMeUrl(post.deviationId)}</ExternalLink>
           </small>
         )}
+        <PostActions post={post} />
       </div>
     </li>
   );

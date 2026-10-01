@@ -87,6 +87,8 @@ export type UnifiedErrorResponse =
   | {
       type: UnifiedErrorResponseTypes.MESSAGE_ONLY;
       message: string;
+      /** The rest of the error body, some conflicts carry hints such as `retry` or `canForce` */
+      details: Record<string, unknown>;
     }
   | ({
       type: UnifiedErrorResponseTypes.VALIDATION_ERROR;

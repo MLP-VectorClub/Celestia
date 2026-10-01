@@ -9,3 +9,4 @@ export * from 'src/hooks/oauth';
 export * from 'src/hooks/prefs';
 export * from 'src/hooks/profile';
 export * from 'src/hooks/content';
+export * from 'src/hooks/mutation';

@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import { range as _range, get } from 'lodash';
+import { range as _range, get, isPlainObject, omit } from 'lodash';
 import { GetServerSidePropsContext } from 'next';
 
 import { APP_HOST } from 'src/config';
@@ -64,11 +64,13 @@ export const httpResponseMapper = (err: AxiosError | unknown): UnifiedErrorRespo
       };
     }
     default: {
+      const body = get(err, 'response.data') as unknown;
       const message = get(err, 'response.data.message') as unknown;
       if (typeof message === 'string') {
         return {
           type: UnifiedErrorResponseTypes.MESSAGE_ONLY,
           message,
+          details: omit(isPlainObject(body) ? (body as Record<string, unknown>) : {}, 'message'),
         };
       }
       return {

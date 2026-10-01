@@ -13,6 +13,7 @@ import ProgressIndicator from 'src/components/ProgressIndicator';
 import TitleManager from 'src/components/TitleManager';
 import AuthModal from 'src/components/modals/AuthModal';
 import DeployBanner from 'src/components/shared/DeployBanner';
+import { DialogProvider } from 'src/components/shared/dialogs/DialogProvider';
 import { DEV_ENV } from 'src/config';
 import { LayoutContextProvider } from 'src/hooks';
 import { wrapper } from 'src/store';
@@ -39,10 +40,12 @@ const Celestia: AppComponent = ({ Component, ...rest }) => {
           <DeployBanner />
           <ProgressIndicator />
           <LayoutContextProvider value={layoutContext}>
-            <Layout>
-              {}
-              <Component {...props.pageProps} />
-            </Layout>
+            <DialogProvider>
+              <Layout>
+                {}
+                <Component {...props.pageProps} />
+              </Layout>
+            </DialogProvider>
           </LayoutContextProvider>
           <AuthModal />
           {DEV_ENV && <ReactQueryDevtools buttonPosition="top-right" initialIsOpen={false} />}

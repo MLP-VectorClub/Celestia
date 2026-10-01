@@ -33,7 +33,9 @@
     "scoreLabel": "{score, plural, one {# star} other {# stars}}",
     "loadingSubject": "show entry",
     "breadcrumb": "Show",
-    "unknownType": "Show entry"
+    "unknownType": "Show entry",
+    "rate": "Rate this episode:",
+    "thanksForVoting": "Thanks for voting!"
   },
   "post": {
     "requestsHeading": "Requests",
