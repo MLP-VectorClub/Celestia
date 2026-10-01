@@ -72,6 +72,7 @@ export const PATHS = {
   USER_LEGACY: (username: string) => `/@${username}`,
   USER: (id: Numeric = '[user]') => `/users/${id}`,
   USER_CONTRIB: (id: Numeric, type: string) => `/users/${id}/contrib/${type}`,
+  USER_ACCOUNT: (id: Numeric) => `/users/${id}/account`,
   USER_PCG: (id: Numeric) => `/users/${id}/cg`,
   USER_PCG_POINT_HISTORY: (id: Numeric) => `/users/${id}/cg/point-history`,
   PCG_APPEARANCE: (ownerId: Numeric, { id, label }: Pick<PreviewAppearance, 'id' | 'label'>) =>

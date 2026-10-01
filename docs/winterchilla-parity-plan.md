@@ -74,7 +74,7 @@ Built: `useApiMutation` (API errors become `UnifiedErrorResponse`, `describeApiE
 `FormDialog`, `PostService`, post actions on every post (reserve, mark finished with the reserver-overwrite retry, approve, unfinish, remove approval, cancel
 reservation, delete request) driven by `getPostActions` (unit tested), add request / add reservation dialogs with image check, and voting on aired episodes.
 Verified request shapes and conflicts with a Sanctum-style cookie + `X-XSRF-TOKEN` client against the seeded API (through a throwaway proxy that turns the header into
-Winterchilla's `CSRF_TOKEN` parameter); the UI itself was not clicked through (no browser extension available). Next: account page (prefs), then guide editing.
+Winterchilla's `CSRF_TOKEN` parameter); the UI itself was not clicked through (no browser extension available). Also built: the account page (`/users/[user]/account`: preference switches/selects through `PUT /users/{id}/preferences/{key}`, Discord sync/unlink, sign out everywhere; password and e-mail stay with Luna). Its content is client-rendered (auth state is not available during SSR yet), so it was only checked for compilation and the SSR shell. Next: guide editing (appearance meta, tags, color groups, sprite, cutie marks, relations).
 
 ## 2. Page inventory
 

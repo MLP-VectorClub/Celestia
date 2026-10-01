@@ -9,7 +9,7 @@ import InlineIcon from 'src/components/shared/InlineIcon';
 import { DEVIANTART_GROUP_NAME, DEVIANTART_GROUP_URL } from 'src/config';
 import { useAuth, usePrefs } from 'src/hooks';
 import { PATHS } from 'src/paths';
-import { getDefaultGuideLink, getHomeLink, getProfileLink } from 'src/utils/path-utils';
+import { getDefaultGuideLink, getHomeLink } from 'src/utils/path-utils';
 
 const MainNavigation: FC = () => {
   const t = useTranslations();
@@ -52,7 +52,7 @@ const MainNavigation: FC = () => {
       </NavItem>
       {signedIn && (
         <NavItem>
-          <Link href={getProfileLink(user)} passHref legacyBehavior>
+          <Link href={PATHS.USER_ACCOUNT(user.id!)} passHref legacyBehavior>
             <NavLink>{t('common.titles.account')}</NavLink>
           </Link>
         </NavItem>

@@ -66,5 +66,48 @@
     "when": "When",
     "breadcrumb": "Point history",
     "forbidden": "Only the user and staff can see the point history"
+  },
+  "account": {
+    "heading": "Account",
+    "lead": "Settings for {name}",
+    "breadcrumb": "Account",
+    "notYours": "You can only change the settings of your own account",
+    "signInRequired": "Sign in to see your settings",
+    "saved": "Saved",
+    "loadingSubject": "settings",
+    "sections": {
+      "colorGuide": "Color Guide",
+      "site": "Site",
+      "staff": "Permissions",
+      "sessions": "Sessions",
+      "discord": "Discord"
+    },
+    "prefs": {
+      "cg_itemsperpage": "Appearances per page",
+      "cg_defaultguide": "Default guide",
+      "cg_defaultguideNone": "Ask me every time",
+      "cg_hidesynon": "Hide synonym tags",
+      "cg_hideclrinfo": "Hide color details",
+      "cg_fulllstprev": "Show previews in the full list",
+      "cg_nutshell": "Use the shortest names",
+      "p_hidediscord": "Hide my Discord connection",
+      "p_hidepcg": "Hide my personal guide",
+      "p_homelastep": "Open the latest episode when I visit the home page",
+      "ep_noappprev": "Do not show color previews on episode pages",
+      "ep_revstepbtn": "Reverse the order of the episode navigation buttons",
+      "a_pcgearn": "May earn personal guide points",
+      "a_pcgmake": "May create personal guide appearances",
+      "a_pcgsprite": "May upload sprites to the personal guide",
+      "a_postreq": "May post requests",
+      "a_postres": "May post reservations",
+      "a_reserve": "May reserve requests"
+    },
+    "signOutEverywhere": "Sign out everywhere",
+    "signOutEverywhereConfirm": "This signs you out of every device, including this one.",
+    "discordSync": "Update Discord info",
+    "discordUnlink": "Unlink Discord",
+    "discordUnlinkConfirm": "Your Discord account will be disconnected from this account.",
+    "discordUnlinked": "Discord account unlinked",
+    "discordSynced": "Discord info updated"
   }
 }
