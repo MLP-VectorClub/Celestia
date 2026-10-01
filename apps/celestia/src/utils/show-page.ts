@@ -55,9 +55,9 @@ export const createShowGetServerSideProps = (type: ShowType) =>
       handleDataFetchingError(ctx, e);
     }
 
-    if (!id || !show || (show.show as ShowEntry).type !== type) return notFound(ctx);
+    if (!id || !show || show.show.type !== type) return notFound(ctx);
 
-    const entry = show.show as ShowEntry;
+    const entry: ShowEntry = show.show;
     const expectedPath = PATHS.EPISODE(entry);
     const redirect = fixPath(ctx, expectedPath, ['id']);
     if (redirect) return { redirect };

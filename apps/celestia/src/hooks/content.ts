@@ -37,7 +37,6 @@ import {
   showVoteFetcher,
   tagsFetcher,
 } from 'src/fetchers';
-import { ShowEntry } from 'src/types/api-alias';
 import { ENDPOINTS, mapQueryStatus } from 'src/utils';
 import { compilePatterns } from 'src/utils/config';
 
@@ -131,7 +130,7 @@ export function useShowEntry(params: GetShowIdRequest, initialData?: GetShowIdRe
     queryFn: showFetcher(params),
     initialData,
   });
-  return { show: data?.show as ShowEntry | undefined, status: mapQueryStatus(status, fetchStatus) };
+  return { show: data?.show, status: mapQueryStatus(status, fetchStatus) };
 }
 
 export function useShowVotes(params: GetShowIdVoteRequest, initialData?: GetShowIdVoteResult) {
