@@ -103,7 +103,7 @@ export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRMess
   titleSetter(store, titleFactory({ user: user || null }));
   return {
     props: {
-      ...(await typedServerSideTranslations(locale, ['users'])),
+      ...(await typedServerSideTranslations(locale, ['colorGuide', 'users'])),
       userId,
       page,
       user: user || null,
