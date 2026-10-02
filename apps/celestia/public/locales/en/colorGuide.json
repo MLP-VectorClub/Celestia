@@ -66,7 +66,29 @@
     "synonymOf": "synonym of {name}",
     "noType": "Untyped",
     "breadcrumb": "Tags",
-    "edit": "Edit tags"
+    "edit": "Edit tags",
+    "admin": {
+      "name": "Name",
+      "type": "Type",
+      "noType": "No type",
+      "new": "New tag",
+      "mergeInto": "ID of the tag to merge into",
+      "mergeHelp": "The ID is shown next to each tag in this list. All uses of this tag move to the target.",
+      "edit": "Edit",
+      "unlink": "Unlink synonym",
+      "makeSynonym": "Make synonym",
+      "recount": "Recount",
+      "delete": "Delete",
+      "save": "Save tag",
+      "create": "Create tag",
+      "unlinkConfirm": "Unlink",
+      "deleteTitle": "Delete tag",
+      "editTitle": "Edit “{name}”",
+      "synonymTitle": "Make “{name}” a synonym",
+      "unlinkBody": "“{name}” will be a standalone tag again and stay applied to the appearances tagged with “{target}”.",
+      "deleteUsed": "“{name}” is used on {count, plural, one {# appearance} other {# appearances}}. Deleting it removes it from all of them.",
+      "deleteUnused": "“{name}” will be deleted."
+    }
   },
   "blending": {
     "title": "Blending Calculator",
@@ -80,5 +102,114 @@
   "picker": {
     "title": "Color Picker",
     "lead": "Get accurate color readings from screencaps with picking areas of any size"
+  },
+  "edit": {
+    "actions": {
+      "metadata": "Edit metadata",
+      "tags": "Edit tags",
+      "sprite": "Sprite",
+      "cutieMarks": "Cutie marks",
+      "related": "Related",
+      "shows": "Shows",
+      "delete": "Delete appearance",
+      "unpin": "Unpin",
+      "pin": "Pin",
+      "deleteBody": "“{label}” and all of its colors will be deleted. This cannot be undone."
+    },
+    "common": {
+      "delete": "Delete",
+      "save": "Save",
+      "edit": "Edit",
+      "apply": "Apply",
+      "cancel": "Cancel"
+    },
+    "meta": {
+      "title": "Edit metadata",
+      "name": "Name",
+      "notes": "Notes",
+      "private": "Private (hidden from everyone except you and staff)"
+    },
+    "tags": {
+      "title": "Edit tags",
+      "save": "Save tags",
+      "label": "Tags",
+      "help": "Separate tags with commas. Prefix a tag with its type (for example “spec:unicorn”) to create it with that type."
+    },
+    "sprite": {
+      "title": "Sprite",
+      "upload": "Upload",
+      "image": "PNG or JPEG image",
+      "remove": "Remove the current sprite",
+      "help": "Replaces the current sprite.",
+      "limit": "Up to {limit}."
+    },
+    "relations": {
+      "mutual": "Mutual",
+      "related": "Related appearances",
+      "featuredIn": "Featured in",
+      "loadFailed": "The list could not be loaded."
+    },
+    "order": {
+      "title": "Re-order color groups",
+      "save": "Save order",
+      "loadFailed": "The groups could not be loaded.",
+      "moveUp": "Move {label} up",
+      "moveDown": "Move {label} down"
+    },
+    "groups": {
+      "reorder": "Re-order groups",
+      "create": "Create group",
+      "template": "Apply template",
+      "templateBody": "The default color groups are added to this appearance.",
+      "deleteTitle": "Delete color group",
+      "count": "{count, plural, one {Color group} other {Color groups}}",
+      "deleteBody": "“{label}” and its colors will be deleted."
+    },
+    "reorder": {
+      "save": "Save order",
+      "earlier": "Move {label} earlier",
+      "later": "Move {label} later"
+    },
+    "cutieMarks": {
+      "title": "Cutie marks",
+      "save": "Save cutie marks",
+      "remove": "Remove",
+      "fileRequired": "A file is required",
+      "facing": "Facing",
+      "symmetrical": "Symmetrical",
+      "left": "Left",
+      "right": "Right",
+      "rotation": "Preview rotation (°)",
+      "attribution": "Attribution",
+      "none": "None",
+      "deviation": "A deviation",
+      "user": "A DeviantArt user",
+      "deviationUrl": "Deviation URL",
+      "username": "DeviantArt username",
+      "add": "Add a cutie mark",
+      "empty": "This appearance has no cutie marks. Saving now keeps it that way.",
+      "n": "Cutie mark {n}",
+      "replaceFile": "Replace the SVG file",
+      "file": "SVG file",
+      "ready": "Ready to upload: {name}",
+      "label": "Label (optional, up to 32 characters)"
+    },
+    "colorGroup": {
+      "name": "Name",
+      "hex": "#RRGGBB (optional)",
+      "moveUp": "Move up",
+      "moveDown": "Move down",
+      "removeColor": "Remove color",
+      "groupName": "Group name",
+      "colors": "Colors",
+      "addColor": "Add color",
+      "hexInvalid": "Colors must look like #RRGGBB.",
+      "major": "This is a major change",
+      "reason": "Reason",
+      "createTitle": "Create color group",
+      "editTitle": "Edit color group",
+      "colorName": "Color {n} name",
+      "colorValue": "Color {n} value"
+    }
   }
 }

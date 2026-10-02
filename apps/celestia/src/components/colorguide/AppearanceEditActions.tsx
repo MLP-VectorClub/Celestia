@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
 import { Alert, Button } from 'reactstrap';
@@ -21,6 +22,7 @@ type Dialogs = 'meta' | 'tags' | 'sprite' | 'cutiemarks' | 'relations' | 'shows'
  * Editing controls of the appearance page. `canEdit` comes from the API, staff-only actions are additionally gated by role
  */
 export const AppearanceEditActions: FC<{ appearance: DetailedAppearance }> = ({ appearance }) => {
+  const t = useTranslations();
   const { isStaff } = useAuth();
   const { confirm } = useDialog();
   const { push } = useRouter();
@@ -47,35 +49,35 @@ export const AppearanceEditActions: FC<{ appearance: DetailedAppearance }> = ({ 
     <>
       <Button color="ui" size="sm" onClick={() => setOpen('meta')}>
         <InlineIcon icon="pencil-alt" first />
-        Edit metadata
+        {t('colorGuide.edit.actions.metadata')}
       </Button>
       <Button color="ui" size="sm" onClick={() => setOpen('tags')}>
         <InlineIcon icon="tags" first />
-        Edit tags
+        {t('colorGuide.edit.actions.tags')}
       </Button>
       <Button color="ui" size="sm" onClick={() => setOpen('sprite')}>
         <InlineIcon icon="image" first />
-        Sprite
+        {t('colorGuide.edit.actions.sprite')}
       </Button>
       <Button color="ui" size="sm" onClick={() => setOpen('cutiemarks')}>
         <InlineIcon icon="image" first />
-        Cutie marks
+        {t('colorGuide.edit.actions.cutieMarks')}
       </Button>
       {appearance.guide !== null && (
         <Button color="ui" size="sm" onClick={() => setOpen('relations')}>
           <InlineIcon icon="link" first />
-          Related
+          {t('colorGuide.edit.actions.related')}
         </Button>
       )}
       {isStaff && (
         <Button color="ui" size="sm" onClick={() => setOpen('shows')}>
           <InlineIcon icon="video" first />
-          Shows
+          {t('colorGuide.edit.actions.shows')}
         </Button>
       )}
       {pinnable && (
         <Button color="ui" size="sm" onClick={() => pinToggle.mutate()} disabled={pinToggle.isPending}>
-          {isPinned ? 'Unpin' : 'Pin'}
+          {isPinned ? t('colorGuide.edit.actions.unpin') : t('colorGuide.edit.actions.pin')}
         </Button>
       )}
       <Button
@@ -85,10 +87,10 @@ export const AppearanceEditActions: FC<{ appearance: DetailedAppearance }> = ({ 
         onClick={async () => {
           if (
             await confirm({
-              title: 'Delete appearance',
-              body: `“${appearance.label}” and all of its colors will be deleted. This cannot be undone.`,
+              title: t('colorGuide.edit.actions.delete'),
+              body: t('colorGuide.edit.actions.deleteBody', { label: appearance.label }),
               color: 'danger',
-              confirmLabel: 'Delete',
+              confirmLabel: t('colorGuide.edit.common.delete'),
             })
           ) {
             remove.mutate();
@@ -96,7 +98,7 @@ export const AppearanceEditActions: FC<{ appearance: DetailedAppearance }> = ({ 
         }}
       >
         <InlineIcon icon="trash" first />
-        Delete appearance
+        {t('colorGuide.edit.actions.delete')}
       </Button>
       {error && (
         <Alert color="danger" fade={false} className="w-100 mt-2 mb-0" role="alert">

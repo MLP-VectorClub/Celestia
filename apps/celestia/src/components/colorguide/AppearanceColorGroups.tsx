@@ -1,4 +1,4 @@
-import pluralize from 'pluralize';
+import { useTranslations } from 'next-intl';
 import { FC, useState } from 'react';
 import { Alert, Button, Card, CardBody, Col, Row } from 'reactstrap';
 
@@ -24,6 +24,7 @@ interface PropTypes {
 type Editing = { kind: 'create' } | { kind: 'edit'; id: number } | { kind: 'order' } | null;
 
 export const AppearanceColorGroups: FC<PropTypes> = ({ colorGroups, appearanceId, canEdit = false }) => {
+  const t = useTranslations();
   const { signedIn } = useAuth();
   const prefs = usePrefs(signedIn);
   const { confirm } = useDialog();
@@ -42,17 +43,17 @@ export const AppearanceColorGroups: FC<PropTypes> = ({ colorGroups, appearanceId
     <>
       <h2>
         <InlineIcon icon="palette" first size="xs" />
-        {pluralize('Color group', groups.length)}
+        {t('colorGuide.edit.groups.count', { count: groups.length })}
       </h2>
       {editable && (
         <ButtonCollection leftAlign>
           <Button size="sm" color="ui" onClick={() => setEditing({ kind: 'order' })} disabled={groups.length < 2}>
             <InlineIcon icon="sort" first />
-            Re-order groups
+            {t('colorGuide.edit.groups.reorder')}
           </Button>
           <Button size="sm" color="success" onClick={() => setEditing({ kind: 'create' })}>
             <InlineIcon icon="plus" first />
-            Create group
+            {t('colorGuide.edit.groups.create')}
           </Button>
           <Button
             size="sm"
@@ -61,16 +62,16 @@ export const AppearanceColorGroups: FC<PropTypes> = ({ colorGroups, appearanceId
             onClick={async () => {
               if (
                 await confirm({
-                  title: 'Apply template',
-                  body: 'The default color groups are added to this appearance.',
-                  confirmLabel: 'Apply',
+                  title: t('colorGuide.edit.groups.template'),
+                  body: t('colorGuide.edit.groups.templateBody'),
+                  confirmLabel: t('colorGuide.edit.common.apply'),
                 })
               )
                 template.mutate();
             }}
           >
             <InlineIcon icon="clone" first />
-            Apply template
+            {t('colorGuide.edit.groups.template')}
           </Button>
         </ButtonCollection>
       )}
@@ -89,7 +90,7 @@ export const AppearanceColorGroups: FC<PropTypes> = ({ colorGroups, appearanceId
                   <ButtonCollection>
                     <Button size="sm" color="ui" onClick={() => setEditing({ kind: 'edit', id: cg.id })}>
                       <InlineIcon icon="pencil-alt" first />
-                      Edit
+                      {t('colorGuide.edit.common.edit')}
                     </Button>
                     <Button
                       size="sm"
@@ -98,10 +99,10 @@ export const AppearanceColorGroups: FC<PropTypes> = ({ colorGroups, appearanceId
                       onClick={async () => {
                         if (
                           await confirm({
-                            title: 'Delete color group',
-                            body: `“${cg.label}” and its colors will be deleted.`,
+                            title: t('colorGuide.edit.groups.deleteTitle'),
+                            body: t('colorGuide.edit.groups.deleteBody', { label: cg.label }),
                             color: 'danger',
-                            confirmLabel: 'Delete',
+                            confirmLabel: t('colorGuide.edit.common.delete'),
                           })
                         ) {
                           remove.mutate(cg.id);
@@ -109,7 +110,7 @@ export const AppearanceColorGroups: FC<PropTypes> = ({ colorGroups, appearanceId
                       }}
                     >
                       <InlineIcon icon="trash" first />
-                      Delete
+                      {t('colorGuide.edit.common.delete')}
                     </Button>
                   </ButtonCollection>
                 )}

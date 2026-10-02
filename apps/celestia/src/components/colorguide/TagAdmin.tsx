@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
 import { Alert, Button, FormGroup, FormText, Input, Label } from 'reactstrap';
 
@@ -25,6 +26,7 @@ interface FormProps extends BaseProps {
 }
 
 const TagFormDialog: FC<FormProps> = ({ tag, page, tagTypes, isOpen, onClose }) => {
+  const t = useTranslations();
   const [name, setName] = useState('');
   const [type, setType] = useState('');
   const [title, setTitle] = useState('');
@@ -47,26 +49,26 @@ const TagFormDialog: FC<FormProps> = ({ tag, page, tagTypes, isOpen, onClose }) 
 
   return (
     <FormDialog
-      title={tag ? `Edit “${tag.name}”` : 'New tag'}
+      title={tag ? t('colorGuide.tags.admin.editTitle', { name: tag.name }) : t('colorGuide.tags.admin.new')}
       isOpen={isOpen}
       onClose={() => {
         save.reset();
         onClose();
       }}
       onSubmit={() => save.mutate()}
-      submitLabel={tag ? 'Save tag' : 'Create tag'}
+      submitLabel={tag ? t('colorGuide.tags.admin.save') : t('colorGuide.tags.admin.create')}
       busy={save.isPending}
       error={save.error && Object.keys(errors).length === 0 ? describeApiError(save.error) : null}
     >
       <FormGroup>
-        <Label for="tag-name">Name</Label>
+        <Label for="tag-name">{t('colorGuide.tags.admin.name')}</Label>
         <Input id="tag-name" value={name} onChange={(e) => setName(e.target.value)} invalid={Boolean(errors.name)} />
         {errors.name && <div className="invalid-feedback d-block">{errors.name}</div>}
       </FormGroup>
       <FormGroup>
-        <Label for="tag-type">Type</Label>
+        <Label for="tag-type">{t('colorGuide.tags.admin.type')}</Label>
         <Input id="tag-type" type="select" value={type} onChange={(e) => setType(e.target.value)} invalid={Boolean(errors.type)}>
-          <option value="">No type</option>
+          <option value="">{t('colorGuide.tags.admin.noType')}</option>
           {Object.entries(tagTypes).map(([key, label]) => (
             <option key={key} value={key}>
               {label}
@@ -86,12 +88,13 @@ const TagFormDialog: FC<FormProps> = ({ tag, page, tagTypes, isOpen, onClose }) 
 
 /** “New tag” button of the tag list, shown to staff */
 export const NewTagButton: FC<BaseProps> = (props) => {
+  const t = useTranslations();
   const [open, setOpen] = useState(false);
   return (
     <>
       <Button color="ui" size="sm" onClick={() => setOpen(true)}>
         <InlineIcon icon="plus" first />
-        New tag
+        {t('colorGuide.tags.admin.new')}
       </Button>
       <TagFormDialog {...props} tag={null} isOpen={open} onClose={() => setOpen(false)} />
     </>
@@ -99,6 +102,7 @@ export const NewTagButton: FC<BaseProps> = (props) => {
 };
 
 const SynonymDialog: FC<BaseProps & { tag: TagListItem; isOpen: boolean; onClose: () => void }> = ({ tag, page, isOpen, onClose }) => {
+  const t = useTranslations();
   const [target, setTarget] = useState('');
   const save = useApiMutation(() => TagService.makeSynonym(tag.id, Number(target)), {
     invalidate: tagsKey(page),
@@ -111,21 +115,21 @@ const SynonymDialog: FC<BaseProps & { tag: TagListItem; isOpen: boolean; onClose
 
   return (
     <FormDialog
-      title={`Make “${tag.name}” a synonym`}
+      title={t('colorGuide.tags.admin.synonymTitle', { name: tag.name })}
       isOpen={isOpen}
       onClose={() => {
         save.reset();
         onClose();
       }}
       onSubmit={() => Number.isInteger(targetId) && targetId > 0 && save.mutate()}
-      submitLabel="Make synonym"
+      submitLabel={t('colorGuide.tags.admin.makeSynonym')}
       busy={save.isPending}
       error={save.error ? describeApiError(save.error) : null}
     >
       <FormGroup>
-        <Label for="synonym-target">ID of the tag to merge into</Label>
+        <Label for="synonym-target">{t('colorGuide.tags.admin.mergeInto')}</Label>
         <Input id="synonym-target" type="number" min={1} value={target} onChange={(e) => setTarget(e.target.value)} />
-        <FormText>The ID is shown next to each tag in this list. All uses of this tag move to the target.</FormText>
+        <FormText>{t('colorGuide.tags.admin.mergeHelp')}</FormText>
       </FormGroup>
     </FormDialog>
   );
@@ -133,6 +137,7 @@ const SynonymDialog: FC<BaseProps & { tag: TagListItem; isOpen: boolean; onClose
 
 /** Per-tag management buttons: edit, delete, synonym handling, recount */
 export const TagAdminActions: FC<BaseProps & { tag: TagListItem }> = ({ tag, page, tagTypes }) => {
+  const t = useTranslations();
   const { confirm } = useDialog();
   const [dialog, setDialog] = useState<'edit' | 'synonym' | null>(null);
 
@@ -147,7 +152,7 @@ export const TagAdminActions: FC<BaseProps & { tag: TagListItem }> = ({ tag, pag
     <span className="ms-2 d-inline-flex flex-wrap gap-1 align-middle">
       <small className="text-muted align-self-center">#{tag.id}</small>
       <Button size="sm" color="ui" disabled={busy} onClick={() => setDialog('edit')}>
-        Edit
+        {t('colorGuide.tags.admin.edit')}
       </Button>
       {tag.synonymOf ? (
         <Button
@@ -157,24 +162,24 @@ export const TagAdminActions: FC<BaseProps & { tag: TagListItem }> = ({ tag, pag
           onClick={async () => {
             if (
               await confirm({
-                title: 'Unlink synonym',
-                body: `“${tag.name}” will be a standalone tag again and stay applied to the appearances tagged with “${tag.synonymOf?.name}”.`,
-                confirmLabel: 'Unlink',
+                title: t('colorGuide.tags.admin.unlink'),
+                body: t('colorGuide.tags.admin.unlinkBody', { name: tag.name, target: tag.synonymOf?.name ?? '' }),
+                confirmLabel: t('colorGuide.tags.admin.unlinkConfirm'),
               })
             ) {
               unsynonym.mutate(true);
             }
           }}
         >
-          Unlink synonym
+          {t('colorGuide.tags.admin.unlink')}
         </Button>
       ) : (
         <>
           <Button size="sm" color="ui" disabled={busy} onClick={() => setDialog('synonym')}>
-            Make synonym
+            {t('colorGuide.tags.admin.makeSynonym')}
           </Button>
           <Button size="sm" color="ui" disabled={busy} onClick={() => recount.mutate()}>
-            Recount
+            {t('colorGuide.tags.admin.recount')}
           </Button>
         </>
       )}
@@ -186,20 +191,20 @@ export const TagAdminActions: FC<BaseProps & { tag: TagListItem }> = ({ tag, pag
         onClick={async () => {
           if (
             await confirm({
-              title: 'Delete tag',
+              title: t('colorGuide.tags.admin.deleteTitle'),
               body:
                 tag.uses > 0
-                  ? `“${tag.name}” is used on ${tag.uses} appearance${tag.uses === 1 ? '' : 's'}. Deleting it removes it from all of them.`
-                  : `“${tag.name}” will be deleted.`,
+                  ? t('colorGuide.tags.admin.deleteUsed', { name: tag.name, count: tag.uses })
+                  : t('colorGuide.tags.admin.deleteUnused', { name: tag.name }),
               color: 'danger',
-              confirmLabel: 'Delete',
+              confirmLabel: t('colorGuide.tags.admin.delete'),
             })
           ) {
             remove.mutate(tag.uses > 0);
           }
         }}
       >
-        Delete
+        {t('colorGuide.tags.admin.delete')}
       </Button>
       {error && (
         <Alert color="danger" fade={false} className="w-100 mb-0 py-1" role="alert">

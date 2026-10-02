@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
 import { FormGroup, Input, Label } from 'reactstrap';
 
@@ -15,6 +16,7 @@ interface PropTypes {
 
 /** Edits the label, notes and visibility of an appearance (`GET`/`PUT /appearances/{id}`) */
 export const AppearanceMetaDialog: FC<PropTypes> = ({ appearance, isOpen, onClose }) => {
+  const t = useTranslations();
   const [label, setLabel] = useState(appearance.label);
   const [notes, setNotes] = useState('');
   const [isPrivate, setIsPrivate] = useState(false);
@@ -57,7 +59,7 @@ export const AppearanceMetaDialog: FC<PropTypes> = ({ appearance, isOpen, onClos
 
   return (
     <FormDialog
-      title="Edit metadata"
+      title={t('colorGuide.edit.meta.title')}
       isOpen={isOpen}
       onClose={() => {
         save.reset();
@@ -65,12 +67,12 @@ export const AppearanceMetaDialog: FC<PropTypes> = ({ appearance, isOpen, onClos
         onClose();
       }}
       onSubmit={() => save.mutate()}
-      submitLabel="Save"
+      submitLabel={t('colorGuide.edit.common.save')}
       busy={save.isPending || load.isPending}
       error={error && !errors.label && !errors.notes ? describeApiError(error) : null}
     >
       <FormGroup>
-        <Label for={`meta-label-${appearance.id}`}>Name</Label>
+        <Label for={`meta-label-${appearance.id}`}>{t('colorGuide.edit.meta.name')}</Label>
         <Input
           id={`meta-label-${appearance.id}`}
           value={label}
@@ -82,7 +84,7 @@ export const AppearanceMetaDialog: FC<PropTypes> = ({ appearance, isOpen, onClos
         {errors.label && <div className="invalid-feedback d-block">{errors.label}</div>}
       </FormGroup>
       <FormGroup>
-        <Label for={`meta-notes-${appearance.id}`}>Notes</Label>
+        <Label for={`meta-notes-${appearance.id}`}>{t('colorGuide.edit.meta.notes')}</Label>
         <Input
           id={`meta-notes-${appearance.id}`}
           type="textarea"
@@ -96,7 +98,7 @@ export const AppearanceMetaDialog: FC<PropTypes> = ({ appearance, isOpen, onClos
       <FormGroup check>
         <Input id={`meta-private-${appearance.id}`} type="checkbox" checked={isPrivate} onChange={(e) => setIsPrivate(e.target.checked)} />
         <Label for={`meta-private-${appearance.id}`} check>
-          Private (hidden from everyone except you and staff)
+          {t('colorGuide.edit.meta.private')}
         </Label>
       </FormGroup>
     </FormDialog>

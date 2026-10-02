@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
 import { Alert, Button, Card, CardBody, FormGroup, Input, Label } from 'reactstrap';
 
@@ -45,6 +46,7 @@ const blankRow = (): Row => ({
 
 /** Replaces all cutie marks of an appearance (up to two) in one request, as the API does */
 export const CutieMarkDialog: FC<PropTypes> = ({ appearanceId, isOpen, onClose }) => {
+  const t = useTranslations();
   const [rows, setRows] = useState<Row[]>([]);
   const [loaded, setLoaded] = useState(false);
 
@@ -107,7 +109,7 @@ export const CutieMarkDialog: FC<PropTypes> = ({ appearanceId, isOpen, onClose }
 
   return (
     <FormDialog
-      title="Cutie marks"
+      title={t('colorGuide.edit.cutieMarks.title')}
       isOpen={isOpen}
       onClose={() => {
         save.reset();
@@ -116,7 +118,7 @@ export const CutieMarkDialog: FC<PropTypes> = ({ appearanceId, isOpen, onClose }
         onClose();
       }}
       onSubmit={() => !missingFile && save.mutate()}
-      submitLabel="Save cutie marks"
+      submitLabel={t('colorGuide.edit.cutieMarks.save')}
       busy={save.isPending || load.isPending || sanitize.isPending}
       error={error ? [describeApiError(error), ...errors.filter((e) => e !== describeApiError(error))].join(' ') : null}
     >
@@ -126,7 +128,7 @@ export const CutieMarkDialog: FC<PropTypes> = ({ appearanceId, isOpen, onClose }
           <Card key={row.key} className="mb-3">
             <CardBody>
               <div className="d-flex justify-content-between align-items-center mb-2">
-                <strong>Cutie mark {index + 1}</strong>
+                <strong>{t('colorGuide.edit.cutieMarks.n', { n: index + 1 })}</strong>
                 <Button
                   type="button"
                   size="sm"
@@ -134,11 +136,13 @@ export const CutieMarkDialog: FC<PropTypes> = ({ appearanceId, isOpen, onClose }
                   outline
                   onClick={() => setRows((all) => all.filter((r) => r.key !== row.key))}
                 >
-                  Remove
+                  {t('colorGuide.edit.cutieMarks.remove')}
                 </Button>
               </div>
               <FormGroup>
-                <Label for={`${id}-file`}>{row.id ? 'Replace the SVG file' : 'SVG file'}</Label>
+                <Label for={`${id}-file`}>
+                  {row.id ? t('colorGuide.edit.cutieMarks.replaceFile') : t('colorGuide.edit.cutieMarks.file')}
+                </Label>
                 <Input
                   id={`${id}-file`}
                   type="file"
@@ -148,8 +152,8 @@ export const CutieMarkDialog: FC<PropTypes> = ({ appearanceId, isOpen, onClose }
                     if (file) sanitize.mutate({ key: row.key, file });
                   }}
                 />
-                {row.fileName && <small className="text-muted">Ready to upload: {row.fileName}</small>}
-                {!row.id && !row.svgdata && <small className="text-danger d-block">A file is required</small>}
+                {row.fileName && <small className="text-muted">{t('colorGuide.edit.cutieMarks.ready', { name: row.fileName })}</small>}
+                {!row.id && !row.svgdata && <small className="text-danger d-block">{t('colorGuide.edit.cutieMarks.fileRequired')}</small>}
                 {row.warnings.length > 0 && (
                   <Alert color="warning" fade={false} className="mt-2 mb-0">
                     {row.warnings.map((w) => (
@@ -159,25 +163,25 @@ export const CutieMarkDialog: FC<PropTypes> = ({ appearanceId, isOpen, onClose }
                 )}
               </FormGroup>
               <FormGroup>
-                <Label for={`${id}-label`}>Label (optional, up to 32 characters)</Label>
+                <Label for={`${id}-label`}>{t('colorGuide.edit.cutieMarks.label')}</Label>
                 <Input id={`${id}-label`} maxLength={32} value={row.label} onChange={(e) => update(row.key, { label: e.target.value })} />
               </FormGroup>
               <div className="d-flex gap-3">
                 <FormGroup className="flex-fill">
-                  <Label for={`${id}-facing`}>Facing</Label>
+                  <Label for={`${id}-facing`}>{t('colorGuide.edit.cutieMarks.facing')}</Label>
                   <Input
                     id={`${id}-facing`}
                     type="select"
                     value={row.facing}
                     onChange={(e) => update(row.key, { facing: e.target.value as Row['facing'] })}
                   >
-                    <option value="">Symmetrical</option>
-                    <option value="left">Left</option>
-                    <option value="right">Right</option>
+                    <option value="">{t('colorGuide.edit.cutieMarks.symmetrical')}</option>
+                    <option value="left">{t('colorGuide.edit.cutieMarks.left')}</option>
+                    <option value="right">{t('colorGuide.edit.cutieMarks.right')}</option>
                   </Input>
                 </FormGroup>
                 <FormGroup className="flex-fill">
-                  <Label for={`${id}-rotation`}>Preview rotation (°)</Label>
+                  <Label for={`${id}-rotation`}>{t('colorGuide.edit.cutieMarks.rotation')}</Label>
                   <Input
                     id={`${id}-rotation`}
                     type="number"
@@ -189,21 +193,21 @@ export const CutieMarkDialog: FC<PropTypes> = ({ appearanceId, isOpen, onClose }
                 </FormGroup>
               </div>
               <FormGroup>
-                <Label for={`${id}-attribution`}>Attribution</Label>
+                <Label for={`${id}-attribution`}>{t('colorGuide.edit.cutieMarks.attribution')}</Label>
                 <Input
                   id={`${id}-attribution`}
                   type="select"
                   value={row.attribution}
                   onChange={(e) => update(row.key, { attribution: e.target.value as Attribution })}
                 >
-                  <option value="none">None</option>
-                  <option value="deviation">A deviation</option>
-                  <option value="user">A DeviantArt user</option>
+                  <option value="none">{t('colorGuide.edit.cutieMarks.none')}</option>
+                  <option value="deviation">{t('colorGuide.edit.cutieMarks.deviation')}</option>
+                  <option value="user">{t('colorGuide.edit.cutieMarks.user')}</option>
                 </Input>
               </FormGroup>
               {row.attribution === 'deviation' && (
                 <FormGroup>
-                  <Label for={`${id}-deviation`}>Deviation URL</Label>
+                  <Label for={`${id}-deviation`}>{t('colorGuide.edit.cutieMarks.deviationUrl')}</Label>
                   <Input
                     id={`${id}-deviation`}
                     type="url"
@@ -214,7 +218,7 @@ export const CutieMarkDialog: FC<PropTypes> = ({ appearanceId, isOpen, onClose }
               )}
               {row.attribution === 'user' && (
                 <FormGroup>
-                  <Label for={`${id}-username`}>DeviantArt username</Label>
+                  <Label for={`${id}-username`}>{t('colorGuide.edit.cutieMarks.username')}</Label>
                   <Input id={`${id}-username`} value={row.username} onChange={(e) => update(row.key, { username: e.target.value })} />
                 </FormGroup>
               )}
@@ -229,11 +233,9 @@ export const CutieMarkDialog: FC<PropTypes> = ({ appearanceId, isOpen, onClose }
         disabled={rows.length >= MAX_CUTIE_MARKS || !loaded}
         onClick={() => setRows((all) => [...all, blankRow()])}
       >
-        Add a cutie mark
+        {t('colorGuide.edit.cutieMarks.add')}
       </Button>
-      {loaded && rows.length === 0 && (
-        <p className="text-muted mt-2 mb-0">This appearance has no cutie marks. Saving now keeps it that way.</p>
-      )}
+      {loaded && rows.length === 0 && <p className="text-muted mt-2 mb-0">{t('colorGuide.edit.cutieMarks.empty')}</p>}
     </FormDialog>
   );
 };

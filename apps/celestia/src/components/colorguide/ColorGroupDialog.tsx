@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { Button, FormGroup, FormText, Input, InputGroup, Label } from 'reactstrap';
 
@@ -26,6 +27,7 @@ interface PropTypes {
 const emptyRow = (): ColorRow => ({ label: '', hex: '' });
 
 export const ColorGroupDialog: FC<PropTypes> = ({ appearanceId, groupId, isOpen, onClose }) => {
+  const t = useTranslations();
   const { patterns } = useConfig();
   const [label, setLabel] = useState('');
   const [rows, setRows] = useState<ColorRow[]>([emptyRow()]);
@@ -87,19 +89,19 @@ export const ColorGroupDialog: FC<PropTypes> = ({ appearanceId, groupId, isOpen,
 
   return (
     <FormDialog
-      title={groupId === undefined ? 'Create color group' : 'Edit color group'}
+      title={groupId === undefined ? t('colorGuide.edit.colorGroup.createTitle') : t('colorGuide.edit.colorGroup.editTitle')}
       isOpen={isOpen}
       onClose={() => {
         save.reset();
         onClose();
       }}
       onSubmit={() => !anyInvalidHex && save.mutate()}
-      submitLabel="Save"
+      submitLabel={t('colorGuide.edit.common.save')}
       busy={save.isPending || existing.isFetching}
       error={error && !handled ? describeApiError(error as never) : error && handled ? Object.values(errors)[0] : null}
     >
       <FormGroup>
-        <Label for={`cg-label-${groupId ?? 'new'}`}>Group name</Label>
+        <Label for={`cg-label-${groupId ?? 'new'}`}>{t('colorGuide.edit.colorGroup.groupName')}</Label>
         <Input
           id={`cg-label-${groupId ?? 'new'}`}
           value={label}
@@ -109,28 +111,34 @@ export const ColorGroupDialog: FC<PropTypes> = ({ appearanceId, groupId, isOpen,
           autoFocus
         />
       </FormGroup>
-      <Label>Colors</Label>
+      <Label>{t('colorGuide.edit.colorGroup.colors')}</Label>
       {rows.map((row, i) => (
         <InputGroup key={row.id ?? `new-${i}`} className="mb-1">
           <Input
-            aria-label={`Color ${i + 1} name`}
-            placeholder="Name"
+            aria-label={t('colorGuide.edit.colorGroup.colorName', { n: i + 1 })}
+            placeholder={t('colorGuide.edit.colorGroup.name')}
             value={row.label}
             onChange={(e) => update(i, { label: e.target.value })}
             maxLength={30}
           />
           <Input
-            aria-label={`Color ${i + 1} value`}
-            placeholder="#RRGGBB (optional)"
+            aria-label={t('colorGuide.edit.colorGroup.colorValue', { n: i + 1 })}
+            placeholder={t('colorGuide.edit.colorGroup.hex')}
             value={row.hex}
             onChange={(e) => update(i, { hex: e.target.value })}
             invalid={Boolean(hexError(row.hex))}
             style={{ maxWidth: '9rem' }}
           />
-          <Button type="button" outline onClick={() => move(i, -1)} disabled={i === 0} aria-label="Move up">
+          <Button type="button" outline onClick={() => move(i, -1)} disabled={i === 0} aria-label={t('colorGuide.edit.colorGroup.moveUp')}>
             <InlineIcon icon="arrow-up" />
           </Button>
-          <Button type="button" outline onClick={() => move(i, 1)} disabled={i === rows.length - 1} aria-label="Move down">
+          <Button
+            type="button"
+            outline
+            onClick={() => move(i, 1)}
+            disabled={i === rows.length - 1}
+            aria-label={t('colorGuide.edit.colorGroup.moveDown')}
+          >
             <InlineIcon icon="arrow-down" />
           </Button>
           <Button
@@ -138,25 +146,26 @@ export const ColorGroupDialog: FC<PropTypes> = ({ appearanceId, groupId, isOpen,
             outline
             color="danger"
             onClick={() => setRows((c) => c.filter((_, idx) => idx !== i))}
-            aria-label="Remove color"
+            aria-label={t('colorGuide.edit.colorGroup.removeColor')}
           >
             <InlineIcon icon="times" />
           </Button>
         </InputGroup>
       ))}
       <Button type="button" size="sm" color="link" onClick={() => setRows((c) => [...c, emptyRow()])}>
-        <InlineIcon icon="plus" first /> Add color
+        <InlineIcon icon="plus" first />
+        {t('colorGuide.edit.colorGroup.addColor')}
       </Button>
-      {anyInvalidHex && <FormText color="danger">Colors must look like #RRGGBB.</FormText>}
+      {anyInvalidHex && <FormText color="danger">{t('colorGuide.edit.colorGroup.hexInvalid')}</FormText>}
       <FormGroup check className="mt-3">
         <Input id={`cg-major-${groupId ?? 'new'}`} type="checkbox" checked={major} onChange={(e) => setMajor(e.target.checked)} />
         <Label for={`cg-major-${groupId ?? 'new'}`} check>
-          This is a major change
+          {t('colorGuide.edit.colorGroup.major')}
         </Label>
       </FormGroup>
       {major && (
         <FormGroup className="mt-2">
-          <Label for={`cg-reason-${groupId ?? 'new'}`}>Reason</Label>
+          <Label for={`cg-reason-${groupId ?? 'new'}`}>{t('colorGuide.edit.colorGroup.reason')}</Label>
           <Input id={`cg-reason-${groupId ?? 'new'}`} value={reason} onChange={(e) => setReason(e.target.value)} maxLength={255} required />
         </FormGroup>
       )}

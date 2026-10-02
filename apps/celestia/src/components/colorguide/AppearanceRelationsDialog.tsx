@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import Axios from 'axios';
+import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
 import { Input, Label } from 'reactstrap';
 
@@ -30,6 +31,7 @@ interface PropTypes {
  * Edits which appearances (`relations`, with an optional "mutual" flag) or shows (`shows`, staff only) an appearance is linked to
  */
 export const AppearanceRelationsDialog: FC<PropTypes> = ({ appearanceId, kind, isOpen, onClose }) => {
+  const t = useTranslations();
   const [items, setItems] = useState<(TransferItem & { mutual?: boolean })[]>([]);
   const [selected, setSelected] = useState<number[]>([]);
   const [mutuals, setMutuals] = useState<number[]>([]);
@@ -71,16 +73,16 @@ export const AppearanceRelationsDialog: FC<PropTypes> = ({ appearanceId, kind, i
 
   return (
     <FormDialog
-      title={kind === 'relations' ? 'Related appearances' : 'Featured in'}
+      title={kind === 'relations' ? t('colorGuide.edit.relations.related') : t('colorGuide.edit.relations.featuredIn')}
       isOpen={isOpen}
       onClose={() => {
         save.reset();
         onClose();
       }}
       onSubmit={() => save.mutate()}
-      submitLabel="Save"
+      submitLabel={t('colorGuide.edit.common.save')}
       busy={save.isPending || source.isFetching}
-      error={save.error ? describeApiError(save.error) : source.error ? 'The list could not be loaded.' : null}
+      error={save.error ? describeApiError(save.error) : source.error ? t('colorGuide.edit.relations.loadFailed') : null}
     >
       <TransferList
         available={available}
@@ -100,7 +102,7 @@ export const AppearanceRelationsDialog: FC<PropTypes> = ({ appearanceId, kind, i
                     onChange={(e) => setMutuals((c) => (e.target.checked ? [...c, item.id] : c.filter((id) => id !== item.id)))}
                   />
                   <Label for={`mutual-${item.id}`} className="me-2 small">
-                    Mutual
+                    {t('colorGuide.edit.relations.mutual')}
                   </Label>
                 </>
               )

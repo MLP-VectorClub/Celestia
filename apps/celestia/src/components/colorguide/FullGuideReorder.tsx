@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC, useMemo, useState } from 'react';
 import { Alert, Button, Card, CardBody } from 'reactstrap';
 
@@ -29,6 +30,7 @@ const move = (ids: number[], from: number, to: number) => {
  * The order is saved as one list of all IDs in display order
  */
 export const FullGuideReorder: FC<PropTypes> = ({ guide, appearances, groups, onDone }) => {
+  const t = useTranslations();
   const labels = useMemo(() => new Map(appearances.map((a) => [a.id, a.label])), [appearances]);
   const [sections, setSections] = useState<Section[]>(() =>
     groups.length > 0
@@ -66,10 +68,10 @@ export const FullGuideReorder: FC<PropTypes> = ({ guide, appearances, groups, on
       <div className="mb-3 d-flex gap-2">
         <Button color="primary" size="sm" disabled={save.isPending} onClick={() => save.mutate()}>
           <InlineIcon icon="check" first />
-          Save order
+          {t('colorGuide.edit.reorder.save')}
         </Button>
         <Button color="ui" size="sm" disabled={save.isPending} onClick={onDone}>
-          Cancel
+          {t('colorGuide.edit.common.cancel')}
         </Button>
       </div>
       {sections.map((section, s) => (
@@ -94,7 +96,7 @@ export const FullGuideReorder: FC<PropTypes> = ({ guide, appearances, groups, on
                     <Button
                       size="sm"
                       color="ui"
-                      aria-label={`Move ${labels.get(id)} earlier`}
+                      aria-label={t('colorGuide.edit.reorder.earlier', { label: labels.get(id) ?? '' })}
                       disabled={i === 0}
                       onClick={() => reposition(s, i, i - 1)}
                     >
@@ -104,7 +106,7 @@ export const FullGuideReorder: FC<PropTypes> = ({ guide, appearances, groups, on
                     <Button
                       size="sm"
                       color="ui"
-                      aria-label={`Move ${labels.get(id)} later`}
+                      aria-label={t('colorGuide.edit.reorder.later', { label: labels.get(id) ?? '' })}
                       disabled={i === section.ids.length - 1}
                       onClick={() => reposition(s, i, i + 1)}
                     >

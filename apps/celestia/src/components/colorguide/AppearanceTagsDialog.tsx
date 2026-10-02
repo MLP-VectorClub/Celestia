@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC, useEffect, useRef, useState } from 'react';
 import { FormGroup, FormText, Input, Label } from 'reactstrap';
 
@@ -14,6 +15,7 @@ interface PropTypes {
 
 /** Tags are edited as one comma separated text, `origTags` lets the API notice somebody else changed them meanwhile */
 export const AppearanceTagsDialog: FC<PropTypes> = ({ appearanceId, isOpen, onClose }) => {
+  const t = useTranslations();
   const [tags, setTags] = useState('');
   const original = useRef('');
   const [loaded, setLoaded] = useState(false);
@@ -43,7 +45,7 @@ export const AppearanceTagsDialog: FC<PropTypes> = ({ appearanceId, isOpen, onCl
 
   return (
     <FormDialog
-      title="Edit tags"
+      title={t('colorGuide.edit.tags.title')}
       isOpen={isOpen}
       onClose={() => {
         save.reset();
@@ -51,12 +53,12 @@ export const AppearanceTagsDialog: FC<PropTypes> = ({ appearanceId, isOpen, onCl
         onClose();
       }}
       onSubmit={() => save.mutate()}
-      submitLabel="Save tags"
+      submitLabel={t('colorGuide.edit.tags.save')}
       busy={save.isPending || load.isPending}
       error={error && !errors.tags ? describeApiError(error) : null}
     >
       <FormGroup>
-        <Label for={`tags-${appearanceId}`}>Tags</Label>
+        <Label for={`tags-${appearanceId}`}>{t('colorGuide.edit.tags.label')}</Label>
         <Input
           id={`tags-${appearanceId}`}
           type="textarea"
@@ -66,7 +68,7 @@ export const AppearanceTagsDialog: FC<PropTypes> = ({ appearanceId, isOpen, onCl
           invalid={Boolean(errors.tags)}
         />
         {errors.tags && <div className="invalid-feedback d-block">{errors.tags}</div>}
-        <FormText>Separate tags with commas. Prefix a tag with its type (for example “spec:unicorn”) to create it with that type.</FormText>
+        <FormText>{t('colorGuide.edit.tags.help')}</FormText>
       </FormGroup>
     </FormDialog>
   );

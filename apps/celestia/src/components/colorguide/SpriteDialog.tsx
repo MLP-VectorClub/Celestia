@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC, useState } from 'react';
 import { Button, FormGroup, FormText, Input, Label } from 'reactstrap';
 
@@ -14,6 +15,7 @@ interface PropTypes {
 }
 
 export const SpriteDialog: FC<PropTypes> = ({ appearanceId, hasSprite, isOpen, onClose }) => {
+  const t = useTranslations();
   const { config } = useConfig();
   const [file, setFile] = useState<File | null>(null);
   const options = {
@@ -30,7 +32,7 @@ export const SpriteDialog: FC<PropTypes> = ({ appearanceId, hasSprite, isOpen, o
 
   return (
     <FormDialog
-      title="Sprite"
+      title={t('colorGuide.edit.sprite.title')}
       isOpen={isOpen}
       onClose={() => {
         upload.reset();
@@ -39,23 +41,26 @@ export const SpriteDialog: FC<PropTypes> = ({ appearanceId, hasSprite, isOpen, o
         onClose();
       }}
       onSubmit={() => file && upload.mutate(file)}
-      submitLabel="Upload"
+      submitLabel={t('colorGuide.edit.sprite.upload')}
       busy={upload.isPending || remove.isPending}
       error={error ? describeApiError(error) : null}
     >
       <FormGroup>
-        <Label for={`sprite-${appearanceId}`}>PNG or JPEG image</Label>
+        <Label for={`sprite-${appearanceId}`}>{t('colorGuide.edit.sprite.image')}</Label>
         <Input
           id={`sprite-${appearanceId}`}
           type="file"
           accept="image/png,image/jpeg"
           onChange={(e) => setFile(e.target.files?.[0] ?? null)}
         />
-        <FormText>{config ? `Up to ${config.maxUploadSize}.` : null} Replaces the current sprite.</FormText>
+        <FormText>
+          {config ? `${t('colorGuide.edit.sprite.limit', { limit: config.maxUploadSize })} ` : ''}
+          {t('colorGuide.edit.sprite.help')}
+        </FormText>
       </FormGroup>
       {hasSprite && (
         <Button type="button" color="danger" outline size="sm" onClick={() => remove.mutate()} disabled={remove.isPending}>
-          Remove the current sprite
+          {t('colorGuide.edit.sprite.remove')}
         </Button>
       )}
     </FormDialog>
