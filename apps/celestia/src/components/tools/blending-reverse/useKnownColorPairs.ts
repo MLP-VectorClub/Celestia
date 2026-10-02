@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 import { Rgb, parseColor } from 'src/utils/color';
 
@@ -13,11 +13,11 @@ export interface ValidPairs {
   filtered: Rgb[];
 }
 
-let nextId = 0;
-const blankPair = (): KnownPair => ({ id: ++nextId, original: '', filtered: '' });
-
 /** The editable list of original/filtered color pairs (always at least two rows) and the pairs where both colors parse */
 export function useKnownColorPairs() {
+  // Row IDs end up in element IDs, so they are counted per picker: a counter shared by the whole module would differ between server and browser
+  const lastId = useRef(0);
+  const blankPair = (): KnownPair => ({ id: ++lastId.current, original: '', filtered: '' });
   const [pairs, setPairs] = useState<KnownPair[]>(() => [blankPair(), blankPair()]);
 
   const valid = useMemo<ValidPairs>(() => {

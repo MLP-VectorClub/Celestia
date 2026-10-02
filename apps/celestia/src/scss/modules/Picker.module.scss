@@ -20,7 +20,8 @@
 
 .stage {
   position: relative;
-  flex: 0 0 auto;
+  flex: 0 1 auto;
+  min-width: 0;
   min-height: 24rem;
   display: flex;
   background: repeating-conic-gradient(#555 0 25%, #666 0 50%) 0 0 / 16px 16px;

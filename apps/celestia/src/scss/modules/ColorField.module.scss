@@ -7,6 +7,7 @@
   flex: 0 0 auto;
   width: 2.2rem;
   border-right: 1px solid black;
+  background: repeating-conic-gradient(#ccc 0 25%, #fff 0 50%) 0 0 / 8px 8px;
 
   &.invalid {
     background: repeating-linear-gradient(135deg, #fff 0 4px, #e55 4px 8px);

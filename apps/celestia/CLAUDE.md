@@ -59,12 +59,14 @@ status per phase and verification method live in [`docs/winterchilla-parity-plan
 
 - **E-mail change** (account page, staff only like Luna's gate): `EmailChangeForm` posts `{newEmail, currentPassword?}` or `{resend}` to `POST /users/{id}/email-changes`; `/users/verify?hash=&action=verify|block` (the link in Luna's mail) asks for confirmation and posts to `POST /users/email/verify`. Field errors checked against Luna; sending needs Luna's `MAIL_*` settings, so a real address was not tried.
 
+- **Fixed by the browser checks:** the picker's About button was invisible, its area list overflowed the page, empty color fields were drawn as errors, and the blending reverser's row IDs came from a module-level counter that made server and browser HTML differ (keep IDs per component instance, never in module state).
+
 ## Left to do
 
 - Staff/admin: dev tools.
   Dropped on purpose (not in the contract): PCG admin list, tag changes, browser-recognition, `/u/{uuid}`, appearance PNG/GPL exports (compose from `colorGroups`), sessions list.
 - Event writes (disabled server-side).
-- Nothing in the editing/write UI has been clicked through in a browser yet (no extension was available): only request shapes were exercised against the APIs.
+- Browser checks: `node scripts/smoke-pages.mjs <dir>` (Playwright's Chromium, signed in as Luna's seeded admin, needs `next dev` + Luna's contract server) loads 19 main pages and reports console errors and failed requests; the picker was also driven through a real upload/pick/levels flow. Still not clicked through by hand: the guide editing dialogs, post/show admin dialogs, admin pages' write actions (only request shapes were exercised against the APIs, plus the browser tests for the tools). The Chrome extension was not connected.
 - i18n: new strings exist for `en` only (Crowdin handles the rest). Everything built in this migration is translated (`src/utils/__tests__/i18n-keys.test.ts` checks every key against the English files); still hard-coded English because they predate it: the About pages, connection page, sprite generator, search bar, share buttons, cutie mark display, the guide page notes (`WIP`, "Resources for developers") and the sign-in/register forms.
 
 ## Verifying locally

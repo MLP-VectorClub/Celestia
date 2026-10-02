@@ -16,6 +16,8 @@ interface PropTypes {
 /** A color text input with a live swatch. Pasted or left-behind colors are rewritten as `#rrggbb` */
 export const ColorField: FC<PropTypes> = ({ id, label, value, onChange, onRequestRgb }) => {
   const color = parseColor(value);
+  // Nothing typed yet is not an error
+  const invalid = !color && value.trim() !== '';
   const normalize = (text: string) => {
     const parsed = parseColor(text);
     if (parsed) onChange(rgbToHex(parsed));
@@ -31,7 +33,7 @@ export const ColorField: FC<PropTypes> = ({ id, label, value, onChange, onReques
   return (
     <div className={styles.field} onClick={handleClick}>
       <span
-        className={classNames(styles.swatch, { [styles.invalid]: !color })}
+        className={classNames(styles.swatch, { [styles.invalid]: invalid })}
         style={color ? { backgroundColor: rgbToHex(color) } : undefined}
         aria-hidden
       />
@@ -39,7 +41,7 @@ export const ColorField: FC<PropTypes> = ({ id, label, value, onChange, onReques
         id={id}
         className={styles.input}
         aria-label={label}
-        aria-invalid={!color}
+        aria-invalid={invalid}
         autoComplete="off"
         spellCheck={false}
         value={value}
