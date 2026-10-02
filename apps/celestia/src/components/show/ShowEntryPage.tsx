@@ -8,6 +8,7 @@ import { Button, Progress } from 'reactstrap';
 import { GetPostsResult, GetShowIdResult, GetShowIdVoteResult } from '@mlp-vectorclub/api-types';
 import { AppearanceLink } from 'src/components/colorguide/AppearanceLink';
 import Content from 'src/components/shared/Content';
+import { MuffinRating } from 'src/components/shared/MuffinRating';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import StatusAlert from 'src/components/shared/StatusAlert';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
@@ -180,6 +181,7 @@ export const ShowEntryPage: FC<ShowEntryPageProps> = ({ id, initialShow, initial
       {show.aired && show.type === 'episode' && votes && (
         <section>
           <h2>{t('show.entry.votes')}</h2>
+          <MuffinRating score={show.score} className="mb-2" />
           {signedIn && <VoteForm showId={id} />}
           <VoteResults votes={votes} />
         </section>
