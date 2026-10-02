@@ -1,11 +1,12 @@
 import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { FC, useCallback, useMemo } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 import { Button, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 
 import { GetAppearancesFullResult, GuideName } from '@mlp-vectorclub/api-types';
 import FullGuideGroups from 'src/components/colorguide/FullGuideGroups';
+import { FullGuideReorder } from 'src/components/colorguide/FullGuideReorder';
 import { GuideNotFound } from 'src/components/colorguide/GuideNotFound';
 import MajorChangesButton from 'src/components/colorguide/MajorChangesButton';
 import ReturnToGuideButton from 'src/components/colorguide/ReturnToGuideButton';
@@ -59,6 +60,7 @@ const FullGuidePage: NextPage<PropTypes> = ({ guide, sort, initialData }) => {
   const t = useTranslations();
   const dispatch = useAppDispatch();
   const { isStaff } = useAuth();
+  const [reordering, setReordering] = useState(false);
   const data = useFullGuide({ guide, sort }, initialData || undefined);
   const heading = t('colorGuide.fullList.heading', {
     guideName: getGuideLabel(guide),
@@ -108,7 +110,12 @@ const FullGuidePage: NextPage<PropTypes> = ({ guide, sort, initialData }) => {
       <ButtonCollection>
         <ReturnToGuideButton guide={guide} />
         {isStaff && (
-          <Button color="ui" size="sm" disabled>
+          <Button
+            color="ui"
+            size="sm"
+            disabled={sort !== 'relevance' || reordering || !data.appearances}
+            onClick={() => setReordering(true)}
+          >
             <InlineIcon icon="sort" first />
             {t('colorGuide.fullList.reorder')}
           </Button>
@@ -117,9 +124,13 @@ const FullGuidePage: NextPage<PropTypes> = ({ guide, sort, initialData }) => {
       </ButtonCollection>
 
       <StatusAlert status={data.status} subject="list of all entries" />
-      {typeof data.appearances !== 'undefined' && typeof data.groups !== 'undefined' && (
-        <FullGuideGroups appearances={data.appearances} groups={data.groups} />
-      )}
+      {typeof data.appearances !== 'undefined' &&
+        typeof data.groups !== 'undefined' &&
+        (reordering ? (
+          <FullGuideReorder guide={guide} appearances={data.appearances} groups={data.groups} onDone={() => setReordering(false)} />
+        ) : (
+          <FullGuideGroups appearances={data.appearances} groups={data.groups} />
+        ))}
     </Content>
   );
 };

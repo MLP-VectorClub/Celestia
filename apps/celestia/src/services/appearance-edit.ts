@@ -6,6 +6,7 @@ import {
   GetAppearancesIdCutieMarksResult,
   GetAppearancesIdMetadataResult,
   GetAppearancesIdTagsResult,
+  GuideName,
   PostAppearancesIdPinResult,
   PostAppearancesIdSanitizeSvgResult,
   PostAppearancesIdSpriteResult,
@@ -51,4 +52,8 @@ export class AppearanceEditService {
     body.append('file', file);
     return Axios.post<PostAppearancesIdSanitizeSvgResult>(`/appearances/${id}/sanitize-svg`, body);
   };
+
+  /** `list` is every appearance ID of the guide in the new order, the API stores each ID's position */
+  static reorderGuide = (guide: GuideName, list: number[]) =>
+    Axios.put<unknown>('/appearances/order', { guide, list, ordering: 'relevance' });
 }
