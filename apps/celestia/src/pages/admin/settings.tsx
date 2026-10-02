@@ -5,9 +5,10 @@ import { FC, useEffect, useState } from 'react';
 import { Button, FormGroup, FormText, Input, Label } from 'reactstrap';
 
 import { AdminPage } from 'src/components/admin/AdminPage';
-import { describeApiError, useApiMutation } from 'src/hooks';
+import { describeApiError, useApiMutation, useAuth } from 'src/hooks';
 import { AdminService, SiteSettingKey } from 'src/services/admin';
 import { createAdminGetServerSideProps } from 'src/utils/admin-page';
+import { permission } from 'src/utils/permission';
 
 const SETTINGS: Array<{ name: SiteSettingKey; textKey: string; multiline: boolean }> = [
   { name: 'reservation_rules', textKey: 'reservationRules', multiline: true },
@@ -57,13 +58,17 @@ const SettingForm: FC<(typeof SETTINGS)[number]> = ({ name: settingKey, textKey,
   );
 };
 
-const SettingsPage: NextPage = () => (
-  <AdminPage section="settings">
-    {SETTINGS.map((s) => (
-      <SettingForm key={s.name} {...s} />
-    ))}
-  </AdminPage>
-);
+const SettingsPage: NextPage = () => {
+  const { user } = useAuth();
+  const isDeveloper = permission(user, 'developer');
+  return (
+    <AdminPage section="settings">
+      {SETTINGS.filter((s) => s.name !== 'dev_role_label' || isDeveloper).map((s) => (
+        <SettingForm key={s.name} {...s} />
+      ))}
+    </AdminPage>
+  );
+};
 
 export const getServerSideProps = createAdminGetServerSideProps('settings');
 

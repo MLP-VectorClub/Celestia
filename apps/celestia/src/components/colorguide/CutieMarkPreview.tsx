@@ -1,5 +1,4 @@
-import { uniqueId } from 'lodash';
-import { FC, useMemo } from 'react';
+import { FC, useId, useMemo } from 'react';
 
 import { Appearance, CutieMark } from '@mlp-vectorclub/api-types';
 import { CutieMarkFacing } from 'src/types/api-alias';
@@ -47,7 +46,8 @@ type PropTypes = Pick<CutieMark, 'facing' | 'rotation'> & Pick<Appearance, 'colo
 export const CutieMarkPreview: FC<PropTypes> = ({ facing = 'left', colorGroups }) => {
   const fixedFacing = facing === null ? 'left' : facing;
   const colorMap = useMemo(() => getColorMapping(colorGroups, DEFAULT_COLOR_MAPPING), [colorGroups]);
-  const uid = useMemo(() => uniqueId(), []);
+  // useId matches between the server and the browser, a global counter does not
+  const uid = useId().replace(/:/g, '');
   const opacityMaskId = `opacity_mask${uid}`;
   const opacityMaskFilterId = `opacity_mask_filter${uid}`;
   return (
