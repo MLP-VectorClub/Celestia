@@ -51,10 +51,13 @@ status per phase and verification method live in [`docs/winterchilla-parity-plan
 - Run Celestia against either without touching `.env`:
   `NEXT_PUBLIC_BACKEND_HOST=<api base> NEXT_PUBLIC_FRONTEND_HOST=http://127.0.0.1:3100 NEXT_PUBLIC_CDN_DOMAIN=127.0.0.1 NEXT_PUBLIC_API_PREFIX=/api pnpm exec next dev -p 3100 -H 127.0.0.1`
   (only one dev server per checkout). Elasticsearch-backed pages (guide search, autocomplete) answer 503 without ES.
-- Contract check: validate GET responses against `api.json` with Ajv (strip `additionalProperties: false`, convert `nullable`); this found most spec/runtime mismatches reported so far.
+- Contract check: `node scripts/validate-contract.mjs <api base> <api.json> [bearer] [cookie]` (repo root) calls every non-internal GET and validates 200s with Ajv; `/appearances` needs Elasticsearch.
+  Last run (spec 425a7123): Winterchilla 44 ok; Luna 41 ok (admin token from `POST /test/login/9002`).
 
 ## Open issues reported to the other sessions
 
 - Winterchilla: nothing open. The vote operations vanished from the spec at 7a7983c6 and were restored at 425a7123 (types verified against that commit). Use a worktree with its own
   copy of `vendor` when generating the spec: a symlinked `vendor` autoloads the shared tree's classes.
+- Luna (reported 2026-10-02): `/appearances/full` `groups` is an object keyed by tag id for `relevance` (spec: array); cutie-mark `rendered` and color `hex` can be null (spec: string).
+- Winterchilla: `PrivateColorGroup.required` says `appearance_id` (property is `appearanceId`), so `GET /color-groups/{id}` fails validation everywhere.
 - Luna: posts, Discord and cutie marks were still being built at last check (116/127 operations).
