@@ -7,13 +7,14 @@ interface PropTypes {
   onOpen: () => void;
   onOpenClipboard: () => void;
   onClearSettings: () => void;
+  onAbout: () => void;
 }
 
 const isMac = typeof navigator !== 'undefined' && /(mac|iphone|ipad)/i.test(navigator.userAgent);
 const mod = isMac ? '⌘' : 'Ctrl+';
 
 /** File and Tools menus of the picker */
-export const MenuBar: FC<PropTypes> = ({ onOpen, onOpenClipboard, onClearSettings }) => (
+export const MenuBar: FC<PropTypes> = ({ onOpen, onOpenClipboard, onClearSettings, onAbout }) => (
   <nav className={styles.menuBar} aria-label="Color picker menu">
     <UncontrolledDropdown>
       <DropdownToggle color="link" className={styles.toggle}>
@@ -36,5 +37,8 @@ export const MenuBar: FC<PropTypes> = ({ onOpen, onOpenClipboard, onClearSetting
         <DropdownItem onClick={onClearSettings}>Clear settings</DropdownItem>
       </DropdownMenu>
     </UncontrolledDropdown>
+    <button type="button" className={styles.toggle} onClick={onAbout}>
+      About
+    </button>
   </nav>
 );

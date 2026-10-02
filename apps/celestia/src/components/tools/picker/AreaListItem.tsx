@@ -23,7 +23,7 @@ export const AreaListItem: FC<PropTypes> = ({ index, area, color, selected, onSe
       type="button"
       className={classNames(styles.item, { [styles.selected]: selected })}
       aria-pressed={selected}
-      title="Picking area (click to select, Ctrl/Shift+click to select several, double click to change shape and size)"
+      data-hint="Picking area (click to select, Ctrl/Shift+click to select several, double click to change shape and size)"
       onClick={(e) => onSelect(e.ctrlKey || e.metaKey || e.shiftKey)}
       onDoubleClick={onEdit}
     >

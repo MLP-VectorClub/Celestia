@@ -94,6 +94,18 @@ the hex/rgb display toggle is gone (both are shown); clicking an existing area w
 The browser tests share `localStorage` with the app's settings, so they clear it first. Not covered by tests: the Copy button (needs the clipboard
 permission), dragging the resize handle, and the area color dialog.
 
+## Stage 5 status: done, except strings
+
+- **Levels:** `LevelsDialog` (low/high range inputs, reset) and a toolbar button (highlighted when active). Applied per image as a lookup table through
+  `ImageStore.getLevelled` (cached per image and range); only the picture changes, hover readings and area averages keep using the original pixels
+  (browser-tested). No enable/reload toggle and no HDR library.
+- **Hints:** any element with `data-hint` explains itself in the status bar while hovered or focused (`useHints`), replacing the native tooltips.
+- **About** dialog from the menu bar. It repeats the original tool's thanks line.
+- Shortcuts are complete (open, tools, zoom, select all, delete, size). The guide index now lists the sprite generator, blending calculator,
+  blending reverser and color picker (`GuideTools`).
+- **Not done:** moving the strings of the tools into the locale files. The tools (blending, reverser, picker) and the admin pages are English-only
+  at the moment, so this should happen as one pass over all of them, not picker by picker.
+
 ## Stages (each ends with tsc, lint, unit tests, `pnpm build` and a commit)
 
 1. **Pure foundations**: `pixels`, `areas`, `viewport`, `levels`, `file-hash`, `settings` and the reducer, all with unit tests. No UI. Needs a careful

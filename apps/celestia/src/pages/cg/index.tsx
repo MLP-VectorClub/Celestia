@@ -7,6 +7,7 @@ import { Badge, Card, CardBody, UncontrolledTooltip } from 'reactstrap';
 
 import { GetColorGuideResult, GuideName } from '@mlp-vectorclub/api-types';
 import styles from 'modules/GuideIndexPage.module.scss';
+import { GuideTools } from 'src/components/colorguide/GuideTools';
 import Content from 'src/components/shared/Content';
 import ExternalLink from 'src/components/shared/ExternalLink';
 import { GuideIcon } from 'src/components/shared/GuideIcon';
@@ -76,6 +77,7 @@ const GuideIndexPage: NextPage<PropTypes> = ({ initialData }) => {
           );
         })}
       </div>
+      <GuideTools />
     </Content>
   );
 };

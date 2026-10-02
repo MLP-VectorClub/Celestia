@@ -6,7 +6,10 @@ import { Size, Viewport } from 'src/utils/picker/viewport';
 interface PropTypes extends HTMLAttributes<HTMLDivElement> {
   /** Callback ref, the parent needs to know when the stage exists to measure it */
   containerRef: Ref<HTMLDivElement>;
-  image: HTMLImageElement | undefined;
+  /** What to draw: the decoded image, or its levels-adjusted rendering */
+  source: CanvasImageSource | undefined;
+  /** Natural size of the image in pixels */
+  imageSize: Size;
   name: string;
   viewport: Viewport | null;
   viewSize: Size;
@@ -16,7 +19,7 @@ interface PropTypes extends HTMLAttributes<HTMLDivElement> {
 }
 
 /** The picking surface: the image drawn at the current zoom and position, filling the whole stage */
-export const CanvasStage: FC<PropTypes> = ({ containerRef, image, name, viewport, viewSize, cursor, children, ...rest }) => {
+export const CanvasStage: FC<PropTypes> = ({ containerRef, source, imageSize, name, viewport, viewSize, cursor, children, ...rest }) => {
   const canvas = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -28,11 +31,11 @@ export const CanvasStage: FC<PropTypes> = ({ containerRef, image, name, viewport
     el.height = Math.max(1, Math.round(viewSize.height * ratio));
     ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
     ctx.clearRect(0, 0, viewSize.width, viewSize.height);
-    if (!image || !viewport) return;
+    if (!source || !viewport) return;
     // Magnified pixels stay sharp so single pixels can be told apart, reduced images are smoothed
     ctx.imageSmoothingEnabled = viewport.zoom < 1;
-    ctx.drawImage(image, viewport.offsetX, viewport.offsetY, image.naturalWidth * viewport.zoom, image.naturalHeight * viewport.zoom);
-  }, [image, viewport, viewSize]);
+    ctx.drawImage(source, viewport.offsetX, viewport.offsetY, imageSize.width * viewport.zoom, imageSize.height * viewport.zoom);
+  }, [source, imageSize.width, imageSize.height, viewport, viewSize]);
 
   return (
     <div ref={containerRef} className={styles.canvasStage} style={{ cursor }} role="img" aria-label={name} {...rest}>

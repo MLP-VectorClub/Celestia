@@ -51,7 +51,7 @@ export const AreaList: FC<PropTypes> = ({
             type="button"
             className={styles.smallButton}
             disabled={!active?.areas.length}
-            title="Select all areas of this image (Ctrl+A)"
+            data-hint="Select all areas of this image (Ctrl+A)"
             onClick={() => onSelectAll(true)}
           >
             Select all
@@ -60,7 +60,7 @@ export const AreaList: FC<PropTypes> = ({
             type="button"
             className={styles.smallButton}
             disabled={!active?.selected.length}
-            title="Deselect all areas of this image (Ctrl+Shift+A)"
+            data-hint="Deselect all areas of this image (Ctrl+Shift+A)"
             onClick={() => onSelectAll(false)}
           >
             Deselect
@@ -69,7 +69,7 @@ export const AreaList: FC<PropTypes> = ({
             type="button"
             className={styles.smallButton}
             disabled={!active?.selected.length}
-            title="Delete selected areas (Del)"
+            data-hint="Delete selected areas (Del)"
             onClick={onDelete}
           >
             Delete

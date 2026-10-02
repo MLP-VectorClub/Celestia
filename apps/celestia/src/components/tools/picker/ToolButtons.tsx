@@ -18,7 +18,7 @@ export const ToolButtons: FC<{ tool: Tool; onChange: (tool: Tool) => void }> = (
         type="button"
         className={classNames(styles.button, { [styles.active]: tool === t.tool })}
         aria-pressed={tool === t.tool}
-        title={t.title}
+        data-hint={t.title}
         onClick={() => onChange(t.tool)}
       >
         {t.label}

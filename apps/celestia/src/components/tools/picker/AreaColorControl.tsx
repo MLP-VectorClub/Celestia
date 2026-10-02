@@ -33,7 +33,7 @@ export const AreaColorControl: FC<PropTypes> = ({ color, onChange }) => {
         type="button"
         className={styles.button}
         disabled={color === null}
-        title="Change the color of the picking areas on this image"
+        data-hint="Change the color of the picking areas on this image"
         onClick={() => setOpen(true)}
       >
         <span className={styles.areaColorSwatch} style={color ? { backgroundColor: toCssColor(color) } : undefined} />

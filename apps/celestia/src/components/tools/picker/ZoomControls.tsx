@@ -31,14 +31,14 @@ export const ZoomControls: FC<PropTypes> = ({ zoom, onStep, onFit, onOriginal, o
         disabled={zoom === null}
         onClick={() => onStep(-1)}
         aria-label="Zoom out"
-        title="Zoom out (Alt+scroll down)"
+        data-hint="Zoom out (Alt+scroll down)"
       >
         −
       </button>
       <input
         className={styles.zoomInput}
         aria-label="Zoom level"
-        title="Current zoom level, type a value between 0.4% and 3200%"
+        data-hint="Current zoom level, type a value between 0.4% and 3200%"
         disabled={zoom === null}
         value={draft}
         onChange={(e) => setDraft(e.target.value)}
@@ -54,14 +54,14 @@ export const ZoomControls: FC<PropTypes> = ({ zoom, onStep, onFit, onOriginal, o
         disabled={zoom === null}
         onClick={() => onStep(1)}
         aria-label="Zoom in"
-        title="Zoom in (Alt+scroll up)"
+        data-hint="Zoom in (Alt+scroll up)"
       >
         +
       </button>
-      <button type="button" className={styles.button} disabled={zoom === null} onClick={onFit} title="Fit in view (Ctrl+0)">
+      <button type="button" className={styles.button} disabled={zoom === null} onClick={onFit} data-hint="Fit in view (Ctrl+0)">
         Fit
       </button>
-      <button type="button" className={styles.button} disabled={zoom === null} onClick={onOriginal} title="Original size (Ctrl+1)">
+      <button type="button" className={styles.button} disabled={zoom === null} onClick={onOriginal} data-hint="Original size (Ctrl+1)">
         100%
       </button>
     </div>

@@ -3,12 +3,14 @@ import { Alert } from 'reactstrap';
 
 import styles from 'modules/Picker.module.scss';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
+import { AboutDialog } from 'src/components/tools/picker/AboutDialog';
 import { AreaEditDialog } from 'src/components/tools/picker/AreaEditDialog';
 import { AreaLayer, AreaPreview } from 'src/components/tools/picker/AreaLayer';
 import { AreaList } from 'src/components/tools/picker/AreaList';
 import { CanvasStage } from 'src/components/tools/picker/CanvasStage';
 import { DropZone } from 'src/components/tools/picker/DropZone';
 import { EmptyState } from 'src/components/tools/picker/EmptyState';
+import { LevelsDialog } from 'src/components/tools/picker/LevelsDialog';
 import { MenuBar } from 'src/components/tools/picker/MenuBar';
 import { ResizeHandle } from 'src/components/tools/picker/ResizeHandle';
 import { StatusBar } from 'src/components/tools/picker/StatusBar';
@@ -16,6 +18,7 @@ import { TabBar } from 'src/components/tools/picker/TabBar';
 import { Toolbar } from 'src/components/tools/picker/Toolbar';
 import { useAreaColors } from 'src/components/tools/picker/useAreaColors';
 import { useFileIntake } from 'src/components/tools/picker/useFileIntake';
+import { useHints } from 'src/components/tools/picker/useHints';
 import { useHoverInfo } from 'src/components/tools/picker/useHoverInfo';
 import { useImageStore } from 'src/components/tools/picker/useImageStore';
 import { useKeyHeld } from 'src/components/tools/picker/useKeyHeld';
@@ -26,6 +29,7 @@ import { useViewSize } from 'src/components/tools/picker/useViewSize';
 import { useViewportActions } from 'src/components/tools/picker/useViewportActions';
 import { useWheelNavigation } from 'src/components/tools/picker/useWheelNavigation';
 import { PickingArea, clampAreaSize } from 'src/utils/picker/areas';
+import { isFullRange } from 'src/utils/picker/levels';
 import { TabState, getActiveTab, initialPickerState, pickerReducer } from 'src/utils/picker/reducer';
 import { pixelAt } from 'src/utils/picker/viewport';
 
@@ -46,6 +50,9 @@ export const PickerTool: FC = () => {
   const altHeld = useKeyHeld(['AltLeft', 'AltRight']);
   const [liveWidth, setLiveWidth] = useState<number | null>(null);
   const [editing, setEditing] = useState<{ tab: TabState; area: PickingArea } | null>(null);
+  const [levelsOpen, setLevelsOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
+  const { hint, handlers: hintHandlers } = useHints();
   const areaColors = useAreaColors(state.tabs, store);
 
   const place = (point: { x: number; y: number }, round: boolean) => {
@@ -110,7 +117,7 @@ export const PickerTool: FC = () => {
   const pickerWidth = liveWidth ?? settings.pickerWidth;
 
   return (
-    <DropZone onFiles={(files) => void intake.openFiles(files)}>
+    <DropZone onFiles={(files) => void intake.openFiles(files)} {...hintHandlers}>
       <input
         ref={intake.inputRef}
         type="file"
@@ -127,6 +134,7 @@ export const PickerTool: FC = () => {
         onOpen={intake.browse}
         onOpenClipboard={() => void intake.pasteFromClipboard()}
         onClearSettings={() => void clearSettings()}
+        onAbout={() => setAboutOpen(true)}
       />
       <TabBar
         tabs={state.tabs}
@@ -153,13 +161,16 @@ export const PickerTool: FC = () => {
         onPickingSizeChange={setPickingSize}
         areaColor={active?.areaColor ?? null}
         onAreaColorChange={(color) => dispatch({ type: 'setAreaColor', color })}
+        levelsActive={Boolean(active) && !isFullRange(active!.levels)}
+        onLevels={active ? () => setLevelsOpen(true) : null}
       />
       <div className={styles.body}>
         <div className={styles.stage} style={{ flexBasis: `${pickerWidth}%` }}>
           {active ? (
             <CanvasStage
               containerRef={setStage}
-              image={store.get(active.hash)}
+              source={isFullRange(active.levels) ? store.get(active.hash) : store.getLevelled(active.hash, active.levels)}
+              imageSize={active}
               name={active.name}
               viewport={view.viewport}
               viewSize={viewSize}
@@ -205,7 +216,13 @@ export const PickerTool: FC = () => {
           onDelete={deleteSelected}
         />
       </div>
-      <StatusBar hover={hover} />
+      <StatusBar hover={hover} info={hint ?? undefined} />
+      <LevelsDialog
+        levels={levelsOpen ? (active?.levels ?? null) : null}
+        onClose={() => setLevelsOpen(false)}
+        onSubmit={(levels) => dispatch({ type: 'setLevels', levels })}
+      />
+      <AboutDialog isOpen={aboutOpen} onClose={() => setAboutOpen(false)} />
       <AreaEditDialog
         area={editing?.area ?? null}
         onClose={() => setEditing(null)}

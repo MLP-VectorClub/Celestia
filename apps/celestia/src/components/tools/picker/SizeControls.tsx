@@ -27,7 +27,7 @@ export const SizeControls: FC<PropTypes> = ({ size, onChange }) => {
         className={styles.button}
         disabled={size === null || size <= MIN_AREA_SIZE}
         aria-label="Decrease picking area size"
-        title="Decrease picking area size (Down Arrow). Hold Ctrl to change in steps of 1 instead of 5."
+        data-hint="Decrease picking area size (Down Arrow). Hold Ctrl to change in steps of 1 instead of 5."
         onClick={(e) => size !== null && onChange(clampAreaSize(size - (e.ctrlKey || e.metaKey ? 1 : 5)))}
       >
         −
@@ -35,7 +35,7 @@ export const SizeControls: FC<PropTypes> = ({ size, onChange }) => {
       <input
         className={styles.sizeInput}
         aria-label="Picking area size"
-        title="Size of newly placed picking areas, between 1px and 400px"
+        data-hint="Size of newly placed picking areas, between 1px and 400px"
         inputMode="numeric"
         disabled={size === null}
         value={draft}
@@ -52,7 +52,7 @@ export const SizeControls: FC<PropTypes> = ({ size, onChange }) => {
         className={styles.button}
         disabled={size === null || size >= MAX_AREA_SIZE}
         aria-label="Increase picking area size"
-        title="Increase picking area size (Up Arrow). Hold Ctrl to change in steps of 1 instead of 5."
+        data-hint="Increase picking area size (Up Arrow). Hold Ctrl to change in steps of 1 instead of 5."
         onClick={(e) => size !== null && onChange(clampAreaSize(size + (e.ctrlKey || e.metaKey ? 1 : 5)))}
       >
         +

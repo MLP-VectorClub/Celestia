@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { FC } from 'react';
 
 import styles from 'modules/PickerToolbar.module.scss';
@@ -18,6 +19,10 @@ interface PropTypes extends Pick<ViewportActions, 'fit' | 'original' | 'zoomStep
   onPickingSizeChange: (size: number) => void;
   areaColor: Pixel | null;
   onAreaColorChange: (color: Pixel) => void;
+  /** Whether the active image has adjusted levels, which highlights the button */
+  levelsActive: boolean;
+  /** `null` without an image */
+  onLevels: (() => void) | null;
 }
 
 export const Toolbar: FC<PropTypes> = ({
@@ -32,11 +37,23 @@ export const Toolbar: FC<PropTypes> = ({
   onPickingSizeChange,
   areaColor,
   onAreaColorChange,
+  levelsActive,
+  onLevels,
 }) => (
   <div className={styles.toolbar}>
     <ToolButtons tool={tool} onChange={onToolChange} />
     <SizeControls size={pickingSize} onChange={onPickingSizeChange} />
     <AreaColorControl color={areaColor} onChange={onAreaColorChange} />
+    <button
+      type="button"
+      className={classNames(styles.button, { [styles.active]: levelsActive })}
+      disabled={onLevels === null}
+      aria-pressed={levelsActive}
+      data-hint="Adjust levels: change how the image looks without changing the colors that picking areas report"
+      onClick={() => onLevels?.()}
+    >
+      Levels
+    </button>
     <ZoomControls zoom={zoom} onStep={(d) => zoomStep(d)} onFit={fit} onOriginal={original} onZoomTo={(z) => zoomTo(z)} />
   </div>
 );

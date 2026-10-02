@@ -48,12 +48,12 @@ status per phase and verification method live in [`docs/winterchilla-parity-plan
 ## Left to do
 
 - Staff/admin: dev tools.
-- Pages not started: `/s/{id}` share redirect (needs a data-only `GET /posts/{id}/location`), `/episodes|movies/{page}` redirects, color picker (plan in `docs/color-picker-plan.md`; stages 1 (pure `src/utils/picker/*` + reducer), 2 (`/picker` shell, intake, tabs) and 3 (zoom/pan canvas stage, pointer readout) and 4 (eyedropper areas, area list, average color) are done, stage 5 (levels, hints, About, shortcuts polish, i18n, links) remains), `/muffin-rating`, `/manifest`.
+- Pages not started: `/s/{id}` share redirect (needs a data-only `GET /posts/{id}/location`), `/episodes|movies/{page}` redirects, color picker (plan in `docs/color-picker-plan.md`; stages 1 (pure `src/utils/picker/*` + reducer), 2 (`/picker` shell, intake, tabs) and 3 (zoom/pan canvas stage, pointer readout), 4 (eyedropper areas, area list, average color) and 5 (levels, hints, About, links from the guide index) are done; the picker is complete except for i18n), `/muffin-rating`, `/manifest`.
   Dropped on purpose (not in the contract): PCG admin list, tag changes, browser-recognition, `/u/{uuid}`, appearance PNG/GPL exports (compose from `colorGroups`), sessions list.
 - Post edit/image/unbreak/staff reservations, event writes (disabled server-side), account password and e-mail (Luna's flows, Winterchilla's are `x-internal`).
 - Real sign-in: Celestia still uses Luna's flow; auth state is client-only (SSR shows the signed-out shell on account pages).
 - Nothing in the editing/write UI has been clicked through in a browser yet (no extension was available): only request shapes were exercised against the APIs.
-- i18n: new strings exist for `en` only (Crowdin handles the rest); several appearance-page strings are still hard-coded English.
+- i18n: new strings exist for `en` only (Crowdin handles the rest); several appearance-page strings, the admin pages and all three tools (blending, reverser, picker) are still hard-coded English: do one pass over them.
 
 ## Verifying locally
 

@@ -48,7 +48,7 @@ export const AverageColorPanel: FC<PropTypes> = ({ areaCount, imageCount, averag
             >
               {hex}
             </span>
-            <button type="button" className={styles.smallButton} onClick={() => void copy()} title="Copy average color to clipboard">
+            <button type="button" className={styles.smallButton} onClick={() => void copy()} data-hint="Copy average color to clipboard">
               Copy
             </button>
             <button
@@ -56,7 +56,7 @@ export const AverageColorPanel: FC<PropTypes> = ({ areaCount, imageCount, averag
               className={styles.smallButton}
               aria-pressed={copyHash}
               onClick={() => onCopyHashChange(!copyHash)}
-              title="Toggle whether the hash symbol is copied with the color code"
+              data-hint="Toggle whether the hash symbol is copied with the color code"
             >
               {copyHash ? '#' : 'no #'}
             </button>
