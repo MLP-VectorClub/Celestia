@@ -34,7 +34,7 @@ const EPISODE_TABLE_PARAMS: ShowEntriesTableProps['params'] = {
 };
 const OTHERS_TABLE_PARAMS: ShowEntriesTableProps['params'] = {
   order: 'overall',
-  types: ['movie', 'special'],
+  types: ['movie', 'short', 'special'],
 };
 
 const TITLE_AIR_DATE_COLUMN: ShowTableColumnDefinition = {

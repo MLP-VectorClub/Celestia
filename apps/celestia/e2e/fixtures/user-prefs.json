@@ -1,0 +1,22 @@
+{
+  "cg_itemsperpage": 7,
+  "cg_hidesynon": true,
+  "cg_hideclrinfo": false,
+  "cg_fulllstprev": true,
+  "cg_nutshell": false,
+  "cg_defaultguide": null,
+  "p_avatarprov": "deviantart",
+  "p_vectorapp": "",
+  "p_hidediscord": false,
+  "p_hidepcg": false,
+  "p_homelastep": false,
+  "ep_noappprev": false,
+  "ep_revstepbtn": false,
+  "a_pcgearn": true,
+  "a_pcgmake": true,
+  "a_pcgsprite": true,
+  "a_postreq": true,
+  "a_postres": true,
+  "a_reserve": true,
+  "pcg_slots": null
+}

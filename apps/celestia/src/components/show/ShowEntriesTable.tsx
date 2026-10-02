@@ -24,10 +24,11 @@ export const ShowEntriesTable: FC<ShowEntriesTableProps> = ({ params, pageQueryP
   const entries = useShowList({ ...params, page }, initialData || undefined);
 
   const pageData = entries.data?.pagination;
+  const { isPlaceholderData } = entries;
   return (
     <>
       {pageData && <Pagination {...pageData} pageParam={pageQueryParam} tooltipPos="bottom" />}
-      <Table responsive borderless>
+      <Table responsive borderless aria-busy={isPlaceholderData} className={classNames({ 'opacity-50': isPlaceholderData })}>
         <thead>
           <tr>
             {columns.map((col, i) => {

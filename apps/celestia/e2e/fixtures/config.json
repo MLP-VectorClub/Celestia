@@ -1,0 +1,23 @@
+{
+  "tagTypes": { "app": "Clothing", "cat": "Category", "gen": "Gender", "spec": "Species", "char": "Character", "warn": "Warning" },
+  "roles": {
+    "guest": "Guest",
+    "user": "DeviantArt User",
+    "member": "Club Member",
+    "assistant": "Assistant",
+    "staff": "Staff",
+    "admin": "Administrator",
+    "developer": "Site Developer"
+  },
+  "showTypes": { "episode": "Episode", "movie": "Movie", "short": "Short", "special": "Special" },
+  "vectorApps": { "": "(don't show)", "illustrator": "Adobe Illustrator", "inkscape": "Inkscape", "ponyscape": "Ponyscape" },
+  "maxUploadSize": "2 MB",
+  "patterns": {
+    "printableAscii": { "source": "^[ -~\\n]+$", "flags": "" },
+    "hexColor": { "source": "^#?([\\dA-Fa-f]{6})$", "flags": "u" },
+    "username": { "source": "^([A-Za-z\\-\\d]{1,20})$", "flags": "" },
+    "episodeTitle": { "source": "^([A-Za-z\\s]+: )?[ -~]{5,100}$", "flags": "u" }
+  },
+  "wsServerHost": null,
+  "discordInviteLink": "https:\/\/discord.mlpvector.club"
+}

@@ -23,7 +23,7 @@ status per phase and verification method live in [`docs/winterchilla-parity-plan
 ## Built (all compile, lint, unit tests and `next build` pass)
 
 - **Foundation:** contract types + compat layer, `/config`, resource fetchers/hooks, `useApiMutation`, `DialogProvider` (`useDialog().confirm`), `FormDialog`, `TransferList`.
-- **Read pages:** `/` redirect, `/show` list, `/episode/[id]` (`latest`, `S#E#`, numeric; canonical redirect), `/movie/[id]`, `/special/[id]`, `/events`, `/event/[id]`, `/cg`,
+- **Read pages:** `/` redirect, `/show` list (episodes, and movies/shorts/specials), `/episode/[id]` (`latest`, `S#E#`, numeric; canonical redirect), `/movie/[id]`, `/short/[id]`, `/special/[id]`, `/events`, `/event/[id]`, `/cg`,
   `/cg/[guide]` (+ `full` with server sort and groups, `changes`, `tags`, `v/[id]`), `/cg/v/[id]` short link, `/users`, `/users/[user]` (profile, contributions, personal guides,
   awaiting approval), `/users/[user]/contrib/[type]`, `/users/[user]/cg`, `/users/[user]/cg/point-history`, `/users/[user]/cg/v/[id]`, about pages, `/oauth/[provider]`.
 - **Member writes:** post actions on show pages (reserve, finish with reserver-overwrite retry, approve, unfinish, remove approval, cancel reservation, delete request), add request /
@@ -76,6 +76,7 @@ status per phase and verification method live in [`docs/winterchilla-parity-plan
 
 - `turbo.json` has `cache: false` for `build` on purpose: the API types are generated from a remote document, which turbo's cache key does not include, so a cached run kept serving old types (and a stale `.next`) after the API's document changed. The server deploy builds from `API_JSON_PATH` in its own `.env`.
 
+- **End to end tests** (`pnpm test:e2e`, Playwright Test, `e2e/*.spec.ts`): Chromium against the real Next.js app (production build, real SSR and client routing, `webServer` in `playwright.config.ts`) with a stub API (`e2e/stub-api.mts`, a plain Node server: `GET /show` from a made-up list of any size, response delays set per page through `POST /__control`, fixed answers for the rest). `E2E_REUSE=1` reuses servers that are already running. The show page pagination is covered with many episode/other-entry count combinations plus the reported cases (page 3 → 2, 1 ↔ 2 over and over, back/forward, slow answers, bad page numbers). They are not part of `pnpm test` (the build is slow). They found that `useShowList` handed the server-rendered `initialData` to every page's query (fresh for 60 s, so other pages showed page 1's rows) and had overridden the global `keepPreviousData`.
 - Unit/lint/types/build: `pnpm test`, `pnpm exec eslint .`, `pnpm exec tsc --noEmit`, `pnpm build` (run in this directory).
 - **Winterchilla API:** from a git worktree of Winterchilla `origin/main` (symlink `vendor`, copy `.env`; do not `git pull` in the shared tree) run
   `scripts/serve-seeded-api.sh <port> <database>` (never port 8765 or `winterchilla_test`). Seeded logins `/test-login/9001` (user), `9002` (admin), `9003`. It wants a

@@ -9,6 +9,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
     "reload": "pm2 reload pm2.json"
   },
   "dependencies": {
@@ -60,6 +61,7 @@
   "devDependencies": {
     "@mlp-vectorclub/tsconfig": "workspace:*",
     "@mlp-vectorclub/ui": "workspace:*",
+    "@playwright/test": "1.63.0",
     "@types/capitalize": "^2.0.2",
     "@types/cookie-parser": "^1.4.10",
     "@types/express": "^5.0.6",

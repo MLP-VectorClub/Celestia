@@ -38,7 +38,7 @@ const resolveShowId = async (type: ShowType, segment: string, req: IncomingMessa
 };
 
 /**
- * Shared by `/episode/[id]`, `/movie/[id]` and `/special/[id]`
+ * Shared by `/episode/[id]`, `/movie/[id]`, `/short/[id]` and `/special/[id]`
  */
 export const createShowGetServerSideProps = (type: ShowType) =>
   wrapper.getServerSideProps<ShowEntryPageProps & SSRMessages>((store) => async (ctx: GetServerSidePropsContext) => {

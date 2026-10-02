@@ -1,0 +1,16 @@
+{
+  "events": [
+    {
+      "id": 1,
+      "name": "Test Coloring Event",
+      "startsAt": "2026-10-01T10:52:53+02:00",
+      "endsAt": "2026-10-09T10:52:53+02:00",
+      "maxEntries": null,
+      "entryRole": "user",
+      "voteRole": null,
+      "resultFavMe": null,
+      "finalizedAt": null
+    }
+  ],
+  "pagination": { "currentPage": 1, "totalPages": 1, "totalItems": 1, "itemsPerPage": 20 }
+}
