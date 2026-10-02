@@ -14,4 +14,11 @@ export class AccountService {
   static syncDiscord = (userId: number) => Axios.post<void>(`/users/${userId}/discord/sync`);
 
   static unlinkDiscord = (userId: number) => Axios.delete<void>(`/users/${userId}/discord`);
+
+  /**
+   * Luna's endpoint (Winterchilla's contract marks it internal, so there is no generated type). `currentPassword` is required when the
+   * account already has a password. Every access token of the user is deleted on success, the visitor has to sign in again
+   */
+  static changePassword = (body: { currentPassword?: string; newPassword: string }) =>
+    Axios.post<{ message: string }>('/users/me/password', body);
 }

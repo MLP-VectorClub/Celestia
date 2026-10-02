@@ -8,6 +8,7 @@ import { GetUsersIdResult } from '@mlp-vectorclub/api-types';
 import Content from 'src/components/shared/Content';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
+import { PasswordForm } from 'src/components/users/PasswordForm';
 import { userFetcher } from 'src/fetchers';
 import { describeApiError, useApiMutation, useAuth, useConfig, usePrefs, useTitleSetter } from 'src/hooks';
 import { PATHS } from 'src/paths';
@@ -182,6 +183,13 @@ const AccountPage: NextPage<PropTypes> = ({ userId, user }) => {
         <section>
           <h2>{t('users.account.sections.staff')}</h2>
           {STAFF_FLAGS.map(flag)}
+        </section>
+      )}
+
+      {isStaff && (
+        <section>
+          <h2>{t('users.account.sections.password')}</h2>
+          <PasswordForm />
         </section>
       )}
 

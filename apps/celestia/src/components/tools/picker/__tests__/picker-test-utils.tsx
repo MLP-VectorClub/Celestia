@@ -2,6 +2,7 @@ import { render } from 'vitest-browser-react';
 
 import { DialogProvider } from 'src/components/shared/dialogs/DialogProvider';
 import { PickerTool } from 'src/components/tools/picker/PickerTool';
+import { IntlTestProvider } from 'src/test-utils/IntlTestProvider';
 
 /** A real PNG made by the browser: left half `color`, right half `rightColor` */
 export async function pngFile(name: string, color: string, rightColor = color, size = { width: 4, height: 3 }): Promise<File> {
@@ -19,9 +20,11 @@ export async function pngFile(name: string, color: string, rightColor = color, s
 
 export const renderPicker = () =>
   render(
-    <DialogProvider>
-      <PickerTool />
-    </DialogProvider>
+    <IntlTestProvider>
+      <DialogProvider>
+        <PickerTool />
+      </DialogProvider>
+    </IntlTestProvider>
   );
 
 export type Screen = Awaited<ReturnType<typeof renderPicker>>;

@@ -3,7 +3,8 @@ import { range } from 'lodash';
 
 import { GuideName } from '@mlp-vectorclub/api-types';
 
-export type AppI18nNamespaces = 'about' | 'colorGuide' | 'common' | 'connection' | 'events' | 'oauth' | 'privacyPolicy' | 'show' | 'users';
+export type AppI18nNamespaces =
+  'about' | 'admin' | 'colorGuide' | 'common' | 'connection' | 'events' | 'oauth' | 'picker' | 'privacyPolicy' | 'show' | 'tools' | 'users';
 
 export const APP_NAME = 'MLP Vector Club';
 export const APP_DESCRIPTION = 'Handling requests, reservations & the Color Guide since 2015';

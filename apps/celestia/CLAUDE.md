@@ -55,11 +55,13 @@ status per phase and verification method live in [`docs/winterchilla-parity-plan
 
 - **SSR auth:** the custom `wrapper.getServerSideProps` (`src/store/index.ts`) looks the visitor up with `requestUserFetcher` (only when the request has a cookie or Authorization header), stores it in `auth.initialUser` and `useAuth` uses it as the user query's `initialData`, so server and browser render the right visitor from the first paint. Verified with curl against the dev server and Luna (staff navigation appears for an admin token, not for a guest); not tried with a real Sanctum cookie session.
 
+- **Password change** (account page, staff only because Luna gates it that way): `PasswordForm` posts `{currentPassword?, newPassword}` to `POST /users/me/password`; Luna deletes all tokens on success so the sign-in dialog opens. Field errors checked against Luna; the success path was not (the seeded admin has an unknown password).
+
 ## Left to do
 
 - Staff/admin: dev tools.
   Dropped on purpose (not in the contract): PCG admin list, tag changes, browser-recognition, `/u/{uuid}`, appearance PNG/GPL exports (compose from `colorGroups`), sessions list.
-- Event writes (disabled server-side), account password and e-mail: **blocked on Luna**, it has no change-password or change-email endpoints (its own plan lists them as not implemented, there is not even a password reset), so there is nothing to build against.
+- Event writes (disabled server-side), account e-mail change and verification (`POST /users/{id}/email-changes`, `POST /users/email/verify`; Luna builds them once the user has decided the mail transport and the verification link path; forms can be built against Winterchilla's x-internal schemas). Not dropped: the goal is a full reimplementation.
 - Nothing in the editing/write UI has been clicked through in a browser yet (no extension was available): only request shapes were exercised against the APIs.
 - i18n: new strings exist for `en` only (Crowdin handles the rest); several appearance-page strings, the admin pages and all three tools (blending, reverser, picker) are still hard-coded English: do one pass over them.
 

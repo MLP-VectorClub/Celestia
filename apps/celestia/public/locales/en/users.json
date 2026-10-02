@@ -80,7 +80,8 @@
       "site": "Site",
       "staff": "Permissions",
       "sessions": "Sessions",
-      "discord": "Discord"
+      "discord": "Discord",
+      "password": "Password"
     },
     "prefs": {
       "cg_itemsperpage": "Appearances per page",
@@ -110,6 +111,16 @@
     "discordUnlink": "Unlink Discord",
     "discordUnlinkConfirm": "Your Discord account will be disconnected from this account.",
     "discordUnlinked": "Discord account unlinked",
-    "discordSynced": "Discord info updated"
+    "discordSynced": "Discord info updated",
+    "password": {
+      "current": "Current password",
+      "currentHelp": "Leave empty if your account does not have a password yet.",
+      "new": "New password",
+      "newHelp": "Between {min} and {max} characters.",
+      "repeat": "New password again",
+      "mismatch": "The passwords do not match.",
+      "submit": "Change password",
+      "signOutNote": "You will be signed out everywhere and have to sign in again with the new password."
+    }
   }
 }
