@@ -43,6 +43,8 @@ status per phase and verification method live in [`docs/winterchilla-parity-plan
 
 - **Blending reverser** (`/blending-reverse`): pure `src/utils/color/{filters,reverse-image}.ts` (tested) + `src/utils/image-file.ts`, and `src/components/tools/blending-reverse/*` (one file per control, `useKnownColorPairs`, `useReverseTool` state, `usePreviewCanvases` canvas drawing, `BlendingReverseTool` composes). Differences from Winterchilla: the multiply reverse uses the correct inverse (Winterchilla applied the normal formula, wrong results), the unused "reference pair" anchor is dropped, saved images are always PNG. Not tried in a browser (canvas parts untested).
 
+- **URL hygiene** (`src/proxy.ts`, Next 16's renamed middleware, + `src/utils/clean-url.ts`): ports Winterchilla's cleaning of pasted links (trailing `…`/`<`, backslashes, non-printable ASCII) with a 302 to the cleaned URL. Like the original it strips all non-ASCII characters from the URL. Checked against `next dev` with curl.
+
 ## Left to do
 
 - Staff/admin: dev tools.
