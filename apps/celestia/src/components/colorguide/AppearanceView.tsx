@@ -61,7 +61,7 @@ export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppe
   const shortUrl = useMemo(() => appearance && assembleSeoUrl(PATHS.SHORT_APPEARANCE(appearance)), [appearance]);
 
   if (!appearance) {
-    return <GuideNotFound heading="Unknown appearance" noun="appearance" />;
+    return <GuideNotFound heading={t('colorGuide.notFound.unknownAppearance')} noun={t('colorGuide.notFound.nouns.appearance')} />;
   }
 
   return (

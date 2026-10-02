@@ -1,5 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import { NextPage } from 'next';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
@@ -24,6 +25,7 @@ interface PropTypes {
  * Redirects the path without the guide name to the fully qualified URL
  */
 const LegacyAppearanceRedirect: NextPage<PropTypes> = ({ id }) => {
+  const t = useTranslations();
   const { appearance, status } = useAppearanceLocation({ id });
   const router = useRouter();
 
@@ -39,10 +41,10 @@ const LegacyAppearanceRedirect: NextPage<PropTypes> = ({ id }) => {
         heading={
           <>
             <InlineIcon loading first />
-            Looking for appearance…
+            {t('colorGuide.shortLink.looking')}
           </>
         }
-        lead="You've opened a short link, we're trying to find the original target"
+        lead={t('colorGuide.shortLink.lead')}
       />
 
       <StatusAlert status={status} />

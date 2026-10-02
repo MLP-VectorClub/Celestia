@@ -168,7 +168,8 @@
     "reorder": {
       "save": "Save order",
       "earlier": "Move {label} earlier",
-      "later": "Move {label} later"
+      "later": "Move {label} later",
+      "help": "Drag entries, or use the arrows, to change their order within a group. Entries cannot be moved to another group because groups come from their tags."
     },
     "cutieMarks": {
       "title": "Cutie marks",
@@ -219,5 +220,19 @@
     "viewPng": "View as PNG",
     "downloadSwatch": "Download swatch file",
     "relatedAppearances": "Related appearances"
+  },
+  "shortLink": {
+    "looking": "Looking for appearance…",
+    "lead": "You've opened a short link, we're trying to find the original target"
+  },
+  "notFound": {
+    "lead": "The requested {noun} could not be found",
+    "nouns": {
+      "guide": "color guide",
+      "appearance": "appearance"
+    },
+    "unknownGuide": "Unknown guide",
+    "unknownAppearance": "Unknown appearance",
+    "help": "Check out the <link>list of available guides</link> to hopefully find what you were looking for."
   }
 }

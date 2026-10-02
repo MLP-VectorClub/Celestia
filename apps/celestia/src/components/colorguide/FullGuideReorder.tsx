@@ -57,8 +57,7 @@ export const FullGuideReorder: FC<PropTypes> = ({ guide, appearances, groups, on
   return (
     <>
       <Alert color="info" fade={false}>
-        Drag entries, or use the arrows, to change their order within a group. Entries cannot be moved to another group because groups come
-        from their tags.
+        {t('colorGuide.edit.reorder.help')}
       </Alert>
       {save.error && (
         <Alert color="danger" fade={false} role="alert">

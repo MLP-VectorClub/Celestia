@@ -53,7 +53,7 @@ const TagsPage: NextPage<PropTypes> = ({ guide, page, initialTags, initialConfig
   const groups = useMemo(() => groupBy(data?.tags ?? [], (tag) => tag.type ?? ''), [data]);
 
   if (!guide) {
-    return <GuideNotFound heading="Unknown guide" noun="guide" />;
+    return <GuideNotFound heading={t('colorGuide.notFound.unknownGuide')} noun={t('colorGuide.notFound.nouns.guide')} />;
   }
 
   return (
