@@ -1,0 +1,91 @@
+@use '../breakpoints' as *;
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+
+  @include media-breakpoint-up(md) {
+    flex-direction: row;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+}
+
+.arrow {
+  font-size: 2rem;
+  line-height: 1;
+
+  @include media-breakpoint-down(md) {
+    transform: rotate(90deg);
+  }
+}
+
+.inputs {
+  background: white;
+  text-align: center;
+  border-collapse: collapse;
+
+  &,
+  th,
+  td {
+    border: 1px solid black;
+  }
+
+  th {
+    padding: 0.6rem;
+  }
+
+  td {
+    padding: 0;
+  }
+}
+
+.result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  min-width: 10rem;
+  text-align: center;
+
+  code {
+    font-size: inherit;
+  }
+}
+
+.preview {
+  width: 3.2rem;
+  height: 3.2rem;
+  border: 2px solid black;
+}
+
+.previewInvalid {
+  background: repeating-linear-gradient(135deg, #fff 0 5px, #e55 5px 10px);
+}
+
+.missing {
+  opacity: 0.9;
+  font-style: italic;
+}
+
+.red {
+  color: #c33;
+}
+
+.green {
+  color: #2a8a2a;
+}
+
+.blue {
+  color: #2b4fcc;
+}
+
+.dialogPreview {
+  width: 3.75rem;
+  height: 3.75rem;
+  margin: 0.6rem auto 0;
+  border: 2px solid black;
+}

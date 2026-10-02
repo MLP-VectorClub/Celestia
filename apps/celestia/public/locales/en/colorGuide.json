@@ -48,5 +48,10 @@
     "noType": "Untyped",
     "breadcrumb": "Tags",
     "edit": "Edit tags"
+  },
+  "blending": {
+    "title": "Blending Reverser",
+    "lead": "Find an original color from two different backgrounds and the colors it produced when blended over them. Originally made by dasprid.",
+    "hint": "Shift+click a field to enter RGB values."
   }
 }

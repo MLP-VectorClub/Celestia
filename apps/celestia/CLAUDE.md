@@ -39,10 +39,12 @@ status per phase and verification method live in [`docs/winterchilla-parity-plan
 
 - **Admin pages** (`/admin`, client-side data, staff only, English strings): logs (type/initiator filters, structured `data` of an entry), notices (create/edit/delete), useful links (create/edit/delete, order with arrows), settings (`reservation_rules`, `about_reservations`, `dev_role_label` which only developers may change). Request shapes checked against Luna with throwaway entries. Current notices show above the content (`useCurrentNotices`, small-tag whitelist in `src/utils/notice-html.tsx`), the sidebar already lists `GET /useful-links/sidebar`, and the main navigation links to `/admin` for staff.
 
+- **Blending tool** (`/blending`): modules `src/utils/color/{rgb,blending}.ts` (pure, tested), `src/components/tools/blending/{ColorField,BlendingInputs,BlendingResult,RgbEntryDialog,useBlending,BlendingTool}.tsx`, CSS modules `Blending` and `ColorField`. Use `src/utils/color` and `ColorField` for the next tools.
+
 ## Left to do
 
 - Staff/admin: dev tools.
-- Pages not started: `/s/{id}` share redirect (needs a data-only `GET /posts/{id}/location`), `/episodes|movies/{page}` redirects, blending/picker tools, `/muffin-rating`, `/manifest`.
+- Pages not started: `/s/{id}` share redirect (needs a data-only `GET /posts/{id}/location`), `/episodes|movies/{page}` redirects, blending reverser (`/cg/blending-reverse`, 532-line original) and color picker (`/cg/picker`, ~2400 lines + `canvas.hdr`) tools, `/muffin-rating`, `/manifest`.
   Dropped on purpose (not in the contract): PCG admin list, tag changes, browser-recognition, `/u/{uuid}`, appearance PNG/GPL exports (compose from `colorGroups`), sessions list.
 - Post edit/image/unbreak/staff reservations, event writes (disabled server-side), account password and e-mail (Luna's flows, Winterchilla's are `x-internal`).
 - Real sign-in: Celestia still uses Luna's flow; auth state is client-only (SSR shows the signed-out shell on account pages).
