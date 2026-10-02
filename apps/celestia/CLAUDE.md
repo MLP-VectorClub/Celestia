@@ -36,9 +36,11 @@ status per phase and verification method live in [`docs/winterchilla-parity-plan
 
 - **User staff tools** (profile page, `ProfileStaffControls`): change role (`editableRoles`), grant/take personal-guide points, developer-only point-history recalculation. Request shapes and error cases checked against Luna; success paths for points and recalculation not exercised (seed user is below the point floor; seeded admin is not a developer).
 
+- **Admin pages** (`/admin`, client-side data, staff only, English strings): logs (type/initiator filters, structured `data` of an entry), notices (create/edit/delete), useful links (create/edit/delete, order with arrows), settings (`reservation_rules`, `about_reservations`, `dev_role_label` which only developers may change). Request shapes checked against Luna with throwaway entries. No navigation links to `/admin` yet.
+
 ## Left to do
 
-- Staff/admin: logs, notices, useful links, site settings, dev tools.
+- Staff/admin: dev tools; the new notices are not yet shown to visitors (`GET /notices/current`) and the useful links not in the sidebar (`GET /useful-links/sidebar`).
 - Pages not started: `/s/{id}` share redirect (needs a data-only `GET /posts/{id}/location`), `/episodes|movies/{page}` redirects, blending/picker tools, `/muffin-rating`, `/manifest`.
   Dropped on purpose (not in the contract): PCG admin list, tag changes, browser-recognition, `/u/{uuid}`, appearance PNG/GPL exports (compose from `colorGroups`), sessions list.
 - Post edit/image/unbreak/staff reservations, event writes (disabled server-side), account password and e-mail (Luna's flows, Winterchilla's are `x-internal`).
