@@ -17,6 +17,7 @@ status per phase and verification method live in [`docs/winterchilla-parity-plan
   `fieldErrors`; invalidate the affected query keys instead of patching from responses.
 - Send **JSON bodies, flags as 1/0** (Winterchilla reads JSON `false` as truthy). Always send an appearance's current `guide` on `PUT /appearances/{id}`.
 - `GET /config` is fetched once and cached (`configFetcher`, `useConfig`); regex patterns are `{source, flags}` → `compilePatterns`. Do not port Winterchilla's `export_vars`.
+- Utility pages (blending, picker, …): small modules, not one giant component per page: pure logic in `src/utils` (unit tested), one component per tool part, CSS modules for styles.
 - Do not deploy or touch production; the user decides that. Commit identity and trailers follow the session instructions.
 
 ## Built (all compile, lint, unit tests and `next build` pass)
@@ -36,11 +37,11 @@ status per phase and verification method live in [`docs/winterchilla-parity-plan
 
 - **User staff tools** (profile page, `ProfileStaffControls`): change role (`editableRoles`), grant/take personal-guide points, developer-only point-history recalculation. Request shapes and error cases checked against Luna; success paths for points and recalculation not exercised (seed user is below the point floor; seeded admin is not a developer).
 
-- **Admin pages** (`/admin`, client-side data, staff only, English strings): logs (type/initiator filters, structured `data` of an entry), notices (create/edit/delete), useful links (create/edit/delete, order with arrows), settings (`reservation_rules`, `about_reservations`, `dev_role_label` which only developers may change). Request shapes checked against Luna with throwaway entries. No navigation links to `/admin` yet.
+- **Admin pages** (`/admin`, client-side data, staff only, English strings): logs (type/initiator filters, structured `data` of an entry), notices (create/edit/delete), useful links (create/edit/delete, order with arrows), settings (`reservation_rules`, `about_reservations`, `dev_role_label` which only developers may change). Request shapes checked against Luna with throwaway entries. Current notices show above the content (`useCurrentNotices`, small-tag whitelist in `src/utils/notice-html.tsx`), the sidebar already lists `GET /useful-links/sidebar`, and the main navigation links to `/admin` for staff.
 
 ## Left to do
 
-- Staff/admin: dev tools; the new notices are not yet shown to visitors (`GET /notices/current`) and the useful links not in the sidebar (`GET /useful-links/sidebar`).
+- Staff/admin: dev tools.
 - Pages not started: `/s/{id}` share redirect (needs a data-only `GET /posts/{id}/location`), `/episodes|movies/{page}` redirects, blending/picker tools, `/muffin-rating`, `/manifest`.
   Dropped on purpose (not in the contract): PCG admin list, tag changes, browser-recognition, `/u/{uuid}`, appearance PNG/GPL exports (compose from `colorGroups`), sessions list.
 - Post edit/image/unbreak/staff reservations, event writes (disabled server-side), account password and e-mail (Luna's flows, Winterchilla's are `x-internal`).

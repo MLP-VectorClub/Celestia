@@ -66,7 +66,7 @@ const MainNavigation: FC = () => {
           </NavItem>
           <NavItem>
             <Link href={PATHS.ADMIN} passHref legacyBehavior>
-              <NavLink disabled>{t('common.titles.admin')}</NavLink>
+              <NavLink>{t('common.titles.admin')}</NavLink>
             </Link>
           </NavItem>
         </>
