@@ -211,5 +211,13 @@
       "colorName": "Color {n} name",
       "colorValue": "Color {n} value"
     }
+  },
+  "appearance": {
+    "featuredIn": "Featured in",
+    "noShows": "Not linked to any show or movie",
+    "noRelated": "No related appearances",
+    "viewPng": "View as PNG",
+    "downloadSwatch": "Download swatch file",
+    "relatedAppearances": "Related appearances"
   }
 }

@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC, useState } from 'react';
 import { FormGroup, FormText, Input, Label } from 'reactstrap';
 
@@ -14,6 +15,7 @@ interface PropTypes {
 
 /** Staff add a finished reservation for a member from the link of the finished deviation */
 export const StaffReservationDialog: FC<PropTypes> = ({ showId, isOpen, onClose }) => {
+  const t = useTranslations();
   const [deviation, setDeviation] = useState('');
   const save = useApiMutation(() => PostService.addReservation(showId, deviation.trim()), {
     invalidate: [[ENDPOINTS.POSTS({ showId, kind: 'reservation' })]],
@@ -26,19 +28,19 @@ export const StaffReservationDialog: FC<PropTypes> = ({ showId, isOpen, onClose 
 
   return (
     <FormDialog
-      title="Add a finished reservation"
+      title={t('show.post.staffReservation.title')}
       isOpen={isOpen}
       onClose={() => {
         save.reset();
         onClose();
       }}
       onSubmit={() => deviation.trim() && save.mutate()}
-      submitLabel="Add reservation"
+      submitLabel={t('show.post.create.submitReservation')}
       busy={save.isPending}
       error={save.error && !errors.deviation ? describeApiError(save.error) : null}
     >
       <FormGroup>
-        <Label for="staff-reservation-deviation">Link to the finished deviation</Label>
+        <Label for="staff-reservation-deviation">{t('show.post.finish.link')}</Label>
         <Input
           id="staff-reservation-deviation"
           type="url"
@@ -50,7 +52,7 @@ export const StaffReservationDialog: FC<PropTypes> = ({ showId, isOpen, onClose 
           required
         />
         {errors.deviation && <div className="invalid-feedback d-block">{errors.deviation}</div>}
-        <FormText>The reservation is credited to the deviation&apos;s author.</FormText>
+        <FormText>{t('show.post.staffReservation.help')}</FormText>
       </FormGroup>
     </FormDialog>
   );

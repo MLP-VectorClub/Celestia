@@ -17,7 +17,7 @@ import { useAppDispatch, wrapper } from 'src/store';
 import { Nullable, Optional, SSRMessages } from 'src/types';
 import { UserPrefs } from 'src/types/api-alias';
 import { TitleFactory } from 'src/types/title';
-import { ENDPOINTS, handleDataFetchingError, notFound, permission } from 'src/utils';
+import { ENDPOINTS, getGuideLabel, handleDataFetchingError, notFound, permission } from 'src/utils';
 import { titleSetter } from 'src/utils/core';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 import { parseUserIdParam } from 'src/utils/profile';
@@ -149,8 +149,8 @@ const AccountPage: NextPage<PropTypes> = ({ userId, user }) => {
             onChange={(e) => setPref.mutate({ key: 'cg_defaultguide', value: (e.target.value || null) as UserPrefs['cg_defaultguide'] })}
           >
             <option value="">{t('users.account.prefs.cg_defaultguideNone')}</option>
-            <option value="pony">Friendship is Magic</option>
-            <option value="eqg">Equestria Girls</option>
+            <option value="pony">{getGuideLabel('pony')}</option>
+            <option value="eqg">{getGuideLabel('eqg')}</option>
           </Input>
         </FormGroup>
         {GUIDE_FLAGS.map(flag)}

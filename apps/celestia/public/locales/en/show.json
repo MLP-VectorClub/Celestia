@@ -55,6 +55,82 @@
       "chr": "Character",
       "obj": "Object",
       "bg": "Background"
-    }
+    },
+    "actions": {
+      "edit": "Edit",
+      "changeImage": "Change image",
+      "unbreak": "Unbreak",
+      "reserve": "Reserve",
+      "finish": "Mark as finished",
+      "approve": "Approve",
+      "removeApproval": "Remove approval",
+      "unfinish": "Unfinish",
+      "cancelReservation": "Cancel reservation",
+      "delete": "Delete",
+      "removeApprovalBody": "The post will be unlocked again.",
+      "unfinishBody": "The finished image will be removed from this post.",
+      "cancelReservationBody": "The request will be open for others to reserve again.",
+      "deleteRequest": "Delete request",
+      "cannotUndo": "This cannot be undone."
+    },
+    "fields": {
+      "description": "Description",
+      "requestType": "What is requested",
+      "chr": "Character",
+      "obj": "Object",
+      "bg": "Background"
+    },
+    "create": {
+      "titleRequest": "Add a request",
+      "titleReservation": "Add a reservation",
+      "submitRequest": "Submit request",
+      "submitReservation": "Add reservation"
+    },
+    "finish": {
+      "submit": "Finish",
+      "link": "Link to the finished deviation",
+      "changeReserver": "Change the reserver to the author of the deviation"
+    },
+    "edit": {
+      "title": "Edit post"
+    },
+    "image": {
+      "newLink": "New image link",
+      "preview": "Preview",
+      "check": "Check",
+      "link": "Image link"
+    },
+    "staffReservation": {
+      "title": "Add a finished reservation",
+      "help": "The reservation is credited to the deviation's author."
+    },
+    "addFinished": "Add finished reservation",
+    "addRequest": "Add request",
+    "addReservation": "Add reservation"
+  },
+  "common": {
+    "save": "Save"
+  },
+  "admin": {
+    "type": "Type",
+    "season": "Season",
+    "episode": "Episode",
+    "twoPart": "Two-part episode (this entry is the first part)",
+    "overall": "Overall number",
+    "titleField": "Title",
+    "airs": "Air date and time",
+    "airsHelp": "In your local time zone.",
+    "addEpisode": "Add an episode",
+    "addEntry": "Add an entry",
+    "editTitle": "Edit “{title}”",
+    "edit": "Edit",
+    "delete": "Delete",
+    "deleteTitle": "Delete show",
+    "deleteBody": "“{title}” and its posts will be deleted. This cannot be undone.",
+    "addNew": "Add new {noun}"
+  },
+  "rating": {
+    "none": "Not rated yet",
+    "rated": "Rated {score} out of {max}"
   }
 }

@@ -122,5 +122,21 @@
       "submit": "Change password",
       "signOutNote": "You will be signed out everywhere and have to sign in again with the new password."
     }
+  },
+  "staffTools": {
+    "amountPlaceholder": "Amount (negative takes points)",
+    "comment": "Comment",
+    "commentPlaceholder": "Comment (optional)",
+    "role": "Role",
+    "changeRole": "Change role",
+    "alreadyRole": "The user already has this role.",
+    "points": "Personal guide slot points",
+    "apply": "Apply",
+    "pointsUpdated": "Points updated.",
+    "title": "Staff tools",
+    "recalculate": "Recalculate point history",
+    "done": "Done.",
+    "loading": "Loading…",
+    "available": "{count, plural, one {# point can} other {# points can}} still be granted or taken."
   }
 }

@@ -1,4 +1,5 @@
 import { AxiosResponse } from 'axios';
+import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
 import { FormGroup, FormText, Input, Label } from 'reactstrap';
 
@@ -30,6 +31,7 @@ const toLocalInput = (iso: string) => {
 const DEFAULT_AIR_TIME = '16:00';
 
 export const ShowFormDialog: FC<PropTypes> = ({ category, show, isOpen, onClose, onSaved }) => {
+  const t = useTranslations();
   const { config } = useConfig();
   const isEpisode = show ? show.type === 'episode' : category === 'episode';
   const otherTypes = Object.entries(config?.showTypes ?? {}).filter(([key]) => key !== 'episode');
@@ -101,7 +103,7 @@ export const ShowFormDialog: FC<PropTypes> = ({ category, show, isOpen, onClose,
 
   return (
     <FormDialog
-      title={show ? `Edit “${show.title}”` : isEpisode ? 'Add an episode' : 'Add an entry'}
+      title={show ? t('show.admin.editTitle', { title: show.title }) : isEpisode ? t('show.admin.addEpisode') : t('show.admin.addEntry')}
       isOpen={isOpen}
       onClose={() => {
         save.reset();
@@ -115,7 +117,7 @@ export const ShowFormDialog: FC<PropTypes> = ({ category, show, isOpen, onClose,
     >
       {!isEpisode && !show?.type?.includes('episode') && (
         <FormGroup>
-          <Label for="show-type">Type</Label>
+          <Label for="show-type">{t('show.admin.type')}</Label>
           <Input id="show-type" type="select" value={type} onChange={(e) => setType(e.target.value)} invalid={Boolean(errors.type)}>
             {otherTypes.map(([key, label]) => (
               <option key={key} value={key}>
@@ -129,7 +131,7 @@ export const ShowFormDialog: FC<PropTypes> = ({ category, show, isOpen, onClose,
       {isEpisode && (
         <div className="d-flex gap-3">
           <FormGroup className="flex-fill">
-            <Label for="show-season">Season</Label>
+            <Label for="show-season">{t('show.admin.season')}</Label>
             <Input
               id="show-season"
               type="number"
@@ -141,7 +143,7 @@ export const ShowFormDialog: FC<PropTypes> = ({ category, show, isOpen, onClose,
             {err('season')}
           </FormGroup>
           <FormGroup className="flex-fill">
-            <Label for="show-episode">Episode</Label>
+            <Label for="show-episode">{t('show.admin.episode')}</Label>
             <Input
               id="show-episode"
               type="number"
@@ -158,25 +160,25 @@ export const ShowFormDialog: FC<PropTypes> = ({ category, show, isOpen, onClose,
         <FormGroup check className="mb-3">
           <Input id="show-twoparter" type="checkbox" checked={twoparter} onChange={(e) => setTwoparter(e.target.checked)} />
           <Label for="show-twoparter" check>
-            Two-part episode (this entry is the first part)
+            {t('show.admin.twoPart')}
           </Label>
         </FormGroup>
       )}
       <FormGroup>
-        <Label for="show-no">Overall number</Label>
+        <Label for="show-no">{t('show.admin.overall')}</Label>
         <Input id="show-no" type="number" min={1} value={no} onChange={(e) => setNo(e.target.value)} invalid={Boolean(errors.no)} />
         {err('no')}
       </FormGroup>
       <FormGroup>
-        <Label for="show-title">Title</Label>
+        <Label for="show-title">{t('show.admin.titleField')}</Label>
         <Input id="show-title" maxLength={100} value={title} onChange={(e) => setTitle(e.target.value)} invalid={Boolean(errors.title)} />
         {err('title')}
       </FormGroup>
       <FormGroup>
-        <Label for="show-airs">Air date and time</Label>
+        <Label for="show-airs">{t('show.admin.airs')}</Label>
         <Input id="show-airs" type="datetime-local" value={airs} onChange={(e) => setAirs(e.target.value)} invalid={Boolean(errors.airs)} />
         {err('airs')}
-        <FormText>In your local time zone.</FormText>
+        <FormText>{t('show.admin.airsHelp')}</FormText>
       </FormGroup>
       <FormGroup>
         <Label for="show-notes">Notes (optional, up to 1000 characters)</Label>

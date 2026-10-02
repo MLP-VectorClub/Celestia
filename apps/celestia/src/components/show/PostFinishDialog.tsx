@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC, useState } from 'react';
 import { FormGroup, Input, Label } from 'reactstrap';
 
@@ -15,6 +16,7 @@ interface PropTypes {
 }
 
 export const PostFinishDialog: FC<PropTypes> = ({ post, isOpen, onClose }) => {
+  const t = useTranslations();
   const [deviation, setDeviation] = useState('');
   const [allowOverwriteReserver, setAllowOverwriteReserver] = useState(false);
 
@@ -40,19 +42,19 @@ export const PostFinishDialog: FC<PropTypes> = ({ post, isOpen, onClose }) => {
 
   return (
     <FormDialog
-      title="Mark as finished"
+      title={t('show.post.actions.finish')}
       isOpen={isOpen}
       onClose={() => {
         finish.reset();
         onClose();
       }}
       onSubmit={() => finish.mutate()}
-      submitLabel="Finish"
+      submitLabel={t('show.post.finish.submit')}
       busy={finish.isPending}
       error={error && !deviationError ? describeApiError(error) : null}
     >
       <FormGroup>
-        <Label for={`finish-${post.id}`}>Link to the finished deviation</Label>
+        <Label for={`finish-${post.id}`}>{t('show.post.finish.link')}</Label>
         <Input
           id={`finish-${post.id}`}
           type="url"
@@ -74,7 +76,7 @@ export const PostFinishDialog: FC<PropTypes> = ({ post, isOpen, onClose }) => {
             onChange={(e) => setAllowOverwriteReserver(e.target.checked)}
           />
           <Label for={`overwrite-${post.id}`} check>
-            Change the reserver to the author of the deviation
+            {t('show.post.finish.changeReserver')}
           </Label>
         </FormGroup>
       )}

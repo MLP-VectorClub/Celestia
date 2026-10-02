@@ -31,7 +31,7 @@ export const PostList: FC<PropTypes> = ({ showId, kind, initialData }) => {
       {canCreate && (
         <>
           <Button color="success" size="sm" className="mb-3" onClick={() => setCreating(true)}>
-            {kind === 'request' ? 'Add request' : 'Add reservation'}
+            {kind === 'request' ? t('show.post.addRequest') : t('show.post.addReservation')}
           </Button>
           <PostCreateDialog showId={showId} kind={kind} isOpen={creating} onClose={() => setCreating(false)} />
         </>
@@ -39,7 +39,7 @@ export const PostList: FC<PropTypes> = ({ showId, kind, initialData }) => {
       {canAddFinished && (
         <>
           <Button color="ui" size="sm" className="mb-3 ms-2" onClick={() => setAddingFinished(true)}>
-            Add finished reservation
+            {t('show.post.addFinished')}
           </Button>
           <StaffReservationDialog showId={showId} isOpen={addingFinished} onClose={() => setAddingFinished(false)} />
         </>

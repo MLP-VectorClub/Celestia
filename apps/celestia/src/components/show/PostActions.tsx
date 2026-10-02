@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC, useState } from 'react';
 import { Alert, Button } from 'reactstrap';
 
@@ -14,6 +15,7 @@ import { ENDPOINTS } from 'src/utils';
 import { getPostActions } from 'src/utils/post-actions';
 
 export const PostActions: FC<{ post: PostItem }> = ({ post }) => {
+  const t = useTranslations();
   const { user } = useAuth();
   const { confirm } = useDialog();
   const [finishOpen, setFinishOpen] = useState(false);
@@ -57,67 +59,73 @@ export const PostActions: FC<{ post: PostItem }> = ({ post }) => {
       <div className="d-flex flex-wrap gap-1">
         {actions.edit && (
           <Button size="sm" color="ui" onClick={() => setEditOpen(true)} disabled={busy}>
-            Edit
+            {t('show.post.actions.edit')}
           </Button>
         )}
         {actions.changeImage && (
           <Button size="sm" color="ui" onClick={() => setImageOpen(true)} disabled={busy}>
-            Change image
+            {t('show.post.actions.changeImage')}
           </Button>
         )}
         {actions.unbreak && (
           <Button size="sm" color="warning" onClick={run(unbreak)} disabled={busy}>
-            Unbreak
+            {t('show.post.actions.unbreak')}
           </Button>
         )}
         {actions.reserve && (
           <Button size="sm" color="primary" onClick={run(reserve)} disabled={busy}>
-            <InlineIcon icon="plus" first /> Reserve
+            <InlineIcon icon="plus" first />
+            {t('show.post.actions.reserve')}
           </Button>
         )}
         {actions.finish && (
           <Button size="sm" color="success" onClick={() => setFinishOpen(true)} disabled={busy}>
-            Mark as finished
+            {t('show.post.actions.finish')}
           </Button>
         )}
         {actions.approve && (
           <Button size="sm" color="success" onClick={run(approve)} disabled={busy}>
-            Approve
+            {t('show.post.actions.approve')}
           </Button>
         )}
         {actions.unapprove && (
           <Button
             size="sm"
             color="warning"
-            onClick={confirmThen('Remove approval', 'The post will be unlocked again.', unapprove, 'warning')}
+            onClick={confirmThen(t('show.post.actions.removeApproval'), t('show.post.actions.removeApprovalBody'), unapprove, 'warning')}
             disabled={busy}
           >
-            Remove approval
+            {t('show.post.actions.removeApproval')}
           </Button>
         )}
         {actions.unfinish && (
           <Button
             size="sm"
             color="warning"
-            onClick={confirmThen('Unfinish', 'The finished image will be removed from this post.', unfinish, 'warning')}
+            onClick={confirmThen(t('show.post.actions.unfinish'), t('show.post.actions.unfinishBody'), unfinish, 'warning')}
             disabled={busy}
           >
-            Unfinish
+            {t('show.post.actions.unfinish')}
           </Button>
         )}
         {actions.unreserve && (
           <Button
             size="sm"
             color="link"
-            onClick={confirmThen('Cancel reservation', 'The request will be open for others to reserve again.', unreserve)}
+            onClick={confirmThen(t('show.post.actions.cancelReservation'), t('show.post.actions.cancelReservationBody'), unreserve)}
             disabled={busy}
           >
-            Cancel reservation
+            {t('show.post.actions.cancelReservation')}
           </Button>
         )}
         {actions.deleteRequest && (
-          <Button size="sm" color="danger" onClick={confirmThen('Delete request', 'This cannot be undone.', deleteRequest)} disabled={busy}>
-            Delete
+          <Button
+            size="sm"
+            color="danger"
+            onClick={confirmThen(t('show.post.actions.deleteRequest'), t('show.post.actions.cannotUndo'), deleteRequest)}
+            disabled={busy}
+          >
+            {t('show.post.actions.delete')}
           </Button>
         )}
       </div>

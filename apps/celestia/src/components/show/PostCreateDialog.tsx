@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC, useState } from 'react';
 import { FormGroup, Input, Label } from 'reactstrap';
 
@@ -15,6 +16,7 @@ interface PropTypes {
 }
 
 export const PostCreateDialog: FC<PropTypes> = ({ showId, kind, isOpen, onClose }) => {
+  const t = useTranslations();
   const [imageUrl, setImageUrl] = useState('');
   const [label, setLabel] = useState('');
   const [type, setType] = useState<NonNullable<CreatePostBody['type']>>('chr');
@@ -45,14 +47,14 @@ export const PostCreateDialog: FC<PropTypes> = ({ showId, kind, isOpen, onClose 
 
   return (
     <FormDialog
-      title={isRequest ? 'Add a request' : 'Add a reservation'}
+      title={isRequest ? t('show.post.create.titleRequest') : t('show.post.create.titleReservation')}
       isOpen={isOpen}
       onClose={() => {
         create.reset();
         onClose();
       }}
       onSubmit={() => create.mutate()}
-      submitLabel={isRequest ? 'Submit request' : 'Add reservation'}
+      submitLabel={isRequest ? t('show.post.create.submitRequest') : t('show.post.create.submitReservation')}
       busy={create.isPending}
       error={generalError}
     >
@@ -66,7 +68,7 @@ export const PostCreateDialog: FC<PropTypes> = ({ showId, kind, isOpen, onClose 
         autoFocus
       />
       <FormGroup>
-        <Label for={`new-${kind}-label`}>Description</Label>
+        <Label for={`new-${kind}-label`}>{t('show.post.fields.description')}</Label>
         <Input
           id={`new-${kind}-label`}
           value={label}
@@ -79,7 +81,7 @@ export const PostCreateDialog: FC<PropTypes> = ({ showId, kind, isOpen, onClose 
       </FormGroup>
       {isRequest && (
         <FormGroup>
-          <Label for={`new-${kind}-type`}>What is requested</Label>
+          <Label for={`new-${kind}-type`}>{t('show.post.fields.requestType')}</Label>
           <Input
             id={`new-${kind}-type`}
             type="select"
@@ -87,9 +89,9 @@ export const PostCreateDialog: FC<PropTypes> = ({ showId, kind, isOpen, onClose 
             onChange={(e) => setType(e.target.value as typeof type)}
             invalid={Boolean(errors.type)}
           >
-            <option value="chr">Character</option>
-            <option value="obj">Object</option>
-            <option value="bg">Background</option>
+            <option value="chr">{t('show.post.fields.chr')}</option>
+            <option value="obj">{t('show.post.fields.obj')}</option>
+            <option value="bg">{t('show.post.fields.bg')}</option>
           </Input>
           {errors.type && <div className="invalid-feedback d-block">{errors.type}</div>}
         </FormGroup>

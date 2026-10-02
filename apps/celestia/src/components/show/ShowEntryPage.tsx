@@ -127,7 +127,7 @@ export const ShowEntryPage: FC<ShowEntryPageProps> = ({ id, initialShow, initial
       {show.canEdit && (
         <div className="mb-3 d-flex flex-wrap gap-2 justify-content-center">
           <Button color="ui" size="sm" onClick={() => setEditing(true)}>
-            Edit
+            {t('show.admin.edit')}
           </Button>
           <Button
             color="danger"
@@ -137,17 +137,17 @@ export const ShowEntryPage: FC<ShowEntryPageProps> = ({ id, initialShow, initial
             onClick={async () => {
               if (
                 await confirm({
-                  title: 'Delete show',
-                  body: `“${show.title}” and its posts will be deleted. This cannot be undone.`,
+                  title: t('show.admin.deleteTitle'),
+                  body: t('show.admin.deleteBody', { title: show.title }),
                   color: 'danger',
-                  confirmLabel: 'Delete',
+                  confirmLabel: t('show.admin.delete'),
                 })
               ) {
                 remove.mutate();
               }
             }}
           >
-            Delete
+            {t('show.admin.delete')}
           </Button>
           {remove.error && <p className="text-danger w-100 text-center mb-0">{describeApiError(remove.error)}</p>}
           <ShowFormDialog

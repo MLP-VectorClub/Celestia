@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
 import { FormGroup, Input, Label } from 'reactstrap';
 
@@ -15,6 +16,7 @@ interface PropTypes {
 
 /** Change the description of a post and, for requests, what is requested. The developer-only date overrides are not offered */
 export const PostEditDialog: FC<PropTypes> = ({ post, isOpen, onClose }) => {
+  const t = useTranslations();
   const [label, setLabel] = useState(post.label);
   const [type, setType] = useState<'chr' | 'obj' | 'bg'>(post.type ?? 'chr');
   useEffect(() => {
@@ -33,19 +35,19 @@ export const PostEditDialog: FC<PropTypes> = ({ post, isOpen, onClose }) => {
 
   return (
     <FormDialog
-      title="Edit post"
+      title={t('show.post.edit.title')}
       isOpen={isOpen}
       onClose={() => {
         save.reset();
         onClose();
       }}
       onSubmit={() => save.mutate()}
-      submitLabel="Save"
+      submitLabel={t('show.common.save')}
       busy={save.isPending}
       error={save.error && !errors.label && !errors.type ? describeApiError(save.error) : null}
     >
       <FormGroup>
-        <Label for={`edit-${post.id}-label`}>Description</Label>
+        <Label for={`edit-${post.id}-label`}>{t('show.post.fields.description')}</Label>
         <Input
           id={`edit-${post.id}-label`}
           value={label}
@@ -58,7 +60,7 @@ export const PostEditDialog: FC<PropTypes> = ({ post, isOpen, onClose }) => {
       </FormGroup>
       {isRequest && (
         <FormGroup>
-          <Label for={`edit-${post.id}-type`}>What is requested</Label>
+          <Label for={`edit-${post.id}-type`}>{t('show.post.fields.requestType')}</Label>
           <Input
             id={`edit-${post.id}-type`}
             type="select"
@@ -66,9 +68,9 @@ export const PostEditDialog: FC<PropTypes> = ({ post, isOpen, onClose }) => {
             onChange={(e) => setType(e.target.value as typeof type)}
             invalid={Boolean(errors.type)}
           >
-            <option value="chr">Character</option>
-            <option value="obj">Object</option>
-            <option value="bg">Background</option>
+            <option value="chr">{t('show.post.fields.chr')}</option>
+            <option value="obj">{t('show.post.fields.obj')}</option>
+            <option value="bg">{t('show.post.fields.bg')}</option>
           </Input>
           {errors.type && <div className="invalid-feedback d-block">{errors.type}</div>}
         </FormGroup>

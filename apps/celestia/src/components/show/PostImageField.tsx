@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { FC } from 'react';
 import { Button, FormGroup, Input, InputGroup, Label } from 'reactstrap';
@@ -19,13 +20,15 @@ interface PropTypes {
 }
 
 /** An image link with a Check button that asks the API what it found there and shows the preview */
-export const PostImageField: FC<PropTypes> = ({ id, label = 'Image link', value, onChange, error, onChecked, autoFocus }) => {
+export const PostImageField: FC<PropTypes> = ({ id, label, value, onChange, error, onChecked, autoFocus }) => {
+  const t = useTranslations();
+  const shownLabel = label ?? t('show.post.image.link');
   const check = useApiMutation((url: string) => PostService.checkImage(url), { onSuccess: onChecked });
   const trimmed = value.trim();
 
   return (
     <FormGroup>
-      <Label for={id}>{label}</Label>
+      <Label for={id}>{shownLabel}</Label>
       <InputGroup>
         <Input
           id={id}
@@ -42,14 +45,14 @@ export const PostImageField: FC<PropTypes> = ({ id, label = 'Image link', value,
           required
         />
         <Button type="button" outline onClick={() => check.mutate(trimmed)} disabled={!trimmed || check.isPending}>
-          Check
+          {t('show.post.image.check')}
         </Button>
       </InputGroup>
       {(error || check.error) && <div className="invalid-feedback d-block">{error ?? (check.error && describeApiError(check.error))}</div>}
       {check.data && (
         <Image
           src={check.data.preview}
-          alt="Preview"
+          alt={t('show.post.image.preview')}
           width={160}
           height={120}
           unoptimized

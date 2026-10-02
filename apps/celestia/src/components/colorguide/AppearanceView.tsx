@@ -1,6 +1,6 @@
+import { useTranslations } from 'next-intl';
 import Head from 'next/head';
 import Link from 'next/link';
-import pluralize from 'pluralize';
 import { FC, useMemo } from 'react';
 import { Button } from 'reactstrap';
 
@@ -42,6 +42,7 @@ interface SeoData {
 }
 
 export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppearance }) => {
+  const t = useTranslations();
   const { appearance, status } = useDetailedAppearance({ id }, initialAppearance || undefined);
 
   const seoData = useMemo<SeoData | null>(
@@ -100,11 +101,11 @@ export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppe
       <ButtonCollection>
         <Button color="link" size="sm" disabled>
           <InlineIcon icon="image" first />
-          View as PNG
+          {t('colorGuide.appearance.viewPng')}
         </Button>
         <Button color="primary" size="sm" disabled>
           <InlineIcon icon="paint-brush" first />
-          Download swatch file
+          {t('colorGuide.appearance.downloadSwatch')}
         </Button>
         {shortUrl && <ShareAppearanceButton shortUrl={shortUrl} />}
         <AppearanceEditActions appearance={appearance} />
@@ -115,10 +116,10 @@ export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppe
       <AppearanceTags tags={appearance.tags} guide={appearance.guide ?? guide} />
       <h2>
         <InlineIcon icon="video" first size="xs" />
-        Featured in
+        {t('colorGuide.appearance.featuredIn')}
       </h2>
       {appearance.relatedShows.length === 0 ? (
-        <p className="text-muted">Not linked to any show or movie</p>
+        <p className="text-muted">{t('colorGuide.appearance.noShows')}</p>
       ) : (
         <ul>
           {appearance.relatedShows.map((show) => (
@@ -131,9 +132,9 @@ export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppe
       <AppearanceNotes notes={appearance.notes} />
       <AppearanceCutieMarks label={appearance.label} cutieMarks={appearance.cutieMarks} colorGroups={appearance.colorGroups} />
       <AppearanceColorGroups colorGroups={appearance.colorGroups} appearanceId={appearance.id} canEdit={appearance.canEdit} />
-      <h2>{pluralize('Related appearances', appearance.relatedAppearances.length)}</h2>
+      <h2>{t('colorGuide.appearance.relatedAppearances')}</h2>
       {appearance.relatedAppearances.length === 0 ? (
-        <p className="text-muted">No related appearances</p>
+        <p className="text-muted">{t('colorGuide.appearance.noRelated')}</p>
       ) : (
         <ul className="list-unstyled">
           {appearance.relatedAppearances.map((related) => (

@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
 import { Alert, Button, FormGroup, FormText, Input, Label } from 'reactstrap';
@@ -12,6 +13,7 @@ import { permission } from 'src/utils/permission';
 const pointsKey = (id: number) => `/users/${id}/personal-guide/points`;
 
 const RoleForm: FC<{ profile: UserProfile }> = ({ profile }) => {
+  const t = useTranslations();
   const { replace, asPath } = useRouter();
   const roles = profile.editableRoles ?? {};
   const [role, setRole] = useState<string>(profile.user.role ?? '');
@@ -28,7 +30,7 @@ const RoleForm: FC<{ profile: UserProfile }> = ({ profile }) => {
       }}
     >
       <FormGroup>
-        <Label for="staff-role">Role</Label>
+        <Label for="staff-role">{t('users.staffTools.role')}</Label>
         <div className="d-flex gap-2">
           <Input id="staff-role" type="select" value={role} onChange={(e) => setRole(e.target.value)}>
             {Object.entries(roles).map(([key, label]) => (
@@ -38,10 +40,10 @@ const RoleForm: FC<{ profile: UserProfile }> = ({ profile }) => {
             ))}
           </Input>
           <Button color="primary" disabled={save.isPending || role === profile.user.role}>
-            Change role
+            {t('users.staffTools.changeRole')}
           </Button>
         </div>
-        {save.data?.alreadyIn && <FormText>The user already has this role.</FormText>}
+        {save.data?.alreadyIn && <FormText>{t('users.staffTools.alreadyRole')}</FormText>}
         {save.error && <div className="text-danger small mt-1">{describeApiError(save.error)}</div>}
       </FormGroup>
     </form>
@@ -49,6 +51,7 @@ const RoleForm: FC<{ profile: UserProfile }> = ({ profile }) => {
 };
 
 const PointsForm: FC<{ userId: number }> = ({ userId }) => {
+  const t = useTranslations();
   const available = useQuery({ queryKey: [pointsKey(userId)], queryFn: () => UserAdminService.getPoints(userId).then((r) => r.data) });
   const [amount, setAmount] = useState('');
   const [comment, setComment] = useState('');
@@ -73,35 +76,33 @@ const PointsForm: FC<{ userId: number }> = ({ userId }) => {
       }}
     >
       <FormGroup>
-        <Label for="staff-points">Personal guide slot points</Label>
+        <Label for="staff-points">{t('users.staffTools.points')}</Label>
         <FormText tag="div" className="mb-1">
-          {available.data
-            ? `${available.data.amount} point${Math.abs(available.data.amount) === 1 ? '' : 's'} can still be granted or taken.`
-            : 'Loading…'}
+          {available.data ? t('users.staffTools.available', { count: available.data.amount }) : t('users.staffTools.loading')}
         </FormText>
         <div className="d-flex gap-2">
           <Input
             id="staff-points"
             type="number"
-            placeholder="Amount (negative takes points)"
+            placeholder={t('users.staffTools.amountPlaceholder')}
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             invalid={Boolean(errors.amount)}
           />
           <Input
-            aria-label="Comment"
-            placeholder="Comment (optional)"
+            aria-label={t('users.staffTools.comment')}
+            placeholder={t('users.staffTools.commentPlaceholder')}
             maxLength={140}
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             invalid={Boolean(errors.comment)}
           />
           <Button color="primary" disabled={grant.isPending || !Number.isInteger(value) || value === 0}>
-            Apply
+            {t('users.staffTools.apply')}
           </Button>
         </div>
         {grant.error && <div className="text-danger small mt-1">{describeApiError(grant.error)}</div>}
-        {grant.isSuccess && <FormText>Points updated.</FormText>}
+        {grant.isSuccess && <FormText>{t('users.staffTools.pointsUpdated')}</FormText>}
       </FormGroup>
     </form>
   );
@@ -109,6 +110,7 @@ const PointsForm: FC<{ userId: number }> = ({ userId }) => {
 
 /** Role, personal guide points and (for developers) point history recalculation, shown to staff on a profile */
 export const ProfileStaffControls: FC<{ profile: UserProfile }> = ({ profile }) => {
+  const t = useTranslations();
   const { user: authUser, isStaff } = useAuth();
   const isDeveloper = permission(authUser, 'developer');
   const recalc = useApiMutation(() => UserAdminService.recalculateHistory(profile.user.id));
@@ -117,15 +119,15 @@ export const ProfileStaffControls: FC<{ profile: UserProfile }> = ({ profile }) 
 
   return (
     <section>
-      <h2>Staff tools</h2>
+      <h2>{t('users.staffTools.title')}</h2>
       {showRole && <RoleForm profile={profile} />}
       <PointsForm userId={profile.user.id} />
       {isDeveloper && (
         <div className="mb-3">
           <Button color="ui" size="sm" disabled={recalc.isPending} onClick={() => recalc.mutate()}>
-            Recalculate point history
+            {t('users.staffTools.recalculate')}
           </Button>
-          {recalc.isSuccess && <small className="ms-2 text-muted">Done.</small>}
+          {recalc.isSuccess && <small className="ms-2 text-muted">{t('users.staffTools.done')}</small>}
           {recalc.error && (
             <Alert color="danger" fade={false} className="mt-2 mb-0" role="alert">
               {describeApiError(recalc.error)}
