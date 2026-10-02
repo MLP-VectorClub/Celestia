@@ -55,7 +55,6 @@ status per phase and verification method live in [`docs/winterchilla-parity-plan
 
 ## Open issues reported to the other sessions
 
-- Winterchilla `origin/main` (7a7983c6): both `/show/{id}/vote` operations are missing from the generated `api.json` (a second docblock between the `@OA` block and `voteApi()` in
-  `ShowAPIController.php` detaches them). Until fixed, generate the spec from a worktree with the helper moved above the `@OA` block (give the worktree its own copy of `vendor`; a
-  symlinked `vendor` autoloads the shared tree's classes and ignores local edits). Everything reported earlier (guide-less `PUT`, JSON `false`, prefs, `vectorApps`, finish body) is fixed.
+- Winterchilla: nothing open. The vote operations vanished from the spec at 7a7983c6 and were restored at 425a7123 (types verified against that commit). Use a worktree with its own
+  copy of `vendor` when generating the spec: a symlinked `vendor` autoloads the shared tree's classes.
 - Luna: posts, Discord and cutie marks were still being built at last check (116/127 operations).
