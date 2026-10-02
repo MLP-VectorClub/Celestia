@@ -83,3 +83,14 @@ export const postsFetcher = (params: GetPostsRequest, req?: IncomingMessage) => 
 
 export const showListLookupFetcher = (params: GetShowRequest, req?: IncomingMessage) => () =>
   fetchResource<GetShowResult>(ENDPOINTS.SHOW(params), req);
+
+/**
+ * Where a post lives. Winterchilla's contract describes `castle` as `{name, url}`, Luna sends `{name, showId, postId}` (the form Celestia needs, a
+ * URL on the old site is of no use), so both are accepted here
+ */
+export interface PostLocation {
+  castle?: { name?: string; showId?: number; postId?: number; url?: string };
+}
+
+export const postLocationFetcher = (params: { id: number }, req?: IncomingMessage) => () =>
+  fetchResource<PostLocation>(ENDPOINTS.POST_LOCATION(params), req);

@@ -64,6 +64,7 @@ export const ENDPOINTS = {
   SHOW_LATEST: `/show/latest`,
   SHOW_VOTE: ({ id }: GetShowIdVoteRequest) => `/show/${id}/vote`,
   POSTS: (params: GetPostsRequest) => buildUrl(`/posts`, params),
+  POST_LOCATION: ({ id }: { id: number }) => `/posts/${id}/location`,
   EVENTS: (params?: GetEventsRequest) => buildUrl(`/events`, params),
   EVENT: ({ id }: GetEventsIdRequest) => `/events/${id}`,
   TAGS: (params?: GetTagsRequest) => buildUrl(`/tags`, params),

@@ -47,10 +47,12 @@ status per phase and verification method live in [`docs/winterchilla-parity-plan
 
 - **Color picker** (`/picker`, plan and per-stage notes in `docs/color-picker-plan.md`): pure `src/utils/picker/*` (areas, pixels, viewport, levels, reducer, settings; where the old readings were wrong the new ones differ on purpose, see the plan), `src/components/tools/picker/*` (one file per control/hook), 28 browser tests in real Chromium. Levels only change the picture, never readings. Copy button, resize handle, area color dialog and touch are untested.
 
+- **Redirects:** `/s/{base36 id}` (post short link, via `GET /posts/{id}/location`, accepts Luna's `{showId, postId}` castle as well as the contract's `{url}`; legacy `/s/r/{id}` forms are not supported, there is no legacy ID mapping in the API), `/episodes/{page}` and `/movies/{page}` (308 to `/show?eppage=` / `?page=`).
+
 ## Left to do
 
 - Staff/admin: dev tools.
-- Pages not started: `/s/{id}` share redirect (needs a data-only `GET /posts/{id}/location`), `/episodes|movies/{page}` redirects, `/muffin-rating`, `/manifest`.
+- Pages not started: `/manifest`. `/muffin-rating` becomes a client-side component (user's decision), not a route.
   Dropped on purpose (not in the contract): PCG admin list, tag changes, browser-recognition, `/u/{uuid}`, appearance PNG/GPL exports (compose from `colorGroups`), sessions list.
 - Post edit/image/unbreak/staff reservations, event writes (disabled server-side), account password and e-mail (Luna's flows, Winterchilla's are `x-internal`).
 - Real sign-in: Celestia still uses Luna's flow; auth state is client-only (SSR shows the signed-out shell on account pages).
