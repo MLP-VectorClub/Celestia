@@ -81,7 +81,8 @@
       "staff": "Permissions",
       "sessions": "Sessions",
       "discord": "Discord",
-      "password": "Password"
+      "password": "Password",
+      "email": "E-mail address"
     },
     "prefs": {
       "cg_itemsperpage": "Appearances per page",
@@ -121,6 +122,14 @@
       "mismatch": "The passwords do not match.",
       "submit": "Change password",
       "signOutNote": "You will be signed out everywhere and have to sign in again with the new password."
+    },
+    "email": {
+      "new": "New e-mail address",
+      "newHelp": "A confirmation link is sent to the new address. The address only changes once it has been opened.",
+      "password": "Current password",
+      "passwordHelp": "Needed to change the address of your own account.",
+      "submit": "Send confirmation e-mail",
+      "resend": "Resend the pending confirmation e-mail"
     }
   },
   "staffTools": {
@@ -138,5 +147,18 @@
     "done": "Done.",
     "loading": "Loading…",
     "available": "{count, plural, one {# point can} other {# points can}} still be granted or taken."
+  },
+  "verify": {
+    "title": "Confirm e-mail address",
+    "heading": "E-mail address confirmation",
+    "lead": "Use the link from the e-mail you received to confirm or reject the address.",
+    "invalid": "This link is incomplete or damaged. Open the link from the e-mail again.",
+    "signInRequired": "Sign in with your staff account to continue, then open the link from the e-mail again.",
+    "signIn": "Sign in",
+    "verifyPrompt": "Use this address for your account?",
+    "blockPrompt": "Stop e-mails from being sent to this address?",
+    "verify": "Yes, use this address",
+    "block": "Never send e-mails to this address",
+    "done": "Done."
   }
 }

@@ -21,4 +21,12 @@ export class AccountService {
    */
   static changePassword = (body: { currentPassword?: string; newPassword: string }) =>
     Axios.post<{ message: string }>('/users/me/password', body);
+
+  /** Luna's e-mail change request (internal in Winterchilla's contract, so no generated type). `currentPassword` is needed for your own account */
+  static requestEmailChange = (userId: number, body: { newEmail?: string; resend?: boolean; currentPassword?: string }) =>
+    Axios.post<{ message: string }>(`/users/${userId}/email-changes`, { ...body, ...(body.resend ? { resend: 1 } : {}) });
+
+  /** The link in the verification mail carries `hash` and `action`; `verify` sets the address, `block` puts it on the do-not-send list */
+  static verifyEmail = (hash: string, action: 'verify' | 'block') =>
+    Axios.post<{ message: string }>('/users/email/verify', { hash, action });
 }

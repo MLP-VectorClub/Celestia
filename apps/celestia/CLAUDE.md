@@ -57,13 +57,15 @@ status per phase and verification method live in [`docs/winterchilla-parity-plan
 
 - **Password change** (account page, staff only because Luna gates it that way): `PasswordForm` posts `{currentPassword?, newPassword}` to `POST /users/me/password`; Luna deletes all tokens on success so the sign-in dialog opens. Field errors checked against Luna; the success path was not (the seeded admin has an unknown password).
 
+- **E-mail change** (account page, staff only like Luna's gate): `EmailChangeForm` posts `{newEmail, currentPassword?}` or `{resend}` to `POST /users/{id}/email-changes`; `/users/verify?hash=&action=verify|block` (the link in Luna's mail) asks for confirmation and posts to `POST /users/email/verify`. Field errors checked against Luna; sending needs Luna's `MAIL_*` settings, so a real address was not tried.
+
 ## Left to do
 
 - Staff/admin: dev tools.
   Dropped on purpose (not in the contract): PCG admin list, tag changes, browser-recognition, `/u/{uuid}`, appearance PNG/GPL exports (compose from `colorGroups`), sessions list.
-- Event writes (disabled server-side), account e-mail change and verification (`POST /users/{id}/email-changes`, `POST /users/email/verify`; Luna builds them once the user has decided the mail transport and the verification link path; forms can be built against Winterchilla's x-internal schemas). Not dropped: the goal is a full reimplementation.
+- Event writes (disabled server-side).
 - Nothing in the editing/write UI has been clicked through in a browser yet (no extension was available): only request shapes were exercised against the APIs.
-- i18n: new strings exist for `en` only (Crowdin handles the rest); several appearance-page strings, the admin pages and all three tools (blending, reverser, picker) are still hard-coded English: do one pass over them.
+- i18n: new strings exist for `en` only (Crowdin handles the rest). Everything built in this migration is translated (`src/utils/__tests__/i18n-keys.test.ts` checks every key against the English files); still hard-coded English because they predate it: the About pages, connection page, sprite generator, search bar, share buttons, cutie mark display, the guide page notes (`WIP`, "Resources for developers") and the sign-in/register forms.
 
 ## Verifying locally
 
