@@ -8,6 +8,7 @@ import AvatarWrap from 'src/components/shared/AvatarWrap';
 import Content from 'src/components/shared/Content';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import { ProfileAwaitingApproval, ProfileContributions, ProfilePersonalGuides } from 'src/components/users/ProfileSections';
+import { ProfileStaffControls } from 'src/components/users/ProfileStaffControls';
 import { profileFetcher, userFetcher } from 'src/fetchers';
 import { transformProfileParams, useAuth, useTitleSetter, useUser, useUserProfile } from 'src/hooks';
 import { PATHS } from 'src/paths';
@@ -76,6 +77,7 @@ const ProfilePage: NextPage<PropTypes> = ({ initialUser, initialProfile }) => {
             </p>
           )}
           {profile.discordServerMember && <p className="text-center text-muted">{t('users.profile.discordMember')}</p>}
+          <ProfileStaffControls profile={profile} />
           <ProfileAwaitingApproval profile={profile} />
           <ProfilePersonalGuides profile={profile} />
           <ProfileContributions profile={profile} />
