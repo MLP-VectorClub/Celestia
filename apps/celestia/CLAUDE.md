@@ -28,7 +28,7 @@ status per phase and verification method live in [`docs/winterchilla-parity-plan
 - **Member writes:** post actions on show pages (reserve, finish with reserver-overwrite retry, approve, unfinish, remove approval, cancel reservation, delete request), add request /
   reservation with image check, episode voting, account page (`/users/[user]/account`: preferences, Discord sync/unlink, sign out everywhere).
 - **Guide editing** (appearance page): metadata, tags, sprite upload/remove, pin/unpin, delete, color groups (create, edit, delete, re-order, apply template), related appearances,
-  linked shows and cutie marks (`CutieMarkDialog`: up to four, SVG via `POST /appearances/{id}/sanitize-svg`, saved with one `PUT`; request shapes exercised against Luna).
+  linked shows and cutie marks (`CutieMarkDialog`: up to two, SVG via `POST /appearances/{id}/sanitize-svg`, saved with one `PUT`; request shapes exercised against Luna).
 
 ## Left to do
 

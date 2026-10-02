@@ -6,7 +6,7 @@ import { describeApiError, fieldErrors, useApiMutation } from 'src/hooks';
 import { AppearanceEditService } from 'src/services/appearance-edit';
 import { ENDPOINTS } from 'src/utils';
 
-const MAX_CUTIE_MARKS = 4;
+const MAX_CUTIE_MARKS = 2;
 
 type Attribution = 'deviation' | 'user' | 'none';
 
@@ -43,7 +43,7 @@ const blankRow = (): Row => ({
   warnings: [],
 });
 
-/** Replaces all cutie marks of an appearance (up to four) in one request, as the API does */
+/** Replaces all cutie marks of an appearance (up to two) in one request, as the API does */
 export const CutieMarkDialog: FC<PropTypes> = ({ appearanceId, isOpen, onClose }) => {
   const [rows, setRows] = useState<Row[]>([]);
   const [loaded, setLoaded] = useState(false);
