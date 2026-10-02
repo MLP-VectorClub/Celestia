@@ -121,7 +121,7 @@ export const getColorMapping = (
 ): CutieMarkColorMapping => {
   const $colors: CutieMarkMappingColor[] = colorGroups.reduce((colors, cg) => {
     cg.colors.forEach((c) => {
-      colors.push({ groupLabel: cg.label, colorLabel: c.label, hex: c.hex });
+      if (c.hex) colors.push({ groupLabel: cg.label, colorLabel: c.label, hex: c.hex });
     });
     return colors;
   }, [] as CutieMarkMappingColor[]);

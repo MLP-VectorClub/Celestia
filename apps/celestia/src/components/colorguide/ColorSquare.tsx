@@ -15,10 +15,10 @@ const ColorSquare: FC<PropTypes> = ({ color, compact = false, innerRef }) => (
     className={classNames(styles.colorSquare, {
       [styles.compactColorSquare]: compact,
     })}
-    style={{ backgroundColor: color.hex }}
+    style={{ backgroundColor: color.hex ?? undefined }}
     ref={innerRef}
   >
-    {color.hex}
+    {color.hex ?? ''}
   </span>
 );
 
