@@ -1,0 +1,37 @@
+.statusBar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.25rem 0.6rem;
+  background: #3c3c3c;
+  border-top: 1px solid #222;
+  font-size: 0.85rem;
+}
+
+.info {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.position {
+  flex: 0 0 7rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.color {
+  display: flex;
+  flex: 0 0 11rem;
+  align-items: center;
+  gap: 0.4rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.swatch {
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid #000;
+}

@@ -1,8 +1,19 @@
 import { describe, expect, it } from 'vitest';
 
 import { applyLevels, levelsLookupTable, normalizeLevels } from 'src/utils/picker/levels';
-import { averageColor, formatColor, formatPercent } from 'src/utils/picker/pixels';
-import { ZOOM, centeredViewport, fitZoom, imageToView, pixelAt, stepZoom, viewToImage, zoomAround } from 'src/utils/picker/viewport';
+import { averageColor, formatColor, formatPercent, pixelAtPosition } from 'src/utils/picker/pixels';
+import {
+  ZOOM,
+  centeredViewport,
+  fitZoom,
+  formatZoom,
+  imageToView,
+  parseZoomPercent,
+  pixelAt,
+  stepZoom,
+  viewToImage,
+  zoomAround,
+} from 'src/utils/picker/viewport';
 
 describe('averageColor', () => {
   it('is null without pixels', () => {
@@ -86,5 +97,38 @@ describe('viewport', () => {
     expect(pixelAt(viewport, image, { x: 15, y: 31 })).toEqual({ x: 2, y: 10 });
     expect(pixelAt(viewport, image, { x: 5, y: 31 })).toBeNull();
     expect(pixelAt(viewport, image, { x: 500, y: 31 })).toBeNull();
+  });
+});
+
+describe('zoom text', () => {
+  it('formats zoom factors as percentages', () => {
+    expect(formatZoom(1)).toBe('100%');
+    expect(formatZoom(0.004)).toBe('0.4%');
+    expect(formatZoom(1.255)).toBe('125.5%');
+  });
+
+  it('reads typed percentages within the zoom range', () => {
+    expect(parseZoomPercent('150')).toBe(1.5);
+    expect(parseZoomPercent(' 12.5 % ')).toBe(0.125);
+    expect(parseZoomPercent('0.1')).toBe(ZOOM.min);
+    expect(parseZoomPercent('999999')).toBe(ZOOM.max);
+  });
+
+  it('rejects anything that is not a positive number', () => {
+    ['', 'abc', '-5', '0', '1e3', '10px'].forEach((text) => expect(parseZoomPercent(text)).toBeNull());
+  });
+});
+
+describe('pixelAtPosition', () => {
+  const data = [1, 2, 3, 255, 4, 5, 6, 0];
+
+  it('reads a pixel with opacity as 0–1', () => {
+    expect(pixelAtPosition(data, 2, 1, 1, 0)).toEqual({ red: 4, green: 5, blue: 6, alpha: 0 });
+    expect(pixelAtPosition(data, 2, 1, 0, 0)).toEqual({ red: 1, green: 2, blue: 3, alpha: 1 });
+  });
+
+  it('is null outside the image', () => {
+    expect(pixelAtPosition(data, 2, 1, 2, 0)).toBeNull();
+    expect(pixelAtPosition(data, 2, 1, 0, -1)).toBeNull();
   });
 });

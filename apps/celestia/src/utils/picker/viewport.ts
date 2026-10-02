@@ -64,3 +64,14 @@ export function pixelAt(viewport: Viewport, image: Size, point: { x: number; y: 
   const py = Math.floor(y);
   return px < 0 || py < 0 || px >= image.width || py >= image.height ? null : { x: px, y: py };
 }
+
+/** `1.1` becomes `110%`, small values keep a decimal (`0.004` is `0.4%`) */
+export const formatZoom = (zoom: number): string => `${Math.round(zoom * 1000) / 10}%`;
+
+/** A percentage typed by the user (`150`, `150%`, `12.5 %`) as a zoom factor limited to the zoom range, `null` for anything else */
+export function parseZoomPercent(text: string): number | null {
+  const match = /^\s*(\d+(?:\.\d+)?)\s*%?\s*$/.exec(text);
+  if (!match) return null;
+  const percent = parseFloat(match[1]);
+  return percent > 0 ? clampZoom(percent / 100) : null;
+}

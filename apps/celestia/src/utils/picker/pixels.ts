@@ -39,3 +39,10 @@ export function formatColor(pixel: Pixel): string {
 
 /** `rgba(1, 2, 3, 0.5)` for use as a CSS color */
 export const toCssColor = ({ red, green, blue, alpha }: Pixel): string => `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+
+/** The pixel at (x, y) of RGBA data `width` pixels wide, `null` outside of it */
+export function pixelAtPosition(data: ArrayLike<number>, width: number, height: number, x: number, y: number): Pixel | null {
+  if (x < 0 || y < 0 || x >= width || y >= height) return null;
+  const i = (y * width + x) * 4;
+  return { red: data[i], green: data[i + 1], blue: data[i + 2], alpha: data[i + 3] / 255 };
+}

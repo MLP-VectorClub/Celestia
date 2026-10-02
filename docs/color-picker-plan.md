@@ -71,6 +71,16 @@ replaced by the canvas stage), hooks `useFileIntake` (dialog, drop, Ctrl+V, clip
 closing and non-image files; the `modules/` alias was added to `vitest.config.mts`. A tab is only confirmed on closing when it has picking areas.
 Clipboard reading through the menu needs a permission prompt and is untested; Ctrl+V pasting and drag-and-drop of real files are untested too.
 
+## Stage 3 status: done
+
+`CanvasStage` draws the image on one canvas sized to the stage (sharp pixels when magnified, smoothed when reduced). Hooks: `useViewSize` (callback-ref
+based, the stage only exists once an image is open), `useViewportActions` (fit on first show, zoom steps, zoom to a value, pan), `usePointerTools`
+(hand drag, zoom clicks, Alt/right click out), `useWheelNavigation` (Alt/Ctrl/Cmd+wheel zooms at the pointer, plain wheel pans), `useSpaceHeld`,
+`useHoverInfo` (pixel and color under the pointer via the lazy `ImageStore` pixel cache). `Toolbar` (`ToolButtons`, `ZoomControls`), `StatusBar`.
+Shortcuts: H/I/Z, Ctrl/Cmd+0 fit, Ctrl/Cmd+1 100%. Eleven browser tests cover fit/100%, zoom steps and typed values, tool and zoom shortcuts, the
+reading under the pointer (exact pixel and color), per-tab zoom and the zoom tool. Not covered by tests: dragging with the hand tool, wheel
+navigation and touch (the code paths exist). The eyedropper tool is selectable but only places areas from stage 4.
+
 ## Stages (each ends with tsc, lint, unit tests, `pnpm build` and a commit)
 
 1. **Pure foundations**: `pixels`, `areas`, `viewport`, `levels`, `file-hash`, `settings` and the reducer, all with unit tests. No UI. Needs a careful

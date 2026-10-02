@@ -1,0 +1,43 @@
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.3rem 0.5rem;
+  background: #3c3c3c;
+  border-bottom: 1px solid #222;
+}
+
+.group {
+  display: flex;
+  gap: 1px;
+}
+
+.button {
+  min-width: 2rem;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid #222;
+  background: #505050;
+  color: #eee;
+
+  &:hover:not(:disabled) {
+    background: #606060;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+
+  &.active {
+    background: #2d6cdf;
+    border-color: #1a4fb0;
+  }
+}
+
+.zoomInput {
+  width: 5rem;
+  padding: 0.2rem 0.4rem;
+  border: 1px solid #222;
+  background: #2b2b2b;
+  color: #eee;
+  text-align: center;
+}

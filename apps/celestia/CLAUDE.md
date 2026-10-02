@@ -48,7 +48,7 @@ status per phase and verification method live in [`docs/winterchilla-parity-plan
 ## Left to do
 
 - Staff/admin: dev tools.
-- Pages not started: `/s/{id}` share redirect (needs a data-only `GET /posts/{id}/location`), `/episodes|movies/{page}` redirects, color picker (plan in `docs/color-picker-plan.md`; stages 1 (pure `src/utils/picker/*` + reducer) and 2 (`/picker` shell, intake, tabs) are done, stages 3–5 remain), `/muffin-rating`, `/manifest`.
+- Pages not started: `/s/{id}` share redirect (needs a data-only `GET /posts/{id}/location`), `/episodes|movies/{page}` redirects, color picker (plan in `docs/color-picker-plan.md`; stages 1 (pure `src/utils/picker/*` + reducer), 2 (`/picker` shell, intake, tabs) and 3 (zoom/pan canvas stage, pointer readout) are done, stages 4–5 remain), `/muffin-rating`, `/manifest`.
   Dropped on purpose (not in the contract): PCG admin list, tag changes, browser-recognition, `/u/{uuid}`, appearance PNG/GPL exports (compose from `colorGroups`), sessions list.
 - Post edit/image/unbreak/staff reservations, event writes (disabled server-side), account password and e-mail (Luna's flows, Winterchilla's are `x-internal`).
 - Real sign-in: Celestia still uses Luna's flow; auth state is client-only (SSR shows the signed-out shell on account pages).
