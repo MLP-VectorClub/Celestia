@@ -1,0 +1,113 @@
+@use '../breakpoints' as *;
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  @include media-breakpoint-up(lg) {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.column {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.section {
+  margin-bottom: 1rem;
+}
+
+.pairs {
+  background: white;
+  border-collapse: collapse;
+
+  &,
+  th,
+  td {
+    border: 1px solid black;
+  }
+
+  th,
+  td {
+    padding: 0;
+    text-align: center;
+  }
+
+  th {
+    padding: 0.4rem;
+  }
+
+  td:last-child {
+    padding: 0.2rem;
+  }
+}
+
+.candidate {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  border: 2px solid transparent;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover {
+    border-color: #888;
+  }
+
+  &.selected {
+    border-color: #2b8a3e;
+  }
+}
+
+.candidatePreview {
+  width: 3rem;
+  height: 3rem;
+  border: 2px solid black;
+}
+
+.candidateValues {
+  display: flex;
+  flex-direction: column;
+}
+
+.red {
+  color: #c33;
+}
+
+.green {
+  color: #2a8a2a;
+}
+
+.blue {
+  color: #2b4fcc;
+}
+
+.previewWrap {
+  margin-top: 1rem;
+  overflow: auto;
+  max-width: 100%;
+}
+
+.preview {
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+  background: repeating-conic-gradient(#ccc 0 25%, #fff 0 50%) 0 0 / 16px 16px;
+}
+
+.canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+
+  & + & {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+}

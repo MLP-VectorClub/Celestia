@@ -39,3 +39,9 @@ const channelToHex = (n: number) =>
 
 /** Lowercase `#rrggbb`, channels are rounded and clamped to 0–255 */
 export const rgbToHex = ({ red, green, blue }: Rgb): string => `#${channelToHex(red)}${channelToHex(green)}${channelToHex(blue)}`;
+
+/** Perceived brightness (YIQ) from 0 to 255 */
+export const brightness = ({ red, green, blue }: Rgb): number => (red * 299 + green * 587 + blue * 114) / 1000;
+
+/** Whether black text is more readable than white on this color */
+export const isLight = (color: Rgb): boolean => brightness(color) > 127;

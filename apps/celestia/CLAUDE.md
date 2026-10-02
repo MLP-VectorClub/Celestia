@@ -41,10 +41,12 @@ status per phase and verification method live in [`docs/winterchilla-parity-plan
 
 - **Blending tool** (`/blending`): modules `src/utils/color/{rgb,blending}.ts` (pure, tested), `src/components/tools/blending/{ColorField,BlendingInputs,BlendingResult,RgbEntryDialog,useBlending,BlendingTool}.tsx`, CSS modules `Blending` and `ColorField`. Use `src/utils/color` and `ColorField` for the next tools.
 
+- **Blending reverser** (`/blending-reverse`): pure `src/utils/color/{filters,reverse-image}.ts` (tested) + `src/utils/image-file.ts`, and `src/components/tools/blending-reverse/*` (one file per control, `useKnownColorPairs`, `useReverseTool` state, `usePreviewCanvases` canvas drawing, `BlendingReverseTool` composes). Differences from Winterchilla: the multiply reverse uses the correct inverse (Winterchilla applied the normal formula, wrong results), the unused "reference pair" anchor is dropped, saved images are always PNG. Not tried in a browser (canvas parts untested).
+
 ## Left to do
 
 - Staff/admin: dev tools.
-- Pages not started: `/s/{id}` share redirect (needs a data-only `GET /posts/{id}/location`), `/episodes|movies/{page}` redirects, blending reverser (`/cg/blending-reverse`, 532-line original) and color picker (`/cg/picker`, ~2400 lines + `canvas.hdr`) tools, `/muffin-rating`, `/manifest`.
+- Pages not started: `/s/{id}` share redirect (needs a data-only `GET /posts/{id}/location`), `/episodes|movies/{page}` redirects, color picker (`/cg/picker`, ~2400 lines + `canvas.hdr`) tools, `/muffin-rating`, `/manifest`.
   Dropped on purpose (not in the contract): PCG admin list, tag changes, browser-recognition, `/u/{uuid}`, appearance PNG/GPL exports (compose from `colorGroups`), sessions list.
 - Post edit/image/unbreak/staff reservations, event writes (disabled server-side), account password and e-mail (Luna's flows, Winterchilla's are `x-internal`).
 - Real sign-in: Celestia still uses Luna's flow; auth state is client-only (SSR shows the signed-out shell on account pages).

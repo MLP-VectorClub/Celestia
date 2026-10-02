@@ -1,8 +1,8 @@
 import { FC } from 'react';
 
 import styles from 'modules/Blending.module.scss';
-import { ColorField } from 'src/components/tools/blending/ColorField';
 import { BlendingField } from 'src/components/tools/blending/useBlending';
+import { ColorField } from 'src/components/tools/shared/ColorField';
 
 interface PropTypes {
   values: Record<BlendingField, string>;
