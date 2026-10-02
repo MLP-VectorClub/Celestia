@@ -13,6 +13,7 @@ import InlineIcon from 'src/components/shared/InlineIcon';
 import RevealPasswordButton from 'src/components/shared/RevealPasswordButton';
 import { API_PREFIX } from 'src/config';
 import { SOCIAL_PROVIDERS } from 'src/fancy-config';
+import { useRateLimitLock } from 'src/hooks/rate-limit';
 import { RootState, useAppDispatch } from 'src/store';
 import { authActions } from 'src/store/slices';
 import { signInThunk } from 'src/store/thunks';
@@ -48,12 +49,12 @@ const SingInForm: FC = () => {
   const dispatch = useAppDispatch();
   const { authModal, signIn } = useSelector((store: RootState) => store.auth);
   const [passwordRevealed, setPasswordRevealed] = useState(false);
-  const rateLimitTimeout = useRef<null | ReturnType<typeof setTimeout>>(null);
   const socialAuthPopup = useRef<SocialPopupRef>({
     window: null,
     timer: null,
   });
   const queryClient = useQueryClient();
+  const rateLimited = useRateLimitLock(signIn.error);
 
   useEffect(() => {
     if (!authModal.open) {
@@ -61,22 +62,6 @@ const SingInForm: FC = () => {
       setPasswordRevealed(false);
     }
   }, [reset, authModal.open]);
-
-  useEffect(() => {
-    const clearRateLimitTimeout = () => {
-      if (rateLimitTimeout.current) {
-        clearTimeout(rateLimitTimeout.current);
-        rateLimitTimeout.current = null;
-      }
-    };
-
-    if (signIn.error?.type !== UnifiedErrorResponseTypes.RATE_LIMITED) {
-      clearRateLimitTimeout();
-      return;
-    }
-
-    rateLimitTimeout.current = setTimeout(clearRateLimitTimeout, signIn.error.retryAfter * 1e3);
-  }, [signIn.error]);
 
   useEffect(() => {
     const subscription = fromEvent(window, 'beforeunload').subscribe(() => {
@@ -89,9 +74,6 @@ const SingInForm: FC = () => {
       if (socialAuthPopup.current.timer) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
         clearInterval(socialAuthPopup.current.timer);
-      }
-      if (rateLimitTimeout.current !== null) {
-        clearTimeout(rateLimitTimeout.current);
       }
       subscription.unsubscribe();
     };
@@ -233,7 +215,7 @@ const SingInForm: FC = () => {
 
       <Row className="align-items-center">
         <Col>
-          <Button color="ui" size="lg" disabled={isLoading || rateLimitTimeout.current !== null}>
+          <Button color="ui" size="lg" disabled={isLoading || rateLimited}>
             <InlineIcon first loading={isLoading} icon="sign-in-alt" />
             {t('common.auth.signInButton')}
           </Button>

@@ -54,7 +54,7 @@ export const useCopyToClipboard = ({
           {t('common.copied')}
         </Tooltip>
       ) : null,
-    [copyButtonRef, copyStatus, enabled]
+    [copyButtonRef, copyStatus, enabled, t]
   );
 
   return {
