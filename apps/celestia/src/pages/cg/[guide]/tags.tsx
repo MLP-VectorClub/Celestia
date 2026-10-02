@@ -6,13 +6,14 @@ import { useMemo } from 'react';
 import { GetConfigResult, GetTagsResult, GuideName } from '@mlp-vectorclub/api-types';
 import { GuideNotFound } from 'src/components/colorguide/GuideNotFound';
 import { Tag } from 'src/components/colorguide/Tag';
+import { NewTagButton, TagAdminActions } from 'src/components/colorguide/TagAdmin';
 import Content from 'src/components/shared/Content';
 import NoResultsAlert from 'src/components/shared/NoResultsAlert';
 import Pagination from 'src/components/shared/Pagination';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import StatusAlert from 'src/components/shared/StatusAlert';
 import { configFetcher, tagsFetcher } from 'src/fetchers';
-import { useConfig, useTags, useTitleSetter } from 'src/hooks';
+import { useAuth, useConfig, useTags, useTitleSetter } from 'src/hooks';
 import { PATHS } from 'src/paths';
 import { useAppDispatch, wrapper } from 'src/store';
 import { Nullable, Optional, SSRMessages } from 'src/types';
@@ -43,6 +44,8 @@ const TagsPage: NextPage<PropTypes> = ({ guide, page, initialTags, initialConfig
   const dispatch = useAppDispatch();
   const { data, status } = useTags({ page }, initialTags || undefined);
   const { config } = useConfig(initialConfig || undefined);
+  const { isStaff } = useAuth();
+  const canManage = isStaff && Boolean(data?.canEdit) && Boolean(config);
 
   const titleData = useMemo(() => titleFactory({ guide }), [guide]);
   useTitleSetter(dispatch, titleData);
@@ -56,6 +59,7 @@ const TagsPage: NextPage<PropTypes> = ({ guide, page, initialTags, initialConfig
   return (
     <Content>
       <StandardHeading heading={t('colorGuide.tags.heading')} lead={t('colorGuide.tags.lead')} />
+      {canManage && config && <NewTagButton page={page} tagTypes={config.tagTypes} />}
       <StatusAlert status={status} subject={t('colorGuide.tags.loadingSubject')} />
       {data?.tags.length === 0 && <NoResultsAlert message={t('colorGuide.tags.empty')} />}
       {data && data.tags.length > 0 && (
@@ -74,6 +78,7 @@ const TagsPage: NextPage<PropTypes> = ({ guide, page, initialTags, initialConfig
                         : t('colorGuide.tags.uses', { count: tag.uses })}
                       {tag.title ? ` – ${tag.title}` : ''}
                     </small>
+                    {canManage && config && <TagAdminActions tag={tag} page={page} tagTypes={config.tagTypes} />}
                   </li>
                 ))}
               </ul>

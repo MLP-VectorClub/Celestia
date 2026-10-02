@@ -30,9 +30,11 @@ status per phase and verification method live in [`docs/winterchilla-parity-plan
 - **Guide editing** (appearance page, plus staff re-ordering of the full list in `FullGuideReorder`: drag or arrows within a tag group, `PUT /appearances/order`): metadata, tags, sprite upload/remove, pin/unpin, delete, color groups (create, edit, delete, re-order, apply template), related appearances,
   linked shows, cutie marks (`CutieMarkDialog`: up to two, SVG via `POST /appearances/{id}/sanitize-svg`, saved with one `PUT`; request shapes exercised against Luna).
 
+- **Tag admin** (`/cg/[guide]/tags`, staff): create, edit, delete (confirms for in-use tags), make/unlink synonym (target is entered as a tag ID; unlink keeps the tag applied), recount uses (`TagAdmin.tsx`).
+
 ## Left to do
 
-- Staff/admin: tag admin, show admin (create/edit/delete, prefill), user roles and personal-guide points, logs, notices, useful links, site settings, dev tools.
+- Staff/admin: show admin (create/edit/delete, prefill), user roles and personal-guide points, logs, notices, useful links, site settings, dev tools.
 - Pages not started: `/s/{id}` share redirect (needs a data-only `GET /posts/{id}/location`), `/episodes|movies/{page}` redirects, blending/picker tools, `/muffin-rating`, `/manifest`.
   Dropped on purpose (not in the contract): PCG admin list, tag changes, browser-recognition, `/u/{uuid}`, appearance PNG/GPL exports (compose from `colorGroups`), sessions list.
 - Post edit/image/unbreak/staff reservations, event writes (disabled server-side), account password and e-mail (Luna's flows, Winterchilla's are `x-internal`).
