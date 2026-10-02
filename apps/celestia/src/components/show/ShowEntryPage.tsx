@@ -1,7 +1,8 @@
 import { format } from 'date-fns';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { FC, useMemo } from 'react';
+import { useRouter } from 'next/router';
+import { FC, useMemo, useState } from 'react';
 import { Button, Progress } from 'reactstrap';
 
 import { GetPostsResult, GetShowIdResult, GetShowIdVoteResult } from '@mlp-vectorclub/api-types';
@@ -9,10 +10,13 @@ import { AppearanceLink } from 'src/components/colorguide/AppearanceLink';
 import Content from 'src/components/shared/Content';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import StatusAlert from 'src/components/shared/StatusAlert';
+import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { PostList } from 'src/components/show/PostList';
+import { ShowFormDialog } from 'src/components/show/ShowFormDialog';
 import { describeApiError, useApiMutation, useAuth, useShowEntry, useShowVotes, useTitleSetter } from 'src/hooks';
 import { PATHS } from 'src/paths';
 import { PostService } from 'src/services/posts';
+import { ShowAdminService } from 'src/services/show-admin';
 import { useAppDispatch } from 'src/store';
 import { Nullable, Translatable } from 'src/types';
 import { ShowEntry } from 'src/types/api-alias';
@@ -85,6 +89,10 @@ export const ShowEntryPage: FC<ShowEntryPageProps> = ({ id, initialShow, initial
   const { show, status } = useShowEntry({ id }, initialShow || undefined);
   const { votes } = useShowVotes({ id }, initialVotes || undefined);
   const { signedIn } = useAuth();
+  const { confirm } = useDialog();
+  const { push, replace } = useRouter();
+  const [editing, setEditing] = useState(false);
+  const remove = useApiMutation(() => ShowAdminService.remove(id), { onSuccess: () => void push(PATHS.SHOW) });
 
   const titleData = useMemo(() => showTitleFactory({ show: show || null }), [show]);
   useTitleSetter(dispatch, titleData);
@@ -114,6 +122,45 @@ export const ShowEntryPage: FC<ShowEntryPageProps> = ({ id, initialShow, initial
         }
       />
       {show.notes && <p className="text-center">{show.notes}</p>}
+
+      {show.canEdit && (
+        <div className="mb-3 d-flex flex-wrap gap-2 justify-content-center">
+          <Button color="ui" size="sm" onClick={() => setEditing(true)}>
+            Edit
+          </Button>
+          <Button
+            color="danger"
+            size="sm"
+            outline
+            disabled={remove.isPending}
+            onClick={async () => {
+              if (
+                await confirm({
+                  title: 'Delete show',
+                  body: `“${show.title}” and its posts will be deleted. This cannot be undone.`,
+                  color: 'danger',
+                  confirmLabel: 'Delete',
+                })
+              ) {
+                remove.mutate();
+              }
+            }}
+          >
+            Delete
+          </Button>
+          {remove.error && <p className="text-danger w-100 text-center mb-0">{describeApiError(remove.error)}</p>}
+          <ShowFormDialog
+            category={show.type === 'episode' ? 'episode' : 'other'}
+            show={show}
+            isOpen={editing}
+            onClose={() => setEditing(false)}
+            onSaved={(path) => {
+              setEditing(false);
+              void replace(path);
+            }}
+          />
+        </div>
+      )}
 
       <section>
         <h2>{t('show.entry.relatedAppearances')}</h2>

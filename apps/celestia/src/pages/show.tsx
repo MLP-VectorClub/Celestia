@@ -99,7 +99,7 @@ const ShowPage: NextPage<ShowPageProps> = ({ initialEpisodes, initialOthers }) =
           <StandardHeading heading={t('show.index.episodes.heading')} />
           {isStaff && (
             <ButtonCollection>
-              <AddEntryButton noun={t('show.index.episodes.addNoun')} />
+              <AddEntryButton noun={t('show.index.episodes.addNoun')} category="episode" />
             </ButtonCollection>
           )}
           <ShowEntriesTable
@@ -113,7 +113,7 @@ const ShowPage: NextPage<ShowPageProps> = ({ initialEpisodes, initialOthers }) =
           <StandardHeading heading={t('show.index.others.heading')} />
           {isStaff && (
             <ButtonCollection>
-              <AddEntryButton noun={t('show.index.others.addNoun')} />
+              <AddEntryButton noun={t('show.index.others.addNoun')} category="other" />
             </ButtonCollection>
           )}
           <ShowEntriesTable columns={OTHERS_TABLE_COLUMNS} initialData={initialOthers} params={OTHERS_TABLE_PARAMS} />

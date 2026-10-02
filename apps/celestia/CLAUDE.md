@@ -32,9 +32,11 @@ status per phase and verification method live in [`docs/winterchilla-parity-plan
 
 - **Tag admin** (`/cg/[guide]/tags`, staff): create, edit, delete (confirms for in-use tags), make/unlink synonym (target is entered as a tag ID; unlink keeps the tag applied), recount uses (`TagAdmin.tsx`).
 
+- **Show admin:** add episode (prefilled from `GET /show/prefill`) / movie / special on `/show`, edit and delete on the show page (`ShowFormDialog`; air time is picked in local time and sent as an ISO timestamp).
+
 ## Left to do
 
-- Staff/admin: show admin (create/edit/delete, prefill), user roles and personal-guide points, logs, notices, useful links, site settings, dev tools.
+- Staff/admin: user roles and personal-guide points, logs, notices, useful links, site settings, dev tools.
 - Pages not started: `/s/{id}` share redirect (needs a data-only `GET /posts/{id}/location`), `/episodes|movies/{page}` redirects, blending/picker tools, `/muffin-rating`, `/manifest`.
   Dropped on purpose (not in the contract): PCG admin list, tag changes, browser-recognition, `/u/{uuid}`, appearance PNG/GPL exports (compose from `colorGroups`), sessions list.
 - Post edit/image/unbreak/staff reservations, event writes (disabled server-side), account password and e-mail (Luna's flows, Winterchilla's are `x-internal`).
