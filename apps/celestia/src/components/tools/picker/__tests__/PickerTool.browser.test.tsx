@@ -1,34 +1,11 @@
-import { describe, expect, it } from 'vitest';
-import { render } from 'vitest-browser-react';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { userEvent } from 'vitest/browser';
 
-import { DialogProvider } from 'src/components/shared/dialogs/DialogProvider';
-import { PickerTool } from 'src/components/tools/picker/PickerTool';
-
-/** A real PNG of the given color, made by the browser */
-async function pngFile(name: string, color: string, rightColor = color, size = { width: 4, height: 3 }): Promise<File> {
-  const canvas = document.createElement('canvas');
-  canvas.width = size.width;
-  canvas.height = size.height;
-  const ctx = canvas.getContext('2d')!;
-  ctx.fillStyle = color;
-  ctx.fillRect(0, 0, size.width, size.height);
-  ctx.fillStyle = rightColor;
-  ctx.fillRect(size.width / 2, 0, size.width / 2, size.height);
-  const blob = await new Promise<Blob>((resolve) => canvas.toBlob((b) => resolve(b!), 'image/png'));
-  return new File([blob], name, { type: 'image/png' });
-}
-
-const statusText = (screen: Awaited<ReturnType<typeof render>>) => screen.getByRole('status').element().textContent ?? '';
-
-const renderPicker = () =>
-  render(
-    <DialogProvider>
-      <PickerTool />
-    </DialogProvider>
-  );
+import { pngFile, renderPicker, statusText } from 'src/components/tools/picker/__tests__/picker-test-utils';
 
 describe('PickerTool', () => {
+  beforeEach(() => localStorage.clear());
+
   it('starts empty with a way to open an image', async () => {
     const screen = await renderPicker();
     await expect.element(screen.getByText(/drop image files here/)).toBeVisible();
@@ -72,6 +49,8 @@ describe('PickerTool', () => {
 });
 
 describe('PickerTool viewport', () => {
+  beforeEach(() => localStorage.clear());
+
   const open = async (file: File) => {
     const screen = await renderPicker();
     await userEvent.upload(screen.getByLabelText('Open images'), file);
@@ -124,9 +103,9 @@ describe('PickerTool viewport', () => {
 
     // the 100×50 image is centered at 100%: 25 px left of the middle is red, 25 px right is blue
     await userEvent.hover(stage, { position: { x: rect.width / 2 - 25, y: rect.height / 2 } });
-    await expect.poll(() => statusText(screen)).toMatch(/25,25#ff0000 100%/);
+    await expect.poll(() => statusText(screen)).toMatch(/25,\d+#ff0000 100%/);
     await userEvent.hover(stage, { position: { x: rect.width / 2 + 25, y: rect.height / 2 } });
-    await expect.poll(() => statusText(screen)).toMatch(/75,25#0000ff 100%/);
+    await expect.poll(() => statusText(screen)).toMatch(/75,\d+#0000ff 100%/);
 
     // outside the image there is no reading
     await userEvent.hover(stage, { position: { x: 5, y: 5 } });

@@ -32,6 +32,11 @@ export default defineConfig({
         optimizeDeps: {
           include: ['react', 'react-dom/client', 'react/jsx-dev-runtime', 'vitest-browser-react'],
         },
+        // Next.js inlines these at build time, the browser project has no `process`
+        define: {
+          'process.env.NEXT_PUBLIC_FRONTEND_HOST': JSON.stringify('http://localhost:3000'),
+          'process.env.NEXT_PUBLIC_BACKEND_HOST': JSON.stringify('http://localhost:8000'),
+        },
         test: {
           name: 'browser',
           include: [browserTests],

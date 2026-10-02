@@ -9,10 +9,12 @@ interface Options extends Pick<ViewportActions, 'zoomStep' | 'pan'> {
   spaceHeld: boolean;
   /** Pointer position in view coordinates, `null` when it left the view */
   onHover: (point: { x: number; y: number } | null) => void;
+  /** The eyedropper was clicked at this view position; `round` when Alt was held */
+  onPick: (point: { x: number; y: number }, round: boolean) => void;
 }
 
-/** Pointer handling of the stage: hand drags the image, zoom clicks zoom in (Alt or right click: out). The eyedropper comes with the areas */
-export function usePointerTools({ tool, spaceHeld, onHover, zoomStep, pan }: Options) {
+/** Pointer handling of the stage: hand drags the image, zoom clicks zoom in (Alt or right click: out), the eyedropper places an area (Alt: round) */
+export function usePointerTools({ tool, spaceHeld, onHover, onPick, zoomStep, pan }: Options) {
   const effective: Tool = spaceHeld ? 'hand' : tool;
   const drag = useRef<{ x: number; y: number; moved: boolean } | null>(null);
   const [dragging, setDragging] = useState(false);
@@ -47,7 +49,9 @@ export function usePointerTools({ tool, spaceHeld, onHover, zoomStep, pan }: Opt
       drag.current = null;
       setDragging(false);
       if (e.currentTarget.hasPointerCapture(e.pointerId)) e.currentTarget.releasePointerCapture(e.pointerId);
-      if (current && !current.moved && effective === 'zoom') zoomStep(e.altKey ? -1 : 1, point(e));
+      if (!current || current.moved) return;
+      if (effective === 'zoom') zoomStep(e.altKey ? -1 : 1, point(e));
+      else if (effective === 'picker') onPick(point(e), e.altKey);
     },
     onPointerCancel: () => {
       drag.current = null;

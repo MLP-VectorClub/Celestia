@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes, Ref, useEffect, useRef } from 'react';
+import { FC, HTMLAttributes, ReactNode, Ref, useEffect, useRef } from 'react';
 
 import styles from 'modules/Picker.module.scss';
 import { Size, Viewport } from 'src/utils/picker/viewport';
@@ -11,10 +11,12 @@ interface PropTypes extends HTMLAttributes<HTMLDivElement> {
   viewport: Viewport | null;
   viewSize: Size;
   cursor: string | undefined;
+  /** Layers drawn over the image, such as the picking areas */
+  children?: ReactNode;
 }
 
 /** The picking surface: the image drawn at the current zoom and position, filling the whole stage */
-export const CanvasStage: FC<PropTypes> = ({ containerRef, image, name, viewport, viewSize, cursor, ...rest }) => {
+export const CanvasStage: FC<PropTypes> = ({ containerRef, image, name, viewport, viewSize, cursor, children, ...rest }) => {
   const canvas = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -33,8 +35,9 @@ export const CanvasStage: FC<PropTypes> = ({ containerRef, image, name, viewport
   }, [image, viewport, viewSize]);
 
   return (
-    <div ref={containerRef} className={styles.canvasStage} style={{ cursor }} {...rest}>
-      <canvas ref={canvas} className={styles.stageCanvas} role="img" aria-label={name} />
+    <div ref={containerRef} className={styles.canvasStage} style={{ cursor }} role="img" aria-label={name} {...rest}>
+      <canvas ref={canvas} className={styles.stageCanvas} aria-hidden />
+      {children}
     </div>
   );
 };

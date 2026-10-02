@@ -1,0 +1,173 @@
+.list {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  min-width: 12rem;
+  background: #2f2f2f;
+  border-left: 1px solid #222;
+}
+
+.header {
+  padding: 0.4rem 0.5rem;
+  border-bottom: 1px solid #222;
+}
+
+.title {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: bold;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.smallButton {
+  padding: 0.1rem 0.5rem;
+  border: 1px solid #222;
+  background: #505050;
+  color: #eee;
+  font-size: 0.85rem;
+
+  &:hover:not(:disabled) {
+    background: #606060;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+
+  &[aria-pressed='false'] {
+    opacity: 0.6;
+  }
+}
+
+.tabs {
+  flex: 1 1 auto;
+  min-height: 8rem;
+  overflow-y: auto;
+}
+
+.empty {
+  margin: 0.6rem;
+  opacity: 0.7;
+  font-style: italic;
+}
+
+.tabName {
+  display: block;
+  width: 100%;
+  padding: 0.25rem 0.5rem;
+  border: 0;
+  background: #3a3a3a;
+  color: inherit;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.activeTab {
+  box-shadow: inset 3px 0 0 #4a9eff;
+}
+
+.areas {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+  padding: 0.15rem 0.4rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+
+  &:hover {
+    background: #3c3c3c;
+  }
+}
+
+.selected {
+  background: #264f8a;
+
+  &:hover {
+    background: #2c5ca3;
+  }
+}
+
+.index {
+  flex: 0 0 1.5rem;
+  opacity: 0.7;
+  text-align: right;
+}
+
+.color {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0.1rem 0.4rem;
+  border: 1px solid #000;
+  background: #444;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.size {
+  flex: 0 0 auto;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.status {
+  padding: 0.5rem;
+  border-top: 1px solid #222;
+}
+
+.counters {
+  margin-bottom: 0.3rem;
+}
+
+.average {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.averageColor {
+  flex: 1 1 auto;
+  padding: 0.15rem 0.5rem;
+  border: 1px solid #000;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.rgb {
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.copyStatus {
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+}
+
+.resizeHandle {
+  flex: 0 0 6px;
+  cursor: col-resize;
+  background: #222;
+  touch-action: none;
+
+  &:hover {
+    background: #4a9eff;
+  }
+}

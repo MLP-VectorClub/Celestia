@@ -81,6 +81,19 @@ Shortcuts: H/I/Z, Ctrl/Cmd+0 fit, Ctrl/Cmd+1 100%. Eleven browser tests cover fi
 reading under the pointer (exact pixel and color), per-tab zoom and the zoom tool. Not covered by tests: dragging with the hand tool, wheel
 navigation and touch (the code paths exist). The eyedropper tool is selectable but only places areas from stage 4.
 
+## Stage 4 status: done
+
+Eyedropper placement (click: square, Alt+click: round, always centered on the pixel under the pointer), the white outline of the area about to be placed,
+`AreaLayer` (areas filled with the tab's area color, selected ones outlined), size controls (field, buttons, up/down arrows), the area color dialog,
+`AreaList` (all tabs' areas with average color and size, select with Ctrl/Shift for several, double click to edit shape and size in `AreaEditDialog`,
+select all / deselect / delete, Ctrl+A, Del), `AverageColorPanel` (counts, overall average as the mean of the areas' averages, rgb text, copy with or
+without `#`) and a draggable `ResizeHandle` that saves the list width. Pure parts: `area-colors.ts` (per-area cache), `formatRgb`. 22 browser tests cover placing,
+exact averages (including an area over two colors and one overlapping the image edge), round areas, size changes, deleting, list selection, editing and
+the per-image separation with the close confirmation. Differences from Winterchilla: select-all and delete act on the active image, not every image;
+the hex/rgb display toggle is gone (both are shown); clicking an existing area with the eyedropper places a new area instead of selecting it.
+The browser tests share `localStorage` with the app's settings, so they clear it first. Not covered by tests: the Copy button (needs the clipboard
+permission), dragging the resize handle, and the area color dialog.
+
 ## Stages (each ends with tsc, lint, unit tests, `pnpm build` and a commit)
 
 1. **Pure foundations**: `pixels`, `areas`, `viewport`, `levels`, `file-hash`, `settings` and the reducer, all with unit tests. No UI. Needs a careful

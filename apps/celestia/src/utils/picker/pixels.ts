@@ -46,3 +46,9 @@ export function pixelAtPosition(data: ArrayLike<number>, width: number, height: 
   const i = (y * width + x) * 4;
   return { red: data[i], green: data[i + 1], blue: data[i + 2], alpha: data[i + 3] / 255 };
 }
+
+/** `rgb(1, 2, 3)`, or `rgba(1, 2, 3, 0.5)` when not fully opaque */
+export function formatRgb({ red, green, blue, alpha }: Pixel): string {
+  const channels = `${red}, ${green}, ${blue}`;
+  return alpha === 1 ? `rgb(${channels})` : `rgba(${channels}, ${Math.round(alpha * 10000) / 10000})`;
+}

@@ -41,3 +41,27 @@
   color: #eee;
   text-align: center;
 }
+
+.sizeInput {
+  width: 3.2rem;
+  padding: 0.2rem 0.3rem;
+  border: 1px solid #222;
+  background: #2b2b2b;
+  color: #eee;
+  text-align: center;
+}
+
+.unit {
+  align-self: center;
+  padding: 0 0.3rem;
+  opacity: 0.7;
+}
+
+.areaColorSwatch {
+  display: inline-block;
+  width: 0.9rem;
+  height: 0.9rem;
+  margin-right: 0.35rem;
+  vertical-align: middle;
+  border: 1px solid #000;
+}
