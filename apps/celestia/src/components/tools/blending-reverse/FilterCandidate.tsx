@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { useTranslations } from 'next-intl';
 import { FC } from 'react';
 
 import styles from 'modules/BlendingReverse.module.scss';
@@ -13,7 +14,8 @@ interface PropTypes {
 
 /** The calculated filter; click it to use it for the preview */
 export const FilterCandidate: FC<PropTypes> = ({ filter, selected, onToggle }) => {
-  if (!filter) return <p className="text-muted fst-italic mb-0">Enter at least two complete color pairs to calculate the filter.</p>;
+  const t = useTranslations();
+  if (!filter) return <p className="text-muted fst-italic mb-0">{t('tools.reverse.candidate.empty')}</p>;
 
   return (
     <button
@@ -21,7 +23,7 @@ export const FilterCandidate: FC<PropTypes> = ({ filter, selected, onToggle }) =
       className={classNames(styles.candidate, { [styles.selected]: selected })}
       aria-pressed={selected}
       onClick={onToggle}
-      title="Click to select & apply"
+      title={t('tools.reverse.candidate.hint')}
     >
       <span
         className={styles.candidatePreview}
@@ -29,16 +31,16 @@ export const FilterCandidate: FC<PropTypes> = ({ filter, selected, onToggle }) =
       />
       <span className={styles.candidateValues}>
         <span>
-          <strong>R:</strong> <span className={styles.red}>{filter.red}</span>
+          <strong>{t('tools.reverse.candidate.red')}</strong> <span className={styles.red}>{filter.red}</span>
         </span>
         <span>
-          <strong>G:</strong> <span className={styles.green}>{filter.green}</span>
+          <strong>{t('tools.reverse.candidate.green')}</strong> <span className={styles.green}>{filter.green}</span>
         </span>
         <span>
-          <strong>B:</strong> <span className={styles.blue}>{filter.blue}</span>
+          <strong>{t('tools.reverse.candidate.blue')}</strong> <span className={styles.blue}>{filter.blue}</span>
         </span>
         <span>
-          <strong>A:</strong> {Math.round(filter.alpha * 100)}%
+          <strong>{t('tools.reverse.candidate.alpha')}</strong> {Math.round(filter.alpha * 100)}%
         </span>
       </span>
     </button>

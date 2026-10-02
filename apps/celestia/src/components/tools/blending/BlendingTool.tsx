@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC, useState } from 'react';
 import { Alert } from 'reactstrap';
 
@@ -10,6 +11,7 @@ import { MAX_RELIABLE_DELTA } from 'src/utils/color';
 
 /** Finds the original color from two backgrounds and the blended results over them */
 export const BlendingTool: FC = () => {
+  const t = useTranslations();
   const { values, setField, result } = useBlending();
   const [rgbField, setRgbField] = useState<BlendingField | null>(null);
 
@@ -24,7 +26,7 @@ export const BlendingTool: FC = () => {
       </div>
       {result && result.delta > MAX_RELIABLE_DELTA && (
         <Alert color="warning" fade={false} className="mt-3 text-center">
-          The result may not be accurate as the difference between the optimal color and the closest match is too large.
+          {t('tools.blending.inaccurate')}
         </Alert>
       )}
       <RgbEntryDialog

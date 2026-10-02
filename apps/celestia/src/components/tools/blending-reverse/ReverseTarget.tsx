@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC, useRef } from 'react';
 import { Button, FormGroup, Input, Label } from 'reactstrap';
 
@@ -18,6 +19,7 @@ interface PropTypes {
 
 /** Choose whether to reverse the filter on an uploaded image or on a single color, and provide it */
 export const ReverseTarget: FC<PropTypes> = ({ type, onTypeChange, color, onColorChange, fileName, onFile, error }) => {
+  const t = useTranslations();
   const fileInput = useRef<HTMLInputElement>(null);
 
   return (
@@ -33,24 +35,24 @@ export const ReverseTarget: FC<PropTypes> = ({ type, onTypeChange, color, onColo
               onChange={() => onTypeChange(value)}
             />
             <Label for={`target-${value}`} check>
-              {value === 'image' ? 'Image' : 'Single color'}
+              {t(`tools.reverse.${value}`)}
             </Label>
           </FormGroup>
         ))}
       </div>
       {type === 'color' ? (
-        <ColorField id="target-color" label="Filtered color" value={color} onChange={onColorChange} />
+        <ColorField id="target-color" label={t('tools.reverse.filteredColor')} value={color} onChange={onColorChange} />
       ) : (
         <div>
           <Button color="primary" size="sm" onClick={() => fileInput.current?.click()}>
-            Browse…
+            {t('tools.reverse.browse')}
           </Button>
           {fileName && <span className="ms-2">{fileName}</span>}
           <input
             ref={fileInput}
             type="file"
             hidden
-            aria-label="Filtered image"
+            aria-label={t('tools.reverse.filteredImage')}
             accept=".png,.jpg,.jpeg,.bmp,image/png,image/jpeg,image/bmp"
             onChange={(e) => {
               const file = e.target.files?.[0];

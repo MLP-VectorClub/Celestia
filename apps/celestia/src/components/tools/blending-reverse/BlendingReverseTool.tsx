@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC, ReactNode } from 'react';
 
 import styles from 'modules/BlendingReverse.module.scss';
@@ -22,6 +23,7 @@ const Section: FC<{ title: string; children: ReactNode }> = ({ title, children }
 
 /** Reverse a filter layer on an image or a single color, given pairs of known colors from before and after the filter */
 export const BlendingReverseTool: FC = () => {
+  const t = useTranslations();
   const tool = useReverseTool();
   const { imageRef, overlayRef } = usePreviewCanvases(tool.source, tool.options);
 
@@ -29,23 +31,23 @@ export const BlendingReverseTool: FC = () => {
     <>
       <div className={styles.controls}>
         <div className={styles.column}>
-          <Section title="Filter type">
+          <Section title={t('tools.reverse.filterType')}>
             <FilterTypeSelect value={tool.filterType} onChange={tool.setFilterType} />
           </Section>
-          <Section title="Manual filter override">
+          <Section title={t('tools.reverse.override')}>
             <FilterOverride value={tool.override} onChange={tool.setOverride} />
           </Section>
-          <Section title="Known color pairs">
+          <Section title={t('tools.reverse.knownPairs')}>
             <KnownColorPairs pairs={tool.known.pairs} onChange={tool.known.update} onAdd={tool.known.add} onRemove={tool.known.remove} />
           </Section>
           {!tool.override.enabled && (
-            <Section title="Calculated filter">
+            <Section title={t('tools.reverse.calculated')}>
               <FilterCandidate filter={tool.candidate} selected={tool.candidateSelected} onToggle={tool.toggleCandidate} />
             </Section>
           )}
         </div>
         <div className={styles.column}>
-          <Section title="Reverse filter on">
+          <Section title={t('tools.reverse.reverseOn')}>
             <ReverseTarget
               type={tool.targetType}
               onTypeChange={tool.setTargetType}
@@ -56,10 +58,10 @@ export const BlendingReverseTool: FC = () => {
               error={tool.fileError}
             />
           </Section>
-          <Section title="Sensitivity">
+          <Section title={t('tools.reverse.sensitivity')}>
             <SensitivitySlider value={tool.sensitivity} onChange={tool.setSensitivity} />
           </Section>
-          <Section title="Overlay">
+          <Section title={t('tools.reverse.overlay')}>
             <OverlayControls value={tool.overlay} onChange={tool.setOverlay} />
           </Section>
           <SaveFilterFreeButton

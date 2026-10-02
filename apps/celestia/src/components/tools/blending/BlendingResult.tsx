@@ -1,21 +1,26 @@
 import classNames from 'classnames';
+import { useTranslations } from 'next-intl';
 import { FC } from 'react';
 
 import styles from 'modules/Blending.module.scss';
 import { BlendingResult as Result, rgbToHex } from 'src/utils/color';
 
-const Missing: FC<{ what: string }> = ({ what }) => <span className={styles.missing}>(no {what})</span>;
+const Missing: FC<{ what: string }> = ({ what }) => {
+  const t = useTranslations();
+  return <span className={styles.missing}>{t('tools.blending.missing', { what })}</span>;
+};
 
 /** The recovered color as a swatch plus hex, hex with alpha, rgba() and opacity */
 export const BlendingResultView: FC<{ result: Result | null }> = ({ result }) => {
+  const t = useTranslations();
   if (!result) {
     return (
       <div className={styles.result}>
         <div className={classNames(styles.preview, styles.previewInvalid)} />
-        <Missing what="hex color" />
-        <Missing what="hexa color" />
-        <Missing what="rgba color" />
-        <Missing what="opacity value" />
+        <Missing what={t('tools.blending.hex')} />
+        <Missing what={t('tools.blending.hexa')} />
+        <Missing what={t('tools.blending.rgba')} />
+        <Missing what={t('tools.blending.opacity')} />
       </div>
     );
   }
@@ -47,7 +52,7 @@ export const BlendingResultView: FC<{ result: Result | null }> = ({ result }) =>
         rgba(<code className={styles.red}>{color.red}</code>, <code className={styles.green}>{color.green}</code>,{' '}
         <code className={styles.blue}>{color.blue}</code>, {rounded})
       </span>
-      <span>{Math.round(rounded * 100)}% opacity</span>
+      <span>{t('tools.blending.opacityPercent', { percent: Math.round(rounded * 100) })}</span>
     </div>
   );
 };

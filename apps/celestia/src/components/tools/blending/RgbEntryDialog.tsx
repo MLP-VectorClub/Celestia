@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
 import { FormGroup, Input, Label } from 'reactstrap';
 
@@ -12,14 +13,11 @@ interface PropTypes {
   onSubmit: (hex: string) => void;
 }
 
-const CHANNELS = [
-  ['red', 'Red'],
-  ['green', 'Green'],
-  ['blue', 'Blue'],
-] as const;
+const CHANNELS = ['red', 'green', 'blue'] as const;
 
 /** Enter a color as three 0–255 numbers instead of a hex code */
 export const RgbEntryDialog: FC<PropTypes> = ({ initial, onClose, onSubmit }) => {
+  const t = useTranslations();
   const [channels, setChannels] = useState({ red: 0, green: 0, blue: 0 });
   useEffect(() => {
     if (initial !== null) setChannels(parseColor(initial) ?? { red: 0, green: 0, blue: 0 });
@@ -30,19 +28,19 @@ export const RgbEntryDialog: FC<PropTypes> = ({ initial, onClose, onSubmit }) =>
 
   return (
     <FormDialog
-      title="Enter RGB values"
+      title={t('tools.blending.rgbTitle')}
       isOpen={initial !== null}
       onClose={onClose}
       onSubmit={() => {
         onSubmit(rgbToHex(channels));
         onClose();
       }}
-      submitLabel="Set"
+      submitLabel={t('tools.blending.set')}
     >
       <div className="d-flex gap-2">
-        {CHANNELS.map(([key, label]) => (
+        {CHANNELS.map((key) => (
           <FormGroup key={key} className="flex-fill">
-            <Label for={`rgb-${key}`}>{label}</Label>
+            <Label for={`rgb-${key}`}>{t(`tools.blending.${key}`)}</Label>
             <Input
               id={`rgb-${key}`}
               type="number"

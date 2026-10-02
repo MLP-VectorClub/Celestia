@@ -40,7 +40,7 @@ const BlendingReversePage: NextPage = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps<SSRMessages>((store) => async ({ locale }) => {
   titleSetter(store, titleFactory());
-  return { props: { ...(await typedServerSideTranslations(locale, ['colorGuide'])) } };
+  return { props: { ...(await typedServerSideTranslations(locale, ['colorGuide', 'tools'])) } };
 });
 
 export default BlendingReversePage;
