@@ -15,7 +15,7 @@ import AuthModal from 'src/components/modals/AuthModal';
 import DeployBanner from 'src/components/shared/DeployBanner';
 import { DialogProvider } from 'src/components/shared/dialogs/DialogProvider';
 import { DEV_ENV } from 'src/config';
-import { LayoutContextProvider } from 'src/hooks';
+import { LayoutContextProvider, SidebarWidgetProvider } from 'src/hooks';
 import { wrapper } from 'src/store';
 import { getQueryClient } from 'src/store/queryClient';
 
@@ -41,10 +41,12 @@ const Celestia: AppComponent = ({ Component, ...rest }) => {
           <ProgressIndicator />
           <LayoutContextProvider value={layoutContext}>
             <DialogProvider>
-              <Layout>
-                {}
-                <Component {...props.pageProps} />
-              </Layout>
+              <SidebarWidgetProvider>
+                <Layout>
+                  {}
+                  <Component {...props.pageProps} />
+                </Layout>
+              </SidebarWidgetProvider>
             </DialogProvider>
           </LayoutContextProvider>
           <AuthModal />

@@ -12,12 +12,13 @@ import SignInButton from 'src/components/shared/SignInButton';
 import SignOutButton from 'src/components/shared/SignOutButton';
 import HappeningSoon from 'src/components/widgets/HappeningSoon';
 import { DISCORD_INVITE_LINK } from 'src/config';
-import { useAuth, useConnectionInfo } from 'src/hooks';
+import { useAuth, useConnectionInfo, useSidebarWidgetSlot } from 'src/hooks';
 
 const Sidebar: FC = () => {
   const t = useTranslations();
   const { signedIn } = useAuth();
   const { backendDown } = useConnectionInfo();
+  const widget = useSidebarWidgetSlot();
 
   return (
     <aside id="sidebar">
@@ -45,7 +46,7 @@ const Sidebar: FC = () => {
               {t('common.sidebar.joinDiscord')}
             </Button>
           </section>
-          {/* Widgets will go here */}
+          {widget}
           <HappeningSoon />
         </>
       )}

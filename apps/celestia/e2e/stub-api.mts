@@ -21,9 +21,19 @@ interface Control {
   episodes: number;
   others: number;
   delays: Delay[];
+  /** `/users/me` answers with this user instead of 401 */
+  signedIn: boolean;
+  /** Votes per rating the episodes start with, the show's score is their average */
+  votes: Record<string, number>;
+  /** Every vote is answered with 409, as for somebody who already voted */
+  alreadyVoted: boolean;
+  /** Whether episodes have aired (voting open) */
+  aired: boolean;
 }
 
-let control: Control = { episodes: 0, others: 0, delays: [] };
+const DEFAULT_CONTROL: Control = { episodes: 0, others: 0, delays: [], signedIn: false, votes: {}, alreadyVoted: false, aired: true };
+let control: Control = { ...DEFAULT_CONTROL };
+let voteLog: number[] = [];
 let log: Array<{ table: 'episodes' | 'others'; page: number; types: string[]; order: string | null }> = [];
 let unhandled: string[] = [];
 
@@ -44,12 +54,13 @@ createServer(async (req, res) => {
   };
 
   if (req.method === 'POST' && url.pathname === '/__control') {
-    control = { episodes: 0, others: 0, delays: [], ...(JSON.parse(await readBody(req)) as Partial<Control>) };
+    control = { ...DEFAULT_CONTROL, ...(JSON.parse(await readBody(req)) as Partial<Control>) };
     log = [];
+    voteLog = [];
     unhandled = [];
     return send(204);
   }
-  if (url.pathname === '/__log') return send(200, { log, unhandled });
+  if (url.pathname === '/__log') return send(200, { log, unhandled, voteLog });
 
   if (req.method === 'GET' && url.pathname === '/show') {
     const types = [...url.searchParams.getAll('types[]'), ...url.searchParams.getAll('types')];
@@ -59,7 +70,11 @@ createServer(async (req, res) => {
     const table = types.includes('episode') ? 'episodes' : 'others';
     log.push({ table, page, types, order: url.searchParams.get('order') });
 
-    const matching = [...makeEpisodes(control.episodes), ...makeOthers(control.others)].filter((entry) => types.includes(entry.type));
+    const season = url.searchParams.get('season');
+    const episode = url.searchParams.get('episode');
+    const matching = [...makeEpisodes(control.episodes), ...makeOthers(control.others)]
+      .filter((entry) => types.includes(entry.type))
+      .filter((entry) => (season === null || entry.season === Number(season)) && (episode === null || entry.episode === Number(episode)));
     const result = {
       show: matching.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
       pagination: {
@@ -72,6 +87,50 @@ createServer(async (req, res) => {
     const delay = control.delays.find((d) => d.table === table && d.page === page)?.ms ?? 0;
     if (delay) await sleep(delay);
     return send(200, result);
+  }
+
+  const score = () => {
+    const entries = Object.entries(control.votes);
+    const total = entries.reduce((sum, [, n]) => sum + n, 0);
+    return total === 0 ? 0 : entries.reduce((sum, [rating, n]) => sum + Number(rating) * n, 0) / total;
+  };
+  const voteMatch = /^\/show\/(\d+)\/vote$/.exec(url.pathname);
+  if (voteMatch && req.method === 'GET') return send(200, { data: control.votes });
+  if (voteMatch && req.method === 'POST') {
+    if (!control.signedIn) return send(401, { message: 'Unauthenticated.' });
+    if (control.alreadyVoted) return send(409, { message: 'You have already voted on this episode' });
+    const { vote } = JSON.parse(await readBody(req)) as { vote: number };
+    voteLog.push(vote);
+    control.votes[String(vote)] = (control.votes[String(vote)] ?? 0) + 1;
+    return send(200, { data: control.votes });
+  }
+  const detailMatch = /^\/show\/(\d+)$/.exec(url.pathname);
+  if (detailMatch && req.method === 'GET') {
+    const entry = [...makeEpisodes(control.episodes), ...makeOthers(control.others)].find(
+      (candidate) => candidate.id === Number(detailMatch[1])
+    );
+    if (!entry) return send(404, { message: 'Not found' });
+    return send(200, {
+      show: {
+        ...entry,
+        notes: null,
+        score: score(),
+        createdAt: entry.airs,
+        updatedAt: null,
+        postedBy: 1,
+        aired: control.aired,
+        willAir: entry.airs,
+        canEdit: false,
+        relatedAppearances: [],
+      },
+    });
+  }
+  if (req.method === 'GET' && url.pathname === '/posts') return send(200, { posts: [] });
+  if (req.method === 'GET' && url.pathname === '/users/me' && control.signedIn) {
+    return send(200, {
+      user: { id: 9001, name: 'TestUser', role: 'user', avatarUrl: null, avatarProvider: 'deviantart' },
+      sessionUpdating: false,
+    });
   }
 
   const fixed: Record<string, [number, unknown]> = {

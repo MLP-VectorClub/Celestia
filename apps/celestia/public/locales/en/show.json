@@ -27,15 +27,9 @@
     "backToList": "All shows",
     "relatedAppearances": "Characters and appearances",
     "noRelatedAppearances": "No color guide entries are linked to this entry yet",
-    "votes": "Ratings",
-    "noVotes": "Nobody has rated this yet",
-    "voteCount": "{count, plural, one {# vote} other {# votes}}",
-    "scoreLabel": "{score, plural, one {# star} other {# stars}}",
     "loadingSubject": "show entry",
     "breadcrumb": "Show",
-    "unknownType": "Show entry",
-    "rate": "Rate this episode:",
-    "thanksForVoting": "Thanks for voting!"
+    "unknownType": "Show entry"
   },
   "post": {
     "requestsHeading": "Requests",
@@ -132,5 +126,30 @@
   "rating": {
     "none": "Not rated yet",
     "rated": "Rated {score} out of {max}"
+  },
+  "voting": {
+    "heading": "Rating",
+    "notYetAired": "Voting will start <time></time>, after the episode aired.",
+    "nobodyVoted": "Nopony voted yet.",
+    "rated": "This episode is rated {score}/5",
+    "showTotals": "Show totals",
+    "prompt": "How would you rate the episode?",
+    "cast": "Cast your vote",
+    "signIn": "Sign in above to cast your vote!",
+    "yourRating": "Your rating: {count, plural, one {# muffin} other {# muffins}}",
+    "muffins": "{count, plural, one {# muffin} other {# muffins}}",
+    "rateTitle": "Rate this episode",
+    "rateHelp": "Rate the episode on a scale of 1 to 5. This cannot be changed later.",
+    "ratingGroup": "Your rating",
+    "yourRatingPreview": "Your rating: <strong>{score}</strong>/5",
+    "chooseRating": "Please choose a rating by clicking on one of the muffins",
+    "rateSubmit": "Rate",
+    "detailsTitle": "Voting details",
+    "detailsIntro": "Here's how the votes are distributed:",
+    "detailsLoading": "Getting vote distribution information",
+    "detailsFailed": "The votes could not be loaded.",
+    "muffinsLabel": "{count, plural, one {# muffin} other {# muffins}}",
+    "votes": "{count, plural, one {# vote} other {# votes}}",
+    "totalVotes": "{count, plural, one {# vote in total} other {# votes in total}}"
   }
 }

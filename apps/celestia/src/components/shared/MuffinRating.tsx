@@ -8,11 +8,13 @@ interface PropTypes {
   score: number | null;
   /** Rating that fills all muffins */
   max?: number;
+  /** Width in pixels */
+  width?: number;
   className?: string;
 }
 
 /** Five muffins filled from the left in proportion to the rating, with the rest of them dimmed */
-export const MuffinRating: FC<PropTypes> = ({ score, max = 5, className }) => {
+export const MuffinRating: FC<PropTypes> = ({ score, max = 5, width = 150, className }) => {
   const t = useTranslations();
   const id = useId().replace(/[^a-zA-Z0-9_-]/g, '');
   const percent = score === null ? 0 : Math.min(100, Math.max(0, (score / max) * 100));
@@ -31,7 +33,7 @@ export const MuffinRating: FC<PropTypes> = ({ score, max = 5, className }) => {
       role="img"
       aria-label={label}
       className={className}
-      width={150}
+      width={width}
       data-percent={Math.round(percent * 100) / 100}
     >
       <defs>
