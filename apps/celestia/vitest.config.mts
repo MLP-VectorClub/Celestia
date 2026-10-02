@@ -1,5 +1,5 @@
-import { fileURLToPath } from 'node:url';
 import { playwright } from '@vitest/browser-playwright';
+import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vitest/config';
 
 const browserTests = 'src/**/*.browser.test.{ts,tsx}';
@@ -8,6 +8,7 @@ export default defineConfig({
   resolve: {
     alias: {
       src: fileURLToPath(new URL('./src', import.meta.url)),
+      modules: fileURLToPath(new URL('./src/scss/modules', import.meta.url)),
     },
   },
   // tsconfig.json keeps "jsx": "preserve" for Next.js, so compile JSX here instead

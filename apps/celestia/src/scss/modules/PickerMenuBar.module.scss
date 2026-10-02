@@ -1,0 +1,23 @@
+.menuBar {
+  display: flex;
+  background: #3c3c3c;
+  border-bottom: 1px solid #222;
+}
+
+.toggle {
+  color: #eee;
+  text-decoration: none;
+  border-radius: 0;
+  padding: 0.3rem 0.8rem;
+
+  &:hover,
+  &:focus {
+    color: #fff;
+    background: #505050;
+  }
+}
+
+.shortcut {
+  opacity: 0.6;
+  margin-left: 0.5rem;
+}

@@ -63,6 +63,14 @@ differ on purpose, so numbers will not match the old site exactly in these cases
 - **Areas touching the image edge:** the original sampled from shifted coordinates there. Now the part outside the image is simply ignored.
 - Settings use plain numbers (`pickerWidth: 85`), the old `"85%"` strings are still read. The levels-dialog toggle is gone (see decision 2).
 
+## Stage 2 status: done
+
+`/picker` page and `src/components/tools/picker/*`: `PickerTool` (composition), `MenuBar`, `TabBar`, `DropZone`, `EmptyState`, `ImagePreview` (temporary,
+replaced by the canvas stage), hooks `useFileIntake` (dialog, drop, Ctrl+V, clipboard menu entry), `useImageStore`, `usePickerSettings`,
+`usePickerShortcuts` (Ctrl/Cmd+O, +Shift for the clipboard). Five browser tests (`PickerTool.browser.test.tsx`, real Chromium) cover opening, duplicates,
+closing and non-image files; the `modules/` alias was added to `vitest.config.mts`. A tab is only confirmed on closing when it has picking areas.
+Clipboard reading through the menu needs a permission prompt and is untested; Ctrl+V pasting and drag-and-drop of real files are untested too.
+
 ## Stages (each ends with tsc, lint, unit tests, `pnpm build` and a commit)
 
 1. **Pure foundations**: `pixels`, `areas`, `viewport`, `levels`, `file-hash`, `settings` and the reducer, all with unit tests. No UI. Needs a careful

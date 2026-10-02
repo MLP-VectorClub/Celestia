@@ -57,5 +57,9 @@
   "blendingReverse": {
     "title": "Blending Reverser",
     "lead": "Reverse a filter layer applied to an image or a color"
+  },
+  "picker": {
+    "title": "Color Picker",
+    "lead": "Get accurate color readings from screencaps with picking areas of any size"
   }
 }
