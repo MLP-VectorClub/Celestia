@@ -9,5 +9,8 @@
     "access_denied": "Access Denied",
     "unknown_error": "Unknown Error",
     "server_error": "Server Error"
-  }
+  },
+  "signedIn": "You're signed in",
+  "closeHint": "You can close this window now.",
+  "continueToProfile": "Continue to your profile"
 }

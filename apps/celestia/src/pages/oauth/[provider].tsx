@@ -2,8 +2,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useQueryClient } from '@tanstack/react-query';
 import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Alert, Button } from 'reactstrap';
 
 import { User } from '@mlp-vectorclub/api-types';
@@ -20,6 +21,7 @@ import { ENDPOINTS, setResponseStatus } from 'src/utils';
 import { getOAuthProvider } from 'src/utils/auth';
 import { titleSetter } from 'src/utils/core';
 import { typedServerSideTranslations } from 'src/utils/i18n';
+import { reportOAuthSuccess } from 'src/utils/oauth-popup';
 
 const titleFactory: TitleFactory<{ provider?: string }> = (query) => {
   const provider = getOAuthProvider(query.provider);
@@ -34,8 +36,8 @@ const OAuthPage: NextPage = () => {
   const t = useTranslations();
   const dispatch = useAppDispatch();
   const { setLayoutDisabled } = useLayout();
-  const { query, replace } = useRouter();
-  const closeFnRef = useRef<VoidFunction | null>(null);
+  const { query } = useRouter();
+  const [closeHint, setCloseHint] = useState(false);
   const { status, error, user } = useOAuth(query);
   const queryClient = useQueryClient();
 
@@ -45,16 +47,6 @@ const OAuthPage: NextPage = () => {
 
   useEffect(() => {
     setLayoutDisabled(true);
-    try {
-      closeFnRef.current = parent.close
-        ? () => parent.close()
-        : window.opener !== null && 'close' in window.opener
-          ? () => (window.opener as Window).close()
-          : null;
-    } catch (e) {
-      /* ignored */
-    }
-
     return () => setLayoutDisabled(false);
   }, [setLayoutDisabled]);
 
@@ -64,12 +56,18 @@ const OAuthPage: NextPage = () => {
     void queryClient.invalidateQueries({ queryKey: [ENDPOINTS.USERS_ME] });
   }, [queryClient, success]);
 
+  // Tell the page that opened this popup, which closes the popup in return. If that doesn't happen (this isn't a popup, or the browser refuses to
+  // close the window) show what to do instead
   useEffect(() => {
     if (!authorized) return;
 
-    if (closeFnRef.current) closeFnRef.current();
-    else void replace(PATHS.USER_LONG(user as User));
-  }, [authorized, replace, user]);
+    const stop = reportOAuthSuccess(() => window.close());
+    const hintTimeout = setTimeout(() => setCloseHint(true), 1500);
+    return () => {
+      stop();
+      clearTimeout(hintTimeout);
+    };
+  }, [authorized]);
 
   const titleData = useMemo(() => titleFactory(query), [query]);
   useTitleSetter(dispatch, titleData);
@@ -89,6 +87,13 @@ const OAuthPage: NextPage = () => {
         <Center color={color} header={header} className="text-center">
           {!authorized ? <LoadingRing color={color} style={{ width: '200px' }} /> : <FontAwesomeIcon icon="check-circle" size="10x" />}
           {message && <h3 className="mt-3 mb-0">{message}</h3>}
+          {authorized && <h3 className="mt-3 mb-0">{t('oauth.signedIn')}</h3>}
+          {authorized && closeHint && (
+            <>
+              <p className="mt-3 mb-2">{t('oauth.closeHint')}</p>
+              <Link href={PATHS.USER_LONG(user as User)}>{t('oauth.continueToProfile')}</Link>
+            </>
+          )}
         </Center>
       );
     }
@@ -107,12 +112,10 @@ const OAuthPage: NextPage = () => {
           {t('common.auth.rateLimited', { count: error.retryAfter })}
         </Alert>
       )}
-      {closeFnRef.current !== null && (
-        <Button color="danger" onClick={closeFnRef.current} className="mt-3">
-          <InlineIcon first icon="times" />
-          {t('oauth.close')}
-        </Button>
-      )}
+      <Button color="danger" onClick={() => window.close()} className="mt-3">
+        <InlineIcon first icon="times" />
+        {t('oauth.close')}
+      </Button>
     </Center>
   );
 };

@@ -20,6 +20,7 @@ import { signInThunk } from 'src/store/thunks';
 import { AuthModalSide, Nullable, Status, UnifiedErrorResponseTypes } from 'src/types';
 import { SocialProvider } from 'src/types/auth';
 import { ENDPOINTS, combineErrors, popupOpenCenter, validateEmail, validatePassword, validateRequired } from 'src/utils';
+import { listenForOAuthResult } from 'src/utils/oauth-popup';
 
 enum INPUT_NAMES {
   EMAIL = 'email',
@@ -35,7 +36,6 @@ type FormFields = {
 
 interface SocialPopupRef {
   window: Nullable<Window | null>;
-  timer: Nullable<ReturnType<typeof setInterval>>;
 }
 
 const SingInForm: FC = () => {
@@ -49,10 +49,7 @@ const SingInForm: FC = () => {
   const dispatch = useAppDispatch();
   const { authModal, signIn } = useSelector((store: RootState) => store.auth);
   const [passwordRevealed, setPasswordRevealed] = useState(false);
-  const socialAuthPopup = useRef<SocialPopupRef>({
-    window: null,
-    timer: null,
-  });
+  const socialAuthPopup = useRef<SocialPopupRef>({ window: null });
   const queryClient = useQueryClient();
   const rateLimited = useRateLimitLock(signIn.error);
 
@@ -71,10 +68,6 @@ const SingInForm: FC = () => {
     });
 
     return () => {
-      if (socialAuthPopup.current.timer) {
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        clearInterval(socialAuthPopup.current.timer);
-      }
       subscription.unsubscribe();
     };
   }, []);
@@ -91,23 +84,8 @@ const SingInForm: FC = () => {
           screen.availHeight * 0.75
         );
 
-        if (socialAuthPopup.current.timer !== null) {
-          clearInterval(socialAuthPopup.current.timer);
-        }
-        socialAuthPopup.current.timer = setInterval(() => {
-          const popup = socialAuthPopup.current.window;
-          try {
-            if (!popup || popup.closed) {
-              if (socialAuthPopup.current.timer) {
-                clearInterval(socialAuthPopup.current.timer);
-                socialAuthPopup.current.timer = null;
-              }
-              void queryClient.invalidateQueries({ queryKey: [ENDPOINTS.USERS_ME] });
-            }
-          } catch (err) {
-            /* ignore */
-          }
-        }, 500);
+        // The popup reports back over a BroadcastChannel, its `closed` state can't be trusted (see oauth-popup.ts)
+        listenForOAuthResult(() => void queryClient.invalidateQueries({ queryKey: [ENDPOINTS.USERS_ME] }));
       },
     [queryClient]
   );
