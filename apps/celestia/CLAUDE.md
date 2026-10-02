@@ -58,6 +58,4 @@ status per phase and verification method live in [`docs/winterchilla-parity-plan
 
 - Winterchilla: nothing open. The vote operations vanished from the spec at 7a7983c6 and were restored at 425a7123 (types verified against that commit). Use a worktree with its own
   copy of `vendor` when generating the spec: a symlinked `vendor` autoloads the shared tree's classes.
-- Luna (reported 2026-10-02): `/appearances/full` `groups` is an object keyed by tag id for `relevance` (spec: array); cutie-mark `rendered` and color `hex` can be null (spec: string).
-- Winterchilla: `PrivateColorGroup.required` says `appearance_id` (property is `appearanceId`), so `GET /color-groups/{id}` fails validation everywhere.
-- Luna: posts, Discord and cutie marks were still being built at last check (116/127 operations).
+- Luna: 121/127 operations built (the six event-entry operations are skipped on purpose). Nothing open from Celestia; Winterchilla spec fixes through d7c56f37 are applied.
