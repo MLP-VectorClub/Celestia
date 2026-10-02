@@ -49,10 +49,11 @@ status per phase and verification method live in [`docs/winterchilla-parity-plan
 
 - **Redirects:** `/s/{base36 id}` (post short link, via `GET /posts/{id}/location`, accepts Luna's `{showId, postId}` castle as well as the contract's `{url}`; legacy `/s/r/{id}` forms are not supported, there is no legacy ID mapping in the API), `/episodes/{page}` and `/movies/{page}` (308 to `/show?eppage=` / `?page=`).
 
+- **Muffin rating** is a client-side component (`MuffinRating`, five muffins filled in proportion to the score, used on the show page) instead of the old `/muffin-rating?w=` image route (user's decision). **Manifest:** static `public/manifest.json` with the existing `/icons/*`, linked from the layout, `/manifest` redirects to it.
+
 ## Left to do
 
 - Staff/admin: dev tools.
-- Pages not started: `/manifest`. `/muffin-rating` becomes a client-side component (user's decision), not a route.
   Dropped on purpose (not in the contract): PCG admin list, tag changes, browser-recognition, `/u/{uuid}`, appearance PNG/GPL exports (compose from `colorGroups`), sessions list.
 - Post edit/image/unbreak/staff reservations, event writes (disabled server-side), account password and e-mail (Luna's flows, Winterchilla's are `x-internal`).
 - Real sign-in: Celestia still uses Luna's flow; auth state is client-only (SSR shows the signed-out shell on account pages).

@@ -24,6 +24,11 @@
       "source": "/colorguide/:path*",
       "destination": "/cg/:path*",
       "permanent": true
+    },
+    {
+      "source": "/manifest",
+      "destination": "/manifest.json",
+      "permanent": true
     }
   ],
   "rewrites": [
