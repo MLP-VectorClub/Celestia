@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
 
 import styles from 'modules/PickerAreaList.module.scss';
@@ -13,10 +14,9 @@ interface PropTypes {
   onCopyHashChange: (copyHash: boolean) => void;
 }
 
-const plural = (count: number, noun: string) => `${count} ${noun}${count === 1 ? '' : 's'}`;
-
 /** Totals of the picking, the overall average color and a button to copy it (with or without the `#`) */
 export const AverageColorPanel: FC<PropTypes> = ({ areaCount, imageCount, average, copyHash, onCopyHashChange }) => {
+  const t = useTranslations();
   const [status, setStatus] = useState<'copied' | 'failed' | null>(null);
   useEffect(() => {
     if (!status) return undefined;
@@ -36,9 +36,7 @@ export const AverageColorPanel: FC<PropTypes> = ({ areaCount, imageCount, averag
 
   return (
     <div className={styles.status}>
-      <div className={styles.counters}>
-        {plural(areaCount, 'area')} &amp; {plural(imageCount, 'image')}
-      </div>
+      <div className={styles.counters}>{t('picker.average.counters', { areas: areaCount, images: imageCount })}</div>
       {average && (
         <>
           <div className={styles.average}>
@@ -48,17 +46,17 @@ export const AverageColorPanel: FC<PropTypes> = ({ areaCount, imageCount, averag
             >
               {hex}
             </span>
-            <button type="button" className={styles.smallButton} onClick={() => void copy()} data-hint="Copy average color to clipboard">
-              Copy
+            <button type="button" className={styles.smallButton} onClick={() => void copy()} data-hint={t('picker.average.copyHint')}>
+              {t('picker.average.copy')}
             </button>
             <button
               type="button"
               className={styles.smallButton}
               aria-pressed={copyHash}
               onClick={() => onCopyHashChange(!copyHash)}
-              data-hint="Toggle whether the hash symbol is copied with the color code"
+              data-hint={t('picker.average.hashHint')}
             >
-              {copyHash ? '#' : 'no #'}
+              {copyHash ? '#' : t('picker.average.noHash')}
             </button>
           </div>
           <div className={styles.rgb}>{formatRgb(average)}</div>
@@ -66,7 +64,7 @@ export const AverageColorPanel: FC<PropTypes> = ({ areaCount, imageCount, averag
       )}
       {status && (
         <div role="status" className={styles.copyStatus}>
-          {status === 'copied' ? 'Copied to the clipboard.' : 'Could not copy, the browser blocked clipboard access.'}
+          {status === 'copied' ? t('picker.average.copied') : t('picker.average.copyFailed')}
         </div>
       )}
     </div>

@@ -1,5 +1,6 @@
 import { FC, FormEventHandler, PropsWithChildren, ReactNode } from 'react';
 import { Alert, Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { useTranslations } from 'next-intl';
 
 import InlineIcon from 'src/components/shared/InlineIcon';
 
@@ -19,6 +20,7 @@ interface PropTypes extends PropsWithChildren {
  * Modal around a form: Enter submits, the buttons lock while busy and the API's error stays inside the dialog
  */
 export const FormDialog: FC<PropTypes> = ({ title, isOpen, onClose, onSubmit, submitLabel, busy = false, error = null, children }) => {
+  const t = useTranslations();
   const handleSubmit: FormEventHandler = (e) => {
     e.preventDefault();
     if (!busy) onSubmit();
@@ -41,9 +43,7 @@ export const FormDialog: FC<PropTypes> = ({ title, isOpen, onClose, onSubmit, su
             {busy && <InlineIcon loading first />}
             {submitLabel}
           </Button>
-          <Button type="button" color="link" onClick={onClose} disabled={busy}>
-            Cancel
-          </Button>
+          <Button type="button" color="link" onClick={onClose} disabled={busy}>{t('common.actions.cancel')}</Button>
         </ModalFooter>
       </form>
     </Modal>

@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { useTranslations } from 'next-intl';
 import { FC } from 'react';
 
 import styles from 'modules/PickerAreaList.module.scss';
@@ -37,47 +38,48 @@ export const AreaList: FC<PropTypes> = ({
   onSelectAll,
   onDelete,
 }) => {
+  const t = useTranslations();
   const active = tabs.find((tab) => tab.id === activeId);
   const withAreas = tabs.filter((tab) => tab.areas.length > 0);
   const areaCount = withAreas.reduce((sum, tab) => sum + tab.areas.length, 0);
   const average = overallAverage(withAreas.flatMap((tab) => tab.areas.map((area) => colors.get(area.id) ?? null)));
 
   return (
-    <aside className={styles.list} aria-label="Picking areas">
+    <aside className={styles.list} aria-label={t('picker.list.label')}>
       <div className={styles.header}>
-        <span className={styles.title}>Picking area list</span>
+        <span className={styles.title}>{t('picker.list.title')}</span>
         <div className={styles.actions}>
           <button
             type="button"
             className={styles.smallButton}
             disabled={!active?.areas.length}
-            data-hint="Select all areas of this image (Ctrl+A)"
+            data-hint={t('picker.list.selectAllHint')}
             onClick={() => onSelectAll(true)}
           >
-            Select all
+            {t('picker.list.selectAll')}
           </button>
           <button
             type="button"
             className={styles.smallButton}
             disabled={!active?.selected.length}
-            data-hint="Deselect all areas of this image (Ctrl+Shift+A)"
+            data-hint={t('picker.list.deselectHint')}
             onClick={() => onSelectAll(false)}
           >
-            Deselect
+            {t('picker.list.deselect')}
           </button>
           <button
             type="button"
             className={styles.smallButton}
             disabled={!active?.selected.length}
-            data-hint="Delete selected areas (Del)"
+            data-hint={t('picker.list.deleteHint')}
             onClick={onDelete}
           >
-            Delete
+            {t('picker.list.delete')}
           </button>
         </div>
       </div>
       <div className={styles.tabs}>
-        {tabs.length === 0 && <p className={styles.empty}>No images are open.</p>}
+        {tabs.length === 0 && <p className={styles.empty}>{t('picker.list.noImages')}</p>}
         {tabs.map((tab) => (
           <section key={tab.id} aria-label={tab.name}>
             <button

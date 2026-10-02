@@ -1,0 +1,139 @@
+{
+  "menu": {
+    "label": "Color picker menu",
+    "file": "File",
+    "open": "Open…",
+    "openClipboard": "Open from clipboard…",
+    "tools": "Tools",
+    "clearSettings": "Clear settings",
+    "about": "About"
+  },
+  "empty": {
+    "text": "Use the File menu, paste an image or drop image files here to start picking colors.",
+    "open": "Open an image…"
+  },
+  "zoom": {
+    "label": "Zoom",
+    "out": "Zoom out",
+    "outHint": "Zoom out (Alt+scroll down)",
+    "level": "Zoom level",
+    "levelHint": "Current zoom level, type a value between 0.4% and 3200%",
+    "in": "Zoom in",
+    "inHint": "Zoom in (Alt+scroll up)",
+    "fitHint": "Fit in view (Ctrl+0)",
+    "originalHint": "Original size (Ctrl+1)",
+    "fit": "Fit"
+  },
+  "size": {
+    "controls": "Picking area size controls",
+    "decrease": "Decrease picking area size",
+    "decreaseHint": "Decrease picking area size (Down Arrow). Hold Ctrl to change in steps of 1 instead of 5.",
+    "label": "Picking area size",
+    "hint": "Size of newly placed picking areas, between 1px and 400px",
+    "increase": "Increase picking area size",
+    "increaseHint": "Increase picking area size (Up Arrow). Hold Ctrl to change in steps of 1 instead of 5.",
+    "unit": "px"
+  },
+  "levels": {
+    "hint": "Adjust levels: change how the image looks without changing the colors that picking areas report",
+    "button": "Levels",
+    "title": "Adjust levels",
+    "explain": "Input values at or below the low value show as black, at or above the high value as white. Picking area readings are not affected.",
+    "reset": "Reset to defaults",
+    "low": "Low (black point)",
+    "high": "High (white point)",
+    "lowValue": "Low value",
+    "highValue": "High value"
+  },
+  "areaColor": {
+    "hint": "Change the color of the picking areas on this image",
+    "title": "Picking area color",
+    "button": "Area color",
+    "color": "Color",
+    "opacity": "Opacity (%)"
+  },
+  "common": {
+    "set": "Set",
+    "apply": "Apply",
+    "close": "Close"
+  },
+  "edit": {
+    "title": "Edit picking area",
+    "shape": "Shape",
+    "square": "Square",
+    "round": "Round",
+    "size": "Size ({min}–{max} px)"
+  },
+  "list": {
+    "itemHint": "Picking area (click to select, Ctrl/Shift+click to select several, double click to change shape and size)",
+    "outside": "Outside the image",
+    "label": "Picking areas",
+    "selectAllHint": "Select all areas of this image (Ctrl+A)",
+    "deselectHint": "Deselect all areas of this image (Ctrl+Shift+A)",
+    "deleteHint": "Delete selected areas (Del)",
+    "title": "Picking area list",
+    "selectAll": "Select all",
+    "deselect": "Deselect",
+    "delete": "Delete",
+    "noImages": "No images are open.",
+    "resize": "Resize the picking area list"
+  },
+  "average": {
+    "copyHint": "Copy average color to clipboard",
+    "hashHint": "Toggle whether the hash symbol is copied with the color code",
+    "copy": "Copy",
+    "copied": "Copied to the clipboard.",
+    "copyFailed": "Could not copy, the browser blocked clipboard access.",
+    "counters": "{areas, plural, one {# area} other {# areas}} & {images, plural, one {# image} other {# images}}",
+    "noHash": "no #"
+  },
+  "about": {
+    "title": "About the color picker",
+    "p1": "This color picker is meant to serve as an easy way to get accurate color readings from screencaps taken from the show. The interface mimics the controls and look of Adobe Photoshop, while giving you the ability to use multiple picking areas with variable sizes across as many images as your browser can handle.",
+    "p2": "While hovering over or focusing parts of the interface, an explanation of what they do is displayed in the bottom left to make the controls easier to learn.",
+    "p3": "Colors are averaged over every pixel of a picking area. The color of an area that is partly transparent includes its opacity, and areas that stick out of the image only count the part that lies on it.",
+    "thanks": "Huge thanks to Discorded, Masem, Pirill and Trildar for helping with the creation of the original tool via code, feedback and ideas."
+  },
+  "tabs": {
+    "label": "Image tabs",
+    "close": "Close {name}",
+    "closeHint": "Close tab"
+  },
+  "status": {
+    "position": "Image coordinates under the pointer",
+    "color": "Color and opacity of the pixel under the pointer",
+    "default": "Use the File menu or drag & drop images to open them for color picking"
+  },
+  "openFiles": "Open images",
+  "closeTab": {
+    "title": "Close tab",
+    "body": "“{name}” has picking areas that will be lost.",
+    "confirm": "Close tab"
+  },
+  "clearSettings": {
+    "title": "Clear settings",
+    "body": "The picker settings will be reset to their defaults.",
+    "confirm": "Clear"
+  },
+  "errors": {
+    "notImage": "“{name}” is not an image.",
+    "unreadable": "“{name}” could not be read as an image.",
+    "noClipboardImage": "There is no image on the clipboard.",
+    "clipboard": "The clipboard could not be read. Allow clipboard access, or paste with Ctrl+V."
+  },
+  "tools": {
+    "label": "Tools",
+    "hand": {
+      "name": "Hand",
+      "hint": "Hand tool (H): move around without holding Space"
+    },
+    "picker": {
+      "name": "Eyedropper",
+      "hint": "Eyedropper tool (I): click to place picking areas"
+    },
+    "zoom": {
+      "name": "Zoom",
+      "hint": "Zoom tool (Z): click to zoom in, Alt+click or right click to zoom out"
+    }
+  }
+}

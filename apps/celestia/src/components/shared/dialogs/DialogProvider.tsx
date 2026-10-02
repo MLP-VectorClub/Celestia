@@ -1,5 +1,6 @@
 import { FC, PropsWithChildren, ReactNode, createContext, useCallback, useContext, useMemo, useRef, useState } from 'react';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { useTranslations } from 'next-intl';
 
 export interface ConfirmOptions {
   title: ReactNode;
@@ -23,6 +24,7 @@ export const useDialog = (): DialogContextValue => {
 };
 
 export const DialogProvider: FC<PropsWithChildren> = ({ children }) => {
+  const t = useTranslations();
   const [current, setCurrent] = useState<ConfirmOptions | null>(null);
   const resolver = useRef<((answer: boolean) => void) | null>(null);
 
@@ -53,10 +55,10 @@ export const DialogProvider: FC<PropsWithChildren> = ({ children }) => {
         {current?.body && <ModalBody>{current.body}</ModalBody>}
         <ModalFooter>
           <Button color={current?.color ?? 'primary'} onClick={() => answer(true)} autoFocus>
-            {current?.confirmLabel ?? 'Confirm'}
+            {current?.confirmLabel ?? t('common.actions.confirm')}
           </Button>
           <Button color="link" onClick={() => answer(false)}>
-            {current?.cancelLabel ?? 'Cancel'}
+            {current?.cancelLabel ?? t('common.actions.cancel')}
           </Button>
         </ModalFooter>
       </Modal>

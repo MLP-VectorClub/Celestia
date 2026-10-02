@@ -116,5 +116,9 @@
     "itemsPerPage": "Displaying {count, plural, one {# item/page} other {# items/page}}"
   },
   "tmdbDisclaimer": "This product uses the TMDb API but is not endorsed or certified by TMDb.",
-  "wipNotice": "This website is a work-in-progress, for our current live site please visit <link>{url}</link>"
+  "wipNotice": "This website is a work-in-progress, for our current live site please visit <link>{url}</link>",
+  "actions": {
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  }
 }

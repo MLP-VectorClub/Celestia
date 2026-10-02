@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { Dispatch, useCallback, useEffect, useRef, useState } from 'react';
 
 import { ImageStore } from 'src/components/tools/picker/useImageStore';
@@ -16,6 +17,7 @@ interface Options {
 
 /** Everything that turns files into tabs: the file dialog, drag and drop, pasted images and the clipboard menu entry */
 export function useFileIntake({ dispatch, store, pickingSize }: Options) {
+  const t = useTranslations();
   const inputRef = useRef<HTMLInputElement>(null);
   const [errors, setErrors] = useState<string[]>([]);
   const [busy, setBusy] = useState(false);
@@ -27,7 +29,7 @@ export function useFileIntake({ dispatch, store, pickingSize }: Options) {
       // One after the other, so the tabs appear in the order the files were given
       for (const file of files) {
         if (!file.type.startsWith('image/') && !IMAGE_NAME.test(file.name)) {
-          failed.push(`“${file.name}” is not an image.`);
+          failed.push(t('picker.errors.notImage', { name: file.name }));
           continue;
         }
         try {
@@ -35,13 +37,13 @@ export function useFileIntake({ dispatch, store, pickingSize }: Options) {
           if (!store.has(hash)) store.set(hash, image);
           dispatch({ type: 'openTab', name: file.name, hash, width: image.naturalWidth, height: image.naturalHeight, pickingSize });
         } catch {
-          failed.push(`“${file.name}” could not be read as an image.`);
+          failed.push(t('picker.errors.unreadable', { name: file.name }));
         }
       }
       setErrors(failed);
       setBusy(false);
     },
-    [dispatch, store, pickingSize]
+    [dispatch, store, pickingSize, t]
   );
 
   const browse = useCallback(() => inputRef.current?.click(), []);
@@ -52,15 +54,15 @@ export function useFileIntake({ dispatch, store, pickingSize }: Options) {
       const items = await navigator.clipboard.read();
       const files: File[] = [];
       for (const item of items) {
-        const type = item.types.find((t) => t.startsWith('image/'));
+        const type = item.types.find((mime) => mime.startsWith('image/'));
         if (type) files.push(new File([await item.getType(type)], `pasted-image.${type.split('/')[1]}`, { type }));
       }
-      if (files.length === 0) setErrors(['There is no image on the clipboard.']);
+      if (files.length === 0) setErrors([t('picker.errors.noClipboardImage')]);
       else await openFiles(files);
     } catch {
-      setErrors(['The clipboard could not be read. Allow clipboard access, or paste with Ctrl+V.']);
+      setErrors([t('picker.errors.clipboard')]);
     }
-  }, [openFiles]);
+  }, [openFiles, t]);
 
   // Ctrl+V with an image on the clipboard works without any permission prompt
   useEffect(() => {

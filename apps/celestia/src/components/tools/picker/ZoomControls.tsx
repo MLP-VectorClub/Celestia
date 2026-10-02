@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
 
 import styles from 'modules/PickerToolbar.module.scss';
@@ -13,6 +14,7 @@ interface PropTypes {
 
 /** Zoom out/in, fit, 100% and a field to type any zoom between 0.4% and 3200% */
 export const ZoomControls: FC<PropTypes> = ({ zoom, onStep, onFit, onOriginal, onZoomTo }) => {
+  const t = useTranslations();
   const shown = zoom === null ? '' : formatZoom(zoom);
   const [draft, setDraft] = useState(shown);
   useEffect(() => setDraft(shown), [shown]);
@@ -24,21 +26,21 @@ export const ZoomControls: FC<PropTypes> = ({ zoom, onStep, onFit, onOriginal, o
   };
 
   return (
-    <div className={styles.group} role="group" aria-label="Zoom">
+    <div className={styles.group} role="group" aria-label={t('picker.zoom.label')}>
       <button
         type="button"
         className={styles.button}
         disabled={zoom === null}
         onClick={() => onStep(-1)}
-        aria-label="Zoom out"
-        data-hint="Zoom out (Alt+scroll down)"
+        aria-label={t('picker.zoom.out')}
+        data-hint={t('picker.zoom.outHint')}
       >
         −
       </button>
       <input
         className={styles.zoomInput}
-        aria-label="Zoom level"
-        data-hint="Current zoom level, type a value between 0.4% and 3200%"
+        aria-label={t('picker.zoom.level')}
+        data-hint={t('picker.zoom.levelHint')}
         disabled={zoom === null}
         value={draft}
         onChange={(e) => setDraft(e.target.value)}
@@ -53,15 +55,21 @@ export const ZoomControls: FC<PropTypes> = ({ zoom, onStep, onFit, onOriginal, o
         className={styles.button}
         disabled={zoom === null}
         onClick={() => onStep(1)}
-        aria-label="Zoom in"
-        data-hint="Zoom in (Alt+scroll up)"
+        aria-label={t('picker.zoom.in')}
+        data-hint={t('picker.zoom.inHint')}
       >
         +
       </button>
-      <button type="button" className={styles.button} disabled={zoom === null} onClick={onFit} data-hint="Fit in view (Ctrl+0)">
-        Fit
+      <button type="button" className={styles.button} disabled={zoom === null} onClick={onFit} data-hint={t('picker.zoom.fitHint')}>
+        {t('picker.zoom.fit')}
       </button>
-      <button type="button" className={styles.button} disabled={zoom === null} onClick={onOriginal} data-hint="Original size (Ctrl+1)">
+      <button
+        type="button"
+        className={styles.button}
+        disabled={zoom === null}
+        onClick={onOriginal}
+        data-hint={t('picker.zoom.originalHint')}
+      >
         100%
       </button>
     </div>

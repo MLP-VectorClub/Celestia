@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
 import { Button, FormGroup, Input, Label } from 'reactstrap';
 
@@ -16,6 +17,7 @@ interface PropTypes {
  * pixels, which helps telling apart areas with noisy or ambiguous colors
  */
 export const LevelsDialog: FC<PropTypes> = ({ levels, onClose, onSubmit }) => {
+  const t = useTranslations();
   const [draft, setDraft] = useState<Levels>(FULL_LEVELS);
   useEffect(() => {
     if (levels) setDraft(levels);
@@ -25,21 +27,19 @@ export const LevelsDialog: FC<PropTypes> = ({ levels, onClose, onSubmit }) => {
 
   return (
     <FormDialog
-      title="Adjust levels"
+      title={t('picker.levels.title')}
       isOpen={levels !== null}
       onClose={onClose}
       onSubmit={() => {
         onSubmit(normalizeLevels(draft));
         onClose();
       }}
-      submitLabel="Set"
+      submitLabel={t('picker.common.set')}
     >
-      <p className="small text-muted">
-        Input values at or below the low value show as black, at or above the high value as white. Picking area readings are not affected.
-      </p>
+      <p className="small text-muted">{t('picker.levels.explain')}</p>
       {(['low', 'high'] as const).map((key) => (
         <FormGroup key={key}>
-          <Label for={`levels-${key}`}>{key === 'low' ? 'Low (black point)' : 'High (white point)'}</Label>
+          <Label for={`levels-${key}`}>{t(`picker.levels.${key}`)}</Label>
           <div className="d-flex align-items-center gap-2">
             <Input
               id={`levels-${key}`}
@@ -51,7 +51,7 @@ export const LevelsDialog: FC<PropTypes> = ({ levels, onClose, onSubmit }) => {
               onChange={(e) => change({ [key]: Number(e.target.value) })}
             />
             <Input
-              aria-label={`${key === 'low' ? 'Low' : 'High'} value`}
+              aria-label={t(`picker.levels.${key}Value`)}
               type="number"
               min={0}
               max={255}
@@ -64,7 +64,7 @@ export const LevelsDialog: FC<PropTypes> = ({ levels, onClose, onSubmit }) => {
         </FormGroup>
       ))}
       <Button type="button" color="link" size="sm" className="p-0" onClick={() => setDraft(FULL_LEVELS)}>
-        Reset to defaults
+        {t('picker.levels.reset')}
       </Button>
     </FormDialog>
   );

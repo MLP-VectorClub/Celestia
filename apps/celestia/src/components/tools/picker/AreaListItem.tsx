@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { useTranslations } from 'next-intl';
 import { FC } from 'react';
 
 import styles from 'modules/PickerAreaList.module.scss';
@@ -17,29 +18,32 @@ interface PropTypes {
 }
 
 /** One picking area: its number, average color and size. Click selects, double click edits */
-export const AreaListItem: FC<PropTypes> = ({ index, area, color, selected, onSelect, onEdit }) => (
-  <li>
-    <button
-      type="button"
-      className={classNames(styles.item, { [styles.selected]: selected })}
-      aria-pressed={selected}
-      data-hint="Picking area (click to select, Ctrl/Shift+click to select several, double click to change shape and size)"
-      onClick={(e) => onSelect(e.ctrlKey || e.metaKey || e.shiftKey)}
-      onDoubleClick={onEdit}
-    >
-      <span className={styles.index}>{index}</span>
-      <span
-        className={styles.color}
-        style={
-          color ? { backgroundColor: toCssColor(color), color: isLight({ ...color }) || color.alpha < 0.5 ? '#000' : '#fff' } : undefined
-        }
-        data-hex={color ? rgbToHex(color) : undefined}
+export const AreaListItem: FC<PropTypes> = ({ index, area, color, selected, onSelect, onEdit }) => {
+  const t = useTranslations();
+  return (
+    <li>
+      <button
+        type="button"
+        className={classNames(styles.item, { [styles.selected]: selected })}
+        aria-pressed={selected}
+        data-hint={t('picker.list.itemHint')}
+        onClick={(e) => onSelect(e.ctrlKey || e.metaKey || e.shiftKey)}
+        onDoubleClick={onEdit}
       >
-        {color ? formatColor(color) : 'Outside the image'}
-      </span>
-      <span className={styles.size}>
-        {area.shape === 'round' ? '●' : '■'} {area.size}px
-      </span>
-    </button>
-  </li>
-);
+        <span className={styles.index}>{index}</span>
+        <span
+          className={styles.color}
+          style={
+            color ? { backgroundColor: toCssColor(color), color: isLight({ ...color }) || color.alpha < 0.5 ? '#000' : '#fff' } : undefined
+          }
+          data-hex={color ? rgbToHex(color) : undefined}
+        >
+          {color ? formatColor(color) : t('picker.list.outside')}
+        </span>
+        <span className={styles.size}>
+          {area.shape === 'round' ? '●' : '■'} {area.size}px
+        </span>
+      </button>
+    </li>
+  );
+};

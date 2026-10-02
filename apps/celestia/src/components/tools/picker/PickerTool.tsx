@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC, useReducer, useState } from 'react';
 import { Alert } from 'reactstrap';
 
@@ -35,6 +36,7 @@ import { pixelAt } from 'src/utils/picker/viewport';
 
 /** The color picker: menu, tabs for the opened images, the picking surface and the list of picking areas */
 export const PickerTool: FC = () => {
+  const t = useTranslations();
   const { confirm } = useDialog();
   const [state, dispatch] = useReducer(pickerReducer, initialPickerState);
   const store = useImageStore();
@@ -94,9 +96,9 @@ export const PickerTool: FC = () => {
     if (
       needsConfirm &&
       !(await confirm({
-        title: 'Close tab',
-        body: `“${tab.name}” has picking areas that will be lost.`,
-        confirmLabel: 'Close tab',
+        title: t('picker.closeTab.title'),
+        body: t('picker.closeTab.body', { name: tab.name }),
+        confirmLabel: t('picker.closeTab.confirm'),
         color: 'danger',
       }))
     )
@@ -105,7 +107,13 @@ export const PickerTool: FC = () => {
   };
 
   const clearSettings = async () => {
-    if (await confirm({ title: 'Clear settings', body: 'The picker settings will be reset to their defaults.', confirmLabel: 'Clear' }))
+    if (
+      await confirm({
+        title: t('picker.clearSettings.title'),
+        body: t('picker.clearSettings.body'),
+        confirmLabel: t('picker.clearSettings.confirm'),
+      })
+    )
       reset();
   };
 
@@ -123,7 +131,7 @@ export const PickerTool: FC = () => {
         type="file"
         hidden
         multiple
-        aria-label="Open images"
+        aria-label={t('picker.openFiles')}
         accept="image/png,image/jpeg,image/bmp,image/gif,image/webp,.png,.jpg,.jpeg,.bmp,.gif,.webp"
         onChange={(e) => {
           void intake.openFiles(Array.from(e.target.files ?? []));

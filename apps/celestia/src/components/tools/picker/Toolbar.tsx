@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { useTranslations } from 'next-intl';
 import { FC } from 'react';
 
 import styles from 'modules/PickerToolbar.module.scss';
@@ -39,21 +40,24 @@ export const Toolbar: FC<PropTypes> = ({
   onAreaColorChange,
   levelsActive,
   onLevels,
-}) => (
-  <div className={styles.toolbar}>
-    <ToolButtons tool={tool} onChange={onToolChange} />
-    <SizeControls size={pickingSize} onChange={onPickingSizeChange} />
-    <AreaColorControl color={areaColor} onChange={onAreaColorChange} />
-    <button
-      type="button"
-      className={classNames(styles.button, { [styles.active]: levelsActive })}
-      disabled={onLevels === null}
-      aria-pressed={levelsActive}
-      data-hint="Adjust levels: change how the image looks without changing the colors that picking areas report"
-      onClick={() => onLevels?.()}
-    >
-      Levels
-    </button>
-    <ZoomControls zoom={zoom} onStep={(d) => zoomStep(d)} onFit={fit} onOriginal={original} onZoomTo={(z) => zoomTo(z)} />
-  </div>
-);
+}) => {
+  const t = useTranslations();
+  return (
+    <div className={styles.toolbar}>
+      <ToolButtons tool={tool} onChange={onToolChange} />
+      <SizeControls size={pickingSize} onChange={onPickingSizeChange} />
+      <AreaColorControl color={areaColor} onChange={onAreaColorChange} />
+      <button
+        type="button"
+        className={classNames(styles.button, { [styles.active]: levelsActive })}
+        disabled={onLevels === null}
+        aria-pressed={levelsActive}
+        data-hint={t('picker.levels.hint')}
+        onClick={() => onLevels?.()}
+      >
+        {t('picker.levels.button')}
+      </button>
+      <ZoomControls zoom={zoom} onStep={(d) => zoomStep(d)} onFit={fit} onOriginal={original} onZoomTo={(z) => zoomTo(z)} />
+    </div>
+  );
+};

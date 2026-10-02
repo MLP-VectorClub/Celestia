@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
 import { FormGroup, Input, Label } from 'reactstrap';
 
@@ -15,6 +16,7 @@ interface PropTypes {
 
 /** Button showing the color the picking areas of this image are drawn with, opens a dialog to change it */
 export const AreaColorControl: FC<PropTypes> = ({ color, onChange }) => {
+  const t = useTranslations();
   const [open, setOpen] = useState(false);
   const [hex, setHex] = useState('');
   const [opacity, setOpacity] = useState(50);
@@ -33,14 +35,14 @@ export const AreaColorControl: FC<PropTypes> = ({ color, onChange }) => {
         type="button"
         className={styles.button}
         disabled={color === null}
-        data-hint="Change the color of the picking areas on this image"
+        data-hint={t('picker.areaColor.hint')}
         onClick={() => setOpen(true)}
       >
         <span className={styles.areaColorSwatch} style={color ? { backgroundColor: toCssColor(color) } : undefined} />
-        Area color
+        {t('picker.areaColor.button')}
       </button>
       <FormDialog
-        title="Picking area color"
+        title={t('picker.areaColor.title')}
         isOpen={open}
         onClose={() => setOpen(false)}
         onSubmit={() => {
@@ -48,14 +50,14 @@ export const AreaColorControl: FC<PropTypes> = ({ color, onChange }) => {
           onChange({ ...parsed, alpha: opacity / 100 });
           setOpen(false);
         }}
-        submitLabel="Set"
+        submitLabel={t('picker.common.set')}
       >
         <FormGroup>
-          <Label for="area-color-hex">Color</Label>
-          <ColorField id="area-color-hex" label="Picking area color" value={hex} onChange={setHex} />
+          <Label for="area-color-hex">{t('picker.areaColor.color')}</Label>
+          <ColorField id="area-color-hex" label={t('picker.areaColor.title')} value={hex} onChange={setHex} />
         </FormGroup>
         <FormGroup>
-          <Label for="area-color-opacity">Opacity (%)</Label>
+          <Label for="area-color-opacity">{t('picker.areaColor.opacity')}</Label>
           <Input
             id="area-color-opacity"
             type="number"

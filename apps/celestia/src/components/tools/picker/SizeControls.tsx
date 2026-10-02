@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
 
 import styles from 'modules/PickerToolbar.module.scss';
@@ -10,6 +11,7 @@ interface PropTypes {
 
 /** Size of newly placed picking areas, 1–400 px. Buttons step by 5, with Ctrl or Cmd by 1 */
 export const SizeControls: FC<PropTypes> = ({ size, onChange }) => {
+  const t = useTranslations();
   const shown = size === null ? '' : String(size);
   const [draft, setDraft] = useState(shown);
   useEffect(() => setDraft(shown), [shown]);
@@ -21,21 +23,21 @@ export const SizeControls: FC<PropTypes> = ({ size, onChange }) => {
   };
 
   return (
-    <div className={styles.group} role="group" aria-label="Picking area size controls">
+    <div className={styles.group} role="group" aria-label={t('picker.size.controls')}>
       <button
         type="button"
         className={styles.button}
         disabled={size === null || size <= MIN_AREA_SIZE}
-        aria-label="Decrease picking area size"
-        data-hint="Decrease picking area size (Down Arrow). Hold Ctrl to change in steps of 1 instead of 5."
+        aria-label={t('picker.size.decrease')}
+        data-hint={t('picker.size.decreaseHint')}
         onClick={(e) => size !== null && onChange(clampAreaSize(size - (e.ctrlKey || e.metaKey ? 1 : 5)))}
       >
         −
       </button>
       <input
         className={styles.sizeInput}
-        aria-label="Picking area size"
-        data-hint="Size of newly placed picking areas, between 1px and 400px"
+        aria-label={t('picker.size.label')}
+        data-hint={t('picker.size.hint')}
         inputMode="numeric"
         disabled={size === null}
         value={draft}
@@ -46,13 +48,13 @@ export const SizeControls: FC<PropTypes> = ({ size, onChange }) => {
           if (e.key === 'Escape') setDraft(shown);
         }}
       />
-      <span className={styles.unit}>px</span>
+      <span className={styles.unit}>{t('picker.size.unit')}</span>
       <button
         type="button"
         className={styles.button}
         disabled={size === null || size >= MAX_AREA_SIZE}
-        aria-label="Increase picking area size"
-        data-hint="Increase picking area size (Up Arrow). Hold Ctrl to change in steps of 1 instead of 5."
+        aria-label={t('picker.size.increase')}
+        data-hint={t('picker.size.increaseHint')}
         onClick={(e) => size !== null && onChange(clampAreaSize(size + (e.ctrlKey || e.metaKey ? 1 : 5)))}
       >
         +

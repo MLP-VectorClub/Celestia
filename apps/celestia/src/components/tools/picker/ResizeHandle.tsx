@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC, PointerEvent } from 'react';
 
 import styles from 'modules/PickerAreaList.module.scss';
@@ -16,23 +17,26 @@ const share = (e: PointerEvent<HTMLElement>) => {
 };
 
 /** Drag to change how wide the area list is */
-export const ResizeHandle: FC<PropTypes> = ({ onResize, onCommit }) => (
-  <div
-    className={styles.resizeHandle}
-    role="separator"
-    aria-orientation="vertical"
-    aria-label="Resize the picking area list"
-    onPointerDown={(e) => e.currentTarget.setPointerCapture(e.pointerId)}
-    onPointerMove={(e) => {
-      if (!e.currentTarget.hasPointerCapture(e.pointerId)) return;
-      const percent = share(e);
-      if (percent !== null) onResize(percent);
-    }}
-    onPointerUp={(e) => {
-      if (!e.currentTarget.hasPointerCapture(e.pointerId)) return;
-      e.currentTarget.releasePointerCapture(e.pointerId);
-      const percent = share(e);
-      if (percent !== null) onCommit(percent);
-    }}
-  />
-);
+export const ResizeHandle: FC<PropTypes> = ({ onResize, onCommit }) => {
+  const t = useTranslations();
+  return (
+    <div
+      className={styles.resizeHandle}
+      role="separator"
+      aria-orientation="vertical"
+      aria-label={t('picker.list.resize')}
+      onPointerDown={(e) => e.currentTarget.setPointerCapture(e.pointerId)}
+      onPointerMove={(e) => {
+        if (!e.currentTarget.hasPointerCapture(e.pointerId)) return;
+        const percent = share(e);
+        if (percent !== null) onResize(percent);
+      }}
+      onPointerUp={(e) => {
+        if (!e.currentTarget.hasPointerCapture(e.pointerId)) return;
+        e.currentTarget.releasePointerCapture(e.pointerId);
+        const percent = share(e);
+        if (percent !== null) onCommit(percent);
+      }}
+    />
+  );
+};

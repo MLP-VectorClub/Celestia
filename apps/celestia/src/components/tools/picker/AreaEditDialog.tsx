@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
 import { FormGroup, Input, Label } from 'reactstrap';
 
@@ -13,6 +14,7 @@ interface PropTypes {
 
 /** Change the shape and size of a placed picking area, it keeps its center */
 export const AreaEditDialog: FC<PropTypes> = ({ area, onClose, onSubmit }) => {
+  const t = useTranslations();
   const [shape, setShape] = useState<AreaShape>('square');
   const [size, setSize] = useState('');
   useEffect(() => {
@@ -27,7 +29,7 @@ export const AreaEditDialog: FC<PropTypes> = ({ area, onClose, onSubmit }) => {
 
   return (
     <FormDialog
-      title="Edit picking area"
+      title={t('picker.edit.title')}
       isOpen={area !== null}
       onClose={onClose}
       onSubmit={() => {
@@ -35,19 +37,17 @@ export const AreaEditDialog: FC<PropTypes> = ({ area, onClose, onSubmit }) => {
         onSubmit({ shape, size: clampAreaSize(parsed) });
         onClose();
       }}
-      submitLabel="Apply"
+      submitLabel={t('picker.common.apply')}
     >
       <FormGroup>
-        <Label for="area-shape">Shape</Label>
+        <Label for="area-shape">{t('picker.edit.shape')}</Label>
         <Input id="area-shape" type="select" value={shape} onChange={(e) => setShape(e.target.value as AreaShape)}>
-          <option value="square">Square</option>
-          <option value="round">Round</option>
+          <option value="square">{t('picker.edit.square')}</option>
+          <option value="round">{t('picker.edit.round')}</option>
         </Input>
       </FormGroup>
       <FormGroup>
-        <Label for="area-size">
-          Size ({MIN_AREA_SIZE}–{MAX_AREA_SIZE} px)
-        </Label>
+        <Label for="area-size">{t('picker.edit.size', { min: MIN_AREA_SIZE, max: MAX_AREA_SIZE })}</Label>
         <Input
           id="area-size"
           type="number"
