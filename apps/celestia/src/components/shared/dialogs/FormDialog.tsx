@@ -1,6 +1,6 @@
+import { useTranslations } from 'next-intl';
 import { FC, FormEventHandler, PropsWithChildren, ReactNode } from 'react';
 import { Alert, Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import { useTranslations } from 'next-intl';
 
 import InlineIcon from 'src/components/shared/InlineIcon';
 
@@ -43,7 +43,9 @@ export const FormDialog: FC<PropTypes> = ({ title, isOpen, onClose, onSubmit, su
             {busy && <InlineIcon loading first />}
             {submitLabel}
           </Button>
-          <Button type="button" color="link" onClick={onClose} disabled={busy}>{t('common.actions.cancel')}</Button>
+          <Button type="button" color="link" onClick={onClose} disabled={busy}>
+            {t('common.actions.cancel')}
+          </Button>
         </ModalFooter>
       </form>
     </Modal>

@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC, ReactNode } from 'react';
 import { Alert } from 'reactstrap';
 
@@ -11,9 +12,11 @@ interface PropTypes {
   loadingMessage?: ReactNode;
 }
 
-const StatusAlert: FC<PropTypes> = ({ status, loadingMessage, errorMessage, subject = 'data' }) => {
+const StatusAlert: FC<PropTypes> = ({ status, loadingMessage, errorMessage, subject }) => {
+  const t = useTranslations();
+  const what = subject ?? t('common.status.dataSubject');
   if (status === Status.FAILURE) {
-    const message = errorMessage || `Failed to fetch ${subject}, please try again later.`;
+    const message = errorMessage || t('common.status.failed', { subject: what });
     return (
       <Alert color="danger" fade={false} className="text-center">
         {message}
@@ -22,7 +25,7 @@ const StatusAlert: FC<PropTypes> = ({ status, loadingMessage, errorMessage, subj
   }
 
   if (status === Status.LOAD) {
-    const message = loadingMessage || `Loading ${subject}, please wait…`;
+    const message = loadingMessage || t('common.status.loading', { subject: what });
     return (
       <Alert color="ui" fade={false} className="text-center">
         <InlineIcon loading first />

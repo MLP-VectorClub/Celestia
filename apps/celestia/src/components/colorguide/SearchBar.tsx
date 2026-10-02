@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import { debounce } from 'lodash';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import {
@@ -35,6 +36,7 @@ const RESULT_ITEM_CLASS = styles.acResultItem;
 const acOptionId = (index: number | null): string | undefined => (index === null ? undefined : `ac-option-${index}`);
 
 const SearchBar: FC<PropTypes> = ({ initialQuery, guide }) => {
+  const t = useTranslations();
   const router = useRouter();
   const [searchInputFocused, setSearchInputFocused] = useState(false);
   const [searchInputDirty, setSearchInputDirty] = useState(false);
@@ -219,14 +221,14 @@ const SearchBar: FC<PropTypes> = ({ initialQuery, guide }) => {
             </Button>
             <Button color="ui" className="d-none d-lg-inline-block">
               <InlineIcon icon="search" first />
-              Search
+              {t('colorGuide.search.button')}
             </Button>
             <Button color="ui" className="d-lg-none">
               <InlineIcon icon="search" />
             </Button>
           </InputGroup>
           <UncontrolledTooltip target={clearButtonRef} fade={false} placement="bottom">
-            Clear search
+            {t('colorGuide.search.clear')}
           </UncontrolledTooltip>
           {autocompleteOpen && (
             <div
@@ -240,21 +242,26 @@ const SearchBar: FC<PropTypes> = ({ initialQuery, guide }) => {
               {acResultsLoading ? (
                 <ListGroupItem>
                   <InlineIcon loading first />
-                  Loading suggestions&hellip;
+                  {t('colorGuide.search.loading')}
                 </ListGroupItem>
               ) : (
                 acResultsExist && (
                   <>
                     <ListGroupItem className="text-center p-2" disabled role="option" aria-disabled>
-                      Highlight suggestions with{' '}
-                      <kbd>
-                        <InlineIcon icon="arrow-up" size="sm" />
-                      </kbd>{' '}
-                      <kbd>
-                        <InlineIcon icon="arrow-down" size="sm" />
-                      </kbd>
-                      , then press <kbd>Enter</kbd> to accept. Pressing <kbd>Enter</kbd> without highlighting one will take you to the
-                      search results page. This box can be closed with <kbd>Esc</kbd>
+                      {t.rich('colorGuide.search.help', {
+                        up: () => (
+                          <kbd>
+                            <InlineIcon icon="arrow-up" size="sm" />
+                          </kbd>
+                        ),
+                        down: () => (
+                          <kbd>
+                            <InlineIcon icon="arrow-down" size="sm" />
+                          </kbd>
+                        ),
+                        enter: () => <kbd>Enter</kbd>,
+                        esc: () => <kbd>Esc</kbd>,
+                      })}
                     </ListGroupItem>
                     {results!.map((r, i) => (
                       <Link key={r.id} href={PATHS.APPEARANCE(r)} passHref legacyBehavior>

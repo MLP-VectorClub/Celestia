@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC, RefObject, useRef } from 'react';
 import { EmailShareButton, TelegramShareButton, TwitterShareButton, VKShareButton, WhatsappShareButton } from 'react-share';
 import { UncontrolledTooltip } from 'reactstrap';
@@ -10,6 +11,7 @@ interface PropTypes {
 }
 
 export const SocialShareButtons: FC<PropTypes> = ({ url }) => {
+  const t = useTranslations();
   const telegramRef = useRef<HTMLButtonElement>(null) as RefObject<HTMLButtonElement>;
   const twitterRef = useRef<HTMLButtonElement>(null) as RefObject<HTMLButtonElement>;
   const whatsappRef = useRef<HTMLButtonElement>(null) as RefObject<HTMLButtonElement>;
@@ -39,7 +41,7 @@ export const SocialShareButtons: FC<PropTypes> = ({ url }) => {
         <InlineIcon icon="envelope" />
       </EmailShareButton>
       <UncontrolledTooltip target={emailRef} placement="bottom" fade={false}>
-        Email
+        {t('colorGuide.share.email')}
       </UncontrolledTooltip>
       <VKShareButton ref={vkRef} className={styles.vkColor} url={url} title={document.title}>
         <InlineIcon icon={['fab', 'vk']} />

@@ -21,7 +21,10 @@
         "name": "Color picker",
         "description": "Read accurate colors from screencaps with picking areas"
       }
-    }
+    },
+    "devResources": "Resources for developers: <api>API</api>",
+    "wip": "WIP",
+    "wipMeaning": "Work in Progress"
   },
   "unknownGuide": "Unknown",
   "appearances": {
@@ -219,7 +222,13 @@
     "noRelated": "No related appearances",
     "viewPng": "View as PNG",
     "downloadSwatch": "Download swatch file",
-    "relatedAppearances": "Related appearances"
+    "relatedAppearances": "Related appearances",
+    "additionalNotes": "Additional notes",
+    "tags": "Tags",
+    "notes": "Notes",
+    "colorGroups": "Color Groups",
+    "spriteAlt": "Sprite image",
+    "subject": "appearance"
   },
   "shortLink": {
     "looking": "Looking for appearance…",
@@ -235,9 +244,6 @@
     "unknownAppearance": "Unknown appearance",
     "help": "Check out the <link>list of available guides</link> to hopefully find what you were looking for."
   },
-  "sidebar": {
-    "unreadNotifications": "Unread notifications"
-  },
   "list": {
     "spriteAlt": "Sprite of {label}",
     "aka": "AKA",
@@ -248,7 +254,8 @@
     "title": "Sharing appearance",
     "help": "You can use the link below to share this appearance with the world.",
     "copy": "Copy",
-    "social": "Social sharing"
+    "social": "Social sharing",
+    "email": "Email"
   },
   "cutieMarkDisplay": {
     "heading": "{count, plural, one {Cutie mark} other {Cutie marks}}",
@@ -293,6 +300,35 @@
       "irisHighlightTop": "Iris Highlight Top",
       "irisHighlightBottom": "Iris Highlight Bottom",
       "magicAura": "Magic Aura"
-    }
+    },
+    "download": "Download",
+    "license": "I accept that generated images are licensed under the <cc>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International</cc> license",
+    "attributionExample": "Attribution example:",
+    "attributionText": "Base generated on the MLP-VectorClub's website at {url}",
+    "downloadButton": "Download"
+  },
+  "nav": {
+    "returnToGuide": "Return to Guide",
+    "majorChanges": "Major Changes"
+  },
+  "guide": {
+    "lead": "A searchable list of character colors from the {source, select, movies {movies} other {series}}",
+    "demand": "We add characters based on demand, please <contact>let us know</contact> if you'd like us to make a guide for a character.",
+    "oldGuides": "Alternatively, use the old color guides: <pony>Pony</pony> / <eqg>EQG</eqg>",
+    "movedLinks": "Can't find links that were here previously? Some links were moved to the <list>guide list</list>.",
+    "addNew": "Add new {kind, select, character {Character} other {Pony}}",
+    "fullList": "Full List",
+    "tags": "Tags",
+    "entriesSubject": "color guide entries",
+    "empty": "There are no entries in this guide yet"
+  },
+  "full": {
+    "entriesSubject": "list of all entries"
+  },
+  "search": {
+    "button": "Search",
+    "clear": "Clear search",
+    "loading": "Loading suggestions…",
+    "help": "Highlight suggestions with <up></up> <down></down>, then press <enter></enter> to accept. Pressing <enter></enter> without highlighting one will take you to the search results page. This box can be closed with <esc></esc>"
   }
 }

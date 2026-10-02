@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { FC } from 'react';
 
@@ -15,6 +16,7 @@ interface PropTypes {
  * The contract does not send an aspect ratio, so the sprite is fitted into a square of the requested size
  */
 const SpriteImage: FC<PropTypes> = ({ appearanceId, sprite, height = 150 }) => {
+  const t = useTranslations();
   if (!sprite) {
     return null;
   }
@@ -27,7 +29,7 @@ const SpriteImage: FC<PropTypes> = ({ appearanceId, sprite, height = 150 }) => {
       height={height}
       style={{ objectFit: 'contain' }}
       unoptimized
-      alt="Sprite image"
+      alt={t('colorGuide.appearance.spriteAlt')}
     />
   );
 };

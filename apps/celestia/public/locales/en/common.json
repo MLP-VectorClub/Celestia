@@ -55,7 +55,8 @@
     "confirmSignOut": "Are you sure you want to sign out?",
     "csrfInitializing": "Fetching CSRF token",
     "authInitializing": "Fetching user data",
-    "usefulLinks": "Useful links"
+    "usefulLinks": "Useful links",
+    "unreadNotifications": "Unread notifications"
   },
   "contact": {
     "header": "Contact Us",
@@ -121,5 +122,12 @@
     "cancel": "Cancel",
     "confirm": "Confirm",
     "close": "Close"
+  },
+  "copied": "Copied to clipboard!",
+  "featureUnavailable": "This feature is not available yet",
+  "status": {
+    "dataSubject": "data",
+    "failed": "Failed to fetch {subject}, please try again later.",
+    "loading": "Loading {subject}, please wait…"
   }
 }

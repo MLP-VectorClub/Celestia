@@ -123,7 +123,7 @@ const FullGuidePage: NextPage<PropTypes> = ({ guide, sort, initialData }) => {
         <MajorChangesButton guide={guide} />
       </ButtonCollection>
 
-      <StatusAlert status={data.status} subject="list of all entries" />
+      <StatusAlert status={data.status} subject={t('colorGuide.full.entriesSubject')} />
       {typeof data.appearances !== 'undefined' &&
         typeof data.groups !== 'undefined' &&
         (reordering ? (

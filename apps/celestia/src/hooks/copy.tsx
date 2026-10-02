@@ -1,4 +1,5 @@
 import ClipboardJS from 'clipboard';
+import { useTranslations } from 'next-intl';
 import { JSX, RefObject, useCallback, useEffect, useMemo, useState } from 'react';
 import { Tooltip } from 'reactstrap';
 
@@ -21,6 +22,7 @@ export const useCopyToClipboard = ({
   targetRef,
   containerRef,
 }: CopyToClipboardHook): CopyToClipboardHookResult => {
+  const t = useTranslations();
   const [copyStatus, setCopyStatus] = useState(false);
   const clearCopyStatus = useCallback(() => setCopyStatus(false), []);
 
@@ -49,7 +51,7 @@ export const useCopyToClipboard = ({
     () =>
       enabled ? (
         <Tooltip target={copyButtonRef} isOpen={copyStatus} fade={false}>
-          Copied to clipboard!
+          {t('common.copied')}
         </Tooltip>
       ) : null,
     [copyButtonRef, copyStatus, enabled]

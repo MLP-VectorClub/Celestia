@@ -111,7 +111,7 @@ export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppe
         <AppearanceEditActions appearance={appearance} />
       </ButtonCollection>
 
-      <StatusAlert status={status} subject="appearance" />
+      <StatusAlert status={status} subject={t('colorGuide.appearance.subject')} />
 
       <AppearanceTags tags={appearance.tags} guide={appearance.guide ?? guide} />
       <h2>

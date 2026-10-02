@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC } from 'react';
 
 import { ColorGroup } from '@mlp-vectorclub/api-types';
@@ -8,9 +9,10 @@ interface PropTypes {
   colorGroups?: ColorGroup[];
 }
 
-const AppearanceItemColorGroups: FC<PropTypes> = ({ colorGroups }) =>
-  colorGroups && colorGroups.length > 0 ? (
-    <div className={styles.compactColorGroups} aria-label="Color Groups">
+const AppearanceItemColorGroups: FC<PropTypes> = ({ colorGroups }) => {
+  const t = useTranslations();
+  return colorGroups && colorGroups.length > 0 ? (
+    <div className={styles.compactColorGroups} aria-label={t('colorGuide.appearance.colorGroups')}>
       {colorGroups.map((cg) => (
         <div key={cg.id} className={styles.compactColorGroup}>
           <span className={styles.compactColorGroupLabel}>{cg.label}</span>
@@ -23,5 +25,6 @@ const AppearanceItemColorGroups: FC<PropTypes> = ({ colorGroups }) =>
       ))}
     </div>
   ) : null;
+};
 
 export default AppearanceItemColorGroups;

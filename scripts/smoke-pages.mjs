@@ -15,7 +15,7 @@ mkdirSync(S + '/shots', { recursive: true });
 const login = await (await fetch(`${LUNA}/test/login/9002`, { method: 'POST' })).json();
 const browser = await chromium.launch();
 const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, extraHTTPHeaders: { Authorization: `Bearer ${login.token}` } });
-const pages = ['/', '/show', '/episode/S1E1-Friendship-is-Magic-Part-1', '/events', '/cg', '/cg/pony', '/cg/pony/full', '/cg/pony/tags', '/users/9002', '/users/9002/account', '/admin', '/admin/logs', '/admin/notices', '/admin/useful-links', '/admin/settings', '/blending', '/blending-reverse', '/picker', '/users/verify'];
+const pages = ['/', '/show', '/episode/S1E1-Friendship-is-Magic-Part-1', '/events', '/cg', '/cg/pony', '/cg/pony/full', '/cg/pony/tags', '/users/9002', '/users/9002/account', '/admin', '/admin/logs', '/admin/notices', '/admin/useful-links', '/admin/settings', '/blending', '/blending-reverse', '/picker', '/users/verify', '/cg/sprite', '/cg/pony/v/2-Deletable-Test-Pony'];
 for (const path of pages) {
   const page = await ctx.newPage();
   const problems = [];

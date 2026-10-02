@@ -14,7 +14,7 @@ const AppearanceItemNotes: FC<Pick<Appearance, 'notes' | 'hasCutieMarks'>> = ({ 
   const processedNotes = useMemo(() => (notes ? processAppearanceNotes(notes) : null), [notes]);
 
   return (
-    <section className={styles.appearanceNotes} aria-label="Notes">
+    <section className={styles.appearanceNotes} aria-label={t('colorGuide.appearance.notes')}>
       <AppearanceNotesText>
         {processedNotes}
         {hasCutieMarks && (

@@ -24,7 +24,7 @@ const lookup = (key: string): unknown =>
 const namespaces = Object.keys(messages);
 
 /** `t('ns.a.b')`, `t(\`ns.a.${x}\`)` and `['ns.a.b']` titles, with the part before any `${}` as the checked prefix */
-const KEY = /\bt\(\s*(['"`])((?:ns)\.[\w.${}\-[\]()?: ']*?)\1/g;
+const KEY = /\bt(?:\.rich)?\(\s*(['"`])((?:ns)\.[\w.${}\-[\]()?: ']*?)\1/g;
 
 describe('translation keys', () => {
   const used: Array<{ file: string; key: string }> = [];

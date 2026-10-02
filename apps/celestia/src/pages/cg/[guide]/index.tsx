@@ -1,4 +1,5 @@
 import { NextPage } from 'next';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
@@ -57,6 +58,7 @@ interface PropTypes {
 const PAGING_RELEVANT_PROPS = ['q'];
 
 const ColorGuidePage: NextPage<PropTypes> = ({ guide, page, q, initialData }) => {
+  const t = useTranslations();
   const dispatch = useDispatch<AppDispatch>();
   const { isStaff, signedIn } = useAuth();
   const prefs = usePrefs(signedIn);
@@ -71,39 +73,40 @@ const ColorGuidePage: NextPage<PropTypes> = ({ guide, page, q, initialData }) =>
     return <GuideNotFound heading={heading} />;
   }
 
-  const lead = `A searchable list of character colors from the ${guide === 'eqg' ? 'movies' : 'series'}`;
+  const lead = t('colorGuide.guide.lead', { source: guide === 'eqg' ? 'movies' : 'series' });
 
   return (
     <Content>
       <StandardHeading heading={heading} lead={lead} />
       <p className="text-center">
-        We add characters based on demand, please <ContactLink>let us know</ContactLink> if you'd like us to make a guide for a character.
+        {t.rich('colorGuide.guide.demand', { contact: (chunks) => <ContactLink>{chunks}</ContactLink> })}
         <br />
         <small>
-          Alternatively, use the old color guides: <ExternalLink href="https://sta.sh/0kic0ngp3fy">Pony</ExternalLink>
-          {' / '}
-          <ExternalLink href="http://fav.me/d7120l1">EQG</ExternalLink>
+          {t.rich('colorGuide.guide.oldGuides', {
+            pony: (chunks) => <ExternalLink href="https://sta.sh/0kic0ngp3fy">{chunks}</ExternalLink>,
+            eqg: (chunks) => <ExternalLink href="http://fav.me/d7120l1">{chunks}</ExternalLink>,
+          })}
         </small>
         <br />
-        Can't find links that were here previously? Some links were moved to the <Link href={PATHS.GUIDE_INDEX}>guide list</Link>.
+        {t.rich('colorGuide.guide.movedLinks', { list: (chunks) => <Link href={PATHS.GUIDE_INDEX}>{chunks}</Link> })}
       </p>
       <ButtonCollection>
         {isStaff && (
           <Button color="success" size="sm" disabled>
             <InlineIcon icon="plus" first />
-            Add new {guide === 'eqg' ? 'Character' : 'Pony'}
+            {t('colorGuide.guide.addNew', { kind: guide === 'eqg' ? 'character' : 'pony' })}
           </Button>
         )}
         <Link href={PATHS.GUIDE_FULL(guide)} passHref legacyBehavior>
           <Button color="link" size="sm">
             <InlineIcon icon="bars" first />
-            Full List
+            {t('colorGuide.guide.fullList')}
           </Button>
         </Link>
         <Link href={PATHS.GUIDE_TAGS(guide)} passHref legacyBehavior>
           <Button color="link" size="sm">
             <InlineIcon icon="tags" first />
-            Tags
+            {t('colorGuide.guide.tags')}
           </Button>
         </Link>
         <MajorChangesButton guide={guide} />
@@ -113,8 +116,8 @@ const ColorGuidePage: NextPage<PropTypes> = ({ guide, page, q, initialData }) =>
 
       <SearchBar guide={guide} initialQuery={q} />
 
-      <StatusAlert status={data.status} subject="color guide entries" />
-      {data.appearances?.length === 0 && <NoResultsAlert message="There are no entries in this guide yet" />}
+      <StatusAlert status={data.status} subject={t('colorGuide.guide.entriesSubject')} />
+      {data.appearances?.length === 0 && <NoResultsAlert message={t('colorGuide.guide.empty')} />}
       {data.pagination && <Pagination {...data.pagination} relevantProps={PAGING_RELEVANT_PROPS} tooltipPos="bottom" />}
       {data.appearances && data.appearances.map((el) => <AppearanceItem key={el.id} appearance={el} guide={guide} />)}
       {data.pagination && <Pagination {...data.pagination} relevantProps={PAGING_RELEVANT_PROPS} tooltipPos="top" listClassName="mb-0" />}

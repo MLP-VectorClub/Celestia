@@ -45,12 +45,12 @@ const GuideIndexPage: NextPage<PropTypes> = ({ initialData }) => {
     <Content>
       <StandardHeading heading={t('colorGuide.index.heading')} lead={t('colorGuide.index.lead')} />
       <p className="text-center">
-        Resources for developers: <ExternalLink href={API_DOCS_URL}>API</ExternalLink>{' '}
+        {t.rich('colorGuide.index.devResources', { api: (chunks) => <ExternalLink href={API_DOCS_URL}>{chunks}</ExternalLink> })}{' '}
         <Badge tag="abbr" color="danger" id={wipMeaning}>
-          WIP
+          {t('colorGuide.index.wip')}
         </Badge>
         <UncontrolledTooltip target={wipMeaning} fade={false}>
-          Work in Progress
+          {t('colorGuide.index.wipMeaning')}
         </UncontrolledTooltip>
       </p>
 

@@ -1,6 +1,6 @@
+import { useTranslations } from 'next-intl';
 import { FC, PropsWithChildren, ReactNode, createContext, useCallback, useContext, useMemo, useRef, useState } from 'react';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import { useTranslations } from 'next-intl';
 
 export interface ConfirmOptions {
   title: ReactNode;

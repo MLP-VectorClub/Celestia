@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC } from 'react';
 
 import { GuideName, SlimGuideTag } from '@mlp-vectorclub/api-types';
@@ -11,6 +12,7 @@ interface PropTypes {
 }
 
 const AppearanceTags: FC<PropTypes> = (props) => {
+  const t = useTranslations();
   const { tags, guide } = props;
   if (!tags || tags.length === 0) return null;
 
@@ -18,7 +20,7 @@ const AppearanceTags: FC<PropTypes> = (props) => {
     <>
       <h2>
         <InlineIcon icon="tags" first size="xs" />
-        Tags
+        {t('colorGuide.appearance.tags')}
       </h2>
       <AppearanceItemTags tags={tags} guide={guide} />
     </>

@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC, useMemo } from 'react';
 
 import { SlimAppearance } from '@mlp-vectorclub/api-types';
@@ -7,6 +8,7 @@ import InlineIcon from 'src/components/shared/InlineIcon';
 import { processAppearanceNotes } from 'src/utils/html-parsers/appearance-notes-parser';
 
 export const AppearanceNotes: FC<Pick<Partial<SlimAppearance>, 'notes'>> = ({ notes }) => {
+  const t = useTranslations();
   const processedNotes = useMemo(() => (notes ? processAppearanceNotes(notes) : null), [notes]);
 
   if (processedNotes === null) return null;
@@ -15,7 +17,7 @@ export const AppearanceNotes: FC<Pick<Partial<SlimAppearance>, 'notes'>> = ({ no
     <>
       <h2>
         <InlineIcon icon="sticky-note" first size="xs" />
-        Additional notes
+        {t('colorGuide.appearance.additionalNotes')}
       </h2>
       <div className={styles.notes}>
         <AppearanceNotesText>{processedNotes}</AppearanceNotesText>

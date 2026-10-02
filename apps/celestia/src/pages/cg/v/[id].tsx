@@ -47,7 +47,7 @@ const LegacyAppearanceRedirect: NextPage<PropTypes> = ({ id }) => {
         lead={t('colorGuide.shortLink.lead')}
       />
 
-      <StatusAlert status={status} />
+      <StatusAlert status={status} subject={t('colorGuide.appearance.subject')} />
     </Content>
   );
 };

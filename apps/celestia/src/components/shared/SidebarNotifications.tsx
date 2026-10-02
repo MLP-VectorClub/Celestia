@@ -10,7 +10,7 @@ const SidebarNotifications: FC = () => {
   return notifications.length > 0 ? (
     <section className="notifications">
       <>
-        <h2>{t('colorGuide.sidebar.unreadNotifications')}</h2>
+        <h2>{t('common.sidebar.unreadNotifications')}</h2>
         {notifications}
       </>
     </section>

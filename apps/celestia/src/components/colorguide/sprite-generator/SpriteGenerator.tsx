@@ -150,32 +150,30 @@ export const SpriteGenerator: FC = () => {
           <SpriteGeneratorCustomizer options={options} setOptions={setOptions} colorMap={colorMap} setColorMap={setColorMap} />
         </Row>
       </Form>
-      <h2 className="mt-3">Download</h2>
+      <h2 className="mt-3">{t('colorGuide.spriteGenerator.download')}</h2>
       <div className="form-check mb-3">
         <Input type="checkbox" className="form-check-input" id="accept-license" checked={licenseAccepted} onChange={handleLicenseChange} />
         <Label check htmlFor="accept-license" className="form-check-label">
-          I accept that generated images are licensed under the{' '}
-          <ExternalLink href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
-            Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
-          </ExternalLink>{' '}
-          license
+          {t.rich('colorGuide.spriteGenerator.license', {
+            cc: (chunks) => <ExternalLink href="https://creativecommons.org/licenses/by-nc-sa/4.0/">{chunks}</ExternalLink>,
+          })}
         </Label>
       </div>
       <p className="text-info">
         <InlineIcon icon="info" first fixedWidth />
-        Attribution example:
+        {t('colorGuide.spriteGenerator.attributionExample')}
         <span className="user-select-all p-1 ms-2 border rounded" ref={attributionTextRef}>
-          Base generated on the MLP-VectorClub's website at {assembleSeoUrl(PATHS.GUIDE_SPRITE)}
+          {t('colorGuide.spriteGenerator.attributionText', { url: assembleSeoUrl(PATHS.GUIDE_SPRITE) })}
         </span>
         <Button type="button" size="sm" color="link" innerRef={copyButtonRef} onMouseLeave={clearCopyStatus}>
           <InlineIcon icon="clipboard" first />
-          Copy
+          {t('colorGuide.share.copy')}
         </Button>
         {tooltip}
       </p>
       <Button type="button" size="lg" color="primary" disabled={!licenseAccepted} onClick={handleDownload}>
         <InlineIcon icon="download" first />
-        Download
+        {t('colorGuide.spriteGenerator.downloadButton')}
       </Button>
     </>
   );
