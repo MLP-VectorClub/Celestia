@@ -51,6 +51,18 @@ src/components/tools/picker/
 src/scss/modules/Picker*.module.scss   one module per part that needs styles
 ```
 
+## Stage 1 status: done
+
+Pure modules and the reducer are in `src/utils/picker/` with 41 unit tests. Where the original's readings were wrong, the new ones are correct and
+differ on purpose, so numbers will not match the old site exactly in these cases:
+
+- **Opacity of an average color:** the original rounded the mean opacity (0–1) to 0 or 1, so a half-transparent area reported fully opaque. Now the exact
+  mean is kept and shown as `@ 12.35%` when not fully opaque.
+- **Round areas:** the original left out the leftmost pixel of every row when averaging (its filter used strict `<`), although it drew them. Now every pixel
+  of the drawn circle counts.
+- **Areas touching the image edge:** the original sampled from shifted coordinates there. Now the part outside the image is simply ignored.
+- Settings use plain numbers (`pickerWidth: 85`), the old `"85%"` strings are still read. The levels-dialog toggle is gone (see decision 2).
+
 ## Stages (each ends with tsc, lint, unit tests, `pnpm build` and a commit)
 
 1. **Pure foundations**: `pixels`, `areas`, `viewport`, `levels`, `file-hash`, `settings` and the reducer, all with unit tests. No UI. Needs a careful
