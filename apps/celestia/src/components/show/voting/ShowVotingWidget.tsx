@@ -1,5 +1,6 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { FC, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { Button } from 'reactstrap';
 
 import { GetShowIdResult, GetShowIdVoteResult } from '@mlp-vectorclub/api-types';
@@ -9,6 +10,7 @@ import TimeAgo from 'src/components/shared/TimeAgo';
 import { RateDialog } from 'src/components/show/voting/RateDialog';
 import { VotingDetailsDialog } from 'src/components/show/voting/VotingDetailsDialog';
 import { useAuth, useShowEntry } from 'src/hooks';
+import { ENDPOINTS } from 'src/utils';
 
 interface PropTypes {
   showId: number;
@@ -26,12 +28,23 @@ export const ShowVotingWidget: FC<PropTypes> = ({ showId, initialShow, initialVo
   const { signedIn } = useAuth();
   const [totalsOpen, setTotalsOpen] = useState(false);
   const [rateOpen, setRateOpen] = useState(false);
-  // The API does not tell which rating the visitor gave, only what was cast in this visit is known
-  const [myVote, setMyVote] = useState<number | null>(null);
+  const queryClient = useQueryClient();
+  // The rating just cast, shown until the refetched show carries it as `userVote`
+  const [castVote, setCastVote] = useState<number | null>(null);
+
+  // `userVote` belongs to whoever was signed in when the show was fetched
+  const wasSignedIn = useRef(signedIn);
+  useEffect(() => {
+    if (wasSignedIn.current === signedIn) return;
+    wasSignedIn.current = signedIn;
+    setCastVote(null);
+    void queryClient.invalidateQueries({ queryKey: [ENDPOINTS.SHOW_BY_ID({ id: showId })] });
+  }, [queryClient, showId, signedIn]);
 
   if (!show || show.type !== 'episode') return null;
 
   const score = show.score ? Math.round(show.score * 100) / 100 : null;
+  const myVote = signedIn ? (show.userVote ?? castVote) : null;
   return (
     <section id="voting">
       <h2>{t('show.voting.heading')}</h2>
@@ -69,7 +82,7 @@ export const ShowVotingWidget: FC<PropTypes> = ({ showId, initialShow, initialVo
             </p>
           )}
           <VotingDetailsDialog showId={showId} isOpen={totalsOpen} onClose={() => setTotalsOpen(false)} initialVotes={initialVotes} />
-          <RateDialog showId={showId} isOpen={rateOpen} onClose={() => setRateOpen(false)} onVoted={setMyVote} />
+          <RateDialog showId={showId} isOpen={rateOpen} onClose={() => setRateOpen(false)} onVoted={setCastVote} />
         </>
       )}
     </section>

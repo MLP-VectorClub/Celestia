@@ -5,6 +5,7 @@ const EPISODE = '/episode/S1E1-Episode-S1E1';
 
 interface Control {
   signedIn?: boolean;
+  userVote?: number | null;
   votes?: Record<string, number>;
   alreadyVoted?: boolean;
   aired?: boolean;
@@ -69,6 +70,13 @@ test.describe('the rating of an episode', () => {
     await expect(voting(page).getByRole('button', { name: 'Cast your vote' })).toHaveCount(0);
   });
 
+  test('never shows a rating to a guest, even when the API knows one', async ({ page, request }) => {
+    await configure(request, { signedIn: false, votes: { '4': 3 }, userVote: 4 });
+    await page.goto(EPISODE);
+    await expect(voting(page)).toContainText('Sign in above to cast your vote!');
+    await expect(voting(page)).not.toContainText('Your rating');
+  });
+
   test('says when voting starts for an episode that has not aired', async ({ page, request }) => {
     await configure(request, { aired: false });
     await page.goto(EPISODE);
@@ -122,6 +130,26 @@ test.describe('the rating of an episode', () => {
       await voting(page).getByRole('button', { name: 'Cast your vote' }).click();
       await page.getByRole('dialog').getByRole('button', { name: 'Rate', exact: true }).click();
       await expect(page.getByRole('dialog').getByRole('alert')).toContainText('Please choose a rating');
+    });
+
+    test('shows the rating the visitor gave before and does not offer to vote again', async ({ page, request }) => {
+      await configure(request, { signedIn: true, votes: { '4': 3 }, userVote: 4 });
+      await page.goto(EPISODE);
+      await expect(voting(page)).toContainText('Your rating: 4 muffins');
+      await expect(voting(page).getByRole('button', { name: 'Cast your vote' })).toHaveCount(0);
+      await expect(voting(page)).not.toContainText('How would you rate the episode?');
+    });
+
+    test('keeps showing the rating after a reload', async ({ page }) => {
+      await page.goto(EPISODE);
+      await voting(page).getByRole('button', { name: 'Cast your vote' }).click();
+      await page.getByRole('dialog').getByRole('radio', { name: '2 muffins' }).click();
+      await page.getByRole('dialog').getByRole('button', { name: 'Rate', exact: true }).click();
+      await expect(voting(page)).toContainText('Your rating: 2 muffins');
+
+      await page.reload();
+      await expect(voting(page)).toContainText('Your rating: 2 muffins');
+      await expect(voting(page).getByRole('button', { name: 'Cast your vote' })).toHaveCount(0);
     });
 
     test('can pick a rating with the keyboard', async ({ page }) => {

@@ -25,14 +25,25 @@ interface Control {
   signedIn: boolean;
   /** Votes per rating the episodes start with, the show's score is their average */
   votes: Record<string, number>;
+  /** The rating the signed in visitor gave before, `null` for none */
+  userVote: number | null;
   /** Every vote is answered with 409, as for somebody who already voted */
   alreadyVoted: boolean;
   /** Whether episodes have aired (voting open) */
   aired: boolean;
 }
 
-const DEFAULT_CONTROL: Control = { episodes: 0, others: 0, delays: [], signedIn: false, votes: {}, alreadyVoted: false, aired: true };
-let control: Control = { ...DEFAULT_CONTROL };
+const DEFAULT_CONTROL: Control = {
+  episodes: 0,
+  others: 0,
+  delays: [],
+  signedIn: false,
+  votes: {},
+  userVote: null,
+  alreadyVoted: false,
+  aired: true,
+};
+let control: Control = { ...DEFAULT_CONTROL, votes: {} };
 let voteLog: number[] = [];
 let log: Array<{ table: 'episodes' | 'others'; page: number; types: string[]; order: string | null }> = [];
 let unhandled: string[] = [];
@@ -54,7 +65,7 @@ createServer(async (req, res) => {
   };
 
   if (req.method === 'POST' && url.pathname === '/__control') {
-    control = { ...DEFAULT_CONTROL, ...(JSON.parse(await readBody(req)) as Partial<Control>) };
+    control = { ...DEFAULT_CONTROL, votes: {}, ...(JSON.parse(await readBody(req)) as Partial<Control>) };
     log = [];
     voteLog = [];
     unhandled = [];
@@ -102,7 +113,8 @@ createServer(async (req, res) => {
     const { vote } = JSON.parse(await readBody(req)) as { vote: number };
     voteLog.push(vote);
     control.votes[String(vote)] = (control.votes[String(vote)] ?? 0) + 1;
-    return send(200, { data: control.votes });
+    control.userVote = vote;
+    return send(200, { data: control.votes, userVote: vote });
   }
   const detailMatch = /^\/show\/(\d+)$/.exec(url.pathname);
   if (detailMatch && req.method === 'GET') {
@@ -120,6 +132,7 @@ createServer(async (req, res) => {
         postedBy: 1,
         aired: control.aired,
         willAir: entry.airs,
+        userVote: control.signedIn ? control.userVote : null,
         canEdit: false,
         relatedAppearances: [],
       },
