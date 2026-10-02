@@ -53,12 +53,13 @@ status per phase and verification method live in [`docs/winterchilla-parity-plan
 
 - **More post tools** (`PostActions`): edit description/type (`PostEditDialog`; the developer-only date overrides are not offered), change image (`PostImageDialog`, shares `PostImageField` with the create dialog), unbreak (staff), and staff "Add finished reservation" (`StaffReservationDialog`). Edit and the validation errors were checked against Luna; the image and unbreak success paths were not (they need reachable images).
 
+- **SSR auth:** the custom `wrapper.getServerSideProps` (`src/store/index.ts`) looks the visitor up with `requestUserFetcher` (only when the request has a cookie or Authorization header), stores it in `auth.initialUser` and `useAuth` uses it as the user query's `initialData`, so server and browser render the right visitor from the first paint. Verified with curl against the dev server and Luna (staff navigation appears for an admin token, not for a guest); not tried with a real Sanctum cookie session.
+
 ## Left to do
 
 - Staff/admin: dev tools.
   Dropped on purpose (not in the contract): PCG admin list, tag changes, browser-recognition, `/u/{uuid}`, appearance PNG/GPL exports (compose from `colorGroups`), sessions list.
-- Event writes (disabled server-side), account password and e-mail (Luna's flows, Winterchilla's are `x-internal`).
-- Real sign-in: Celestia still uses Luna's flow; auth state is client-only (SSR shows the signed-out shell on account pages).
+- Event writes (disabled server-side), account password and e-mail: **blocked on Luna**, it has no change-password or change-email endpoints (its own plan lists them as not implemented, there is not even a password reset), so there is nothing to build against.
 - Nothing in the editing/write UI has been clicked through in a browser yet (no extension was available): only request shapes were exercised against the APIs.
 - i18n: new strings exist for `en` only (Crowdin handles the rest); several appearance-page strings, the admin pages and all three tools (blending, reverser, picker) are still hard-coded English: do one pass over them.
 

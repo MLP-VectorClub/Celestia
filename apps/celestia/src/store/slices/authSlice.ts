@@ -6,6 +6,8 @@ import { registerThunk, signInThunk, signOutThunk } from 'src/store/thunks';
 import { AuthModalSide, FailsafeUser, Nullable, Status, UnifiedErrorResponse } from 'src/types';
 
 export interface AuthState {
+  /** The visitor as the server saw them while rendering, `null` for guests. Only used as the starting point of the user query */
+  initialUser: User | null;
   signIn: {
     status: Status;
     error: Nullable<UnifiedErrorResponse>;
@@ -30,6 +32,7 @@ export interface AuthState {
 }
 
 const initialState: AuthState = {
+  initialUser: null,
   signIn: {
     status: Status.INIT,
     error: null,
@@ -76,6 +79,9 @@ const authSlice = createSlice({
     },
     closeAuthModal(state, _action: PayloadAction) {
       clearModalState(state);
+    },
+    setInitialUser(state, action: PayloadAction<User | null>) {
+      state.initialUser = action.payload;
     },
   },
   extraReducers: (builder) => {
