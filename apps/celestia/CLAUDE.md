@@ -59,11 +59,15 @@ status per phase and verification method live in [`docs/winterchilla-parity-plan
 
 - **E-mail change** (account page, staff only like Luna's gate): `EmailChangeForm` posts `{newEmail, currentPassword?}` or `{resend}` to `POST /users/{id}/email-changes`; `/users/verify?hash=&action=verify|block` (the link in Luna's mail) asks for confirmation and posts to `POST /users/email/verify`. Field errors checked against Luna. Luna's contract server (`scripts/serve-contract.sh`) logs outgoing mail (`MAIL_MAILER=log`): the link is in Luna's `storage/logs/laravel-cli-server-<date>.log` (look for `Subject: Verify your e-mail address`). The request (as admin for user 9001, no password needed, real-domain address, one try per address per 10 minutes) and the verify page's success were checked that way; the account page only lets users change their own address, which needs their password, so the form's own success state was not driven.
 
+- **Accurate statuses for failed data fetches:** `handleDataFetchingError` (`src/utils/common.ts`) works out the HTTP status of a failed server-side fetch (`src/utils/fetch-failure.ts`; mapped errors keep it as `httpStatus`; no answer from the API is 503, any other failure 500) and records a failure for 429 and 5xx. The shared `wrapper.getServerSideProps` (`src/store/index.ts`) turns a recorded failure into a response with that status (and `Retry-After` for 429) and a `fetchFailure` prop, even when the page returned `notFound` (a missing page stays 404). `_app` then shows `FetchFailureView` instead of the page: for 429 the same kind of message as the sign-in form ("try again in N seconds") and a Try again button that stays locked until the wait is over (`useRateLimitLock`), for 503/500 a generic message; Try again re-runs the page's data fetching. Covered by `e2e/fetch-failures.spec.ts` and unit tests.
+
 - **Fixed by the browser checks:** the picker's About button was invisible, its area list overflowed the page, empty color fields were drawn as errors, and the blending reverser's row IDs came from a module-level counter that made server and browser HTML differ (keep IDs per component instance, never in module state).
 
 ## Left to do
 
 - Guide titles and names (`getGuideTitle`, `getGuideLabel`) stay English on purpose, no translation wanted.
+
+- **Sidebar and header, found on production (not investigated yet):** the useful links are missing from the sidebar (`SidebarUsefulLinks`, `GET /useful-links/sidebar`; check what production returns for a guest and a signed in user and whether the component hides them), and the header navigation links are not in Winterchilla's order and should match it (compare `MainNavigation` with Winterchilla's `templates` header).
 
 - Staff/admin: dev tools.
   Dropped on purpose (not in the contract): PCG admin list, tag changes, browser-recognition, `/u/{uuid}`, appearance PNG/GPL exports (compose from `colorGroups`), sessions list.

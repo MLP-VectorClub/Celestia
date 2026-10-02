@@ -42,7 +42,21 @@
     "404": {
       "heading": "404 Not Found",
       "lead": "This page does not exist"
-    }
+    },
+    "rateLimited": {
+      "heading": "Too many requests",
+      "retryIn": "Too many requests, please try again in {count, plural, one {# second} other {# seconds}}.",
+      "retryLater": "Too many requests, please try again in a little while."
+    },
+    "serverError": {
+      "heading": "Something went wrong",
+      "message": "The server could not answer this request. Please try again in a moment."
+    },
+    "unavailable": {
+      "heading": "Temporarily unavailable",
+      "message": "The service is not available right now. Please try again in a moment."
+    },
+    "tryAgain": "Try again"
   },
   "sidebar": {
     "welcome": "Welcome!",

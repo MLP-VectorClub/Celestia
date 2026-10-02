@@ -64,7 +64,7 @@ export enum UnifiedErrorResponseTypes {
   BACKEND_DOWN = 'BACKEND_DOWN',
 }
 
-export type UnifiedErrorResponse =
+type UnifiedErrorBody =
   | {
       type: UnifiedErrorResponseTypes.AUTHENTICATION_ERROR;
     }
@@ -93,6 +93,9 @@ export type UnifiedErrorResponse =
   | ({
       type: UnifiedErrorResponseTypes.VALIDATION_ERROR;
     } & ValidationErrorResponse);
+
+/** The mapped error of a failed request, with the HTTP status the API answered with when there was one */
+export type UnifiedErrorResponse = UnifiedErrorBody & { httpStatus?: number };
 
 export type FailsafeUser = User | (NullableProps<Omit<User, 'id'>, 'name' | 'avatarUrl' | 'role'> & { id: null });
 

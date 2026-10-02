@@ -13,7 +13,15 @@ describe('httpResponseMapper', () => {
       type: UnifiedErrorResponseTypes.MESSAGE_ONLY,
       message: 'Reserver differs',
       details: { retry: true },
+      httpStatus: 409,
     });
+  });
+
+  it('keeps the HTTP status of every kind of answer, and none when there was no answer', () => {
+    expect(httpResponseMapper(axiosError(404, { message: 'Not found' })).httpStatus).toBe(404);
+    expect(httpResponseMapper(axiosError(429, {}))).toMatchObject({ type: UnifiedErrorResponseTypes.RATE_LIMITED, httpStatus: 429 });
+    expect(httpResponseMapper(axiosError(503, {}))).toMatchObject({ type: UnifiedErrorResponseTypes.BACKEND_DOWN, httpStatus: 503 });
+    expect(httpResponseMapper(new Error('boom'))).not.toHaveProperty('httpStatus');
   });
 });
 

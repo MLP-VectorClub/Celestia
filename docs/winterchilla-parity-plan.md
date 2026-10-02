@@ -141,7 +141,8 @@ Legend: ✅ exists in Celestia · 🟡 exists but a stub or incomplete · ❌ mi
 | Piece | Celestia | Data source |
 |---|---|---|
 | Notices banner | ✅ `Notices` | `GET /notices/current` (HTML in `messageHtml` is intentional — sanitise before `dangerouslySetInnerHTML`, `html-to-react` is already a dependency) |
-| Sidebar links | ✅ | `GET /useful-links/sidebar` |
+| Sidebar links | 🔴 missing on production (reported 2026-10-02, not investigated) | `GET /useful-links/sidebar` |
+| Header navigation | 🔴 links are not in Winterchilla's order (reported 2026-10-02) | `MainNavigation`, Winterchilla's header template |
 | Sidebar notifications | 🟡 | `GET /notifications` is HTML-only and `x-internal`; notifications come from Luna's own API |
 | "Happening soon" / upcoming | 🟡 stub (`HappeningSoon`) | `GET /show/next` (one entry) and `GET /events`; `/about/upcoming` is `x-internal` |
 | Prefs | ✅ | `GET /user-prefs/me` |

@@ -13,6 +13,7 @@ import ProgressIndicator from 'src/components/ProgressIndicator';
 import TitleManager from 'src/components/TitleManager';
 import AuthModal from 'src/components/modals/AuthModal';
 import DeployBanner from 'src/components/shared/DeployBanner';
+import { FetchFailureView } from 'src/components/shared/FetchFailureView';
 import { DialogProvider } from 'src/components/shared/dialogs/DialogProvider';
 import { DEV_ENV } from 'src/config';
 import { LayoutContextProvider, SidebarWidgetProvider } from 'src/hooks';
@@ -44,7 +45,11 @@ const Celestia: AppComponent = ({ Component, ...rest }) => {
               <SidebarWidgetProvider>
                 <Layout>
                   {}
-                  <Component {...props.pageProps} />
+                  {props.pageProps.fetchFailure ? (
+                    <FetchFailureView failure={props.pageProps.fetchFailure} />
+                  ) : (
+                    <Component {...props.pageProps} />
+                  )}
                 </Layout>
               </SidebarWidgetProvider>
             </DialogProvider>

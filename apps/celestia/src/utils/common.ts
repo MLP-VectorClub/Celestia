@@ -4,6 +4,7 @@ import { GetServerSidePropsContext } from 'next';
 
 import { APP_HOST } from 'src/config';
 import { UnifiedErrorResponse, UnifiedErrorResponseTypes, isValidationErrorResponse } from 'src/types';
+import { describeFailure, isPageFailure, recordFetchFailure } from 'src/utils/fetch-failure';
 import { setResponseStatus } from 'src/utils/initial-prop-helpers';
 
 export const sanitizePageParam = (value: string): number => {
@@ -30,8 +31,11 @@ export const paginationParam = (page: number): number | undefined => (page === 1
 
 export const range = (start: number, end: number, step = 1): number[] => _range(start, end + step, step);
 
-export const httpResponseMapper = (err: AxiosError | unknown): UnifiedErrorResponse => {
-  const statusCode = typeof err === 'object' && err !== null && 'isAxiosError' in err ? (err as AxiosError).response?.status : 0;
+const httpStatusOf = (err: unknown): number | undefined =>
+  typeof err === 'object' && err !== null && 'isAxiosError' in err ? (err as AxiosError).response?.status : undefined;
+
+const mapHttpResponse = (err: AxiosError | unknown): UnifiedErrorResponse => {
+  const statusCode = httpStatusOf(err) ?? 0;
   switch (statusCode) {
     case 503: {
       const message = get(err, 'response.data.message') as unknown;
@@ -81,21 +85,19 @@ export const httpResponseMapper = (err: AxiosError | unknown): UnifiedErrorRespo
   }
 };
 
+export const httpResponseMapper = (err: AxiosError | unknown): UnifiedErrorResponse => {
+  const httpStatus = httpStatusOf(err);
+  return { ...mapHttpResponse(err), ...(httpStatus ? { httpStatus } : {}) } as UnifiedErrorResponse;
+};
+
 // Always the configured host, never the browser's location: these URLs are canonical/share links,
 // and rendering something different in the browser than on the server breaks hydration
 export const assembleSeoUrl = (pathname?: string): string => `${APP_HOST}${pathname || ''}`;
 
 export const handleDataFetchingError = (ctx: GetServerSidePropsContext, e: unknown): void => {
-  if (e instanceof Error && 'response' in e) {
-    const { response } = e as AxiosError;
-    const status = response?.status;
-    if (status) {
-      setResponseStatus(ctx, status);
-    }
-    if (status !== 404) {
-      console.error(response);
-    }
-  } else {
-    console.error(e);
-  }
+  const { status, retryAfter } = describeFailure(e);
+  setResponseStatus(ctx, status);
+  if (isPageFailure(status) && ctx.res) recordFetchFailure(ctx.res, { status, retryAfter });
+  // A missing page is expected and a rate limit is not worth a stack trace each time
+  if (status !== 404 && status !== 429) console.error(e instanceof Error && 'response' in e ? (e as AxiosError).response : e);
 };

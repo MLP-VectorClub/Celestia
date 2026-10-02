@@ -31,6 +31,8 @@ interface Control {
   alreadyVoted: boolean;
   /** Whether episodes have aired (voting open) */
   aired: boolean;
+  /** Requests whose path starts with this answer with the status instead (with `Retry-After` when given) */
+  failures: Array<{ path: string; status: number; retryAfter?: number }>;
 }
 
 const DEFAULT_CONTROL: Control = {
@@ -42,6 +44,7 @@ const DEFAULT_CONTROL: Control = {
   userVote: null,
   alreadyVoted: false,
   aired: true,
+  failures: [],
 };
 let control: Control = { ...DEFAULT_CONTROL, votes: {} };
 let voteLog: number[] = [];
@@ -72,6 +75,15 @@ createServer(async (req, res) => {
     return send(204);
   }
   if (url.pathname === '/__log') return send(200, { log, unhandled, voteLog });
+
+  const failure = control.failures.find((f) => url.pathname.startsWith(f.path));
+  if (failure) {
+    res.writeHead(failure.status, {
+      'Content-Type': 'application/json',
+      ...(failure.retryAfter ? { 'Retry-After': String(failure.retryAfter) } : {}),
+    });
+    return res.end(JSON.stringify({ message: `Stub failure ${failure.status}` }));
+  }
 
   if (req.method === 'GET' && url.pathname === '/show') {
     const types = [...url.searchParams.getAll('types[]'), ...url.searchParams.getAll('types')];
