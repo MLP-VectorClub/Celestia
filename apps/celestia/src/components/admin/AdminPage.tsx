@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { FC, PropsWithChildren, useMemo } from 'react';
 
@@ -8,43 +9,46 @@ import { useAppDispatch } from 'src/store';
 import { TitleFactory } from 'src/types/title';
 
 export const ADMIN_SECTIONS = [
-  { href: '/admin/logs', label: 'Logs' },
-  { href: '/admin/notices', label: 'Notices' },
-  { href: '/admin/useful-links', label: 'Useful links' },
-  { href: '/admin/settings', label: 'Settings' },
+  { href: '/admin/logs', key: 'logs' },
+  { href: '/admin/notices', key: 'notices' },
+  { href: '/admin/useful-links', key: 'usefulLinks' },
+  { href: '/admin/settings', key: 'settings' },
 ] as const;
 
+/** Names of the staff pages, also the keys under `admin.sections` */
+export type AdminSection = 'index' | (typeof ADMIN_SECTIONS)[number]['key'];
+
+export const adminTitle = (section: AdminSection): ReturnType<TitleFactory> => ({
+  title: [`admin.sections.${section}`],
+  breadcrumbs: [
+    { label: ['admin.sections.index'], linkProps: { href: '/admin' }, ...(section === 'index' ? { active: true } : {}) },
+    ...(section === 'index' ? [] : [{ label: [`admin.sections.${section}`] as [string], active: true }]),
+  ],
+});
+
 interface PropTypes extends PropsWithChildren {
-  title: string;
+  section: AdminSection;
 }
 
 /** Shell of the staff pages: sets the title, shows the section links and keeps non-staff visitors out */
-export const AdminPage: FC<PropTypes> = ({ title, children }) => {
+export const AdminPage: FC<PropTypes> = ({ section, children }) => {
+  const t = useTranslations();
   const dispatch = useAppDispatch();
   const { isStaff } = useAuth();
-  const titleData = useMemo<ReturnType<TitleFactory>>(
-    () => ({
-      title,
-      breadcrumbs: [
-        { label: 'Administration', linkProps: { href: '/admin' } },
-        { label: title, active: true },
-      ],
-    }),
-    [title]
-  );
+  const titleData = useMemo(() => adminTitle(section), [section]);
   useTitleSetter(dispatch, titleData);
 
   return (
     <Content>
-      <StandardHeading heading={title} />
+      <StandardHeading heading={t(`admin.sections.${section}`)} />
       {!isStaff ? (
-        <p className="text-center text-muted">This page is only available to staff.</p>
+        <p className="text-center text-muted">{t('admin.staffOnly')}</p>
       ) : (
         <>
-          <nav className="d-flex flex-wrap gap-3 justify-content-center mb-4" aria-label="Administration">
+          <nav className="d-flex flex-wrap gap-3 justify-content-center mb-4" aria-label={t('admin.sections.index')}>
             {ADMIN_SECTIONS.map((s) => (
               <Link key={s.href} href={s.href}>
-                {s.label}
+                {t(`admin.sections.${s.key}`)}
               </Link>
             ))}
           </nav>

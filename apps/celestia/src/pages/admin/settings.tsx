@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { NextPage } from 'next';
+import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
 import { Button, FormGroup, FormText, Input, Label } from 'reactstrap';
 
@@ -8,13 +9,14 @@ import { describeApiError, useApiMutation } from 'src/hooks';
 import { AdminService, SiteSettingKey } from 'src/services/admin';
 import { createAdminGetServerSideProps } from 'src/utils/admin-page';
 
-const SETTINGS: Array<{ name: SiteSettingKey; label: string; help: string; multiline: boolean }> = [
-  { name: 'reservation_rules', label: 'Reservation rules', help: 'Shown next to the reservation form.', multiline: true },
-  { name: 'about_reservations', label: 'About reservations', help: 'Shown on the reservations info page.', multiline: true },
-  { name: 'dev_role_label', label: 'Developer role label', help: 'How the developer role is named on profiles.', multiline: false },
+const SETTINGS: Array<{ name: SiteSettingKey; textKey: string; multiline: boolean }> = [
+  { name: 'reservation_rules', textKey: 'reservationRules', multiline: true },
+  { name: 'about_reservations', textKey: 'aboutReservations', multiline: true },
+  { name: 'dev_role_label', textKey: 'devRoleLabel', multiline: false },
 ];
 
-const SettingForm: FC<(typeof SETTINGS)[number]> = ({ name: settingKey, label, help, multiline }) => {
+const SettingForm: FC<(typeof SETTINGS)[number]> = ({ name: settingKey, textKey, multiline }) => {
+  const t = useTranslations();
   const stored = useQuery({
     queryKey: [`/settings/${settingKey}`],
     queryFn: () => AdminService.getSetting(settingKey).then((r) => r.data.value),
@@ -34,7 +36,7 @@ const SettingForm: FC<(typeof SETTINGS)[number]> = ({ name: settingKey, label, h
       }}
     >
       <FormGroup>
-        <Label for={id}>{label}</Label>
+        <Label for={id}>{t(`admin.settings.${textKey}.label`)}</Label>
         <Input
           id={id}
           type={multiline ? 'textarea' : 'text'}
@@ -43,26 +45,26 @@ const SettingForm: FC<(typeof SETTINGS)[number]> = ({ name: settingKey, label, h
           onChange={(e) => setValue(e.target.value)}
           disabled={stored.isLoading}
         />
-        <FormText>{help}</FormText>
-        {stored.isError && <div className="text-danger small">Could not load this setting.</div>}
+        <FormText>{t(`admin.settings.${textKey}.help`)}</FormText>
+        {stored.isError && <div className="text-danger small">{t('admin.settings.loadFailed')}</div>}
         {save.error && <div className="text-danger small">{describeApiError(save.error)}</div>}
         <Button color="primary" size="sm" className="mt-2" disabled={save.isPending || stored.isLoading || value === stored.data}>
-          Save
+          {t('admin.settings.save')}
         </Button>
-        {save.isSuccess && value === stored.data && <small className="ms-2 text-muted">Saved.</small>}
+        {save.isSuccess && value === stored.data && <small className="ms-2 text-muted">{t('admin.settings.saved')}</small>}
       </FormGroup>
     </form>
   );
 };
 
 const SettingsPage: NextPage = () => (
-  <AdminPage title="Settings">
+  <AdminPage section="settings">
     {SETTINGS.map((s) => (
       <SettingForm key={s.name} {...s} />
     ))}
   </AdminPage>
 );
 
-export const getServerSideProps = createAdminGetServerSideProps('Settings');
+export const getServerSideProps = createAdminGetServerSideProps('settings');
 
 export default SettingsPage;

@@ -1,0 +1,86 @@
+{
+  "sections": {
+    "index": "Administration",
+    "logs": "Logs",
+    "notices": "Notices",
+    "usefulLinks": "Useful links",
+    "settings": "Settings"
+  },
+  "staffOnly": "This page is only available to staff.",
+  "logs": {
+    "entryType": "Entry type",
+    "entryTypePlaceholder": "Entry type (e.g. rolechange)",
+    "initiator": "Initiator user ID",
+    "initiatorPlaceholder": "Initiator user ID (0 = web server)",
+    "filter": "Filter",
+    "loadFailed": "Could not load the logs.",
+    "type": "Type",
+    "by": "By",
+    "ip": "IP",
+    "when": "When",
+    "webServer": "Web server",
+    "detailsFailed": "Could not load the details."
+  },
+  "loading": "Loading…",
+  "notices": {
+    "type": "Type",
+    "showUntil": "Show until",
+    "untilHelp": "In your local time zone, must be in the future.",
+    "new": "New notice",
+    "loadFailed": "Could not load the notices.",
+    "shownUntil": "Shown until",
+    "edit": "Edit",
+    "delete": "Delete",
+    "editTitle": "Edit notice #{id}",
+    "save": "Save notice",
+    "create": "Create notice",
+    "deleteTitle": "Delete notice",
+    "deleteBody": "Notice #{id} will be deleted.",
+    "messageSource": "Message (source)",
+    "message": "Message (HTML, printable ASCII, up to 500 characters)",
+    "types": {
+      "info": "Info",
+      "success": "Success",
+      "fail": "Failure",
+      "warn": "Warning",
+      "caution": "Caution"
+    }
+  },
+  "links": {
+    "url": "URL",
+    "lowestRoleHelp": "Lowest role that sees the link",
+    "new": "New link",
+    "loadFailed": "Could not load the links.",
+    "label": "Label",
+    "lowestRole": "Lowest role",
+    "edit": "Edit",
+    "delete": "Delete",
+    "editTitle": "Edit “{label}”",
+    "newTitle": "New useful link",
+    "save": "Save link",
+    "create": "Create link",
+    "moveUp": "Move {label} up",
+    "moveDown": "Move {label} down",
+    "deleteTitle": "Delete link",
+    "deleteBody": "“{label}” will be deleted.",
+    "labelHelp": "Label (3–35 characters)",
+    "tooltip": "Tooltip (optional)"
+  },
+  "settings": {
+    "loadFailed": "Could not load this setting.",
+    "save": "Save",
+    "saved": "Saved.",
+    "reservationRules": {
+      "label": "Reservation rules",
+      "help": "Shown next to the reservation form."
+    },
+    "aboutReservations": {
+      "label": "About reservations",
+      "help": "Shown on the reservations info page."
+    },
+    "devRoleLabel": {
+      "label": "Developer role label",
+      "help": "How the developer role is named on profiles."
+    }
+  }
+}

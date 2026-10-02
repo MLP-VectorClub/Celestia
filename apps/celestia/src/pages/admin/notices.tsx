@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { NextPage } from 'next';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { Button, FormGroup, FormText, Input, Label, Table } from 'reactstrap';
@@ -31,6 +32,7 @@ interface DialogProps {
 }
 
 const NoticeDialog = ({ notice, isOpen, onClose }: DialogProps) => {
+  const t = useTranslations();
   const [message, setMessage] = useState('');
   const [hideAfter, setHideAfter] = useState('');
   const [type, setType] = useState<(typeof NOTICE_TYPES)[number]>('info');
@@ -53,19 +55,19 @@ const NoticeDialog = ({ notice, isOpen, onClose }: DialogProps) => {
 
   return (
     <FormDialog
-      title={notice ? `Edit notice #${notice.id}` : 'New notice'}
+      title={notice ? t('admin.notices.editTitle', { id: notice.id }) : t('admin.notices.new')}
       isOpen={isOpen}
       onClose={() => {
         save.reset();
         onClose();
       }}
       onSubmit={() => save.mutate()}
-      submitLabel={notice ? 'Save notice' : 'Create notice'}
+      submitLabel={notice ? t('admin.notices.save') : t('admin.notices.create')}
       busy={save.isPending}
       error={save.error && Object.keys(errors).length === 0 ? describeApiError(save.error) : null}
     >
       <FormGroup>
-        <Label for="notice-message">Message (HTML, printable ASCII, up to 500 characters)</Label>
+        <Label for="notice-message">{t('admin.notices.message')}</Label>
         <Input
           id="notice-message"
           type="textarea"
@@ -78,18 +80,18 @@ const NoticeDialog = ({ notice, isOpen, onClose }: DialogProps) => {
         {err('messageHtml')}
       </FormGroup>
       <FormGroup>
-        <Label for="notice-type">Type</Label>
+        <Label for="notice-type">{t('admin.notices.type')}</Label>
         <Input id="notice-type" type="select" value={type} onChange={(e) => setType(e.target.value as typeof type)}>
-          {NOTICE_TYPES.map((t) => (
-            <option key={t} value={t}>
-              {t}
+          {NOTICE_TYPES.map((noticeType) => (
+            <option key={noticeType} value={noticeType}>
+              {t(`admin.notices.types.${noticeType}`)}
             </option>
           ))}
         </Input>
         {err('type')}
       </FormGroup>
       <FormGroup>
-        <Label for="notice-hide">Show until</Label>
+        <Label for="notice-hide">{t('admin.notices.showUntil')}</Label>
         <Input
           id="notice-hide"
           type="datetime-local"
@@ -98,13 +100,14 @@ const NoticeDialog = ({ notice, isOpen, onClose }: DialogProps) => {
           invalid={Boolean(errors.hideAfter)}
         />
         {err('hideAfter')}
-        <FormText>In your local time zone, must be in the future.</FormText>
+        <FormText>{t('admin.notices.untilHelp')}</FormText>
       </FormGroup>
     </FormDialog>
   );
 };
 
 const NoticesPage: NextPage = () => {
+  const t = useTranslations();
   const { query } = useRouter();
   const { isStaff } = useAuth();
   const { confirm } = useDialog();
@@ -118,29 +121,29 @@ const NoticesPage: NextPage = () => {
   const remove = useApiMutation((id: number) => AdminService.deleteNotice(id), { invalidate: [['/notices']] });
 
   return (
-    <AdminPage title="Notices">
+    <AdminPage section="notices">
       <Button color="success" size="sm" className="mb-3" onClick={() => setEditing(null)}>
-        New notice
+        {t('admin.notices.new')}
       </Button>
       {remove.error && <p className="text-danger">{describeApiError(remove.error)}</p>}
-      {notices.isLoading && <p className="text-muted">Loading…</p>}
-      {notices.isError && <p className="text-danger">Could not load the notices.</p>}
+      {notices.isLoading && <p className="text-muted">{t('admin.loading')}</p>}
+      {notices.isError && <p className="text-danger">{t('admin.notices.loadFailed')}</p>}
       {notices.data && (
         <>
           <Pagination {...notices.data.pagination} tooltipPos="bottom" />
           <Table responsive size="sm">
             <thead>
               <tr>
-                <th>Type</th>
-                <th>Message (source)</th>
-                <th>Shown until</th>
+                <th>{t('admin.notices.type')}</th>
+                <th>{t('admin.notices.messageSource')}</th>
+                <th>{t('admin.notices.shownUntil')}</th>
                 <th />
               </tr>
             </thead>
             <tbody>
               {notices.data.notices.map((n) => (
                 <tr key={n.id}>
-                  <td>{n.type}</td>
+                  <td>{t(`admin.notices.types.${n.type}`)}</td>
                   <td>
                     <code>{n.messageHtml}</code>
                   </td>
@@ -149,7 +152,7 @@ const NoticesPage: NextPage = () => {
                   </td>
                   <td className="text-nowrap">
                     <Button size="sm" color="ui" className="me-1" onClick={() => setEditing(n)}>
-                      Edit
+                      {t('admin.notices.edit')}
                     </Button>
                     <Button
                       size="sm"
@@ -159,16 +162,16 @@ const NoticesPage: NextPage = () => {
                       onClick={async () => {
                         if (
                           await confirm({
-                            title: 'Delete notice',
-                            body: `Notice #${n.id} will be deleted.`,
+                            title: t('admin.notices.deleteTitle'),
+                            body: t('admin.notices.deleteBody', { id: n.id }),
                             color: 'danger',
-                            confirmLabel: 'Delete',
+                            confirmLabel: t('admin.notices.delete'),
                           })
                         )
                           remove.mutate(n.id);
                       }}
                     >
-                      Delete
+                      {t('admin.notices.delete')}
                     </Button>
                   </td>
                 </tr>
@@ -183,6 +186,6 @@ const NoticesPage: NextPage = () => {
   );
 };
 
-export const getServerSideProps = createAdminGetServerSideProps('Notices');
+export const getServerSideProps = createAdminGetServerSideProps('notices');
 
 export default NoticesPage;

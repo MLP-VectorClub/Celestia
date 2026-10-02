@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { NextPage } from 'next';
+import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { Button, FormGroup, Input, Label, Table } from 'reactstrap';
 
@@ -14,6 +15,7 @@ import { createAdminGetServerSideProps } from 'src/utils/admin-page';
 const KEY = ['/useful-links'];
 
 const LinkDialog = ({ link, isOpen, onClose }: { link: SidebarUsefulLink | null; isOpen: boolean; onClose: () => void }) => {
+  const t = useTranslations();
   const { config } = useConfig();
   const [label, setLabel] = useState('');
   const [url, setUrl] = useState('');
@@ -39,36 +41,36 @@ const LinkDialog = ({ link, isOpen, onClose }: { link: SidebarUsefulLink | null;
 
   return (
     <FormDialog
-      title={link ? `Edit “${link.label}”` : 'New useful link'}
+      title={link ? t('admin.links.editTitle', { label: link.label }) : t('admin.links.newTitle')}
       isOpen={isOpen}
       onClose={() => {
         save.reset();
         onClose();
       }}
       onSubmit={() => save.mutate()}
-      submitLabel={link ? 'Save link' : 'Create link'}
+      submitLabel={link ? t('admin.links.save') : t('admin.links.create')}
       busy={save.isPending}
       error={save.error && Object.keys(errors).length === 0 ? describeApiError(save.error) : null}
     >
       <FormGroup>
-        <Label for="link-label">Label (3–35 characters)</Label>
+        <Label for="link-label">{t('admin.links.labelHelp')}</Label>
         <Input id="link-label" maxLength={35} value={label} onChange={(e) => setLabel(e.target.value)} invalid={Boolean(errors.label)} />
         {err('label')}
       </FormGroup>
       <FormGroup>
-        <Label for="link-url">URL</Label>
+        <Label for="link-url">{t('admin.links.url')}</Label>
         <Input id="link-url" maxLength={255} value={url} onChange={(e) => setUrl(e.target.value)} invalid={Boolean(errors.url)} />
         {err('url')}
       </FormGroup>
       <FormGroup>
-        <Label for="link-title">Tooltip (optional)</Label>
+        <Label for="link-title">{t('admin.links.tooltip')}</Label>
         <Input id="link-title" maxLength={255} value={title} onChange={(e) => setTitle(e.target.value)} invalid={Boolean(errors.title)} />
         {err('title')}
       </FormGroup>
       <FormGroup>
-        <Label for="link-role">Lowest role that sees the link</Label>
+        <Label for="link-role">{t('admin.links.lowestRoleHelp')}</Label>
         <Input id="link-role" type="select" value={minRole} onChange={(e) => setMinRole(e.target.value)} invalid={Boolean(errors.minRole)}>
-          {Object.entries(config?.roles ?? { user: 'DeviantArt User' }).map(([key, label2]) => (
+          {Object.entries(config?.roles ?? { user: t('common.roleLabel.user') }).map(([key, label2]) => (
             <option key={key} value={key}>
               {label2}
             </option>
@@ -81,6 +83,7 @@ const LinkDialog = ({ link, isOpen, onClose }: { link: SidebarUsefulLink | null;
 };
 
 const UsefulLinksPage: NextPage = () => {
+  const t = useTranslations();
   const { isStaff } = useAuth();
   const { confirm } = useDialog();
   const links = useQuery({ queryKey: KEY, queryFn: () => AdminService.usefulLinks().then((r) => r.data), enabled: isStaff });
@@ -99,20 +102,20 @@ const UsefulLinksPage: NextPage = () => {
   const busy = remove.isPending || reorder.isPending;
 
   return (
-    <AdminPage title="Useful links">
+    <AdminPage section="usefulLinks">
       <Button color="success" size="sm" className="mb-3" onClick={() => setEditing(null)}>
-        New link
+        {t('admin.links.new')}
       </Button>
       {error && <p className="text-danger">{describeApiError(error)}</p>}
-      {links.isLoading && <p className="text-muted">Loading…</p>}
-      {links.isError && <p className="text-danger">Could not load the links.</p>}
+      {links.isLoading && <p className="text-muted">{t('admin.loading')}</p>}
+      {links.isError && <p className="text-danger">{t('admin.links.loadFailed')}</p>}
       {links.data && (
         <Table responsive size="sm">
           <thead>
             <tr>
-              <th>Label</th>
-              <th>URL</th>
-              <th>Lowest role</th>
+              <th>{t('admin.links.label')}</th>
+              <th>{t('admin.links.url')}</th>
+              <th>{t('admin.links.lowestRole')}</th>
               <th />
             </tr>
           </thead>
@@ -127,7 +130,7 @@ const UsefulLinksPage: NextPage = () => {
                     size="sm"
                     color="ui"
                     className="me-1"
-                    aria-label={`Move ${l.label} up`}
+                    aria-label={t('admin.links.moveUp', { label: l.label })}
                     disabled={busy || i === 0}
                     onClick={() => move(i, -1)}
                   >
@@ -137,14 +140,14 @@ const UsefulLinksPage: NextPage = () => {
                     size="sm"
                     color="ui"
                     className="me-1"
-                    aria-label={`Move ${l.label} down`}
+                    aria-label={t('admin.links.moveDown', { label: l.label })}
                     disabled={busy || i === links.data.length - 1}
                     onClick={() => move(i, 1)}
                   >
                     ↓
                   </Button>
                   <Button size="sm" color="ui" className="me-1" onClick={() => setEditing(l)}>
-                    Edit
+                    {t('admin.links.edit')}
                   </Button>
                   <Button
                     size="sm"
@@ -154,16 +157,16 @@ const UsefulLinksPage: NextPage = () => {
                     onClick={async () => {
                       if (
                         await confirm({
-                          title: 'Delete link',
-                          body: `“${l.label}” will be deleted.`,
+                          title: t('admin.links.deleteTitle'),
+                          body: t('admin.links.deleteBody', { label: l.label }),
                           color: 'danger',
-                          confirmLabel: 'Delete',
+                          confirmLabel: t('admin.links.delete'),
                         })
                       )
                         remove.mutate(l.id);
                     }}
                   >
-                    Delete
+                    {t('admin.links.delete')}
                   </Button>
                 </td>
               </tr>
@@ -176,6 +179,6 @@ const UsefulLinksPage: NextPage = () => {
   );
 };
 
-export const getServerSideProps = createAdminGetServerSideProps('Useful links');
+export const getServerSideProps = createAdminGetServerSideProps('usefulLinks');
 
 export default UsefulLinksPage;

@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { NextPage } from 'next';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
 import { Button, Input, Table } from 'reactstrap';
@@ -13,9 +14,10 @@ import { createAdminGetServerSideProps } from 'src/utils/admin-page';
 import { validatePageParam } from 'src/utils/validate-page-param';
 
 const LogDetails: FC<{ id: number }> = ({ id }) => {
+  const t = useTranslations();
   const details = useQuery({ queryKey: [`/admin/logs/${id}`], queryFn: () => AdminService.logDetails(id).then((r) => r.data) });
-  if (details.isLoading) return <small className="text-muted">Loading…</small>;
-  if (details.isError || !details.data) return <small className="text-danger">Could not load the details.</small>;
+  if (details.isLoading) return <small className="text-muted">{t('admin.loading')}</small>;
+  if (details.isError || !details.data) return <small className="text-danger">{t('admin.logs.detailsFailed')}</small>;
   return (
     <pre className="mb-0 small" style={{ whiteSpace: 'pre-wrap' }}>
       {JSON.stringify(details.data.data, null, 2)}
@@ -24,6 +26,7 @@ const LogDetails: FC<{ id: number }> = ({ id }) => {
 };
 
 const LogsPage: NextPage = () => {
+  const t = useTranslations();
   const { query, replace } = useRouter();
   const { isStaff } = useAuth();
   const page = validatePageParam(query.page);
@@ -41,7 +44,7 @@ const LogsPage: NextPage = () => {
   });
 
   return (
-    <AdminPage title="Logs">
+    <AdminPage section="logs">
       <form
         className="d-flex flex-wrap gap-2 mb-3"
         onSubmit={(e) => {
@@ -52,24 +55,24 @@ const LogsPage: NextPage = () => {
         }}
       >
         <Input
-          aria-label="Entry type"
-          placeholder="Entry type (e.g. rolechange)"
+          aria-label={t('admin.logs.entryType')}
+          placeholder={t('admin.logs.entryTypePlaceholder')}
           style={{ maxWidth: 260 }}
           value={typeInput}
           onChange={(e) => setTypeInput(e.target.value)}
         />
         <Input
-          aria-label="Initiator user ID"
-          placeholder="Initiator user ID (0 = web server)"
+          aria-label={t('admin.logs.initiator')}
+          placeholder={t('admin.logs.initiatorPlaceholder')}
           style={{ maxWidth: 260 }}
           inputMode="numeric"
           value={initiatorInput}
           onChange={(e) => setInitiatorInput(e.target.value.replace(/\D/g, ''))}
         />
-        <Button color="ui">Filter</Button>
+        <Button color="ui">{t('admin.logs.filter')}</Button>
       </form>
-      {logs.isLoading && <p className="text-muted">Loading…</p>}
-      {logs.isError && <p className="text-danger">Could not load the logs.</p>}
+      {logs.isLoading && <p className="text-muted">{t('admin.loading')}</p>}
+      {logs.isError && <p className="text-danger">{t('admin.logs.loadFailed')}</p>}
       {logs.data && (
         <>
           <Pagination {...logs.data.pagination} tooltipPos="bottom" />
@@ -77,10 +80,10 @@ const LogsPage: NextPage = () => {
             <thead>
               <tr>
                 <th>#</th>
-                <th>Type</th>
-                <th>By</th>
-                <th>IP</th>
-                <th>When</th>
+                <th>{t('admin.logs.type')}</th>
+                <th>{t('admin.logs.by')}</th>
+                <th>{t('admin.logs.ip')}</th>
+                <th>{t('admin.logs.when')}</th>
               </tr>
             </thead>
             <tbody>
@@ -97,7 +100,7 @@ const LogsPage: NextPage = () => {
                     )}
                     {open === entry.id && <LogDetails id={entry.id} />}
                   </td>
-                  <td>{entry.initiator ? entry.initiator.name : 'Web server'}</td>
+                  <td>{entry.initiator ? entry.initiator.name : t('admin.logs.webServer')}</td>
                   <td>{entry.ip ?? ''}</td>
                   <td>
                     <TimeAgo date={entry.createdAt} />
@@ -113,6 +116,6 @@ const LogsPage: NextPage = () => {
   );
 };
 
-export const getServerSideProps = createAdminGetServerSideProps('Logs');
+export const getServerSideProps = createAdminGetServerSideProps('logs');
 
 export default LogsPage;
