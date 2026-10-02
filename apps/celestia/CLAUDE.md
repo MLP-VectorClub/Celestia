@@ -63,6 +63,8 @@ status per phase and verification method live in [`docs/winterchilla-parity-plan
 
 ## Left to do
 
+- Guide titles and names (`getGuideTitle`, `getGuideLabel`) stay English on purpose, no translation wanted.
+
 - Staff/admin: dev tools.
   Dropped on purpose (not in the contract): PCG admin list, tag changes, browser-recognition, `/u/{uuid}`, appearance PNG/GPL exports (compose from `colorGroups`), sessions list.
 - Event writes (disabled server-side).
