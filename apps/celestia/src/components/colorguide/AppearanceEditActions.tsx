@@ -6,6 +6,7 @@ import { DetailedAppearance } from '@mlp-vectorclub/api-types';
 import { AppearanceMetaDialog } from 'src/components/colorguide/AppearanceMetaDialog';
 import { AppearanceRelationsDialog } from 'src/components/colorguide/AppearanceRelationsDialog';
 import { AppearanceTagsDialog } from 'src/components/colorguide/AppearanceTagsDialog';
+import { CutieMarkDialog } from 'src/components/colorguide/CutieMarkDialog';
 import { SpriteDialog } from 'src/components/colorguide/SpriteDialog';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
@@ -14,7 +15,7 @@ import { PATHS } from 'src/paths';
 import { AppearanceEditService } from 'src/services/appearance-edit';
 import { ENDPOINTS } from 'src/utils';
 
-type Dialogs = 'meta' | 'tags' | 'sprite' | 'relations' | 'shows' | null;
+type Dialogs = 'meta' | 'tags' | 'sprite' | 'cutiemarks' | 'relations' | 'shows' | null;
 
 /**
  * Editing controls of the appearance page. `canEdit` comes from the API, staff-only actions are additionally gated by role
@@ -55,6 +56,10 @@ export const AppearanceEditActions: FC<{ appearance: DetailedAppearance }> = ({ 
       <Button color="ui" size="sm" onClick={() => setOpen('sprite')}>
         <InlineIcon icon="image" first />
         Sprite
+      </Button>
+      <Button color="ui" size="sm" onClick={() => setOpen('cutiemarks')}>
+        <InlineIcon icon="image" first />
+        Cutie marks
       </Button>
       {appearance.guide !== null && (
         <Button color="ui" size="sm" onClick={() => setOpen('relations')}>
@@ -111,6 +116,7 @@ export const AppearanceEditActions: FC<{ appearance: DetailedAppearance }> = ({ 
       {isStaff && (
         <AppearanceRelationsDialog appearanceId={appearance.id} kind="shows" isOpen={open === 'shows'} onClose={() => setOpen(null)} />
       )}
+      <CutieMarkDialog appearanceId={appearance.id} isOpen={open === 'cutiemarks'} onClose={() => setOpen(null)} />
       <SpriteDialog
         appearanceId={appearance.id}
         hasSprite={Boolean(appearance.sprite)}

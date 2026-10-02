@@ -27,12 +27,12 @@ status per phase and verification method live in [`docs/winterchilla-parity-plan
   awaiting approval), `/users/[user]/contrib/[type]`, `/users/[user]/cg`, `/users/[user]/cg/point-history`, `/users/[user]/cg/v/[id]`, about pages, `/oauth/[provider]`.
 - **Member writes:** post actions on show pages (reserve, finish with reserver-overwrite retry, approve, unfinish, remove approval, cancel reservation, delete request), add request /
   reservation with image check, episode voting, account page (`/users/[user]/account`: preferences, Discord sync/unlink, sign out everywhere).
-- **Guide editing** (appearance page): metadata, tags, sprite upload/remove, pin/unpin, delete, color groups (create, edit, delete, re-order, apply template), related appearances and
-  linked shows.
+- **Guide editing** (appearance page): metadata, tags, sprite upload/remove, pin/unpin, delete, color groups (create, edit, delete, re-order, apply template), related appearances,
+  linked shows and cutie marks (`CutieMarkDialog`: up to four, SVG via `POST /appearances/{id}/sanitize-svg`, saved with one `PUT`; request shapes exercised against Luna).
 
 ## Left to do
 
-- Cutie mark editor (`/appearances/{id}/cutie-marks`, `sanitize-svg`); full-list drag-and-drop (`PUT /appearances/order`).
+- Full-list drag-and-drop (`PUT /appearances/order`).
 - Staff/admin: tag admin, show admin (create/edit/delete, prefill), user roles and personal-guide points, logs, notices, useful links, site settings, dev tools.
 - Pages not started: `/s/{id}` share redirect (needs a data-only `GET /posts/{id}/location`), `/episodes|movies/{page}` redirects, blending/picker tools, `/muffin-rating`, `/manifest`.
   Dropped on purpose (not in the contract): PCG admin list, tag changes, browser-recognition, `/u/{uuid}`, appearance PNG/GPL exports (compose from `colorGroups`), sessions list.

@@ -3,10 +3,13 @@ import Axios from 'axios';
 import {
   DeleteAppearancesIdPinResult,
   DeleteAppearancesIdSpriteResult,
+  GetAppearancesIdCutieMarksResult,
   GetAppearancesIdMetadataResult,
   GetAppearancesIdTagsResult,
   PostAppearancesIdPinResult,
+  PostAppearancesIdSanitizeSvgResult,
   PostAppearancesIdSpriteResult,
+  PutAppearancesIdCutieMarksRequest,
   PutAppearancesIdRequest,
   PutAppearancesIdResult,
 } from '@mlp-vectorclub/api-types';
@@ -36,4 +39,16 @@ export class AppearanceEditService {
   };
 
   static removeSprite = (id: number) => Axios.delete<DeleteAppearancesIdSpriteResult>(`/appearances/${id}/sprite`);
+
+  static getCutieMarks = (id: number) => Axios.get<GetAppearancesIdCutieMarksResult>(`/appearances/${id}/cutie-marks`);
+
+  static setCutieMarks = (id: number, cutieMarks: PutAppearancesIdCutieMarksRequest['cutieMarks']) =>
+    Axios.put<void>(`/appearances/${id}/cutie-marks`, { cutieMarks });
+
+  /** Sanitizes an uploaded SVG, the returned `svgdata` is what `setCutieMarks` expects for a new or replaced file */
+  static sanitizeSvg = (id: number, file: File) => {
+    const body = new FormData();
+    body.append('file', file);
+    return Axios.post<PostAppearancesIdSanitizeSvgResult>(`/appearances/${id}/sanitize-svg`, body);
+  };
 }
