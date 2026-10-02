@@ -45,6 +45,8 @@ status per phase and verification method live in [`docs/winterchilla-parity-plan
 
 - **URL hygiene** (`src/proxy.ts`, Next 16's renamed middleware, + `src/utils/clean-url.ts`): ports Winterchilla's cleaning of pasted links (trailing `…`/`<`, backslashes, non-printable ASCII) with a 302 to the cleaned URL. Like the original it strips all non-ASCII characters from the URL. Checked against `next dev` with curl.
 
+- **Color picker** (`/picker`, plan and per-stage notes in `docs/color-picker-plan.md`): pure `src/utils/picker/*` (areas, pixels, viewport, levels, reducer, settings; where the old readings were wrong the new ones differ on purpose, see the plan), `src/components/tools/picker/*` (one file per control/hook), 28 browser tests in real Chromium. Levels only change the picture, never readings. Copy button, resize handle, area color dialog and touch are untested.
+
 ## Left to do
 
 - Staff/admin: dev tools.
