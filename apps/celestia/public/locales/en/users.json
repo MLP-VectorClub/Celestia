@@ -86,6 +86,8 @@
       "cg_itemsperpage": "Appearances per page",
       "cg_defaultguide": "Default guide",
       "cg_defaultguideNone": "Ask me every time",
+      "p_vectorapp": "Vector app",
+      "p_vectorappNone": "None",
       "cg_hidesynon": "Hide synonym tags",
       "cg_hideclrinfo": "Hide color details",
       "cg_fulllstprev": "Show previews in the full list",

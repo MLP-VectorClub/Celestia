@@ -9,7 +9,7 @@ import Content from 'src/components/shared/Content';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { userFetcher } from 'src/fetchers';
-import { describeApiError, useApiMutation, useAuth, usePrefs, useTitleSetter } from 'src/hooks';
+import { describeApiError, useApiMutation, useAuth, useConfig, usePrefs, useTitleSetter } from 'src/hooks';
 import { PATHS } from 'src/paths';
 import { AccountService } from 'src/services/account';
 import { useAppDispatch, wrapper } from 'src/store';
@@ -49,6 +49,7 @@ const AccountPage: NextPage<PropTypes> = ({ userId, user }) => {
   const { confirm } = useDialog();
   const { user: authUser, signedIn, isStaff } = useAuth();
   const prefs = usePrefs(signedIn);
+  const { config } = useConfig();
 
   const titleData = useMemo(() => titleFactory({ user }), [user]);
   useTitleSetter(dispatch, titleData);
@@ -157,6 +158,24 @@ const AccountPage: NextPage<PropTypes> = ({ userId, user }) => {
       <section>
         <h2>{t('users.account.sections.site')}</h2>
         {SITE_FLAGS.map(flag)}
+        {config && (
+          <FormGroup>
+            <Label for="pref-p_vectorapp">{t('users.account.prefs.p_vectorapp')}</Label>
+            <Input
+              id="pref-p_vectorapp"
+              type="select"
+              value={prefs?.p_vectorapp ?? ''}
+              disabled={!prefs || setPref.isPending}
+              onChange={(e) => setPref.mutate({ key: 'p_vectorapp', value: e.target.value as UserPrefs['p_vectorapp'] })}
+            >
+              {Object.entries(config.vectorApps).map(([key, label]) => (
+                <option key={key} value={key}>
+                  {key === '' ? t('users.account.prefs.p_vectorappNone') : label}
+                </option>
+              ))}
+            </Input>
+          </FormGroup>
+        )}
       </section>
 
       {isStaff && permission(authUser, 'staff') && (
