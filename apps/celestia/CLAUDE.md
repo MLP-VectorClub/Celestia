@@ -73,6 +73,8 @@ status per phase and verification method live in [`docs/winterchilla-parity-plan
 
 ## Verifying locally
 
+- `turbo.json` has `cache: false` for `build` on purpose: the API types are generated from a remote document, which turbo's cache key does not include, so a cached run kept serving old types (and a stale `.next`) after the API's document changed. The server deploy builds from `API_JSON_PATH` in its own `.env`.
+
 - Unit/lint/types/build: `pnpm test`, `pnpm exec eslint .`, `pnpm exec tsc --noEmit`, `pnpm build` (run in this directory).
 - **Winterchilla API:** from a git worktree of Winterchilla `origin/main` (symlink `vendor`, copy `.env`; do not `git pull` in the shared tree) run
   `scripts/serve-seeded-api.sh <port> <database>` (never port 8765 or `winterchilla_test`). Seeded logins `/test-login/9001` (user), `9002` (admin), `9003`. It wants a
