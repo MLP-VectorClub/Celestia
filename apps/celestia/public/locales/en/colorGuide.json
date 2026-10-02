@@ -234,5 +234,65 @@
     "unknownGuide": "Unknown guide",
     "unknownAppearance": "Unknown appearance",
     "help": "Check out the <link>list of available guides</link> to hopefully find what you were looking for."
+  },
+  "sidebar": {
+    "unreadNotifications": "Unread notifications"
+  },
+  "list": {
+    "spriteAlt": "Sprite of {label}",
+    "aka": "AKA",
+    "akaTitle": "Also known as"
+  },
+  "share": {
+    "button": "Share",
+    "title": "Sharing appearance",
+    "help": "You can use the link below to share this appearance with the world.",
+    "copy": "Copy",
+    "social": "Social sharing"
+  },
+  "cutieMarkDisplay": {
+    "heading": "{count, plural, one {Cutie mark} other {Cutie marks}}",
+    "disclaimer": "These are just illustrations, the body shape & colors are <strong>not</strong> guaranteed to reflect the actual design.",
+    "facing": "{facing, select, left {Facing left} right {Facing right} other {Symmetrical}}",
+    "vectorAlt": "Cutie mark vector",
+    "downloadName": "{label} Cutie Mark.svg",
+    "downloadSvg": "Download SVG file",
+    "viewSource": "View source on DeviantArt",
+    "svg": "SVG",
+    "source": "Source",
+    "by": "By"
+  },
+  "spriteGenerator": {
+    "about": "About this tool",
+    "intro": "Using the generator below you can create a base sprite image for a pony character with the colors and features of your choosing.",
+    "instructions": "Once you download the base, you can use any drawing software which supports pixel-perfect editing, such as MS Paint, <paintNet>Paint.NET</paintNet>, or <gimp>Gimp</gimp> to customize the mane and tail to match your character's design. The coat-colored space on the top right is reserved for the cutie mark, if any.",
+    "options": "Options & preview",
+    "loadFailed": "Failed to load assets:",
+    "loading": "Loading assets…",
+    "colors": "Colors",
+    "bodyShape": "Body Shape",
+    "species": "Species",
+    "earthPony": "Earth pony",
+    "unicorn": "Unicorn",
+    "pegasus": "Pegasus",
+    "alicorn": "Alicorn",
+    "bodyType": "Body type",
+    "mare": "Mare",
+    "stallion": "Stallion",
+    "eyeShape": "Eye shape",
+    "eyeGradient": "Eye gradient",
+    "colorCount": "{count, plural, one {# color} other {# colors}}",
+    "color": {
+      "coatOutline": "Coat Outline",
+      "coatShadowOutline": "Coat Shadow Outline",
+      "coatFill": "Coat Fill",
+      "coatShadowFill": "Coat Shadow Fill",
+      "irisGradientTop": "Iris Gradient Top",
+      "irisGradientMiddle": "Iris Gradient Middle",
+      "irisGradientBottom": "Iris Gradient Bottom",
+      "irisHighlightTop": "Iris Highlight Top",
+      "irisHighlightBottom": "Iris Highlight Bottom",
+      "magicAura": "Magic Aura"
+    }
   }
 }

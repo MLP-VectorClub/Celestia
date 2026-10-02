@@ -119,6 +119,7 @@
   "wipNotice": "This website is a work-in-progress, for our current live site please visit <link>{url}</link>",
   "actions": {
     "cancel": "Cancel",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "close": "Close"
   }
 }

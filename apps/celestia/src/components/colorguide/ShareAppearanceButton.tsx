@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC, RefObject, useCallback, useRef, useState } from 'react';
 import { Button, FormGroup, InputGroup, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
@@ -11,6 +12,7 @@ interface PropTypes {
 }
 
 export const ShareAppearanceButton: FC<PropTypes> = ({ shortUrl }) => {
+  const t = useTranslations();
   const [shareOpen, setShareOpen] = useState(false);
   const [shareVisible, setShareVisible] = useState(false);
   const copyButtonRef = useRef<HTMLButtonElement>(null) as RefObject<HTMLButtonElement>;
@@ -41,7 +43,7 @@ export const ShareAppearanceButton: FC<PropTypes> = ({ shortUrl }) => {
     <>
       <Button color="primary" size="sm" onClick={startSharing}>
         <InlineIcon icon="share" first />
-        Share
+        {t('colorGuide.share.button')}
       </Button>
       <Modal
         centered
@@ -54,10 +56,10 @@ export const ShareAppearanceButton: FC<PropTypes> = ({ shortUrl }) => {
       >
         <ModalHeader className="bg-ui text-white">
           <InlineIcon icon="share" first />
-          Sharing appearance
+          {t('colorGuide.share.title')}
         </ModalHeader>
         <ModalBody>
-          <p>You can use the link below to share this appearance with the world.</p>
+          <p>{t('colorGuide.share.help')}</p>
           <FormGroup>
             <InputGroup>
               <span className={`input-group-text flex-grow-1 ${styles.appearanceLinkInput}`} ref={urlInputRef}>
@@ -65,18 +67,18 @@ export const ShareAppearanceButton: FC<PropTypes> = ({ shortUrl }) => {
               </span>
               <Button color="secondary" innerRef={copyButtonRef} onMouseLeave={clearCopyStatus}>
                 <InlineIcon icon="clipboard" first />
-                Copy
+                {t('colorGuide.share.copy')}
               </Button>
             </InputGroup>
           </FormGroup>
           <FormGroup>
-            <p className="h5">Social sharing</p>
+            <p className="h5">{t('colorGuide.share.social')}</p>
             <SocialShareButtons url={shortUrl} />
           </FormGroup>
         </ModalBody>
         <ModalFooter className="justify-content-center">
           <Button color="ui" onClick={closeModal}>
-            Close
+            {t('common.actions.close')}
           </Button>
         </ModalFooter>
       </Modal>

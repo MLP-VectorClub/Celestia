@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import { saveAs } from 'file-saver';
+import { useTranslations } from 'next-intl';
 import { ChangeEventHandler, FC, FormEventHandler, MouseEventHandler, RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { Button, Col, Form, Input, Label, Progress, Row } from 'reactstrap';
 
@@ -30,6 +31,7 @@ const DEFAULT_OPTIONS: SpriteGeneratorOptions = {
 };
 
 export const SpriteGenerator: FC = () => {
+  const t = useTranslations();
   const canvasRef = useRef<HTMLCanvasElement>(null) as RefObject<HTMLCanvasElement>;
   const imageMap = useRef<SpriteGeneratorImageMap | undefined>(undefined);
   const [colorMap, setColorMap] = useState<SpriteGeneratorColorMap>(() => ({
@@ -101,17 +103,15 @@ export const SpriteGenerator: FC = () => {
 
   return (
     <>
-      <h2>About this tool</h2>
+      <h2>{t('colorGuide.spriteGenerator.about')}</h2>
+      <p>{t('colorGuide.spriteGenerator.intro')}</p>
       <p>
-        Using the generator below you can create a base sprite image for a pony character with the colors and features of your choosing.
+        {t.rich('colorGuide.spriteGenerator.instructions', {
+          paintNet: (chunks) => <ExternalLink href="https://www.getpaint.net/">{chunks}</ExternalLink>,
+          gimp: (chunks) => <ExternalLink href="https://www.gimp.org/">{chunks}</ExternalLink>,
+        })}
       </p>
-      <p>
-        Once you download the base, you can use any drawing software which supports pixel-prefect editing, such as MS Paint,{' '}
-        <ExternalLink href="https://www.getpaint.net/">Paint.NET</ExternalLink>, or{' '}
-        <ExternalLink href="https://www.gimp.org/">Gimp</ExternalLink> to customize the mane and tail to match your character's design. The
-        coat-colored space on the top right is reserved for the cutie mark, if any.
-      </p>
-      <h2>Options & preview</h2>
+      <h2>{t('colorGuide.spriteGenerator.options')}</h2>
       <Form onSubmit={handleSubmit}>
         <Row className="flex-row-reverse flex-lg-row">
           <Col lg={12} xl={6} className="col-xxl-auto">
@@ -128,7 +128,7 @@ export const SpriteGenerator: FC = () => {
                   <InlineIcon icon={loadingErrors ? 'exclamation-triangle' : 'info'} first />
                   {loadingErrors.current.length > 0 ? (
                     <>
-                      Failed to load assets:
+                      {t('colorGuide.spriteGenerator.loadFailed')}
                       <ul>
                         {loadingErrors.current.map((name, k) => (
                           <li key={k}>{name}</li>
@@ -136,7 +136,7 @@ export const SpriteGenerator: FC = () => {
                       </ul>
                     </>
                   ) : (
-                    'Loading assets…'
+                    t('colorGuide.spriteGenerator.loading')
                   )}
                 </div>
                 <Progress

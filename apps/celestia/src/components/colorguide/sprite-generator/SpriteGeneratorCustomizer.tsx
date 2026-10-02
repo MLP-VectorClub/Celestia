@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { FC, useCallback } from 'react';
 import { Button, ButtonGroup, Col, FormGroup, Label } from 'reactstrap';
 
@@ -13,6 +14,7 @@ interface PropTypes extends Pick<SpriteGeneratorColorsFormProps, 'colorMap' | 's
 }
 
 export const SpriteGeneratorCustomizer: FC<PropTypes> = ({ options, setOptions, colorMap, setColorMap }) => {
+  const t = useTranslations();
   const setSpecies = useCallback(
     (wing: boolean, horn: boolean) =>
       setOptions({
@@ -58,45 +60,45 @@ export const SpriteGeneratorCustomizer: FC<PropTypes> = ({ options, setOptions, 
   return (
     <>
       <Col xl={6} className="col-xxl-3">
-        <h3>Body Shape</h3>
+        <h3>{t('colorGuide.spriteGenerator.bodyShape')}</h3>
         <FormGroup>
-          <Label className="d-block">Species</Label>
+          <Label className="d-block">{t('colorGuide.spriteGenerator.species')}</Label>
           <ButtonGroup>
             <Button color="ui" active={!options.wing && !options.horn} onClick={() => setSpecies(false, false)}>
-              Earth pony
+              {t('colorGuide.spriteGenerator.earthPony')}
             </Button>
             <Button color="ui" active={!options.wing && options.horn} onClick={() => setSpecies(false, true)}>
-              Unicorn
+              {t('colorGuide.spriteGenerator.unicorn')}
             </Button>
             <Button color="ui" active={options.wing && !options.horn} onClick={() => setSpecies(true, false)}>
-              Pegasus
+              {t('colorGuide.spriteGenerator.pegasus')}
             </Button>
             <Button color="ui" active={options.wing && options.horn} onClick={() => setSpecies(true, true)}>
-              Alicorn
+              {t('colorGuide.spriteGenerator.alicorn')}
             </Button>
           </ButtonGroup>
         </FormGroup>
         <FormGroup>
-          <Label className="d-block">Body type</Label>
+          <Label className="d-block">{t('colorGuide.spriteGenerator.bodyType')}</Label>
           <ButtonGroup>
             <Button
               color="ui"
               active={options.body === SpriteGeneratorBodyOptions.FEMALE}
               onClick={() => setBodyType(SpriteGeneratorBodyOptions.FEMALE)}
             >
-              Mare
+              {t('colorGuide.spriteGenerator.mare')}
             </Button>
             <Button
               color="ui"
               active={options.body === SpriteGeneratorBodyOptions.MALE}
               onClick={() => setBodyType(SpriteGeneratorBodyOptions.MALE)}
             >
-              Stallion
+              {t('colorGuide.spriteGenerator.stallion')}
             </Button>
           </ButtonGroup>
         </FormGroup>
         <FormGroup>
-          <Label className="d-block">Eye shape</Label>
+          <Label className="d-block">{t('colorGuide.spriteGenerator.eyeShape')}</Label>
           <ButtonGroup>
             <Button
               color="ui"
@@ -123,13 +125,13 @@ export const SpriteGeneratorCustomizer: FC<PropTypes> = ({ options, setOptions, 
           </ButtonGroup>
         </FormGroup>
         <FormGroup>
-          <Label className="d-block">Eye gradient</Label>
+          <Label className="d-block">{t('colorGuide.spriteGenerator.eyeGradient')}</Label>
           <ButtonGroup>
             <Button color="ui" active={options.gradientStops === 2} onClick={() => setGradientStops(2)}>
-              2 colors
+              {t('colorGuide.spriteGenerator.colorCount', { count: 2 })}
             </Button>
             <Button color="ui" active={options.gradientStops === 3} onClick={() => setGradientStops(3)}>
-              3 colors
+              {t('colorGuide.spriteGenerator.colorCount', { count: 3 })}
             </Button>
           </ButtonGroup>
         </FormGroup>

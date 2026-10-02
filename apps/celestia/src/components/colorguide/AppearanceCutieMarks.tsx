@@ -1,6 +1,5 @@
-import capitalize from 'capitalize';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import pluralize from 'pluralize';
 import { FC } from 'react';
 import { Button, Card, CardBody } from 'reactstrap';
 
@@ -21,6 +20,7 @@ interface PropTypes {
 }
 
 export const AppearanceCutieMarks: FC<PropTypes> = ({ label, cutieMarks, colorGroups }) => {
+  const t = useTranslations();
   const { user } = useAuth();
   const isDeveloper = user.role && permission(user.role, 'developer');
 
@@ -30,14 +30,12 @@ export const AppearanceCutieMarks: FC<PropTypes> = ({ label, cutieMarks, colorGr
     <>
       <h2>
         <InlineIcon icon="image" first size="xs" />
-        {pluralize('Cutie mark', cutieMarks.length)}
+        {t('colorGuide.cutieMarkDisplay.heading', { count: cutieMarks.length })}
       </h2>
-      <p className={styles.aside}>
-        These are just illustrations, the body shape & colors are <strong>not</strong> guaranteed to reflect the actual design.
-      </p>
+      <p className={styles.aside}>{t.rich('colorGuide.cutieMarkDisplay.disclaimer', { strong: (chunks) => <strong>{chunks}</strong> })}</p>
       <div className={styles.cutieMarks}>
         {cutieMarks.map((cm) => {
-          const facingText = cm.facing ? `Facing ${capitalize(cm.facing)}` : 'Symmetrical';
+          const facingText = t('colorGuide.cutieMarkDisplay.facing', { facing: cm.facing ?? 'none' });
           const cmTitleId = `cutie-mark-${cm.id}-title`;
           return (
             <Card key={cm.id} className={styles.cutieMarkCard} aria-describedby={cmTitleId}>
@@ -56,7 +54,7 @@ export const AppearanceCutieMarks: FC<PropTypes> = ({ label, cutieMarks, colorGr
                   <div className={styles.previewImageContainer}>
                     <div className={styles.previewImageWrap} style={{ transform: `rotate(${cm.rotation}deg)` }}>
                       <ResponsiveContainer size={1}>
-                        <Image src={cm.viewUrl} unoptimized fill alt="Cutie mark vector" />
+                        <Image src={cm.viewUrl} unoptimized fill alt={t('colorGuide.cutieMarkDisplay.vectorAlt')} />
                       </ResponsiveContainer>
                     </div>
                   </div>
@@ -67,22 +65,28 @@ export const AppearanceCutieMarks: FC<PropTypes> = ({ label, cutieMarks, colorGr
                     size="sm"
                     color="ui"
                     href={cm.viewUrl}
-                    download={`${label} Cutie Mark.svg`}
-                    aria-label="Download SVG file"
+                    download={t('colorGuide.cutieMarkDisplay.downloadName', { label })}
+                    aria-label={t('colorGuide.cutieMarkDisplay.downloadSvg')}
                   >
                     <InlineIcon icon="download" first />
-                    SVG
+                    {t('colorGuide.cutieMarkDisplay.svg')}
                   </Button>
                   {cm.favMe && (
-                    <Button tag="a" size="sm" color="deviantart" href={createFavMeUrl(cm.favMe)} aria-label="View source on DeviantArt">
+                    <Button
+                      tag="a"
+                      size="sm"
+                      color="deviantart"
+                      href={createFavMeUrl(cm.favMe)}
+                      aria-label={t('colorGuide.cutieMarkDisplay.viewSource')}
+                    >
                       <InlineIcon icon={['fab', 'deviantart']} first />
-                      Source
+                      {t('colorGuide.cutieMarkDisplay.source')}
                     </Button>
                   )}
                 </ButtonCollection>
                 {cm.contributor && (
                   <div className={styles.byLine}>
-                    <span className="me-2">By</span>
+                    <span className="me-2">{t('colorGuide.cutieMarkDisplay.by')}</span>
                     <UserLinkWithAvatar {...cm.contributor} />
                   </div>
                 )}

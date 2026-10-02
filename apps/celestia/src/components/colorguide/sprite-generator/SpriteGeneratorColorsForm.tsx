@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { Dispatch, FC, SetStateAction, useCallback, useMemo } from 'react';
 import { Col, FormGroup, Label, Row } from 'reactstrap';
 
@@ -18,17 +19,18 @@ const INPUT_NAMES: { [k in SpriteGeneratorBaseColor]: `color_${k}` } = {
   [SpriteGeneratorBaseColor.MAGIC_AURA]: `color_${SpriteGeneratorBaseColor.MAGIC_AURA}` as const,
 };
 
+/** Keys of `colorGuide.spriteGenerator.color` */
 const INPUT_LABELS: Record<SpriteGeneratorBaseColor, string> = {
-  [SpriteGeneratorBaseColor.COAT_OUTLINE]: 'Coat Outline',
-  [SpriteGeneratorBaseColor.COAT_SHADOW_OUTLINE]: 'Coat Shadow Outline',
-  [SpriteGeneratorBaseColor.COAT_FILL]: 'Coat Fill',
-  [SpriteGeneratorBaseColor.COAT_SHADOW_FILL]: 'Coat Shadow Fill',
-  [SpriteGeneratorBaseColor.IRIS_GRADIENT_TOP]: 'Iris Gradient Top',
-  [SpriteGeneratorBaseColor.IRIS_GRADIENT_MIDDLE]: 'Iris Gradient Middle',
-  [SpriteGeneratorBaseColor.IRIS_GRADIENT_BOTTOM]: 'Iris Gradient Bottom',
-  [SpriteGeneratorBaseColor.IRIS_HIGHLIGHT_TOP]: 'Iris Highlight Top',
-  [SpriteGeneratorBaseColor.IRIS_HIGHLIGHT_BOTTOM]: 'Iris Highlight Bottom',
-  [SpriteGeneratorBaseColor.MAGIC_AURA]: 'Magic Aura',
+  [SpriteGeneratorBaseColor.COAT_OUTLINE]: 'coatOutline',
+  [SpriteGeneratorBaseColor.COAT_SHADOW_OUTLINE]: 'coatShadowOutline',
+  [SpriteGeneratorBaseColor.COAT_FILL]: 'coatFill',
+  [SpriteGeneratorBaseColor.COAT_SHADOW_FILL]: 'coatShadowFill',
+  [SpriteGeneratorBaseColor.IRIS_GRADIENT_TOP]: 'irisGradientTop',
+  [SpriteGeneratorBaseColor.IRIS_GRADIENT_MIDDLE]: 'irisGradientMiddle',
+  [SpriteGeneratorBaseColor.IRIS_GRADIENT_BOTTOM]: 'irisGradientBottom',
+  [SpriteGeneratorBaseColor.IRIS_HIGHLIGHT_TOP]: 'irisHighlightTop',
+  [SpriteGeneratorBaseColor.IRIS_HIGHLIGHT_BOTTOM]: 'irisHighlightBottom',
+  [SpriteGeneratorBaseColor.MAGIC_AURA]: 'magicAura',
 };
 
 export interface SpriteGeneratorColorsFormProps {
@@ -39,6 +41,7 @@ export interface SpriteGeneratorColorsFormProps {
 }
 
 export const SpriteGeneratorColorsForm: FC<SpriteGeneratorColorsFormProps> = ({ colorMap, middleIrisGradient, magicAura, setColorMap }) => {
+  const t = useTranslations();
   const handleChange = useCallback(
     (value: string, key: keyof SpriteGeneratorColorMap) => {
       const newColor = hexToRgb(value);
@@ -80,13 +83,13 @@ export const SpriteGeneratorColorsForm: FC<SpriteGeneratorColorsFormProps> = ({ 
   // Rendered inside SpriteGenerator's <Form>, and forms can't be nested
   return (
     <div>
-      <h3>Colors</h3>
+      <h3>{t('colorGuide.spriteGenerator.colors')}</h3>
       <Row>
         {baseColors.map((baseColor) => (
           <Col key={baseColor} xs={12} md={6}>
             <FormGroup row>
               <Label for={INPUT_NAMES[baseColor]} lg={5} xl={6} className="col-xxl-7">
-                {INPUT_LABELS[baseColor]}
+                {t(`colorGuide.spriteGenerator.color.${INPUT_LABELS[baseColor]}`)}
               </Label>
               <Col lg={7} xl={6} className="col-xxl-5">
                 <ColorInputGroup
