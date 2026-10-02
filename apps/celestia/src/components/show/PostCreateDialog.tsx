@@ -1,8 +1,8 @@
-import Image from 'next/image';
 import { FC, useState } from 'react';
-import { Button, FormGroup, Input, InputGroup, Label } from 'reactstrap';
+import { FormGroup, Input, Label } from 'reactstrap';
 
 import { FormDialog } from 'src/components/shared/dialogs/FormDialog';
+import { PostImageField } from 'src/components/show/PostImageField';
 import { describeApiError, fieldErrors, useApiMutation } from 'src/hooks';
 import { CreatePostBody, PostService } from 'src/services/posts';
 import { ENDPOINTS } from 'src/utils';
@@ -19,12 +19,6 @@ export const PostCreateDialog: FC<PropTypes> = ({ showId, kind, isOpen, onClose 
   const [label, setLabel] = useState('');
   const [type, setType] = useState<NonNullable<CreatePostBody['type']>>('chr');
 
-  const check = useApiMutation((url: string) => PostService.checkImage(url), {
-    // The title of a deviation makes a decent default description
-    onSuccess: (data) => {
-      if (data.title && label === '') setLabel(data.title);
-    },
-  });
   const create = useApiMutation(
     () =>
       PostService.create({
@@ -39,7 +33,6 @@ export const PostCreateDialog: FC<PropTypes> = ({ showId, kind, isOpen, onClose 
       onSuccess: () => {
         setImageUrl('');
         setLabel('');
-        check.reset();
         onClose();
       },
     }
@@ -63,42 +56,15 @@ export const PostCreateDialog: FC<PropTypes> = ({ showId, kind, isOpen, onClose 
       busy={create.isPending}
       error={generalError}
     >
-      <FormGroup>
-        <Label for={`new-${kind}-url`}>Image link</Label>
-        <InputGroup>
-          <Input
-            id={`new-${kind}-url`}
-            type="url"
-            placeholder="https://www.deviantart.com/…"
-            value={imageUrl}
-            onChange={(e) => {
-              setImageUrl(e.target.value);
-              check.reset();
-            }}
-            onBlur={() => imageUrl.trim() && !check.isPending && !check.data && check.mutate(imageUrl.trim())}
-            invalid={Boolean(errors.imageUrl) || Boolean(check.error)}
-            autoFocus
-            required
-          />
-          <Button type="button" outline onClick={() => check.mutate(imageUrl.trim())} disabled={!imageUrl.trim() || check.isPending}>
-            Check
-          </Button>
-        </InputGroup>
-        {(errors.imageUrl || check.error) && (
-          <div className="invalid-feedback d-block">{errors.imageUrl ?? (check.error && describeApiError(check.error))}</div>
-        )}
-        {check.data && (
-          <Image
-            src={check.data.preview}
-            alt="Preview"
-            width={160}
-            height={120}
-            unoptimized
-            className="mt-2"
-            style={{ objectFit: 'cover' }}
-          />
-        )}
-      </FormGroup>
+      <PostImageField
+        id={`new-${kind}-url`}
+        value={imageUrl}
+        onChange={setImageUrl}
+        error={errors.imageUrl}
+        // The title of a deviation makes a decent default description
+        onChecked={(data) => data.title && label === '' && setLabel(data.title)}
+        autoFocus
+      />
       <FormGroup>
         <Label for={`new-${kind}-label`}>Description</Label>
         <Input

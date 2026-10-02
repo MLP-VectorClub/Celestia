@@ -58,3 +58,34 @@ describe('getPostActions', () => {
     expect(getPostActions(post({ reservedBy: { id: 20, name: 'Me' } }), { id: 10, role: 'user' }).deleteRequest).toBe(false);
   });
 });
+
+describe('getPostActions editing', () => {
+  const posterOnly = { id: 10, role: 'user' } as const;
+
+  it('offers editing only when the API says the post can be edited', () => {
+    expect(getPostActions(post({ canEdit: true }), posterOnly).edit).toBe(true);
+    expect(getPostActions(post({ canEdit: false }), posterOnly).edit).toBe(false);
+    expect(getPostActions(post({ canEdit: true }), guest).edit).toBe(false);
+  });
+
+  it('lets the poster change the image of a request until somebody reserves it', () => {
+    expect(getPostActions(post(), posterOnly).changeImage).toBe(true);
+    expect(getPostActions(post({ reservedBy: { id: 20, name: 'Me' } }), posterOnly).changeImage).toBe(false);
+  });
+
+  it('lets the poster change the image of their reservation', () => {
+    expect(getPostActions(post({ kind: 'reservation', reservedBy: { id: 10, name: 'Poster' } }), posterOnly).changeImage).toBe(true);
+  });
+
+  it('locks the image of approved posts, also for staff, and hides it from strangers', () => {
+    expect(getPostActions(post({ approved: true }), staff).changeImage).toBe(false);
+    expect(getPostActions(post(), member).changeImage).toBe(false);
+    expect(getPostActions(post(), staff).changeImage).toBe(true);
+  });
+
+  it('offers unbreaking to staff on broken posts only', () => {
+    expect(getPostActions(post({ broken: true }), staff).unbreak).toBe(true);
+    expect(getPostActions(post({ broken: true }), member).unbreak).toBe(false);
+    expect(getPostActions(post({ broken: false }), staff).unbreak).toBe(false);
+  });
+});

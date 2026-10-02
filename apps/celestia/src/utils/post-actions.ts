@@ -22,5 +22,9 @@ export const getPostActions = (post: PostItem, user: { id: number | null; role: 
     approve: isMember && finished && !post.approved && !post.broken,
     unapprove: isStaff && post.approved,
     deleteRequest: post.kind === 'request' && !post.reservedBy && (isPoster || isStaff),
+    edit: signedIn && post.canEdit,
+    // Approved posts are locked; posters may only swap the image while a request is still unreserved
+    changeImage: signedIn && !post.approved && (isStaff || (isPoster && (post.kind === 'reservation' || !post.reservedBy))),
+    unbreak: isStaff && post.broken,
   };
 };

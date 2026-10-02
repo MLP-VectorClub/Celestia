@@ -7,6 +7,7 @@ import NoResultsAlert from 'src/components/shared/NoResultsAlert';
 import StatusAlert from 'src/components/shared/StatusAlert';
 import { PostCreateDialog } from 'src/components/show/PostCreateDialog';
 import { PostListItem } from 'src/components/show/PostListItem';
+import { StaffReservationDialog } from 'src/components/show/StaffReservationDialog';
 import { useAuth, usePosts } from 'src/hooks';
 import { permission } from 'src/utils';
 
@@ -21,6 +22,8 @@ export const PostList: FC<PropTypes> = ({ showId, kind, initialData }) => {
   const { posts, status } = usePosts({ showId, kind }, initialData);
   const { signedIn, user } = useAuth();
   const [creating, setCreating] = useState(false);
+  const [addingFinished, setAddingFinished] = useState(false);
+  const canAddFinished = kind === 'reservation' && signedIn && permission(user, 'staff');
   const canCreate = signedIn && (kind === 'request' || permission(user, 'member'));
   return (
     <section id={kind === 'request' ? 'requests' : 'reservations'}>
@@ -31,6 +34,14 @@ export const PostList: FC<PropTypes> = ({ showId, kind, initialData }) => {
             {kind === 'request' ? 'Add request' : 'Add reservation'}
           </Button>
           <PostCreateDialog showId={showId} kind={kind} isOpen={creating} onClose={() => setCreating(false)} />
+        </>
+      )}
+      {canAddFinished && (
+        <>
+          <Button color="ui" size="sm" className="mb-3 ms-2" onClick={() => setAddingFinished(true)}>
+            Add finished reservation
+          </Button>
+          <StaffReservationDialog showId={showId} isOpen={addingFinished} onClose={() => setAddingFinished(false)} />
         </>
       )}
       <StatusAlert status={status} subject={t('show.post.loadingSubject')} />

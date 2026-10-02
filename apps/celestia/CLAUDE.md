@@ -51,11 +51,13 @@ status per phase and verification method live in [`docs/winterchilla-parity-plan
 
 - **Muffin rating** is a client-side component (`MuffinRating`, five muffins filled in proportion to the score, used on the show page) instead of the old `/muffin-rating?w=` image route (user's decision). **Manifest:** static `public/manifest.json` with the existing `/icons/*`, linked from the layout, `/manifest` redirects to it.
 
+- **More post tools** (`PostActions`): edit description/type (`PostEditDialog`; the developer-only date overrides are not offered), change image (`PostImageDialog`, shares `PostImageField` with the create dialog), unbreak (staff), and staff "Add finished reservation" (`StaffReservationDialog`). Edit and the validation errors were checked against Luna; the image and unbreak success paths were not (they need reachable images).
+
 ## Left to do
 
 - Staff/admin: dev tools.
   Dropped on purpose (not in the contract): PCG admin list, tag changes, browser-recognition, `/u/{uuid}`, appearance PNG/GPL exports (compose from `colorGroups`), sessions list.
-- Post edit/image/unbreak/staff reservations, event writes (disabled server-side), account password and e-mail (Luna's flows, Winterchilla's are `x-internal`).
+- Event writes (disabled server-side), account password and e-mail (Luna's flows, Winterchilla's are `x-internal`).
 - Real sign-in: Celestia still uses Luna's flow; auth state is client-only (SSR shows the signed-out shell on account pages).
 - Nothing in the editing/write UI has been clicked through in a browser yet (no extension was available): only request shapes were exercised against the APIs.
 - i18n: new strings exist for `en` only (Crowdin handles the rest); several appearance-page strings, the admin pages and all three tools (blending, reverser, picker) are still hard-coded English: do one pass over them.

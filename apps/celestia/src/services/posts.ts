@@ -36,5 +36,15 @@ export class PostService {
 
   static deleteRequest = (id: number) => Axios.delete<void>(`/posts/requests/${id}`);
 
+  /** Only fields that are sent and differ from the stored value change */
+  static update = (id: number, data: { label?: string | null; type?: 'chr' | 'obj' | 'bg' }) => Axios.put<void>(`/posts/${id}`, data);
+
+  static changeImage = (id: number, imageUrl: string) => Axios.put<unknown>(`/posts/${id}/image`, { imageUrl });
+
+  static unbreak = (id: number) => Axios.post<unknown>(`/posts/${id}/unbreak`);
+
+  /** Staff only: adds an already finished reservation for the deviation's author */
+  static addReservation = (showId: number, deviation: string) => Axios.post<unknown>('/posts/reservations', { showId, deviation });
+
   static vote = (showId: number, vote: number) => Axios.post<PostShowIdVoteResult>(`/show/${showId}/vote`, { vote });
 }
