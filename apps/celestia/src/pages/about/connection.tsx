@@ -51,9 +51,7 @@ export const ConnectionPage: NextPage<PropTypes> = ({ connectingAddress, forward
       </Head>
       <StandardHeading heading={t('connection.heading')} />
 
-      <h3>
-        Frontend: (<Abbr title="Server-Side Rendering">SSR</Abbr>)
-      </h3>
+      <h3>{t.rich('connection.frontend', { ssr: (chunks) => <Abbr title={t('connection.ssrMeaning')}>{chunks}</Abbr> })}</h3>
       <p>
         <strong>{t('connection.connectingAddress')}:</strong> <code>{JSON.stringify(connectingAddress)}</code>
       </p>

@@ -57,7 +57,7 @@ const AboutPage: NextPage = () => {
   return (
     <Content>
       <div className="d-flex justify-content-center">
-        <Image src="/img/logo.svg" alt="MLP Vector Club Website Logo" id="about-logo" width={200} height={200} priority unoptimized />
+        <Image src="/img/logo.svg" alt={t('about.logoAlt')} id="about-logo" width={200} height={200} priority unoptimized />
       </div>
       <StandardHeading heading={heading} lead={t('about.tagline')} />
       <section className="what-s-this-site-">
@@ -223,10 +223,11 @@ const AboutPage: NextPage = () => {
           </li>
         </ul>
         <p>
-          <strong>Episode synopsis data</strong>
-          {' is provided by '}
-          <ExternalLink href="https://www.themoviedb.org/documentation/api">The Movie Database API</ExternalLink>
-          {`. ${t('common.tmdbDisclaimer')}`}
+          {t.rich('about.synopsisCredit', {
+            strong: (chunks) => <strong>{chunks}</strong>,
+            tmdb: (chunks) => <ExternalLink href="https://www.themoviedb.org/documentation/api">{chunks}</ExternalLink>,
+          })}
+          {` ${t('common.tmdbDisclaimer')}`}
           <br />
           <strong>Coding, design & hosting:</strong> <ExternalLink href="https://went.tf">WentTheFox</ExternalLink>
         </p>

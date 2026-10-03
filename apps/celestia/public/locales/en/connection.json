@@ -7,5 +7,7 @@
   "commitId": "Server Commit ID",
   "commitTime": "Server Commit Time",
   "updateBackend": "Refresh results",
-  "deviceIdentifierInfo": "This is the name given to your new access tokens by default; this information is gathered from the User Agent string"
+  "deviceIdentifierInfo": "This is the name given to your new access tokens by default; this information is gathered from the User Agent string",
+  "frontend": "Frontend: (<ssr>SSR</ssr>)",
+  "ssrMeaning": "Server-Side Rendering"
 }

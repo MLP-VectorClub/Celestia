@@ -34,5 +34,7 @@
     "title": "Can I see the code behind the site?",
     "p1": "Absolutely! Both the front- and backend of this website is open source software, you can find each component on GitHub:",
     "p2": "Additionally, the footer will always display the versions of each repository currently being used by the application. To show this information, simply click the <icon></icon> icon in front of the last update time."
-  }
+  },
+  "logoAlt": "MLP Vector Club Website Logo",
+  "synopsisCredit": "<strong>Episode synopsis data</strong> is provided by <tmdb>The Movie Database API</tmdb>."
 }

@@ -143,5 +143,6 @@
     "dataSubject": "data",
     "failed": "Failed to fetch {subject}, please try again later.",
     "loading": "Loading {subject}, please wait…"
-  }
+  },
+  "avatarAlt": "Avatar image"
 }

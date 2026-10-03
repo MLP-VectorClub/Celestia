@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { FC, memo } from 'react';
 
@@ -17,10 +18,21 @@ interface PropTypes {
   vectorApp?: VectorApp | null;
 }
 
-const AvatarWrap: FC<PropTypes> = ({ avatarProvider, avatarUrl, size, className, vectorApp = null }) => (
-  <div className={classNames(`avatar-wrap provider-${avatarProvider}`, className, vectorApp && `app-${vectorApp}`)}>
-    <Image src={avatarUrl || GUEST_AVATAR} className="avatar" width={size} height={size} unoptimized priority alt="Avatar image" />
-  </div>
-);
+const AvatarWrap: FC<PropTypes> = ({ avatarProvider, avatarUrl, size, className, vectorApp = null }) => {
+  const t = useTranslations();
+  return (
+    <div className={classNames(`avatar-wrap provider-${avatarProvider}`, className, vectorApp && `app-${vectorApp}`)}>
+      <Image
+        src={avatarUrl || GUEST_AVATAR}
+        className="avatar"
+        width={size}
+        height={size}
+        unoptimized
+        priority
+        alt={t('common.avatarAlt')}
+      />
+    </div>
+  );
+};
 
 export default memo(AvatarWrap);
