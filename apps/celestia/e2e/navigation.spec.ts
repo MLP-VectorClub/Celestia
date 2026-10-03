@@ -97,8 +97,15 @@ test.describe('the useful links in the sidebar', () => {
     await expect(links.getByRole('link', { name: 'Discord server' })).toHaveAttribute('href', 'https://discord.example/join');
   });
 
-  test('are not shown to guests, who get none from the API', async ({ page, request }) => {
+  test('are the ones for everybody when signed out, as on the old site', async ({ page, request }) => {
     await configure(request, { signedIn: false, usefulLinks });
+    await page.goto('/show');
+    const links = page.locator('#sidebar .links');
+    await expect(links.getByRole('link')).toHaveText(['Sprite template generator', 'Discord server']);
+  });
+
+  test('leave no empty section when there are none to show', async ({ page, request }) => {
+    await configure(request, { signedIn: false, usefulLinks: usefulLinks.filter((link) => link.minRole !== 'guest') });
     await page.goto('/show');
     await expect(page.locator('#sidebar')).toBeVisible();
     await expect(page.locator('#sidebar .links')).toHaveCount(0);

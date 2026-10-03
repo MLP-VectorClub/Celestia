@@ -141,7 +141,7 @@ Legend: ✅ exists in Celestia · 🟡 exists but a stub or incomplete · ❌ mi
 | Piece | Celestia | Data source |
 |---|---|---|
 | Notices banner | ✅ `Notices` | `GET /notices/current` (HTML in `messageHtml` is intentional — sanitise before `dangerouslySetInnerHTML`, `html-to-react` is already a dependency) |
-| Sidebar links | ✅ Celestia renders them for signed in visitors (guests get `[]` by design); production data unchecked, asked Luna 2026-10-03 | `GET /useful-links/sidebar` |
+| Sidebar links | ✅ Celestia fetches for everyone and lists them; waits for the API to return the guest links to signed out visitors (Winterchilla's HTML sidebar showed them), asked Luna 2026-10-03 | `GET /useful-links/sidebar` |
 | Header navigation | ✅ in Winterchilla's order (2026-10-03), plus Events | `MainNavigation`, Winterchilla's header template |
 | Sidebar notifications | 🟡 | `GET /notifications` is HTML-only and `x-internal`; notifications come from Luna's own API |
 | "Happening soon" / upcoming | 🟡 stub (`HappeningSoon`) | `GET /show/next` (one entry) and `GET /events`; `/about/upcoming` is `x-internal` |

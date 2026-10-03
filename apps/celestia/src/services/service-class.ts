@@ -22,16 +22,13 @@ export class Service {
 
   protected getRequestOptions(): undefined | AxiosRequestConfig {
     if (this.request) {
-      if (!this.request?.headers?.referer) {
-        if (!this.request.headers) {
-          this.request.headers = {};
-        }
-        this.request.headers.referer = APP_HOST;
-      }
       const address = visitorAddress(this.request.headers);
       return {
         headers: {
-          ...pick(this.request?.headers, ['authorization', 'referer', 'origin', 'cookie']),
+          ...pick(this.request.headers, ['authorization', 'cookie']),
+          // The API only accepts a session cookie from requests that come from the front end (Sanctum checks Referer, then Origin), and these do, whatever
+          // site the visitor came from
+          referer: APP_HOST,
           ...(address ? { 'x-forwarded-for': address } : {}),
         },
       };

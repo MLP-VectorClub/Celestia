@@ -173,7 +173,7 @@ createServer(async (req, res) => {
       { commitId: 'e2e', commitTime: '2026-01-01T00:00:00Z', ip: '127.0.0.1', proxiedIps: null, userAgent: 'e2e', deviceIdentifier: 'e2e' },
     ],
     '/notices/current': [200, []],
-    '/useful-links/sidebar': [200, control.signedIn ? control.usefulLinks : []],
+    '/useful-links/sidebar': [200, control.usefulLinks.filter((link) => control.signedIn || link.minRole === 'guest')],
     '/config': [200, fixture('config')],
     '/events': [200, { events: [], pagination: { currentPage: 1, totalPages: 1, totalItems: 0, itemsPerPage: 20 } }],
   };

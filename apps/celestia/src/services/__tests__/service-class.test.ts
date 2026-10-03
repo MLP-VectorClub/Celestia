@@ -2,6 +2,7 @@ import Axios from 'axios';
 import { IncomingMessage } from 'http';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
+import { APP_HOST } from 'src/config';
 import { ResourceService } from 'src/services/resource';
 import { visitorAddress } from 'src/services/service-class';
 
@@ -24,20 +25,27 @@ describe('visitorAddress', () => {
 describe('requests made for a visitor', () => {
   afterEach(() => vi.restoreAllMocks());
 
-  it('pass on the visitor, the cookie and the authorization', async () => {
+  const headersOf = async (incoming: Record<string, string>) => {
     const get = vi.spyOn(Axios, 'get').mockResolvedValue({ data: {} });
-    await new ResourceService(request({ 'x-real-ip': '203.0.113.7', cookie: 'a=b', authorization: 'Bearer t', accept: 'text/html' })).get(
-      '/show'
-    );
+    await new ResourceService(request(incoming)).get('/show');
+    return get.mock.calls[0][1]?.headers;
+  };
 
-    const headers = get.mock.calls[0][1]?.headers;
+  it('pass on the visitor, the cookie and the authorization', async () => {
+    const headers = await headersOf({ 'x-real-ip': '203.0.113.7', cookie: 'a=b', authorization: 'Bearer t', accept: 'text/html' });
     expect(headers).toMatchObject({ 'x-forwarded-for': '203.0.113.7', cookie: 'a=b', authorization: 'Bearer t' });
     expect(headers).not.toHaveProperty('accept');
   });
 
   it('send no address when the request has none', async () => {
-    const get = vi.spyOn(Axios, 'get').mockResolvedValue({ data: {} });
-    await new ResourceService(request({ cookie: 'a=b' })).get('/show');
-    expect(get.mock.calls[0][1]?.headers).not.toHaveProperty('x-forwarded-for');
+    expect(await headersOf({ cookie: 'a=b' })).not.toHaveProperty('x-forwarded-for');
+  });
+
+  it('always come from the front end, so the API accepts the visitor session cookie, whatever site the visitor came from', async () => {
+    expect(await headersOf({ cookie: 'a=b' })).toMatchObject({ referer: APP_HOST });
+    expect(await headersOf({ cookie: 'a=b', referer: 'https://www.google.com/', origin: 'https://evil.example' })).toMatchObject({
+      referer: APP_HOST,
+    });
+    expect(await headersOf({ cookie: 'a=b', origin: 'https://evil.example' })).not.toHaveProperty('origin');
   });
 });

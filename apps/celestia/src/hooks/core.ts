@@ -22,15 +22,15 @@ export function useCsrf() {
   return data;
 }
 
-export function useSidebarUsefulLinks(enabled: boolean) {
+/** The links depend on who is looking (signed out visitors get the ones for everybody), so the answer is kept per signed in state */
+export function useSidebarUsefulLinks(signedIn: boolean) {
   const fetcher = useCallback(() => usefulLinksFetcher()(), []);
   const { data } = useQuery({
-    queryKey: [ENDPOINTS.USEFUL_LINKS_SIDEBAR],
+    queryKey: [ENDPOINTS.USEFUL_LINKS_SIDEBAR, { signedIn }],
     queryFn: fetcher,
-    enabled,
   });
 
-  return enabled ? data : undefined;
+  return data;
 }
 
 export const isTranslatable = (value: Translatable | unknown): value is Translatable => {
