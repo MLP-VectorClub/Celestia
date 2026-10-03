@@ -68,7 +68,7 @@ status per phase and verification method live in [`docs/winterchilla-parity-plan
 
 - Guide titles and names (`getGuideTitle`, `getGuideLabel`) stay English on purpose, no translation wanted.
 
-- **Sidebar and header, found on production (not investigated yet):** the useful links are missing from the sidebar (`SidebarUsefulLinks`, `GET /useful-links/sidebar`; check what production returns for a guest and a signed in user and whether the component hides them), and the header navigation links are not in Winterchilla's order and should match it (compare `MainNavigation` with Winterchilla's `templates` header).
+- **Sidebar useful links on production:** Celestia lists them for signed in visitors (`SidebarUsefulLinks`, covered by `e2e/navigation.spec.ts`); signed out visitors get `[]` from the API by design (contract and Luna), so the section is hidden for them. If they are missing for a signed in visitor the cause is the data or the response of `GET /useful-links/sidebar` on production (asked the Luna session to check); nothing to fix in Celestia unless that turns out to be wrong. The header navigation now follows Winterchilla's order (Home, Color Guides, Latest Episode, Show, [Events, which Winterchilla does not have], Account, Users/Members, Admin, About, MLP-VectorClub) and Latest Episode is enabled.
 
 - Staff/admin: dev tools.
   Dropped on purpose (not in the contract): PCG admin list, tag changes, browser-recognition, `/u/{uuid}`, appearance PNG/GPL exports (compose from `colorGroups`), sessions list.

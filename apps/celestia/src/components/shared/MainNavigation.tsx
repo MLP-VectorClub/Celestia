@@ -31,18 +31,18 @@ const MainNavigation: FC = () => {
         )}
       </NavItem>
       <NavItem>
+        <Link href={defaultGuideLink} passHref legacyBehavior>
+          <NavLink>{t('common.titles.colorGuides')}</NavLink>
+        </Link>
+      </NavItem>
+      <NavItem>
         <Link href={PATHS.LATEST_EPISODE} passHref legacyBehavior>
-          <NavLink disabled>{t('common.titles.latestEpisode')}</NavLink>
+          <NavLink>{t('common.titles.latestEpisode')}</NavLink>
         </Link>
       </NavItem>
       <NavItem>
         <Link href={PATHS.SHOW} passHref legacyBehavior>
           <NavLink>{t('common.titles.show')}</NavLink>
-        </Link>
-      </NavItem>
-      <NavItem>
-        <Link href={defaultGuideLink} passHref legacyBehavior>
-          <NavLink>{t('common.titles.colorGuides')}</NavLink>
         </Link>
       </NavItem>
       <NavItem>

@@ -29,6 +29,10 @@ interface Control {
   userVote: number | null;
   /** Every vote is answered with 409, as for somebody who already voted */
   alreadyVoted: boolean;
+  /** The role of the signed in visitor */
+  userRole: string;
+  /** What `/useful-links/sidebar` lists for a signed in visitor (signed out visitors get nothing, as in the real API) */
+  usefulLinks: Array<{ id: number; label: string; url: string; title: string | null; minRole: string }>;
   /** Whether episodes have aired (voting open) */
   aired: boolean;
   /** Requests whose path starts with this answer with the status instead (with `Retry-After` when given) */
@@ -44,6 +48,8 @@ const DEFAULT_CONTROL: Control = {
   userVote: null,
   alreadyVoted: false,
   aired: true,
+  userRole: 'user',
+  usefulLinks: [],
   failures: [],
 };
 let control: Control = { ...DEFAULT_CONTROL, votes: {} };
@@ -153,7 +159,7 @@ createServer(async (req, res) => {
   if (req.method === 'GET' && url.pathname === '/posts') return send(200, { posts: [] });
   if (req.method === 'GET' && url.pathname === '/users/me' && control.signedIn) {
     return send(200, {
-      user: { id: 9001, name: 'TestUser', role: 'user', avatarUrl: null, avatarProvider: 'deviantart' },
+      user: { id: 9001, name: 'TestUser', role: control.userRole, avatarUrl: null, avatarProvider: 'deviantart' },
       sessionUpdating: false,
     });
   }
@@ -167,7 +173,7 @@ createServer(async (req, res) => {
       { commitId: 'e2e', commitTime: '2026-01-01T00:00:00Z', ip: '127.0.0.1', proxiedIps: null, userAgent: 'e2e', deviceIdentifier: 'e2e' },
     ],
     '/notices/current': [200, []],
-    '/useful-links/sidebar': [200, []],
+    '/useful-links/sidebar': [200, control.signedIn ? control.usefulLinks : []],
     '/config': [200, fixture('config')],
     '/events': [200, { events: [], pagination: { currentPage: 1, totalPages: 1, totalItems: 0, itemsPerPage: 20 } }],
   };
