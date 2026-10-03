@@ -3,10 +3,15 @@ import Link from 'next/link';
 import { FC, JSX, MouseEventHandler, useCallback } from 'react';
 
 import ExternalLink from 'src/components/shared/ExternalLink';
+import { APP_HOST } from 'src/config';
 import { useAuth, useSidebarUsefulLinks } from 'src/hooks';
 import { PATHS } from 'src/paths';
 import { useAppDispatch } from 'src/store';
 import { coreActions } from 'src/store/slices';
+
+/** The path of a link that points at this site by its full address (links carried over from the old site do), `null` for other sites */
+export const pathOnThisSite = (url: string): string | null =>
+  url === APP_HOST ? '/' : url.startsWith(`${APP_HOST}/`) ? url.slice(APP_HOST.length) : null;
 
 const SidebarUsefulLinks: FC = () => {
   const t = useTranslations();
@@ -37,7 +42,8 @@ const SidebarUsefulLinks: FC = () => {
       <ul>
         {usefulLinks.map((el) => {
           let link: JSX.Element;
-          const externalUrl = /^https?:\/\//.test(el.url);
+          const ownPath = pathOnThisSite(el.url);
+          const externalUrl = ownPath === null && /^https?:\/\//.test(el.url);
           if (externalUrl) {
             link = (
               <ExternalLink href={el.url} title={el.title ?? undefined}>
@@ -59,7 +65,7 @@ const SidebarUsefulLinks: FC = () => {
                 );
             } else {
               link = (
-                <Link href={el.url} title={el.title ?? undefined}>
+                <Link href={ownPath ?? el.url} title={el.title ?? undefined}>
                   {el.label}
                 </Link>
               );

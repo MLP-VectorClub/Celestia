@@ -98,6 +98,6 @@ export const handleDataFetchingError = (ctx: GetServerSidePropsContext, e: unkno
   const { status, retryAfter } = describeFailure(e);
   setResponseStatus(ctx, status);
   if (isPageFailure(status) && ctx.res) recordFetchFailure(ctx.res, { status, retryAfter });
-  // A missing page is expected and a rate limit is not worth a stack trace each time
-  if (status !== 404 && status !== 429) console.error(e instanceof Error && 'response' in e ? (e as AxiosError).response : e);
+  // Expected for visitors (missing page, not signed in, not allowed, rate limited) and not worth a log line each time
+  if (![401, 403, 404, 429].includes(status)) console.error(e instanceof Error && 'response' in e ? (e as AxiosError).response : e);
 };

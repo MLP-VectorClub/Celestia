@@ -84,6 +84,7 @@ test.describe('the useful links in the sidebar', () => {
     { id: 1, label: 'Sprite template generator', url: '#sprite-tpl', title: null, minRole: 'guest' },
     { id: 2, label: 'Discord server', url: 'https://discord.example/join', title: 'Chat with us', minRole: 'guest' },
     { id: 3, label: 'Staff handbook', url: '/about', title: null, minRole: 'staff' },
+    { id: 4, label: 'Own site by address', url: 'http://127.0.0.1:4011/cg/sprite', title: null, minRole: 'guest' },
   ];
 
   test('are listed in order for a signed in visitor', async ({ page, request }) => {
@@ -92,16 +93,26 @@ test.describe('the useful links in the sidebar', () => {
     await page.goto('/show');
     const links = page.locator('#sidebar .links');
     await expect(links.getByRole('heading', { name: 'Useful links' })).toBeVisible();
-    await expect(links.getByRole('link')).toHaveText(['Sprite template generator', 'Discord server', 'Staff handbook']);
+    await expect(links.getByRole('link')).toHaveText([
+      'Sprite template generator',
+      'Discord server',
+      'Staff handbook',
+      'Own site by address',
+    ]);
     await expect(links.getByRole('link', { name: 'Sprite template generator' })).toHaveAttribute('href', '/cg/sprite');
     await expect(links.getByRole('link', { name: 'Discord server' })).toHaveAttribute('href', 'https://discord.example/join');
+    // A link to this site by its full address is an ordinary link, not one that opens another tab
+    const own = links.getByRole('link', { name: 'Own site by address' });
+    await expect(own).toHaveAttribute('href', '/cg/sprite');
+    await expect(own).not.toHaveAttribute('target', '_blank');
+    await expect(links.getByRole('link', { name: 'Discord server' })).toHaveAttribute('target', '_blank');
   });
 
   test('are the ones for everybody when signed out, as on the old site', async ({ page, request }) => {
     await configure(request, { signedIn: false, usefulLinks });
     await page.goto('/show');
     const links = page.locator('#sidebar .links');
-    await expect(links.getByRole('link')).toHaveText(['Sprite template generator', 'Discord server']);
+    await expect(links.getByRole('link')).toHaveText(['Sprite template generator', 'Discord server', 'Own site by address']);
   });
 
   test('leave no empty section when there are none to show', async ({ page, request }) => {
