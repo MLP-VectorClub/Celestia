@@ -33,6 +33,10 @@ interface Control {
   userRole: string;
   /** What `/useful-links/sidebar` lists for a signed in visitor (signed out visitors get nothing, as in the real API) */
   usefulLinks: Array<{ id: number; label: string; url: string; title: string | null; minRole: string }>;
+  /** The signed in visitor's `cg_nutshell` preference */
+  nutshell: boolean;
+  /** The appearances of the pony guide, listed in this order */
+  appearances: Array<{ id: number; label: string; nutshellNames: string[]; characterTags?: string[] }>;
   /** Whether episodes have aired (voting open) */
   aired: boolean;
   /** Requests whose path starts with this answer with the status instead (with `Retry-After` when given) */
@@ -48,6 +52,8 @@ const DEFAULT_CONTROL: Control = {
   userVote: null,
   alreadyVoted: false,
   aired: true,
+  nutshell: false,
+  appearances: [],
   userRole: 'user',
   usefulLinks: [],
   failures: [],
@@ -164,10 +170,37 @@ createServer(async (req, res) => {
     });
   }
 
+  const appearance = (a: Control['appearances'][number]) => ({
+    id: a.id,
+    label: a.label,
+    ownerId: null,
+    guide: 'pony',
+    nutshellNames: a.nutshellNames,
+    previewData: ['#ff0000', '#00ff00'],
+    createdAt: '2020-01-01T00:00:00Z',
+    notes: null,
+    sprite: null,
+    hasCutieMarks: false,
+    tags: (a.characterTags ?? []).map((name, i) => ({ id: a.id * 10 + i, name, type: 'char' })),
+  });
+  if (req.method === 'GET' && url.pathname === '/appearances') {
+    return send(200, {
+      appearances: control.appearances.map((a) => ({ ...appearance(a), colorGroups: [] })),
+      pagination: { currentPage: 1, totalPages: 1, totalItems: control.appearances.length, itemsPerPage: 7 },
+    });
+  }
+  if (req.method === 'GET' && url.pathname === '/appearances/pinned') return send(200, []);
+  if (req.method === 'GET' && url.pathname === '/appearances/full') {
+    return send(200, {
+      appearances: control.appearances.map(appearance),
+      groups: [{ name: null, appearanceIds: control.appearances.map((a) => a.id) }],
+    });
+  }
+
   const fixed: Record<string, [number, unknown]> = {
     '/sanctum/csrf-cookie': [204, undefined],
     '/users/me': [401, { message: 'Unauthenticated.' }],
-    '/user-prefs/me': [200, fixture('user-prefs')],
+    '/user-prefs/me': [200, { ...(fixture('user-prefs') as object), cg_nutshell: control.nutshell }],
     '/about/connection': [
       200,
       { commitId: 'e2e', commitTime: '2026-01-01T00:00:00Z', ip: '127.0.0.1', proxiedIps: null, userAgent: 'e2e', deviceIdentifier: 'e2e' },

@@ -14,6 +14,7 @@ import { AppearanceNotes } from 'src/components/colorguide/AppearanceNotes';
 import AppearanceTags from 'src/components/colorguide/AppearanceTags';
 import { GuideLink } from 'src/components/colorguide/GuideLink';
 import { GuideNotFound } from 'src/components/colorguide/GuideNotFound';
+import { NutshellLabel } from 'src/components/colorguide/NutshellLabel';
 import { ShareAppearanceButton } from 'src/components/colorguide/ShareAppearanceButton';
 import SpriteImage from 'src/components/colorguide/SpriteImage';
 import ButtonCollection from 'src/components/shared/ButtonCollection';
@@ -85,7 +86,7 @@ export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppe
         </div>
       )}
       <StandardHeading
-        heading={appearance.label}
+        heading={<NutshellLabel appearance={appearance} />}
         lead={
           <>
             {(appearance.guide ?? guide) ? (

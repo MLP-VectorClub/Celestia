@@ -8,12 +8,16 @@ import { Card, CardBody } from 'reactstrap';
 import { SlimAppearance } from '@mlp-vectorclub/api-types';
 import styles from 'modules/FullGuideAppearanceList.module.scss';
 import { AppearancePreview } from 'src/components/colorguide/AppearancePreview';
+import { NutshellLabel } from 'src/components/colorguide/NutshellLabel';
 import Abbr from 'src/components/shared/Abbr';
+import { useNutshellMode } from 'src/hooks/nutshell';
 import { PATHS } from 'src/paths';
 import { getNonObviousCharacterTags, getSpriteUrl } from 'src/utils/color-guide';
+import { nutshellAka } from 'src/utils/nutshell';
 
 const FullGuideAppearanceList: FC<{ appearances: SlimAppearance[] }> = ({ appearances }) => {
   const t = useTranslations();
+  const { enabled: nutshellNames } = useNutshellMode();
   return (
     <div className={styles.list}>
       {appearances.map((a) => {
@@ -36,18 +40,22 @@ const FullGuideAppearanceList: FC<{ appearances: SlimAppearance[] }> = ({ appear
           sprite = <AppearancePreview data={a.previewData} className={classNames('mb-2', styles.appearancePreview)} />;
         }
 
-        const nonObviousCharacterTags = getNonObviousCharacterTags(a);
+        // With nutshell names on the real label is listed as one of the other names, for the appearances that were renamed
+        const realLabel = nutshellNames ? nutshellAka(a) : null;
+        const aka = [...(realLabel ? [realLabel] : []), ...getNonObviousCharacterTags(a)];
 
         return (
           <Link key={a.id} href={PATHS.APPEARANCE(a)} passHref legacyBehavior>
             <Card color="link" tag="a" className="me-2 mb-2">
               <CardBody className={classNames('p-2', styles.cardBody)}>
                 {sprite}
-                <h3 className={classNames('h5 mb-0', styles.label)}>{a.label}</h3>
-                {nonObviousCharacterTags.length > 0 && (
+                <h3 className={classNames('h5 mb-0', styles.label)}>
+                  <NutshellLabel appearance={a} />
+                </h3>
+                {aka.length > 0 && (
                   <small className={classNames('mt-1', styles.aka)}>
                     <Abbr title={t('colorGuide.list.akaTitle')}>{t('colorGuide.list.aka')}</Abbr>
-                    {` ${nonObviousCharacterTags.join(', ')}`}
+                    {` ${aka.join(', ')}`}
                   </small>
                 )}
               </CardBody>

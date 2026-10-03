@@ -7,6 +7,7 @@ import styles from 'modules/AppearanceItem.module.scss';
 import AppearanceItemColorGroups from 'src/components/colorguide/AppearanceItemColorGroups';
 import AppearanceItemNotes from 'src/components/colorguide/AppearanceItemNotes';
 import AppearanceItemTags from 'src/components/colorguide/AppearanceItemTags';
+import { NutshellLabel } from 'src/components/colorguide/NutshellLabel';
 import SpriteImage from 'src/components/colorguide/SpriteImage';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { PATHS } from 'src/paths';
@@ -51,7 +52,9 @@ const AppearanceItem: FC<AppearanceItemProps> = ({ appearance, pinned = false, g
                   </UncontrolledTooltip>
                 </>
               )}
-              <Link href={appearanceLink}>{appearance.label}</Link>
+              <Link href={appearanceLink}>
+                <NutshellLabel appearance={appearance} />
+              </Link>
             </h5>
             <AppearanceItemNotes notes={appearance.notes} hasCutieMarks={appearance.hasCutieMarks} />
             <AppearanceItemTags tags={appearance.tags} guide={guide} />

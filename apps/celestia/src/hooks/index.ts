@@ -10,4 +10,5 @@ export * from 'src/hooks/prefs';
 export * from 'src/hooks/profile';
 export * from 'src/hooks/content';
 export * from 'src/hooks/mutation';
+export * from 'src/hooks/nutshell';
 export * from 'src/hooks/sidebar-widget';

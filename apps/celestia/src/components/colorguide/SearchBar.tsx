@@ -21,6 +21,7 @@ import { Button, Col, Form, Input, InputGroup, ListGroupItem, Row, UncontrolledT
 import { GuideName } from '@mlp-vectorclub/api-types';
 import styles from 'modules/SearchBar.module.scss';
 import { AppearancePreview } from 'src/components/colorguide/AppearancePreview';
+import { NutshellLabel } from 'src/components/colorguide/NutshellLabel';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { useGuideAutocomplete } from 'src/hooks';
 import { PATHS } from 'src/paths';
@@ -278,7 +279,9 @@ const SearchBar: FC<PropTypes> = ({ initialQuery, guide }) => {
                           id={acOptionId(i)}
                         >
                           <AppearancePreview data={r.previewData} className={styles.acResultPreview} />
-                          <span className={`${styles.acResultLabel} ms-2`}>{r.label}</span>
+                          <span className={`${styles.acResultLabel} ms-2`}>
+                            <NutshellLabel appearance={r} />
+                          </span>
                         </ListGroupItem>
                       </Link>
                     ))}
