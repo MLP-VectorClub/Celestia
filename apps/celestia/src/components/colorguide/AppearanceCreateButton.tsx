@@ -14,12 +14,14 @@ import { AppearanceEditService } from 'src/services/appearance-edit';
 interface PropTypes {
   /** The official guide the appearance is added to, personal guides when missing */
   guide?: GuideName;
+  /** The owner of a personal guide the appearance is added to, for the address of the new page */
+  ownerId?: number;
   /** What the new appearance is, in the label of the button */
   kind: string;
 }
 
 /** The button and dialog that create an appearance (`POST /appearances`) and go to its page */
-export const AppearanceCreateButton: FC<PropTypes> = ({ guide, kind }) => {
+export const AppearanceCreateButton: FC<PropTypes> = ({ guide, ownerId, kind }) => {
   const t = useTranslations();
   const { push } = useRouter();
   const queryClient = useQueryClient();
@@ -43,7 +45,7 @@ export const AppearanceCreateButton: FC<PropTypes> = ({ guide, kind }) => {
         setOpen(false);
         setLabel('');
         setNotes('');
-        if (data.id) void push(PATHS.APPEARANCE({ id: data.id, label: label.trim(), guide: guide ?? null }));
+        if (data.id) void push(PATHS.APPEARANCE({ id: data.id, label: label.trim(), guide: guide ?? null, ownerId }));
       },
     }
   );

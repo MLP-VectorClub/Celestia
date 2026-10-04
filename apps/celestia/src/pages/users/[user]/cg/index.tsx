@@ -58,7 +58,7 @@ const PersonalGuidePage: NextPage<PropTypes> = ({ userId, page, user, initialDat
     <Content>
       <StandardHeading heading={t('users.personalGuide.heading', { name: user?.name ?? '' })} lead={t('users.personalGuide.lead')} />
       <ButtonCollection>
-        {visitor.id === userId && <AppearanceCreateButton kind="pony" />}
+        {visitor.id === userId && <AppearanceCreateButton kind="pony" ownerId={userId} />}
         <Link href={PATHS.USER_PCG_POINT_HISTORY(userId)} passHref legacyBehavior>
           <Button color="link" size="sm">
             {t('users.personalGuide.pointHistory')}
