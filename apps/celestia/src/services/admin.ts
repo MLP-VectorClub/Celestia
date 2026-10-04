@@ -51,9 +51,6 @@ export class AdminService {
 
   static setSetting = (key: SiteSettingKey, value: string) => Axios.put<unknown>(`/settings/${key}`, { value });
 
-  /** Developer only: clears PHP's file status cache on the API server */
-  static clearStatCache = () => Axios.delete<void>('/admin/stat-cache');
-
   /** Developer only: rebuilds the ElasticSearch index of the color guide */
   static reindexColorGuide = () => Axios.post<{ message: string }>('/color-guide/reindex');
 

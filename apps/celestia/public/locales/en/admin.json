@@ -101,11 +101,6 @@
         "button": "Export the color guide",
         "help": "Downloads every official appearance and tag as one JSON file.",
         "failed": "The export could not be downloaded."
-      },
-      "statCache": {
-        "button": "Clear the file stat cache",
-        "help": "Makes PHP forget cached file information, use it after files were changed outside the site.",
-        "cleared": "Cleared."
       }
     }
   }
