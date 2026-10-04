@@ -70,6 +70,7 @@ const downloadBlob = (blob: Blob, filename: string) => {
 const DeveloperTools: FC = () => {
   const t = useTranslations();
   const reindex = useApiMutation(() => AdminService.reindexColorGuide());
+  const statCache = useApiMutation(() => AdminService.clearStatCache());
   const [exportFailed, setExportFailed] = useState(false);
   const exportGuide = useApiMutation(() => AdminService.exportColorGuide(), {
     onSuccess: (blob) => {
@@ -108,6 +109,14 @@ const DeveloperTools: FC = () => {
             {exportGuide.error ? describeApiError(exportGuide.error) : t('admin.settings.developerTools.export.failed')}
           </div>
         )}
+      </FormGroup>
+      <FormGroup>
+        <Button color="secondary" size="sm" id="clear-stat-cache" disabled={statCache.isPending} onClick={() => statCache.mutate()}>
+          {t('admin.settings.developerTools.statCache.button')}
+        </Button>
+        <FormText className="d-block">{t('admin.settings.developerTools.statCache.help')}</FormText>
+        {statCache.isSuccess && <div className="text-success small">{t('admin.settings.developerTools.statCache.cleared')}</div>}
+        {statCache.error && <div className="text-danger small">{describeApiError(statCache.error)}</div>}
       </FormGroup>
     </section>
   );
