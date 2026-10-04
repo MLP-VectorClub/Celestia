@@ -45,11 +45,6 @@ const MainNavigation: FC = () => {
           <NavLink>{t('common.titles.show')}</NavLink>
         </Link>
       </NavItem>
-      <NavItem>
-        <Link href={PATHS.EVENTS} passHref legacyBehavior>
-          <NavLink>{t('common.titles.events')}</NavLink>
-        </Link>
-      </NavItem>
       {signedIn && (
         <NavItem>
           <Link href={PATHS.USER_ACCOUNT(user.id!)} passHref legacyBehavior>
