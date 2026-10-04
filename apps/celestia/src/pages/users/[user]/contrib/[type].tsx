@@ -39,7 +39,7 @@ interface PropTypes {
 }
 
 const titleFactory: TitleFactory<Pick<PropTypes, 'user' | 'type'>> = ({ user, type }) => ({
-  title: ['users.contributions.heading', { name: user?.name ?? '' }],
+  title: [`users.contributions.types.${type}`],
   breadcrumbs: [
     { label: ['users.profile.breadcrumb'] },
     ...(user ? [{ label: user.name, linkProps: { href: PATHS.USER_LONG(user) } }] : []),
@@ -63,8 +63,7 @@ const ContributionsPage: NextPage<PropTypes> = ({ userId, type, page, user, init
   return (
     <Content>
       <StandardHeading
-        heading={t('users.contributions.heading', { name: user?.name ?? '' })}
-        lead={t(`users.contributions.types.${type}`)}
+        heading={t('users.contributions.heading', { type: t(`users.contributions.types.${type}`), name: user?.name ?? '' })}
       />
       <StatusAlert
         status={status}

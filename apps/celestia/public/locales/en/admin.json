@@ -1,9 +1,9 @@
 {
   "sections": {
-    "index": "Administration",
+    "index": "Admin Area",
     "logs": "Global logs",
-    "notices": "Notices",
-    "usefulLinks": "Useful links",
+    "notices": "Manage notices",
+    "usefulLinks": "Manage useful links",
     "settings": "Settings"
   },
   "staffOnly": "This page is only available to staff.",

@@ -14,12 +14,24 @@ interface PropTypes extends PropsWithChildren {
   busy?: boolean;
   /** Shown above the buttons, e.g. a message returned by the API */
   error?: string | null;
+  /** `data-testid` of the submit button, named by what it does (`dialog-btn-save`, `dialog-btn-add`, ...), which browser tests look for */
+  submitTestId?: string;
 }
 
 /**
  * Modal around a form: Enter submits, the buttons lock while busy and the API's error stays inside the dialog
  */
-export const FormDialog: FC<PropTypes> = ({ title, isOpen, onClose, onSubmit, submitLabel, busy = false, error = null, children }) => {
+export const FormDialog: FC<PropTypes> = ({
+  title,
+  isOpen,
+  onClose,
+  onSubmit,
+  submitLabel,
+  busy = false,
+  error = null,
+  submitTestId = 'dialog-btn-save',
+  children,
+}) => {
   const t = useTranslations();
   const handleSubmit: FormEventHandler = (e) => {
     e.preventDefault();
@@ -39,11 +51,11 @@ export const FormDialog: FC<PropTypes> = ({ title, isOpen, onClose, onSubmit, su
           )}
         </ModalBody>
         <ModalFooter>
-          <Button type="submit" color="primary" disabled={busy}>
+          <Button type="submit" color="primary" disabled={busy} data-testid={submitTestId}>
             {busy && <InlineIcon loading first />}
             {submitLabel}
           </Button>
-          <Button type="button" color="link" onClick={onClose} disabled={busy}>
+          <Button type="button" color="link" onClick={onClose} disabled={busy} data-testid="dialog-btn-cancel">
             {t('common.actions.cancel')}
           </Button>
         </ModalFooter>

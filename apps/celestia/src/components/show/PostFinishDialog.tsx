@@ -50,6 +50,7 @@ export const PostFinishDialog: FC<PropTypes> = ({ post, isOpen, onClose }) => {
       }}
       onSubmit={() => finish.mutate()}
       submitLabel={t('show.post.finish.submit')}
+      submitTestId="dialog-btn-finish"
       busy={finish.isPending}
       error={error && !deviationError ? describeApiError(error) : null}
     >

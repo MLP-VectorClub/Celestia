@@ -41,7 +41,10 @@ const VerifyEmailPage: NextPage = () => {
 
   return (
     <Content>
-      <StandardHeading heading={t('users.verify.heading')} lead={t('users.verify.lead')} />
+      <StandardHeading
+        heading={t(link?.action === 'block' ? 'users.verify.blockHeading' : 'users.verify.verifyHeading')}
+        lead={t('users.verify.lead')}
+      />
       {!link && (
         <Alert color="danger" fade={false}>
           {t('users.verify.invalid')}

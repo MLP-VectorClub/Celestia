@@ -29,20 +29,20 @@
     "noPersonalGuide": "No appearances yet",
     "private": "Private",
     "awaitingApproval": "Finished posts awaiting approval",
-    "pointHistory": "Point history",
+    "pointHistory": "Point History",
     "devLabelNote": "Shown with the site's developer label"
   },
   "contributions": {
-    "heading": "{name}'s contributions",
+    "heading": "{type} by {name}",
     "empty": "Nothing here yet",
     "loadingSubject": "contributions",
     "backToProfile": "Back to profile",
     "types": {
-      "cms-provided": "Cutie mark vectors provided",
-      "requests": "Requests",
-      "reservations": "Reservations",
-      "finished-posts": "Finished posts",
-      "fulfilled-requests": "Fulfilled requests"
+      "cms-provided": "Cutie Mark vectors provided",
+      "requests": "Requests posted",
+      "reservations": "Reservations posted",
+      "finished-posts": "Posts finished",
+      "fulfilled-requests": "Requests fulfilled"
     },
     "breadcrumb": "Contributions",
     "restricted": "This list is only visible to the user and to staff"
@@ -54,21 +54,22 @@
     "loadingSubject": "personal guide",
     "private": "Private appearance",
     "breadcrumb": "Personal Color Guide",
-    "pointHistory": "Point history",
+    "pointHistory": "Point History",
     "canManage": "You can add and edit appearances in this guide"
   },
   "pointHistory": {
-    "heading": "{name}'s point history",
+    "heading": "{name}'s Point History",
     "empty": "No point changes recorded",
     "loadingSubject": "point history",
     "amount": "Amount",
     "reason": "Reason",
     "when": "When",
-    "breadcrumb": "Point history",
-    "forbidden": "Only the user and staff can see the point history"
+    "breadcrumb": "Point History",
+    "forbidden": "Only the user and staff can see the point history",
+    "headingOwn": "Your Point History"
   },
   "account": {
-    "heading": "Account",
+    "heading": "Account Settings",
     "lead": "Settings for {name}",
     "breadcrumb": "Account",
     "notYours": "You can only change the settings of your own account",
@@ -82,7 +83,8 @@
       "sessions": "Sessions",
       "discord": "Discord",
       "password": "Password",
-      "email": "E-mail address"
+      "email": "E-mail address",
+      "deviantart": "DeviantArt Account"
     },
     "prefs": {
       "cg_itemsperpage": "Appearances per page",
@@ -130,7 +132,8 @@
       "passwordHelp": "Needed to change the address of your own account.",
       "submit": "Send confirmation e-mail",
       "resend": "Resend the pending confirmation e-mail"
-    }
+    },
+    "deviantartLinked": "Signed in with DeviantArt as <link>{name}</link>."
   },
   "staffTools": {
     "amountPlaceholder": "Amount (negative takes points)",
@@ -159,6 +162,8 @@
     "blockPrompt": "Stop e-mails from being sent to this address?",
     "verify": "Yes, use this address",
     "block": "Never send e-mails to this address",
-    "done": "Done."
+    "done": "Done.",
+    "verifyHeading": "Verify E-mail Address",
+    "blockHeading": "Block E-mail Address"
   }
 }

@@ -123,6 +123,7 @@ const SynonymDialog: FC<BaseProps & { tag: TagListItem; isOpen: boolean; onClose
       }}
       onSubmit={() => Number.isInteger(targetId) && targetId > 0 && save.mutate()}
       submitLabel={t('colorGuide.tags.admin.makeSynonym')}
+      submitTestId="dialog-btn-make-synonym"
       busy={save.isPending}
       error={save.error ? describeApiError(save.error) : null}
     >

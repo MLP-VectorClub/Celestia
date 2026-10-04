@@ -6,13 +6,13 @@ import { Button } from 'reactstrap';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { ShowFormDialog } from 'src/components/show/ShowFormDialog';
 
-export const AddEntryButton: FC<{ noun: string; category: 'episode' | 'other' }> = ({ noun, category }) => {
+export const AddEntryButton: FC<{ noun: string; category: 'episode' | 'other'; id?: string }> = ({ noun, category, id }) => {
   const t = useTranslations();
   const { push } = useRouter();
   const [open, setOpen] = useState(false);
   return (
     <>
-      <Button color="success" size="sm" onClick={() => setOpen(true)}>
+      <Button id={id} color="success" size="sm" onClick={() => setOpen(true)}>
         <InlineIcon icon="plus" first />
         {t('show.admin.addNew', { noun })}
       </Button>

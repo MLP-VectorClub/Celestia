@@ -16,9 +16,11 @@ export interface ShowEntriesTableProps {
   pageQueryParam?: string;
   initialData: Nullable<GetShowResult>;
   columns: ShowTableColumnDefinition[];
+  /** Address of the table, which the old site's links and browser tests use (`episodes`, `movies`) */
+  tableId?: string;
 }
 
-export const ShowEntriesTable: FC<ShowEntriesTableProps> = ({ params, pageQueryParam = 'page', initialData, columns }) => {
+export const ShowEntriesTable: FC<ShowEntriesTableProps> = ({ params, pageQueryParam = 'page', initialData, columns, tableId }) => {
   const { query } = useRouter();
   const page = useMemo(() => validatePageParam(query[pageQueryParam]), [pageQueryParam, query]);
   const entries = useShowList({ ...params, page }, initialData || undefined);
@@ -28,7 +30,7 @@ export const ShowEntriesTable: FC<ShowEntriesTableProps> = ({ params, pageQueryP
   return (
     <>
       {pageData && <Pagination {...pageData} pageParam={pageQueryParam} tooltipPos="bottom" />}
-      <Table responsive borderless aria-busy={isPlaceholderData} className={classNames({ 'opacity-50': isPlaceholderData })}>
+      <Table id={tableId} responsive borderless aria-busy={isPlaceholderData} className={classNames({ 'opacity-50': isPlaceholderData })}>
         <thead>
           <tr>
             {columns.map((col, i) => {

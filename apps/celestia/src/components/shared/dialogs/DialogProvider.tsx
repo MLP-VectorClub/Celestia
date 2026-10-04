@@ -54,10 +54,10 @@ export const DialogProvider: FC<PropsWithChildren> = ({ children }) => {
         <ModalHeader toggle={() => answer(false)}>{current?.title}</ModalHeader>
         {current?.body && <ModalBody>{current.body}</ModalBody>}
         <ModalFooter>
-          <Button color={current?.color ?? 'primary'} onClick={() => answer(true)} autoFocus>
+          <Button color={current?.color ?? 'primary'} onClick={() => answer(true)} autoFocus data-testid="dialog-btn-confirm">
             {current?.confirmLabel ?? t('common.actions.confirm')}
           </Button>
-          <Button color="link" onClick={() => answer(false)}>
+          <Button color="link" onClick={() => answer(false)} data-testid="dialog-btn-cancel">
             {current?.cancelLabel ?? t('common.actions.cancel')}
           </Button>
         </ModalFooter>

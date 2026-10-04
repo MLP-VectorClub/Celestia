@@ -23,13 +23,13 @@ const SignOutButton: FC = () => {
 
   return (
     <>
-      <Button id={BUTTON_ID} onClick={() => setSignOutConfirm(true)} disabled={signOut.status === Status.LOAD}>
+      <Button id={BUTTON_ID} onClick={() => setSignOutConfirm(true)} disabled={signOut.status === Status.LOAD} data-testid="auth-signout">
         <InlineIcon first icon="sign-out-alt" loading={signOut.status === Status.LOAD} />
         {t('common.sidebar.signOut')}
       </Button>
       <Tooltip isOpen={signOutConfirm} target={BUTTON_ID} container="sidebar" placement="bottom">
         <p className="mb-1">{t('common.sidebar.confirmSignOut')}</p>
-        <Button size="sm" color="success" onClick={handleSignOut} className="me-2">
+        <Button size="sm" color="success" onClick={handleSignOut} className="me-2" data-testid="dialog-btn-confirm">
           <InlineIcon icon="check" fixedWidth />
         </Button>
         <Button size="sm" color="danger" onClick={() => setSignOutConfirm(false)}>

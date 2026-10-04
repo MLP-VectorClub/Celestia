@@ -99,13 +99,14 @@ const ShowPage: NextPage<ShowPageProps> = ({ initialEpisodes, initialOthers }) =
           <StandardHeading heading={t('show.index.episodes.heading')} />
           {isStaff && (
             <ButtonCollection>
-              <AddEntryButton noun={t('show.index.episodes.addNoun')} category="episode" />
+              <AddEntryButton noun={t('show.index.episodes.addNoun')} category="episode" id="add-episode" />
             </ButtonCollection>
           )}
           <ShowEntriesTable
             columns={EPISODE_TABLE_COLUMNS}
             initialData={initialEpisodes}
             pageQueryParam="eppage"
+            tableId="episodes"
             params={EPISODE_TABLE_PARAMS}
           />
         </Col>
@@ -113,10 +114,10 @@ const ShowPage: NextPage<ShowPageProps> = ({ initialEpisodes, initialOthers }) =
           <StandardHeading heading={t('show.index.others.heading')} />
           {isStaff && (
             <ButtonCollection>
-              <AddEntryButton noun={t('show.index.others.addNoun')} category="other" />
+              <AddEntryButton noun={t('show.index.others.addNoun')} category="other" id="add-show" />
             </ButtonCollection>
           )}
-          <ShowEntriesTable columns={OTHERS_TABLE_COLUMNS} initialData={initialOthers} params={OTHERS_TABLE_PARAMS} />
+          <ShowEntriesTable columns={OTHERS_TABLE_COLUMNS} initialData={initialOthers} params={OTHERS_TABLE_PARAMS} tableId="movies" />
         </Col>
       </Row>
     </Content>

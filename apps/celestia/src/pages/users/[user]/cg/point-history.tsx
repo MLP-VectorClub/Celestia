@@ -12,7 +12,7 @@ import StandardHeading from 'src/components/shared/StandardHeading';
 import StatusAlert from 'src/components/shared/StatusAlert';
 import TimeAgo from 'src/components/shared/TimeAgo';
 import { pointHistoryFetcher, userFetcher } from 'src/fetchers';
-import { usePointHistory, useTitleSetter } from 'src/hooks';
+import { useAuth, usePointHistory, useTitleSetter } from 'src/hooks';
 import { PATHS } from 'src/paths';
 import { useAppDispatch, wrapper } from 'src/store';
 import { Nullable, Optional, SSRMessages } from 'src/types';
@@ -44,6 +44,8 @@ const PointHistoryPage: NextPage<PropTypes> = ({ userId, page, user, initialData
   const t = useTranslations();
   const dispatch = useAppDispatch();
   const { query } = useRouter();
+  const { user: me } = useAuth();
+  const ownHistory = me.id !== null && me.id === userId;
   const currentPage = validatePageParam(query.page, page);
   const { data, status } = usePointHistory({ id: userId, page: currentPage }, currentPage === page ? initialData || undefined : undefined);
 
@@ -52,7 +54,9 @@ const PointHistoryPage: NextPage<PropTypes> = ({ userId, page, user, initialData
 
   return (
     <Content>
-      <StandardHeading heading={t('users.pointHistory.heading', { name: user?.name ?? '' })} />
+      <StandardHeading
+        heading={ownHistory ? t('users.pointHistory.headingOwn') : t('users.pointHistory.heading', { name: user?.name ?? '' })}
+      />
       <StatusAlert status={status} subject={t('users.pointHistory.loadingSubject')} errorMessage={t('users.pointHistory.forbidden')} />
       {data?.entries.length === 0 && <NoResultsAlert message={t('users.pointHistory.empty')} />}
       {data && data.entries.length > 0 && (

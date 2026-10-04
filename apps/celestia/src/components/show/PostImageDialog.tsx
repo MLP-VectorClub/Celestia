@@ -37,6 +37,7 @@ export const PostImageDialog: FC<PropTypes> = ({ post, isOpen, onClose }) => {
       }}
       onSubmit={() => imageUrl.trim() && save.mutate()}
       submitLabel={t('show.post.actions.changeImage')}
+      submitTestId="dialog-btn-update"
       busy={save.isPending}
       error={save.error && !errors.imageUrl ? describeApiError(save.error) : null}
     >

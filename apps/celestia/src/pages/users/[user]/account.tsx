@@ -6,6 +6,7 @@ import { Alert, Button, FormGroup, Input, Label } from 'reactstrap';
 
 import { GetUsersIdResult } from '@mlp-vectorclub/api-types';
 import Content from 'src/components/shared/Content';
+import ExternalLink from 'src/components/shared/ExternalLink';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { EmailChangeForm } from 'src/components/users/EmailChangeForm';
@@ -121,6 +122,18 @@ const AccountPage: NextPage<PropTypes> = ({ userId, user }) => {
           {describeApiError(error)}
         </Alert>
       )}
+
+      <section>
+        <h2>{t('users.account.sections.deviantart')}</h2>
+        <p>
+          {t.rich('users.account.deviantartLinked', {
+            name: user?.name ?? '',
+            link: (chunks) => (
+              <ExternalLink href={`https://www.deviantart.com/${encodeURIComponent(user?.name ?? '')}`}>{chunks}</ExternalLink>
+            ),
+          })}
+        </p>
+      </section>
 
       <section>
         <h2>{t('users.account.sections.colorGuide')}</h2>

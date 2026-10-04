@@ -51,6 +51,7 @@ export const RateDialog: FC<PropTypes> = ({ showId, isOpen, onClose, onVoted }) 
       onClose={onClose}
       onSubmit={submit}
       submitLabel={t('show.voting.rateSubmit')}
+      submitTestId="dialog-btn-rate"
       busy={vote.isPending}
       error={error}
     >

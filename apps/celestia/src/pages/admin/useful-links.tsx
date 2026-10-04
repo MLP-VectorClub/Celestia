@@ -49,6 +49,7 @@ const LinkDialog = ({ link, isOpen, onClose }: { link: SidebarUsefulLink | null;
       }}
       onSubmit={() => save.mutate()}
       submitLabel={link ? t('admin.links.save') : t('admin.links.create')}
+      submitTestId={link ? 'dialog-btn-save-changes' : 'dialog-btn-add'}
       busy={save.isPending}
       error={save.error && Object.keys(errors).length === 0 ? describeApiError(save.error) : null}
     >
