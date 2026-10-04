@@ -12,6 +12,7 @@ export const ADMIN_SECTIONS = [
   { href: '/admin/logs', key: 'logs' },
   { href: '/admin/notices', key: 'notices' },
   { href: '/admin/useful-links', key: 'usefulLinks' },
+  { href: '/admin/pcg-appearances', key: 'pcgAppearances' },
   { href: '/admin/settings', key: 'settings' },
 ] as const;
 

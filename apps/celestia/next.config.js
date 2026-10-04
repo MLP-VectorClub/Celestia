@@ -106,7 +106,7 @@ module.exports = {
       ),
       // URLs of the previous site that are served by pages or by the API
       { source: '/cg/picker/frame', destination: '/picker' },
-      { source: '/@:name/:rest+', destination: '/u/:name?rest=:rest+' },
+      { source: '/@:name/:rest(.+)', destination: '/u/:name?rest=:rest' },
       { source: '/@:name', destination: '/u/:name' },
       // The export files of an appearance, which the API serves from its palette and image routes
       { source: '/cg/:guide/v/:id(\\d+).json', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/palette?format=json` },

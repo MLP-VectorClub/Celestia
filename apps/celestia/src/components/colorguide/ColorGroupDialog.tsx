@@ -110,6 +110,7 @@ export const ColorGroupDialog: FC<PropTypes> = ({ appearanceId, groupId, isOpen,
           maxLength={30}
           required
           autoFocus
+          disabled={existing.isFetching}
         />
       </FormGroup>
       <Label>{t('colorGuide.edit.colorGroup.colors')}</Label>
@@ -122,6 +123,7 @@ export const ColorGroupDialog: FC<PropTypes> = ({ appearanceId, groupId, isOpen,
             value={row.label}
             onChange={(e) => update(i, { label: e.target.value })}
             maxLength={30}
+            disabled={existing.isFetching}
           />
           <Input
             aria-label={t('colorGuide.edit.colorGroup.colorValue', { n: i + 1 })}
@@ -130,6 +132,7 @@ export const ColorGroupDialog: FC<PropTypes> = ({ appearanceId, groupId, isOpen,
             value={row.hex}
             onChange={(e) => update(i, { hex: e.target.value })}
             invalid={Boolean(hexError(row.hex))}
+            disabled={existing.isFetching}
             style={{ maxWidth: '9rem' }}
           />
           <Button type="button" outline onClick={() => move(i, -1)} disabled={i === 0} aria-label={t('colorGuide.edit.colorGroup.moveUp')}>

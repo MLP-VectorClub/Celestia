@@ -4,6 +4,7 @@
     "logs": "Global logs",
     "notices": "Manage notices",
     "usefulLinks": "Manage useful links",
+    "pcgAppearances": "All PCG appearances",
     "settings": "Settings"
   },
   "staffOnly": "This page is only available to staff.",
@@ -20,6 +21,14 @@
     "when": "When",
     "webServer": "Web server",
     "detailsFailed": "Could not load the details."
+  },
+  "pcg": {
+    "loadFailed": "Could not load the personal guide appearances.",
+    "label": "Appearance",
+    "owner": "Owner",
+    "private": "Private",
+    "created": "Created",
+    "empty": "There are no personal guide appearances yet."
   },
   "loading": "Loading…",
   "notices": {

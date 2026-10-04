@@ -36,8 +36,15 @@ const resolveShowId = async (type: ShowType, segment: string, req: IncomingMessa
 
   // Movies, shorts and specials are also linked by the address made of their title (`equestria-girls-friendship-games`)
   if (type !== 'episode' && !/^\d/.test(segment)) {
-    const { show } = await showListLookupFetcher({ types: [type], order: 'overall', size: 100 }, req)();
-    return show.find((entry) => makeUrlSafe(entry.title).toLowerCase() === segment.toLowerCase())?.id;
+    // The API lists at most 10 entries per page
+    const wanted = segment.toLowerCase();
+    for (let page = 1; page <= 20; page++) {
+      const { show, pagination } = await showListLookupFetcher({ types: [type], order: 'overall', size: 10, page }, req)();
+      const found = show.find((entry) => makeUrlSafe(entry.title).toLowerCase() === wanted);
+      if (found) return found.id;
+      if (page >= pagination.totalPages) break;
+    }
+    return undefined;
   }
 
   const numeric = /^(\d+)(?:-.*)?$/.exec(segment);

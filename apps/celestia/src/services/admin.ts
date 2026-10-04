@@ -7,16 +7,24 @@ import {
   GetNoticesRequest,
   GetNoticesResult,
   GetUsefulLinksResult,
+  Pagination,
   PostNoticesRequest,
 } from '@mlp-vectorclub/api-types';
 
 export type SiteSettingKey = 'reservation_rules' | 'about_reservations' | 'dev_role_label';
+export interface PcgAppearancesResult {
+  appearances: Array<{ id: number; label: string; ownerId: number; private: boolean; createdAt: string }>;
+  pagination: Pagination;
+}
 export type NoticeBody = PostNoticesRequest;
 export type UsefulLinkBody = { label: string; url: string; title?: string; minRole: string };
 
 /** Staff-only site administration */
 export class AdminService {
   static logs = (params: GetAdminLogsRequest) => Axios.get<GetAdminLogsResult>('/admin/logs', { params });
+
+  /** Not in the contract of the old site, Luna's own endpoint */
+  static pcgAppearances = (params: { page: number }) => Axios.get<PcgAppearancesResult>('/admin/pcg-appearances', { params });
 
   static logDetails = (id: number) => Axios.get<GetAdminLogsIdResult>(`/admin/logs/${id}`);
 
