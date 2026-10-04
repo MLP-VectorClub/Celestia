@@ -50,4 +50,10 @@ export class AdminService {
   static getSetting = (key: SiteSettingKey) => Axios.get<{ value: string }>(`/settings/${key}`);
 
   static setSetting = (key: SiteSettingKey, value: string) => Axios.put<unknown>(`/settings/${key}`, { value });
+
+  /** Developer only: rebuilds the ElasticSearch index of the color guide */
+  static reindexColorGuide = () => Axios.post<{ message: string }>('/color-guide/reindex');
+
+  /** Developer only: the whole color guide as one JSON document */
+  static exportColorGuide = () => Axios.get<Blob>('/color-guide/export', { responseType: 'blob' });
 }
