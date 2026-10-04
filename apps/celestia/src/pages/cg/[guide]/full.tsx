@@ -62,9 +62,7 @@ const FullGuidePage: NextPage<PropTypes> = ({ guide, sort, initialData }) => {
   const { isStaff } = useAuth();
   const [reordering, setReordering] = useState(false);
   const data = useFullGuide({ guide, sort }, initialData || undefined);
-  const heading = t('colorGuide.fullList.heading', {
-    guideName: getGuideLabel(guide),
-  });
+  const heading = t('colorGuide.fullList.heading', { noun: t(`colorGuide.fullList.nouns.${guide === 'eqg' ? 'eqg' : 'pony'}`) });
 
   const titleData = useMemo(() => titleFactory({ guide }), [guide]);
   useTitleSetter(dispatch, titleData);

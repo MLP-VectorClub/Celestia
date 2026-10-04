@@ -7,6 +7,8 @@ const devMode = process.env.NODE_ENV === 'development';
 
 /** @type {import('next').NextConfig} */
 module.exports = {
+  // A separate build directory lets a server that is running (the browser test instance) keep its build while another one is made
+  distDir: process.env.NEXT_DIST_DIR || '.next',
   reactStrictMode: true,
   transpilePackages: ['@mlp-vectorclub/ui'],
   i18n: {
@@ -78,16 +80,37 @@ module.exports = {
     }, []);
   },
   async redirects() {
-    return vercelConfig.redirects;
+    return [
+      ...vercelConfig.redirects,
+      // URLs of the previous site
+      { source: '/cg/blending', destination: '/blending', permanent: true },
+      { source: '/cg/blending-reverse', destination: '/blending-reverse', permanent: true },
+      { source: '/cg/picker', destination: '/picker', permanent: true },
+      { source: '/logs', destination: '/admin/logs', permanent: true },
+      { source: '/logs/:page(\\d+)', destination: '/admin/logs', permanent: true },
+      { source: '/admin/usefullinks', destination: '/admin/useful-links', permanent: true },
+      { source: '/events/:page(\\d+)', destination: '/events', permanent: true },
+    ];
   },
   async rewrites() {
-    return vercelConfig.rewrites.map((rewrite) =>
-      rewrite.source === `${NEXT_PUBLIC_API_PREFIX}/:path*`
-        ? {
-            ...rewrite,
-            destination: `${NEXT_PUBLIC_BACKEND_HOST}/:path*`,
-          }
-        : rewrite
-    );
+    return [
+      ...vercelConfig.rewrites.map((rewrite) =>
+        rewrite.source === `${NEXT_PUBLIC_API_PREFIX}/:path*`
+          ? {
+              ...rewrite,
+              destination: `${NEXT_PUBLIC_BACKEND_HOST}/:path*`,
+            }
+          : rewrite
+      ),
+      // URLs of the previous site that are served by pages or by the API
+      { source: '/cg/picker/frame', destination: '/picker' },
+      { source: '/@:name', destination: '/u/:name' },
+      // The export files of an appearance, which the API serves from its palette and image routes
+      { source: '/cg/:guide/v/:id(\\d+).json', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/palette?format=json` },
+      { source: '/cg/:guide/v/:id(\\d+).gpl', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/palette?format=gpl` },
+      { source: '/cg/:guide/v/:id(\\d+).png', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/image?type=palette&format=png` },
+      { source: '/cg/:guide/v/:id(\\d+)p.svg', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/image?type=preview&format=svg` },
+      { source: '/cg/:guide/v/:id(\\d+)f.svg', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/image?type=facing&format=svg` },
+    ];
   },
 };

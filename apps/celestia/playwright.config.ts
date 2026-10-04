@@ -32,6 +32,8 @@ export default defineConfig({
       reuseExistingServer: Boolean(process.env.E2E_REUSE),
       timeout: 300_000,
       env: {
+        // Its own build directory, so it neither disturbs nor is disturbed by other builds and servers in this checkout
+        NEXT_DIST_DIR: '.next-e2e',
         NEXT_PUBLIC_BACKEND_HOST: STUB,
         NEXT_PUBLIC_FRONTEND_HOST: APP,
         NEXT_PUBLIC_CDN_DOMAIN: '127.0.0.1',

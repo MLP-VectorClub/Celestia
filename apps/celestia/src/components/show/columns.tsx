@@ -1,4 +1,3 @@
-import { format } from 'date-fns';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { FC, RefObject, useRef } from 'react';
@@ -6,6 +5,7 @@ import { UncontrolledTooltip } from 'reactstrap';
 
 import { ShowListItem } from '@mlp-vectorclub/api-types';
 import InlineIcon from 'src/components/shared/InlineIcon';
+import { LocalTime } from 'src/components/shared/LocalTime';
 import { useAuth } from 'src/hooks';
 import { PATHS } from 'src/paths';
 import { ShowTableColumnDefinition } from 'src/types/show';
@@ -47,7 +47,7 @@ export const TitleAirDateColumn: FC<{ entry: ShowListItem }> = ({ entry }) => {
           </span>
         )}
       </div>
-      {entry.airs && <time dateTime={entry.airs}>{format(new Date(entry.airs), airDateFormat)}</time>}
+      {entry.airs && <LocalTime date={entry.airs} format={airDateFormat} />}
     </>
   );
 };

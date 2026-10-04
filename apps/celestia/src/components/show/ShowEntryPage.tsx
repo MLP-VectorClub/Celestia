@@ -1,4 +1,3 @@
-import { format } from 'date-fns';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -8,6 +7,7 @@ import { Button } from 'reactstrap';
 import { GetPostsResult, GetShowIdResult, GetShowIdVoteResult } from '@mlp-vectorclub/api-types';
 import { AppearanceLink } from 'src/components/colorguide/AppearanceLink';
 import Content from 'src/components/shared/Content';
+import { LocalTime } from 'src/components/shared/LocalTime';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import StatusAlert from 'src/components/shared/StatusAlert';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
@@ -80,10 +80,8 @@ export const ShowEntryPage: FC<ShowEntryPageProps> = ({ id, initialShow, initial
         lead={
           <>
             {code && `${code} · `}
-            <time dateTime={show.airs}>
-              {show.aired ? t('show.entry.aired') : t('show.entry.willAir')}{' '}
-              {format(new Date(show.airs ?? show.willAir), t('show.index.airDateFormat'))}
-            </time>
+            {show.aired ? t('show.entry.aired') : t('show.entry.willAir')}{' '}
+            <LocalTime date={show.airs ?? show.willAir} format={t('show.index.airDateFormat')} />
           </>
         }
       />

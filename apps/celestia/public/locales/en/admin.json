@@ -1,7 +1,7 @@
 {
   "sections": {
     "index": "Administration",
-    "logs": "Logs",
+    "logs": "Global logs",
     "notices": "Notices",
     "usefulLinks": "Useful links",
     "settings": "Settings"

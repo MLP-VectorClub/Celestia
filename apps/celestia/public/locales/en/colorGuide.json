@@ -43,7 +43,7 @@
     }
   },
   "fullList": {
-    "heading": "Complete {guideName} Character List",
+    "heading": "Complete {noun} List",
     "title": "Full List - {guideName} Color Guide",
     "lead": "Sorted <dropdown></dropdown>",
     "sortOptionsHeader": "Sort by",
@@ -52,7 +52,11 @@
       "added": "by date added",
       "relevance": "by relevance"
     },
-    "reorder": "Re-order"
+    "reorder": "Re-order",
+    "nouns": {
+      "pony": "FiM Pony",
+      "eqg": "EQG Character"
+    }
   },
   "sprite": {
     "title": "Sprite Template Generator"
@@ -61,7 +65,7 @@
     "unknownGuide": "There is no guide by the specified name"
   },
   "tags": {
-    "heading": "Tags",
+    "heading": "All Tags",
     "lead": "Every tag used in the color guide",
     "empty": "There are no tags yet",
     "loadingSubject": "list of tags",
@@ -228,7 +232,8 @@
     "notes": "Notes",
     "colorGroups": "Color Groups",
     "spriteAlt": "Sprite image",
-    "subject": "appearance"
+    "subject": "appearance",
+    "downloadGpl": "GIMP palette"
   },
   "shortLink": {
     "looking": "Looking for appearance…",

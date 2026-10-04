@@ -22,6 +22,7 @@ import Content from 'src/components/shared/Content';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import StatusAlert from 'src/components/shared/StatusAlert';
+import { API_PREFIX } from 'src/config';
 import { APP_HOST } from 'src/config';
 import { useDetailedAppearance } from 'src/hooks';
 import { PATHS } from 'src/paths';
@@ -100,13 +101,24 @@ export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppe
         }
       />
       <ButtonCollection>
-        <Button color="link" size="sm" disabled>
+        <Button
+          tag="a"
+          color="link"
+          size="sm"
+          href={`${API_PREFIX}/appearances/${appearance.id}/image?type=palette&format=png`}
+          target="_blank"
+          rel="noopener"
+        >
           <InlineIcon icon="image" first />
           {t('colorGuide.appearance.viewPng')}
         </Button>
-        <Button color="primary" size="sm" disabled>
+        <Button tag="a" color="primary" size="sm" href={`${API_PREFIX}/appearances/${appearance.id}/palette?format=json`}>
           <InlineIcon icon="paint-brush" first />
           {t('colorGuide.appearance.downloadSwatch')}
+        </Button>
+        <Button tag="a" color="link" size="sm" href={`${API_PREFIX}/appearances/${appearance.id}/palette?format=gpl`}>
+          <InlineIcon icon="download" first />
+          {t('colorGuide.appearance.downloadGpl')}
         </Button>
         {shortUrl && <ShareAppearanceButton shortUrl={shortUrl} />}
         <AppearanceEditActions appearance={appearance} />

@@ -11,6 +11,7 @@ import { ShowEntry } from 'src/types/api-alias';
 import { fixPath, handleDataFetchingError, notFound } from 'src/utils';
 import { titleSetter } from 'src/utils/core';
 import { typedServerSideTranslations } from 'src/utils/i18n';
+import { makeUrlSafe } from 'src/utils/url';
 
 type ShowType = ShowListItem['type'];
 
@@ -31,6 +32,12 @@ const resolveShowId = async (type: ShowType, segment: string, req: IncomingMessa
       )();
       return result.show[0]?.id;
     }
+  }
+
+  // Movies, shorts and specials are also linked by the address made of their title (`equestria-girls-friendship-games`)
+  if (type !== 'episode' && !/^\d/.test(segment)) {
+    const { show } = await showListLookupFetcher({ types: [type], order: 'overall', size: 100 }, req)();
+    return show.find((entry) => makeUrlSafe(entry.title).toLowerCase() === segment.toLowerCase())?.id;
   }
 
   const numeric = /^(\d+)(?:-.*)?$/.exec(segment);
