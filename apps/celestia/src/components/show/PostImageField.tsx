@@ -17,10 +17,12 @@ interface PropTypes {
   /** Called with what the API found at the link, once it has been checked */
   onChecked?: (result: PostPostsCheckImageResult) => void;
   autoFocus?: boolean;
+  /** `name` of the input, which browser tests look for */
+  name?: string;
 }
 
 /** An image link with a Check button that asks the API what it found there and shows the preview */
-export const PostImageField: FC<PropTypes> = ({ id, label, value, onChange, error, onChecked, autoFocus }) => {
+export const PostImageField: FC<PropTypes> = ({ id, label, value, onChange, error, onChecked, autoFocus, name }) => {
   const t = useTranslations();
   const shownLabel = label ?? t('show.post.image.link');
   const check = useApiMutation((url: string) => PostService.checkImage(url), { onSuccess: onChecked });
@@ -32,6 +34,7 @@ export const PostImageField: FC<PropTypes> = ({ id, label, value, onChange, erro
       <InputGroup>
         <Input
           id={id}
+          name={name}
           type="url"
           placeholder="https://www.deviantart.com/…"
           value={value}

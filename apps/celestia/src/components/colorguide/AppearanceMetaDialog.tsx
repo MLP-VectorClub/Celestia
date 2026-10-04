@@ -25,14 +25,16 @@ export const AppearanceMetaDialog: FC<PropTypes> = ({ appearance, isOpen, onClos
   // The raw (editable) notes are not part of the public appearance, they come from the metadata endpoint
   const load = useApiMutation(() => AppearanceEditService.getMetadata(appearance.id), {
     onSuccess: (data) => {
-      setLabel(data.label ?? appearance.label);
       setNotes(data.notes ?? '');
       setIsPrivate(Boolean(data.private));
       setLoaded(true);
     },
   });
   useEffect(() => {
-    if (isOpen && !loaded && !load.isPending) load.mutate();
+    if (isOpen && !loaded && !load.isPending) {
+      setLabel(appearance.label);
+      load.mutate();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, loaded]);
 
@@ -78,6 +80,7 @@ export const AppearanceMetaDialog: FC<PropTypes> = ({ appearance, isOpen, onClos
           data-testid="form-label-input"
           value={label}
           onChange={(e) => setLabel(e.target.value)}
+          disabled={load.isPending}
           invalid={Boolean(errors.label)}
           maxLength={70}
           required
@@ -92,6 +95,7 @@ export const AppearanceMetaDialog: FC<PropTypes> = ({ appearance, isOpen, onClos
           rows={4}
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
+          disabled={load.isPending}
           invalid={Boolean(errors.notes)}
         />
         {errors.notes && <div className="invalid-feedback d-block">{errors.notes}</div>}

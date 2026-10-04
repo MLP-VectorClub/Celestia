@@ -62,7 +62,9 @@ export const createShowGetServerSideProps = (type: ShowType) =>
       handleDataFetchingError(ctx, e);
     }
 
-    if (!id || !show || show.show.type !== type) return notFound(ctx);
+    if (!id || !show) return notFound(ctx);
+    // An entry opened under the wrong kind (`/special/2` that is a movie) goes to its own address
+    if (show.show.type !== type) return { redirect: { destination: PATHS.EPISODE(show.show), permanent: false } };
 
     const entry: ShowEntry = show.show;
     const expectedPath = PATHS.EPISODE(entry);

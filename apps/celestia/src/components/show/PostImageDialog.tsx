@@ -48,6 +48,7 @@ export const PostImageDialog: FC<PropTypes> = ({ post, isOpen, onClose }) => {
         onChange={setImageUrl}
         error={errors.imageUrl}
         autoFocus
+        name="imageUrl"
       />
     </FormDialog>
   );

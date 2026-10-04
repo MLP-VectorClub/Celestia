@@ -6,15 +6,17 @@ import { useMemo } from 'react';
 import { Button } from 'reactstrap';
 
 import { GetUsersIdPersonalGuideAppearancesResult, GetUsersIdResult } from '@mlp-vectorclub/api-types';
+import { AppearanceCreateButton } from 'src/components/colorguide/AppearanceCreateButton';
 import AppearanceItem from 'src/components/colorguide/AppearanceItem';
 import ButtonCollection from 'src/components/shared/ButtonCollection';
 import Content from 'src/components/shared/Content';
+import InlineIcon from 'src/components/shared/InlineIcon';
 import NoResultsAlert from 'src/components/shared/NoResultsAlert';
 import Pagination from 'src/components/shared/Pagination';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import StatusAlert from 'src/components/shared/StatusAlert';
 import { personalGuideFetcher, userFetcher } from 'src/fetchers';
-import { usePersonalGuide, useTitleSetter } from 'src/hooks';
+import { useAuth, usePersonalGuide, useTitleSetter } from 'src/hooks';
 import { PATHS } from 'src/paths';
 import { useAppDispatch, wrapper } from 'src/store';
 import { Nullable, Optional, SSRMessages } from 'src/types';
@@ -45,6 +47,7 @@ const PersonalGuidePage: NextPage<PropTypes> = ({ userId, page, user, initialDat
   const t = useTranslations();
   const dispatch = useAppDispatch();
   const { query } = useRouter();
+  const { user: visitor } = useAuth();
   const currentPage = validatePageParam(query.page, page);
   const { data, status } = usePersonalGuide({ id: userId, page: currentPage }, currentPage === page ? initialData || undefined : undefined);
 
@@ -55,6 +58,7 @@ const PersonalGuidePage: NextPage<PropTypes> = ({ userId, page, user, initialDat
     <Content>
       <StandardHeading heading={t('users.personalGuide.heading', { name: user?.name ?? '' })} lead={t('users.personalGuide.lead')} />
       <ButtonCollection>
+        {visitor.id === userId && <AppearanceCreateButton kind="pony" />}
         <Link href={PATHS.USER_PCG_POINT_HISTORY(userId)} passHref legacyBehavior>
           <Button color="link" size="sm">
             {t('users.personalGuide.pointHistory')}
@@ -71,6 +75,9 @@ const PersonalGuidePage: NextPage<PropTypes> = ({ userId, page, user, initialDat
               <AppearanceItem key={a.id} appearance={a} />
             ) : (
               <p key={a.id} className="text-muted">
+                <span className="typcn-lock-closed me-1">
+                  <InlineIcon icon="lock" />
+                </span>
                 {t('users.personalGuide.private')}: {a.label}
               </p>
             )

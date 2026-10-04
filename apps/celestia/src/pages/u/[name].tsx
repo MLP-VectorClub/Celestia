@@ -11,7 +11,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   try {
     const user = await userFetcher({ username: query.name })();
-    return { redirect: { destination: PATHS.USER_LONG(user), permanent: false } };
+    // `/@Name/contrib/finished-posts` goes on to the same page of the user's ID address
+    const rest = typeof query.rest === 'string' && query.rest !== '' ? `/${query.rest}` : '';
+    return { redirect: { destination: rest ? `/users/${user.id}${rest}` : PATHS.USER_LONG(user), permanent: false } };
   } catch (e) {
     handleDataFetchingError(ctx, e);
     return notFound(ctx);

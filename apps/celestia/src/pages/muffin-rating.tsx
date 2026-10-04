@@ -14,7 +14,7 @@ export const muffinRatingSvg = (percent: number): string => {
   ).join('');
   return (
     `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 17" width="150" height="25.5">` +
-    `<defs><g id="muffins">${shapes}</g><clipPath id="fill"><rect x="0" y="0" width="${percent}" height="17"/></clipPath></defs>` +
+    `<defs><g id="muffins">${shapes}</g><clipPath id="fill"><rect x='0' y='0' width='${percent}' height='17'/></clipPath></defs>` +
     `<use xlink:href="#muffins" opacity="0.2"/><use xlink:href="#muffins" clip-path="url(#fill)"/></svg>`
   );
 };

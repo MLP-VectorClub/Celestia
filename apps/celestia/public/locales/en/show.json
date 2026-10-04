@@ -86,7 +86,10 @@
       "changeReserver": "Change the reserver to the author of the deviation"
     },
     "edit": {
-      "title": "Edit post"
+      "title": "Edit post",
+      "clearBroken": "Clear broken status",
+      "updateImage": "Update image",
+      "imageUpdated": "Image has been updated"
     },
     "image": {
       "newLink": "New image link",

@@ -17,7 +17,8 @@ const Notices: FC = () => {
   const notices = useCurrentNotices();
   // Statically generated pages (like 404) were rendered with their route as the path, so only use
   // the real path once the router is ready after hydration, or the link won't match the server HTML
-  const url = OLD_SITE_HOST + (router.isReady ? router.asPath : router.pathname);
+  // The server never sees the `#fragment` of the address, leave it out or the HTML differs
+  const url = OLD_SITE_HOST + (router.isReady ? router.asPath.replace(/#.*$/, '') : router.pathname);
   return (
     <div id="notices">
       {notices?.map((notice) => (

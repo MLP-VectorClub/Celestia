@@ -34,7 +34,7 @@ export const PostListItem: FC<{ post: PostItem }> = ({ post }) => {
             </Badge>
           )}
           {post.broken && (
-            <Badge color="danger" className="ms-2">
+            <Badge color="danger" className="broken-note ms-2">
               {t('show.post.broken')}
             </Badge>
           )}

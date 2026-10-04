@@ -58,7 +58,7 @@ export const PostActions: FC<{ post: PostItem }> = ({ post }) => {
     <div className="mt-2">
       <div className="d-flex flex-wrap gap-1">
         {actions.edit && (
-          <Button size="sm" color="ui" onClick={() => setEditOpen(true)} disabled={busy}>
+          <Button size="sm" color="ui" className="edit" onClick={() => setEditOpen(true)} disabled={busy}>
             {t('show.post.actions.edit')}
           </Button>
         )}
@@ -73,13 +73,13 @@ export const PostActions: FC<{ post: PostItem }> = ({ post }) => {
           </Button>
         )}
         {actions.reserve && (
-          <Button size="sm" color="primary" onClick={run(reserve)} disabled={busy}>
+          <Button size="sm" color="primary" className="reserve-request" onClick={run(reserve)} disabled={busy}>
             <InlineIcon icon="plus" first />
             {t('show.post.actions.reserve')}
           </Button>
         )}
         {actions.finish && (
-          <Button size="sm" color="success" onClick={() => setFinishOpen(true)} disabled={busy}>
+          <Button size="sm" color="success" className="finish" onClick={() => setFinishOpen(true)} disabled={busy}>
             {t('show.post.actions.finish')}
           </Button>
         )}
@@ -112,6 +112,7 @@ export const PostActions: FC<{ post: PostItem }> = ({ post }) => {
           <Button
             size="sm"
             color="link"
+            className="cancel"
             onClick={confirmThen(t('show.post.actions.cancelReservation'), t('show.post.actions.cancelReservationBody'), unreserve)}
             disabled={busy}
           >

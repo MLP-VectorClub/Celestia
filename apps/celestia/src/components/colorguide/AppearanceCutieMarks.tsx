@@ -38,7 +38,7 @@ export const AppearanceCutieMarks: FC<PropTypes> = ({ label, cutieMarks, colorGr
           const facingText = t('colorGuide.cutieMarkDisplay.facing', { facing: cm.facing ?? 'none' });
           const cmTitleId = `cutie-mark-${cm.id}-title`;
           return (
-            <Card key={cm.id} className={styles.cutieMarkCard} aria-describedby={cmTitleId}>
+            <Card key={cm.id} id={`cm${cm.id}`} className={styles.cutieMarkCard} aria-describedby={cmTitleId}>
               <CardBody className="p-2">
                 <span className={styles.title} id={cmTitleId}>
                   {isDeveloper && (

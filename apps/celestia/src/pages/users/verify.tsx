@@ -42,7 +42,7 @@ const VerifyEmailPage: NextPage = () => {
   return (
     <Content>
       <StandardHeading
-        heading={t(link?.action === 'block' ? 'users.verify.blockHeading' : 'users.verify.verifyHeading')}
+        heading={t((link?.action ?? query.action) === 'block' ? 'users.verify.blockHeading' : 'users.verify.verifyHeading')}
         lead={t('users.verify.lead')}
       />
       {!link && (

@@ -58,6 +58,7 @@ export const PostFinishDialog: FC<PropTypes> = ({ post, isOpen, onClose }) => {
         <Label for={`finish-${post.id}`}>{t('show.post.finish.link')}</Label>
         <Input
           id={`finish-${post.id}`}
+          name="deviation"
           type="url"
           placeholder="https://www.deviantart.com/…"
           value={deviation}

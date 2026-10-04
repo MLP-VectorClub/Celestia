@@ -1,12 +1,14 @@
 import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
-import { FormGroup, Input, Label } from 'reactstrap';
+import { Alert, Button, FormGroup, Input, Label } from 'reactstrap';
 
 import { PostItem } from '@mlp-vectorclub/api-types';
 import { FormDialog } from 'src/components/shared/dialogs/FormDialog';
-import { describeApiError, fieldErrors, useApiMutation } from 'src/hooks';
+import { PostImageField } from 'src/components/show/PostImageField';
+import { describeApiError, fieldErrors, useApiMutation, useAuth } from 'src/hooks';
 import { PostService } from 'src/services/posts';
 import { ENDPOINTS } from 'src/utils';
+import { getPostActions } from 'src/utils/post-actions';
 
 interface PropTypes {
   post: PostItem;
@@ -17,12 +19,18 @@ interface PropTypes {
 /** Change the description of a post and, for requests, what is requested. The developer-only date overrides are not offered */
 export const PostEditDialog: FC<PropTypes> = ({ post, isOpen, onClose }) => {
   const t = useTranslations();
+  const { user } = useAuth();
+  const actions = getPostActions(post, user);
+  const [imageOpen, setImageOpen] = useState(false);
+  const [imageUrl, setImageUrl] = useState('');
   const [label, setLabel] = useState(post.label);
   const [type, setType] = useState<'chr' | 'obj' | 'bg'>(post.type ?? 'chr');
   useEffect(() => {
     if (isOpen) {
       setLabel(post.label);
       setType(post.type ?? 'chr');
+      setImageOpen(false);
+      setImageUrl('');
     }
   }, [isOpen, post]);
 
@@ -32,6 +40,14 @@ export const PostEditDialog: FC<PropTypes> = ({ post, isOpen, onClose }) => {
     onSuccess: onClose,
   });
   const errors = fieldErrors(save.error);
+
+  const invalidate = [[ENDPOINTS.POSTS({ showId: post.showId, kind: post.kind })]];
+  const unbreak = useApiMutation(() => PostService.unbreak(post.id), { invalidate, onSuccess: onClose });
+  const changeImage = useApiMutation(() => PostService.changeImage(post.id, imageUrl.trim()), {
+    invalidate,
+    onSuccess: () => setImageUrl(''),
+  });
+  const imageErrors = fieldErrors(changeImage.error);
 
   return (
     <FormDialog
@@ -73,6 +89,61 @@ export const PostEditDialog: FC<PropTypes> = ({ post, isOpen, onClose }) => {
             <option value="bg">{t('show.post.fields.bg')}</option>
           </Input>
           {errors.type && <div className="invalid-feedback d-block">{errors.type}</div>}
+        </FormGroup>
+      )}
+      {actions.unbreak && (
+        <FormGroup>
+          <Button
+            type="button"
+            id="dialog-clear-broken-status"
+            color="warning"
+            size="sm"
+            disabled={unbreak.isPending}
+            onClick={() => unbreak.mutate()}
+          >
+            {t('show.post.edit.clearBroken')}
+          </Button>
+          {unbreak.error && <div className="invalid-feedback d-block">{describeApiError(unbreak.error)}</div>}
+        </FormGroup>
+      )}
+      {actions.changeImage && (
+        <FormGroup>
+          <Button type="button" id="dialog-update-image" color="ui" size="sm" onClick={() => setImageOpen((open) => !open)}>
+            {t('show.post.edit.updateImage')}
+          </Button>
+          {imageOpen && (
+            <div id="img-update-form" className="mt-2">
+              <PostImageField
+                id={`edit-${post.id}-image`}
+                label={t('show.post.image.newLink')}
+                value={imageUrl}
+                onChange={(value) => {
+                  setImageUrl(value);
+                  changeImage.reset();
+                }}
+                error={imageErrors.imageUrl}
+                name="imageUrl"
+              />
+              <Button
+                type="button"
+                color="primary"
+                size="sm"
+                data-testid="dialog-btn-update"
+                disabled={!imageUrl.trim() || changeImage.isPending}
+                onClick={() => changeImage.mutate()}
+              >
+                {t('show.post.actions.changeImage')}
+              </Button>
+              {changeImage.error && !imageErrors.imageUrl && (
+                <div className="invalid-feedback d-block">{describeApiError(changeImage.error)}</div>
+              )}
+              {changeImage.isSuccess && (
+                <Alert color="success" fade={false} className="mt-2 mb-0 py-1" role="status">
+                  {t('show.post.edit.imageUpdated')}
+                </Alert>
+              )}
+            </div>
+          )}
         </FormGroup>
       )}
     </FormDialog>
