@@ -335,5 +335,11 @@
     "clear": "Clear search",
     "loading": "Loading suggestions…",
     "help": "Highlight suggestions with <up></up> <down></down>, then press <enter></enter> to accept. Pressing <enter></enter> without highlighting one will take you to the search results page. This box can be closed with <esc></esc>"
+  },
+  "create": {
+    "title": "Add a new {kind}",
+    "submit": "Create",
+    "nameHelp": "Between 2 and 70 characters.",
+    "template": "Add the default color groups"
   }
 }

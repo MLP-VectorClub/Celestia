@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { Button } from 'reactstrap';
 
 import { GetAppearancesPinnedResult, GetAppearancesResult, GuideName } from '@mlp-vectorclub/api-types';
+import { AppearanceCreateButton } from 'src/components/colorguide/AppearanceCreateButton';
 import AppearanceItem from 'src/components/colorguide/AppearanceItem';
 import { GuideNotFound } from 'src/components/colorguide/GuideNotFound';
 import MajorChangesButton from 'src/components/colorguide/MajorChangesButton';
@@ -91,12 +92,7 @@ const ColorGuidePage: NextPage<PropTypes> = ({ guide, page, q, initialData }) =>
         {t.rich('colorGuide.guide.movedLinks', { list: (chunks) => <Link href={PATHS.GUIDE_INDEX}>{chunks}</Link> })}
       </p>
       <ButtonCollection>
-        {isStaff && (
-          <Button color="success" size="sm" disabled>
-            <InlineIcon icon="plus" first />
-            {t('colorGuide.guide.addNew', { kind: guide === 'eqg' ? 'character' : 'pony' })}
-          </Button>
-        )}
+        {isStaff && <AppearanceCreateButton guide={guide} kind={guide === 'eqg' ? 'character' : 'pony'} />}
         <Link href={PATHS.GUIDE_FULL(guide)} passHref legacyBehavior>
           <Button color="link" size="sm">
             <InlineIcon icon="bars" first />

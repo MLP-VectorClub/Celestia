@@ -10,12 +10,16 @@ import {
   PostAppearancesIdPinResult,
   PostAppearancesIdSanitizeSvgResult,
   PostAppearancesIdSpriteResult,
+  PostAppearancesRequest,
+  PostAppearancesResult,
   PutAppearancesIdCutieMarksRequest,
   PutAppearancesIdRequest,
   PutAppearancesIdResult,
 } from '@mlp-vectorclub/api-types';
 
 export class AppearanceEditService {
+  static create = (data: PostAppearancesRequest) => Axios.post<PostAppearancesResult>('/appearances', data);
+
   static getMetadata = (id: number) => Axios.get<GetAppearancesIdMetadataResult>(`/appearances/${id}/metadata`);
 
   /**
