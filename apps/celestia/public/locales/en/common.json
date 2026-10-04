@@ -56,7 +56,11 @@
       "heading": "Temporarily unavailable",
       "message": "The service is not available right now. Please try again in a moment."
     },
-    "tryAgain": "Try again"
+    "tryAgain": "Try again",
+    "forbidden": {
+      "heading": "Access denied",
+      "message": "You are not allowed to see this page."
+    }
   },
   "sidebar": {
     "welcome": "Welcome!",

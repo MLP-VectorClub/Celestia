@@ -32,7 +32,8 @@ export const FetchFailureView: FC<{ failure: FetchFailure }> = ({ failure }) => 
     void replace(asPath).finally(() => setRetrying(false));
   };
 
-  const kind = rateLimited ? 'rateLimited' : failure.status === 503 ? 'unavailable' : 'serverError';
+  const forbidden = failure.status === 403;
+  const kind = rateLimited ? 'rateLimited' : forbidden ? 'forbidden' : failure.status === 503 ? 'unavailable' : 'serverError';
   return (
     <Content>
       <StandardHeading heading={t(`common.error.${kind}.heading`)} lead={t('common.error.withStatus', { statusCode: failure.status })} />
@@ -43,12 +44,14 @@ export const FetchFailureView: FC<{ failure: FetchFailure }> = ({ failure }) => 
             : t('common.error.rateLimited.retryLater')
           : t(`common.error.${kind}.message`)}
       </Alert>
-      <p className="text-center">
-        <Button color="ui" onClick={retry} disabled={locked || retrying}>
-          <InlineIcon icon="sync" first loading={retrying} />
-          {t('common.error.tryAgain')}
-        </Button>
-      </p>
+      {!forbidden && (
+        <p className="text-center">
+          <Button color="ui" onClick={retry} disabled={locked || retrying}>
+            <InlineIcon icon="sync" first loading={retrying} />
+            {t('common.error.tryAgain')}
+          </Button>
+        </p>
+      )}
     </Content>
   );
 };

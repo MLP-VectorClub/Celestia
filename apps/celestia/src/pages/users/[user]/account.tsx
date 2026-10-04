@@ -19,7 +19,7 @@ import { useAppDispatch, wrapper } from 'src/store';
 import { Nullable, Optional, SSRMessages } from 'src/types';
 import { UserPrefs } from 'src/types/api-alias';
 import { TitleFactory } from 'src/types/title';
-import { ENDPOINTS, getGuideLabel, handleDataFetchingError, notFound, permission } from 'src/utils';
+import { ENDPOINTS, forbidden, getGuideLabel, handleDataFetchingError, notFound, permission } from 'src/utils';
 import { titleSetter } from 'src/utils/core';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 import { parseUserIdParam } from 'src/utils/profile';
@@ -277,6 +277,8 @@ export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRMess
   if (userId === null) {
     return notFound(ctx);
   }
+  // Everybody's own settings and nobody else's: the server already knows who is asking
+  if (store.getState().auth.initialUser?.id !== userId) return forbidden(ctx);
 
   let user: Optional<GetUsersIdResult>;
   try {

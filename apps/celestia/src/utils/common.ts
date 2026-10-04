@@ -95,9 +95,12 @@ export const httpResponseMapper = (err: AxiosError | unknown): UnifiedErrorRespo
 export const assembleSeoUrl = (pathname?: string): string => `${APP_HOST}${pathname || ''}`;
 
 export const handleDataFetchingError = (ctx: GetServerSidePropsContext, e: unknown): void => {
-  const { status, retryAfter } = describeFailure(e);
+  const failure = describeFailure(e);
+  const { retryAfter } = failure;
+  // A page that needs a visitor who is signed in answers 403, as the old site did, whether the API says 401 or 403
+  const status = failure.status === 401 ? 403 : failure.status;
   setResponseStatus(ctx, status);
   if (isPageFailure(status) && ctx.res) recordFetchFailure(ctx.res, { status, retryAfter });
   // Expected for visitors (missing page, not signed in, not allowed, rate limited) and not worth a log line each time
-  if (![401, 403, 404, 429].includes(status)) console.error(e instanceof Error && 'response' in e ? (e as AxiosError).response : e);
+  if (![403, 404, 429].includes(status)) console.error(e instanceof Error && 'response' in e ? (e as AxiosError).response : e);
 };

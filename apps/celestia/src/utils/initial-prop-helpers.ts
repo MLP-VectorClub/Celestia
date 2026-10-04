@@ -2,6 +2,7 @@ import { mapValues, omit, omitBy } from 'lodash';
 import { GetServerSidePropsContext, GetServerSidePropsResult, Redirect } from 'next';
 import { parseRelativeUrl } from 'next/dist/shared/lib/router/utils/parse-relative-url';
 
+import { recordFetchFailure } from 'src/utils/fetch-failure';
 import { buildUrl } from 'src/utils/url';
 
 export const setResponseStatus = (ctx: GetServerSidePropsContext, statusCode: number) => {
@@ -9,6 +10,14 @@ export const setResponseStatus = (ctx: GetServerSidePropsContext, statusCode: nu
   if (res) {
     res.statusCode = statusCode;
   }
+};
+
+/** The visitor may not see this page: answers 403 and shows why (see `FetchFailureView`) */
+export const forbidden = <P>(ctx: GetServerSidePropsContext): GetServerSidePropsResult<P> => {
+  setResponseStatus(ctx, 403);
+  if (ctx.res) recordFetchFailure(ctx.res, { status: 403, retryAfter: null });
+
+  return { notFound: true };
 };
 
 export const notFound = <P>(ctx: GetServerSidePropsContext): GetServerSidePropsResult<P> => {

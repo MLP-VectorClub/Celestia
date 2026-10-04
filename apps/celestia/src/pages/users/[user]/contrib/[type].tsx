@@ -19,7 +19,7 @@ import { PATHS } from 'src/paths';
 import { useAppDispatch, wrapper } from 'src/store';
 import { Nullable, Optional, SSRMessages } from 'src/types';
 import { TitleFactory } from 'src/types/title';
-import { handleDataFetchingError, notFound } from 'src/utils';
+import { handleDataFetchingError, notFound, permission } from 'src/utils';
 import { titleSetter } from 'src/utils/core';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 import { parseUserIdParam } from 'src/utils/profile';
@@ -106,6 +106,9 @@ export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRMess
   }
   const type = query.type;
   const page = validatePageParam(query.page);
+  // The requests of a user are only for them and for staff, everybody else is told there is no such page
+  const visitor = store.getState().auth.initialUser;
+  if (type === 'requests' && visitor?.id !== userId && !permission(visitor, 'staff')) return notFound(ctx);
 
   let user: Optional<GetUsersIdResult>;
   let initialData: Optional<GetUsersIdContributionsTypeResult>;

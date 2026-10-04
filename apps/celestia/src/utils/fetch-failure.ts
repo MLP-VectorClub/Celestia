@@ -10,8 +10,8 @@ export interface FetchFailure {
   retryAfter: number | null;
 }
 
-/** Statuses that make the whole page unusable: 429 and everything the server answers with 5xx. Missing data (404) and denied access (4xx) are the page's business */
-export const isPageFailure = (status: number): boolean => status === 429 || status >= 500;
+/** Statuses that make the whole page unusable: 429, everything the server answers with 5xx and not being allowed to see it (403). Missing data (404) is the page's business */
+export const isPageFailure = (status: number): boolean => status === 429 || status === 403 || status >= 500;
 
 /**
  * The HTTP status and wait time of a failed request, as an Axios error or as one of the app's mapped errors. No answer at all (the API is

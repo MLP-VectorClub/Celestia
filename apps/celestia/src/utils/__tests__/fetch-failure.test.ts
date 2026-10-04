@@ -10,9 +10,9 @@ const axiosError = (status: number, headers: Record<string, string> = {}) =>
   Object.assign(new AxiosError('x'), { response: { status, data: {}, headers } });
 
 describe('isPageFailure', () => {
-  it('is for rate limits and server errors only', () => {
-    expect([200, 301, 401, 403, 404, 409, 422].map(isPageFailure)).toEqual(Array(7).fill(false));
-    expect([429, 500, 502, 503, 504].map(isPageFailure)).toEqual(Array(5).fill(true));
+  it('is for rate limits, server errors and not being allowed to see the page', () => {
+    expect([200, 301, 401, 404, 409, 422].map(isPageFailure)).toEqual(Array(6).fill(false));
+    expect([403, 429, 500, 502, 503, 504].map(isPageFailure)).toEqual(Array(6).fill(true));
   });
 });
 

@@ -197,6 +197,13 @@ createServer(async (req, res) => {
     });
   }
 
+  if (req.method === 'GET' && /^\/users\/9001$/.test(url.pathname)) {
+    return send(200, { id: 9001, name: 'TestUser', role: 'user', avatarUrl: null, avatarProvider: 'deviantart' });
+  }
+  if (req.method === 'GET' && /^\/users\/9001\/contributions\/[a-z-]+$/.test(url.pathname)) {
+    return send(200, { items: [], pagination: { currentPage: 1, totalPages: 1, totalItems: 0, itemsPerPage: 10 } });
+  }
+
   const fixed: Record<string, [number, unknown]> = {
     '/sanctum/csrf-cookie': [204, undefined],
     '/users/me': [401, { message: 'Unauthenticated.' }],
