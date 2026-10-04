@@ -71,7 +71,7 @@ export const ShowVotingWidget: FC<PropTypes> = ({ showId, initialShow, initialVo
           ) : signedIn ? (
             <>
               <p>{t('show.voting.prompt')}</p>
-              <Button color="primary" size="sm" onClick={() => setRateOpen(true)}>
+              <Button className="rate" color="primary" size="sm" onClick={() => setRateOpen(true)}>
                 <InlineIcon icon="star" first />
                 {t('show.voting.cast')}
               </Button>

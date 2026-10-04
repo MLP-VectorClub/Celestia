@@ -4,17 +4,19 @@
   line-height: 0;
 }
 
-.option {
+// The labels lie over the image, a fifth of its width each
+.options {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 20%;
-  padding: 0;
-  border: 0;
-  background: transparent;
+  inset: 0;
+  display: flex;
+}
+
+.option {
+  position: relative;
+  flex: 1 1 20%;
   cursor: pointer;
 
-  &:focus-visible {
+  &:focus-within {
     outline: 2px solid currentColor;
     outline-offset: -2px;
     border-radius: 4px;

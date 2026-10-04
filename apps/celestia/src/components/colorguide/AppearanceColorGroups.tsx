@@ -51,7 +51,7 @@ export const AppearanceColorGroups: FC<PropTypes> = ({ colorGroups, appearanceId
             <InlineIcon icon="sort" first />
             {t('colorGuide.edit.groups.reorder')}
           </Button>
-          <Button size="sm" color="success" onClick={() => setEditing({ kind: 'create' })}>
+          <Button size="sm" color="success" onClick={() => setEditing({ kind: 'create' })} data-testid="create-colorgroup-btn">
             <InlineIcon icon="plus" first />
             {t('colorGuide.edit.groups.create')}
           </Button>
@@ -88,13 +88,14 @@ export const AppearanceColorGroups: FC<PropTypes> = ({ colorGroups, appearanceId
                 <h3 className="text-center">{cg.label}</h3>
                 {editable && (
                   <ButtonCollection>
-                    <Button size="sm" color="ui" onClick={() => setEditing({ kind: 'edit', id: cg.id })}>
+                    <Button size="sm" color="ui" onClick={() => setEditing({ kind: 'edit', id: cg.id })} data-testid="edit-colorgroup-btn">
                       <InlineIcon icon="pencil-alt" first />
                       {t('colorGuide.edit.common.edit')}
                     </Button>
                     <Button
                       size="sm"
                       color="danger"
+                      data-testid="delete-colorgroup-btn"
                       disabled={remove.isPending}
                       onClick={async () => {
                         if (

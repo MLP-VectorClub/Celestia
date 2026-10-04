@@ -55,23 +55,25 @@ export const RateDialog: FC<PropTypes> = ({ showId, isOpen, onClose, onVoted }) 
       busy={vote.isPending}
       error={error}
     >
-      <p>{t('show.voting.rateHelp')}</p>
-      <div className="text-center">
-        <MuffinSelector
-          label={t('show.voting.ratingGroup')}
-          value={score}
-          onChange={(value) => {
-            setScore(value);
-            setMissing(false);
-          }}
-          onPreview={setPreview}
-        />
-        <p className="mt-2 mb-0" aria-live="polite">
-          {t.rich('show.voting.yourRatingPreview', {
-            score: (preview ?? score)?.toString() ?? '?',
-            strong: (chunks) => <strong>{chunks}</strong>,
-          })}
-        </p>
+      <div id="star-rating">
+        <p>{t('show.voting.rateHelp')}</p>
+        <div className="text-center">
+          <MuffinSelector
+            label={t('show.voting.ratingGroup')}
+            value={score}
+            onChange={(value) => {
+              setScore(value);
+              setMissing(false);
+            }}
+            onPreview={setPreview}
+          />
+          <p className="mt-2 mb-0" aria-live="polite">
+            {t.rich('show.voting.yourRatingPreview', {
+              score: (preview ?? score)?.toString() ?? '?',
+              strong: (chunks) => <strong>{chunks}</strong>,
+            })}
+          </p>
+        </div>
       </div>
     </FormDialog>
   );

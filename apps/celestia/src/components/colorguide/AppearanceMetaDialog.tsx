@@ -75,6 +75,7 @@ export const AppearanceMetaDialog: FC<PropTypes> = ({ appearance, isOpen, onClos
         <Label for={`meta-label-${appearance.id}`}>{t('colorGuide.edit.meta.name')}</Label>
         <Input
           id={`meta-label-${appearance.id}`}
+          data-testid="form-label-input"
           value={label}
           onChange={(e) => setLabel(e.target.value)}
           invalid={Boolean(errors.label)}

@@ -104,6 +104,7 @@ export const ColorGroupDialog: FC<PropTypes> = ({ appearanceId, groupId, isOpen,
         <Label for={`cg-label-${groupId ?? 'new'}`}>{t('colorGuide.edit.colorGroup.groupName')}</Label>
         <Input
           id={`cg-label-${groupId ?? 'new'}`}
+          data-testid="form-label-input"
           value={label}
           onChange={(e) => setLabel(e.target.value)}
           maxLength={30}
@@ -116,6 +117,7 @@ export const ColorGroupDialog: FC<PropTypes> = ({ appearanceId, groupId, isOpen,
         <InputGroup key={row.id ?? `new-${i}`} className="mb-1">
           <Input
             aria-label={t('colorGuide.edit.colorGroup.colorName', { n: i + 1 })}
+            data-testid="form-color-label"
             placeholder={t('colorGuide.edit.colorGroup.name')}
             value={row.label}
             onChange={(e) => update(i, { label: e.target.value })}
@@ -123,6 +125,7 @@ export const ColorGroupDialog: FC<PropTypes> = ({ appearanceId, groupId, isOpen,
           />
           <Input
             aria-label={t('colorGuide.edit.colorGroup.colorValue', { n: i + 1 })}
+            data-testid="form-color-hex"
             placeholder={t('colorGuide.edit.colorGroup.hex')}
             value={row.hex}
             onChange={(e) => update(i, { hex: e.target.value })}

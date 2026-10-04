@@ -15,7 +15,10 @@ interface PropTypes {
 
 const SCORES = [1, 2, 3, 4, 5];
 
-/** The rating image as a radio group: each fifth of it is the button for that many muffins, and the muffins fill up to the one under the pointer */
+/**
+ * The rating image as a radio group: each fifth of it is a label with a radio button for that many muffins, and the muffins fill up to the one under
+ * the pointer. The labels are the only children of the `rate` element, as in the old site's rating form
+ */
 export const MuffinSelector: FC<PropTypes> = ({ value, onChange, label, onPreview }) => {
   const t = useTranslations();
   const [preview, setPreview] = useState<number | null>(null);
@@ -26,25 +29,27 @@ export const MuffinSelector: FC<PropTypes> = ({ value, onChange, label, onPrevie
   };
 
   return (
-    <div role="radiogroup" aria-label={label} className={styles.selector} onMouseLeave={() => updatePreview(null)}>
+    <div className={styles.selector} onMouseLeave={() => updatePreview(null)}>
       <div aria-hidden="true">
         <MuffinRating score={shown} width={250} />
       </div>
-      {SCORES.map((score) => (
-        <button
-          key={score}
-          type="button"
-          role="radio"
-          aria-checked={value === score}
-          aria-label={t('show.voting.muffins', { count: score })}
-          className={styles.option}
-          style={{ left: `${(score - 1) * 20}%` }}
-          onMouseEnter={() => updatePreview(score)}
-          onFocus={() => updatePreview(score)}
-          onBlur={() => updatePreview(null)}
-          onClick={() => onChange(score)}
-        />
-      ))}
+      <div className={`rate ${styles.options}`} role="radiogroup" aria-label={label}>
+        {SCORES.map((score) => (
+          <label key={score} className={styles.option} onMouseEnter={() => updatePreview(score)}>
+            <input
+              type="radio"
+              name="vote"
+              value={score}
+              className="visually-hidden"
+              checked={value === score}
+              aria-label={t('show.voting.muffins', { count: score })}
+              onChange={() => onChange(score)}
+              onFocus={() => updatePreview(score)}
+              onBlur={() => updatePreview(null)}
+            />
+          </label>
+        ))}
+      </div>
     </div>
   );
 };

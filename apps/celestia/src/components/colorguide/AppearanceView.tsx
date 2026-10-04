@@ -17,6 +17,7 @@ import { GuideNotFound } from 'src/components/colorguide/GuideNotFound';
 import { NutshellLabel } from 'src/components/colorguide/NutshellLabel';
 import { ShareAppearanceButton } from 'src/components/colorguide/ShareAppearanceButton';
 import SpriteImage from 'src/components/colorguide/SpriteImage';
+import { SpriteWrap } from 'src/components/colorguide/SpriteWrap';
 import ButtonCollection from 'src/components/shared/ButtonCollection';
 import Content from 'src/components/shared/Content';
 import InlineIcon from 'src/components/shared/InlineIcon';
@@ -81,10 +82,14 @@ export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppe
           )}
         </Head>
       )}
-      {appearance.sprite && (
-        <div className={styles.spriteImage}>
-          <SpriteImage appearanceId={appearance.id} sprite={appearance.sprite} height={300} />
-        </div>
+      {appearance.canEdit ? (
+        <SpriteWrap appearanceId={appearance.id} sprite={appearance.sprite} />
+      ) : (
+        appearance.sprite && (
+          <div className={styles.spriteImage}>
+            <SpriteImage appearanceId={appearance.id} sprite={appearance.sprite} height={300} />
+          </div>
+        )
       )}
       <StandardHeading
         heading={<NutshellLabel appearance={appearance} />}

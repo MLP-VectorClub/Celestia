@@ -47,7 +47,7 @@ export const AppearanceEditActions: FC<{ appearance: DetailedAppearance }> = ({ 
   const error = pinToggle.error ?? remove.error;
   return (
     <>
-      <Button color="ui" size="sm" onClick={() => setOpen('meta')}>
+      <Button color="ui" size="sm" onClick={() => setOpen('meta')} data-testid="edit-appearance-btn">
         <InlineIcon icon="pencil-alt" first />
         {t('colorGuide.edit.actions.metadata')}
       </Button>
@@ -83,6 +83,7 @@ export const AppearanceEditActions: FC<{ appearance: DetailedAppearance }> = ({ 
       <Button
         color="danger"
         size="sm"
+        data-testid="delete-appearance-btn"
         disabled={remove.isPending}
         onClick={async () => {
           if (

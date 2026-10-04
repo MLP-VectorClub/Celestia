@@ -112,10 +112,10 @@ test.describe('the rating of an episode', () => {
       await expect(dialog.getByText('Your rating: ?/5')).toBeVisible();
 
       // Hovering previews the rating, clicking chooses it
-      await dialog.getByRole('radio', { name: '5 muffins' }).hover();
+      await dialog.locator('.rate label').nth(4).hover();
       await expect(dialog.getByText('Your rating: 5/5')).toBeVisible();
-      await dialog.getByRole('radio', { name: '2 muffins' }).click();
-      await expect(dialog.getByRole('radio', { name: '2 muffins' })).toHaveAttribute('aria-checked', 'true');
+      await dialog.locator('.rate label').nth(1).click();
+      await expect(dialog.getByRole('radio', { name: '2 muffins' })).toBeChecked();
       await dialog.getByRole('button', { name: 'Rate', exact: true }).click();
 
       await expect(page.getByRole('dialog')).toHaveCount(0);
@@ -143,7 +143,7 @@ test.describe('the rating of an episode', () => {
     test('keeps showing the rating after a reload', async ({ page }) => {
       await page.goto(EPISODE);
       await voting(page).getByRole('button', { name: 'Cast your vote' }).click();
-      await page.getByRole('dialog').getByRole('radio', { name: '2 muffins' }).click();
+      await page.getByRole('dialog').locator('.rate label').nth(1).click();
       await page.getByRole('dialog').getByRole('button', { name: 'Rate', exact: true }).click();
       await expect(voting(page)).toContainText('Your rating: 2 muffins');
 
@@ -157,8 +157,8 @@ test.describe('the rating of an episode', () => {
       await voting(page).getByRole('button', { name: 'Cast your vote' }).click();
       const dialog = page.getByRole('dialog');
       await dialog.getByRole('radio', { name: '3 muffins' }).focus();
-      await page.keyboard.press('Enter');
-      await expect(dialog.getByRole('radio', { name: '3 muffins' })).toHaveAttribute('aria-checked', 'true');
+      await page.keyboard.press('Space');
+      await expect(dialog.getByRole('radio', { name: '3 muffins' })).toBeChecked();
     });
 
     test('shows the answer of the API when somebody already voted, and keeps the dialog open', async ({ page, request }) => {
@@ -166,7 +166,7 @@ test.describe('the rating of an episode', () => {
       await page.goto(EPISODE);
       await voting(page).getByRole('button', { name: 'Cast your vote' }).click();
       const dialog = page.getByRole('dialog');
-      await dialog.getByRole('radio', { name: '1 muffin' }).click();
+      await dialog.locator('.rate label').nth(0).click();
       await dialog.getByRole('button', { name: 'Rate', exact: true }).click();
       await expect(dialog.getByRole('alert')).toContainText('already voted');
       await expect(voting(page)).not.toContainText('Your rating:');

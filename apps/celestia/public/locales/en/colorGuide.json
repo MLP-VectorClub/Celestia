@@ -121,7 +121,7 @@
       "delete": "Delete appearance",
       "unpin": "Unpin",
       "pin": "Pin",
-      "deleteBody": "“{label}” and all of its colors will be deleted. This cannot be undone."
+      "deleteBody": "“{label}” and all of its colors will be deleted. This cannot be undone. Delete anyway?"
     },
     "common": {
       "delete": "Delete",
@@ -143,12 +143,17 @@
       "help": "Separate tags with commas. Prefix a tag with its type (for example “spec:unicorn”) to create it with that type."
     },
     "sprite": {
-      "title": "Sprite",
+      "title": "Upload sprite image",
       "upload": "Upload",
       "image": "PNG or JPEG image",
-      "remove": "Remove the current sprite",
+      "remove": "Remove sprite image",
       "help": "Replaces the current sprite.",
-      "limit": "Up to {limit}."
+      "limit": "Up to {limit}.",
+      "uploadNew": "Upload new sprite",
+      "removeImage": "Remove sprite image",
+      "removeTitle": "Remove sprite image",
+      "removeBody": "The sprite of this appearance will be removed.",
+      "none": "No sprite yet, click to choose one. Right click for more options."
     },
     "relations": {
       "mutual": "Mutual",
@@ -170,7 +175,7 @@
       "templateBody": "The default color groups are added to this appearance.",
       "deleteTitle": "Delete color group",
       "count": "{count, plural, one {Color group} other {Color groups}}",
-      "deleteBody": "“{label}” and its colors will be deleted."
+      "deleteBody": "By deleting this color group, “{label}” and its colors will be removed from the appearance."
     },
     "reorder": {
       "save": "Save order",
