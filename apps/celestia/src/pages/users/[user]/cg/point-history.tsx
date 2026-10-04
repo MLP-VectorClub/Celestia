@@ -40,6 +40,13 @@ const titleFactory: TitleFactory<Pick<PropTypes, 'user' | 'userId'>> = ({ user, 
   ],
 });
 
+/** What the API logged with an entry that is worth showing: the comment of a manual grant, the name of the appearance */
+const detail = (data: unknown): string | null => {
+  const { comment, label } = (data ?? {}) as { comment?: unknown; label?: unknown };
+  const text = typeof comment === 'string' && comment !== '' ? comment : typeof label === 'string' && label !== '' ? label : null;
+  return text;
+};
+
 const PointHistoryPage: NextPage<PropTypes> = ({ userId, page, user, initialData }) => {
   const t = useTranslations();
   const dispatch = useAppDispatch();
@@ -77,7 +84,10 @@ const PointHistoryPage: NextPage<PropTypes> = ({ userId, page, user, initialData
                     <TimeAgo date={entry.createdAt} />
                   </td>
                   <td>{entry.amount > 0 ? `+${entry.amount}` : entry.amount}</td>
-                  <td>{entry.reason}</td>
+                  <td>
+                    {entry.reason}
+                    {detail(entry.data) && <span className="text-muted"> ({detail(entry.data)})</span>}
+                  </td>
                 </tr>
               ))}
             </tbody>
