@@ -14,11 +14,12 @@ def norm(label):
     label = re.sub(r'[^\w ]+', ' ', label.lower())
     return re.sub(r'\s+', ' ', label).strip()
 
+ROLES = ('guest', 'user', 'member', 'assistant', 'staff', 'admin', 'developer')
 pages = sorted({k.rsplit('-', 2)[0] for k in inv})
 for page in pages:
     if wanted and page not in wanted:
         continue
-    for role in ('guest', 'admin'):
+    for role in ROLES:
         wc, ce = inv.get(f'{page}-{role}-wc', {}), inv.get(f'{page}-{role}-ce', {})
         if 'error' in wc or 'error' in ce:
             print(f'## {page} ({role}): capture error', wc.get('error'), ce.get('error')); continue

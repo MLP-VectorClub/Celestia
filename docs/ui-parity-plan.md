@@ -10,13 +10,27 @@ It complements `winterchilla-parity-plan.md` (data and features through the API)
    - Winterchilla on the production copy: `TEST_MODE=true TEST_DB_NAME=prod_copy DB_NAME=prod_copy APP_URL=http://127.0.0.1:8768 PHP_CLI_SERVER_WORKERS=4 php -d variables_order=EGPCS -d opcache.revalidate_freq=0 -S 127.0.0.1:8768 -t public` (in `Winterchilla`; `prod_copy` is a local scratch copy of a production dump, keep it out of git).
    - Luna on the same data: `DB_DATABASE=luna_import php artisan migrate --force`, then Luna's contract server command (`scripts/serve-contract.sh`) with `DB_DATABASE=luna_import` on :8766, reindex Elasticsearch (`POST /color-guide/reindex` as a developer, user 1), import sprites with `LARAVEL_STORAGE_PATH=<scratch> php artisan fs:migrate <Winterchilla/fs> 1 --wipe`, serve `<scratch>/app/public` as `public/cdn` and start Luna with `CDN_URL=http://127.0.0.1:8766/cdn` and the same `LARAVEL_STORAGE_PATH` (remove the symlink afterwards, it is untracked).
    - Celestia: `scripts/serve-ui-test-instance.sh` (http://localhost:3000, needs Luna on :8766).
-2. **Capture** both sites, as guest and as admin (user 136), for every page in the table below: `node scripts/ui-audit/capture.mjs <out dir> [page,page] [guest,admin]` writes a full page screenshot per page, site and role plus `inventory.json` (headings, links, buttons and inputs of the main column).
+2. **Capture** both sites for every page in the table below as **every role**: guest, DeviantArt user (user 2), club member (3), assistant (132), staff (133), admin (136) and developer (1) of the production copy. The old site gives assistant, staff and admin the same permission level (`Permission::ROLES`: guest 1, user 2, member 3, assistant/staff/admin 4, developer 255), but what each role may do and see differs (sidebar, forms, buttons, which pages answer 403), so every page has to be compared per role, not just for guests and one staff account: `node scripts/ui-audit/capture.mjs <out dir> [page,page] [guest,admin]` writes a full page screenshot per page, site and role plus `inventory.json` (headings, links, buttons and inputs of the main column).
 3. **Diff the labels:** `scripts/ui-audit/diff.py <out dir> [page ...]` lists headings, links, buttons and inputs that exist on one site only. Then look at the two screenshots of the page and read the old Twig template (`Winterchilla/templates`), its scss (`assets/scss`) and its page script (`assets/js/pages`) for what the elements do.
 4. **Fix** the page, rebuild the instance, capture again. The Winterchilla UI tests (`Winterchilla/scripts/ui-test-celestia.sh`) must stay green.
    The capture script bypasses the content security policy of the pages: a production build only allows its configured CDN host for images, the local sprite host would be blocked.
 5. Things that the old site's page scripts do on their own (a test session is signed out again when the DeviantArt refresh fails) are why the capture script signs in before every page.
 
 Old site's computed colors: link button `#337287` on `#e1edf2` text, ribbons blue `#0070e9`, orange `#bb4400`, green `#008000`, dark blue `#0022aa`, grey `#ccc`.
+
+## Roles and what each may do (old site; check every item per role)
+
+Levels: guest 1, DeviantArt user 2, club member 3, assistant = staff = admin 4, developer 255 (`Winterchilla/app/Permission.php`). "Staff" below means level 4 or higher. The old code has about 150 role checks (`grep -rn "permission('" templates app`); the ones that decide what a visitor sees or can press:
+
+| Role | Gets (on top of the role below) |
+|---|---|
+| Guest | Public pages; sign-in; the sign-in prompt on "Make a request"; color guide copy toggle. 403 on the admin area, other people's account pages, private personal guides |
+| DeviantArt user | Own profile and preferences (account limitations are read-only), Make a request (when allowed by `a_postreq`), voting, personal guide list; the "Pending reservations" section shows the explanation instead of a list |
+| Club member | Reserve requests, Make a reservation, finish / cancel own reservations, Check (accept) own finished posts, "Vectors waiting for approval" with Check, Request Roulette's Reserve button, Personal Color Guide (slots by points), sidebar Discord link settings |
+| Staff level (assistant, staff, admin) | Admin area, logs, notices, useful links, PCG appearance list; add / edit / delete anywhere (guide, tags, shows, posts, events); approve and unlock posts; "Add a reservation" for others; change roles of lower users (`canEdit`), give / take PCG points; contributions of others' requests; edit reservation texts; staff-only prefs (hide synonym tags), account limitations Save buttons; account page Security section (e-mail and password); synonym tags in lists; open submissions links |
+| Developer | Everything above plus: Elasticsearch status, re-index / export / stat cache, WS and diagnose pages, "Reserve as" and timestamp fields on post forms, change the displayed developer role, session user agent and debug, point history recalculation, DeviantArt / Discord IDs under the role, edit timestamps of posts |
+
+Assistant, staff and admin differ only in their label and in which roles they may assign; capture all three anyway.
 
 ## Status legend
 

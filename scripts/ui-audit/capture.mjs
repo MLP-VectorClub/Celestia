@@ -16,7 +16,9 @@ const pages = {
 const only = process.argv[3] ? process.argv[3].split(',') : Object.keys(pages);
 const b = await chromium.launch();
 const inventory = {};
-const roles = (process.argv[4] || 'guest,admin').split(',');
+// One account of the production copy for every role (guest is not signed in). Assistant, staff and admin share a permission level
+const ACCOUNTS = { user: 2, member: 3, assistant: 132, staff: 133, admin: 136, developer: 1 };
+const roles = (process.argv[4] || 'guest,user,member,assistant,staff,admin,developer').split(',');
 for (const role of roles) {
   for (const [site, base] of Object.entries(sites)) {
     const ctx = await b.newContext({ viewport: { width: 1280, height: 900 }, bypassCSP: true });
@@ -25,7 +27,7 @@ for (const role of roles) {
       const key = `${name}-${role}-${site}`;
       try {
         // The old site's page scripts sign a test session out again when the DeviantArt token refresh fails, so sign in before every page
-        if (role === 'admin') await p.goto(`${base}/test-login/136`).catch(() => {});
+        if (role !== 'guest') await p.goto(`${base}/test-login/${ACCOUNTS[role]}`).catch(() => {});
         await p.goto(base + pages[name], { waitUntil: 'networkidle', timeout: 45000 }).catch(() => {});
         await p.waitForTimeout(1200);
         await p.screenshot({ path: `${out}/${key}.png`, fullPage: true });
