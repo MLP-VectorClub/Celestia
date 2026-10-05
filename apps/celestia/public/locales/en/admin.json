@@ -90,18 +90,6 @@
     "devRoleLabel": {
       "label": "Developer role label",
       "help": "How the developer role is named on profiles."
-    },
-    "developerTools": {
-      "heading": "Developer tools",
-      "reindex": {
-        "button": "Re-index the color guide",
-        "help": "Rebuilds the search index from the database, use it when search results look out of date."
-      },
-      "export": {
-        "button": "Export the color guide",
-        "help": "Downloads every official appearance and tag as one JSON file.",
-        "failed": "The export could not be downloaded."
-      }
     }
   }
 }

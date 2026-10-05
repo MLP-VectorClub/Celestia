@@ -12,3 +12,4 @@ export * from 'src/hooks/content';
 export * from 'src/hooks/mutation';
 export * from 'src/hooks/nutshell';
 export * from 'src/hooks/sidebar-widget';
+export * from 'src/hooks/in-view';

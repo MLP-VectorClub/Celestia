@@ -11,7 +11,7 @@ const ReturnToGuideButton: FC<{ guide: GuideName }> = ({ guide }) => {
   const t = useTranslations();
   return (
     <Link href={PATHS.GUIDE(guide)} passHref legacyBehavior>
-      <Button color="link" size="sm">
+      <Button color="guide-link" size="sm">
         <InlineIcon icon="arrow-circle-left" first />
         {t('colorGuide.nav.returnToGuide')}
       </Button>

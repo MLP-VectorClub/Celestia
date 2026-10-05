@@ -7,8 +7,11 @@ import {
   GetEventsIdResult,
   GetEventsRequest,
   GetEventsResult,
+  GetPostsIdDeviationResult,
   GetPostsRequest,
   GetPostsResult,
+  GetShowIdAdjacentResult,
+  GetShowReservationInfoResult,
   GetShowIdRequest,
   GetShowIdResult,
   GetShowIdVoteRequest,
@@ -31,8 +34,11 @@ import {
   eventsFetcher,
   personalGuideFetcher,
   pointHistoryFetcher,
+  postDeviationFetcher,
   postsFetcher,
   profileFetcher,
+  reservationInfoFetcher,
+  showAdjacentFetcher,
   showFetcher,
   showVoteFetcher,
   tagsFetcher,
@@ -149,4 +155,27 @@ export function usePosts(params: GetPostsRequest, initialData?: GetPostsResult) 
     initialData,
   });
   return { posts: data?.posts, status: mapQueryStatus(status, fetchStatus) };
+}
+
+export function useShowAdjacent(params: GetShowIdRequest, initialData?: GetShowIdAdjacentResult) {
+  const { data } = useQuery({ queryKey: [ENDPOINTS.SHOW_ADJACENT(params)], queryFn: showAdjacentFetcher(params), initialData });
+  return data;
+}
+
+/** The two texts at the top of every episode page */
+export function useReservationInfo(initialData?: GetShowReservationInfoResult) {
+  const { data } = useQuery({ queryKey: [ENDPOINTS.SHOW_RESERVATION_INFO], queryFn: reservationInfoFetcher(), initialData });
+  return data;
+}
+
+/** The DeviantArt submission of a finished post, only looked up once `enabled` (the post is in view). A failed lookup is not retried */
+export function usePostDeviation(params: { id: number }, enabled: boolean) {
+  const { data, status, fetchStatus } = useQuery<GetPostsIdDeviationResult>({
+    queryKey: [ENDPOINTS.POST_DEVIATION(params)],
+    queryFn: postDeviationFetcher(params),
+    enabled,
+    retry: false,
+    staleTime: 10 * 60 * 1000,
+  });
+  return { deviation: data, status: mapQueryStatus(status, fetchStatus) };
 }

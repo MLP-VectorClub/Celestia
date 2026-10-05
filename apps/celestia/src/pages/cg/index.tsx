@@ -3,23 +3,25 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import pluralize from 'pluralize';
 import { useMemo } from 'react';
-import { Badge, Card, CardBody, UncontrolledTooltip } from 'reactstrap';
+import { Alert, Badge, Button, Card, CardBody, UncontrolledTooltip } from 'reactstrap';
 
 import { GetColorGuideResult, GuideName } from '@mlp-vectorclub/api-types';
 import styles from 'modules/GuideIndexPage.module.scss';
-import { GuideTools } from 'src/components/colorguide/GuideTools';
+import { DeveloperGuideButtons } from 'src/components/colorguide/DeveloperGuideButtons';
+import ButtonCollection from 'src/components/shared/ButtonCollection';
 import Content from 'src/components/shared/Content';
 import ExternalLink from 'src/components/shared/ExternalLink';
 import { GuideIcon } from 'src/components/shared/GuideIcon';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import { API_DOCS_URL, GUIDE_NAMES } from 'src/config';
 import { guideIndexFetcher } from 'src/fetchers';
-import { useGuideIndex, useTitleSetter } from 'src/hooks';
+import InlineIcon from 'src/components/shared/InlineIcon';
+import { useAuth, useGuideIndex, useTitleSetter } from 'src/hooks';
 import { PATHS } from 'src/paths';
 import { useAppDispatch, wrapper } from 'src/store';
 import { SSRMessages } from 'src/types';
 import { TitleFactory } from 'src/types/title';
-import { getGuideLabel } from 'src/utils';
+import { getGuideLabel, permission } from 'src/utils';
 import { titleSetter } from 'src/utils/core';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
@@ -36,6 +38,7 @@ const GuideIndexPage: NextPage<PropTypes> = ({ initialData }) => {
   const t = useTranslations();
   const dispatch = useAppDispatch();
   const data = useGuideIndex(initialData);
+  const { signedIn, user } = useAuth();
   const wipMeaning = 'wip-meaning';
 
   const titleData = useMemo(titleFactory, []);
@@ -53,6 +56,39 @@ const GuideIndexPage: NextPage<PropTypes> = ({ initialData }) => {
           {t('colorGuide.index.wipMeaning')}
         </UncontrolledTooltip>
       </p>
+
+      <ButtonCollection>
+        <Button tag={Link} href={PATHS.BLENDING} color="guide-link" size="sm">
+          <InlineIcon icon="share" first />
+          {t('colorGuide.index.buttons.blending')}
+        </Button>
+        <Button tag={Link} href={PATHS.PICKER} color="guide-link" size="sm">
+          <InlineIcon icon="eye-dropper" first />
+          {t('colorGuide.index.buttons.picker')}
+        </Button>
+        <Button tag={Link} href={PATHS.GUIDE_TAGS('pony')} color="guide-link" size="sm">
+          <InlineIcon icon="tags" first />
+          {t('colorGuide.index.buttons.tags')}
+        </Button>
+        <Button tag={Link} href={PATHS.GUIDE_SPRITE} color="guide-link" size="sm">
+          <InlineIcon icon="image" first />
+          {t('colorGuide.index.buttons.sprite')}
+        </Button>
+        <Button tag={Link} href={PATHS.BLENDING_REVERSE} color="guide-link" size="sm">
+          <InlineIcon icon="rotate-left" first />
+          {t('colorGuide.index.buttons.blendingReverse')}
+        </Button>
+        {signedIn && permission(user, 'developer') && <DeveloperGuideButtons />}
+      </ButtonCollection>
+
+      {signedIn && user?.id != null && (
+        <Alert color="info" className="text-center">
+          <InlineIcon icon="info-circle" first />
+          {t.rich('colorGuide.index.defaultGuideNotice', {
+            settings: (chunks) => <Link href={PATHS.USER_ACCOUNT(user.id)}>{chunks}</Link>,
+          })}
+        </Alert>
+      )}
 
       <div className={styles.guideList}>
         {GUIDE_NAMES.map((code) => {
@@ -77,7 +113,6 @@ const GuideIndexPage: NextPage<PropTypes> = ({ initialData }) => {
           );
         })}
       </div>
-      <GuideTools />
     </Content>
   );
 };

@@ -94,15 +94,9 @@ const ColorGuidePage: NextPage<PropTypes> = ({ guide, page, q, initialData }) =>
       <ButtonCollection>
         {isStaff && <AppearanceCreateButton guide={guide} kind={guide === 'eqg' ? 'character' : 'pony'} />}
         <Link href={PATHS.GUIDE_FULL(guide)} passHref legacyBehavior>
-          <Button color="link" size="sm">
+          <Button color="guide-link" size="sm">
             <InlineIcon icon="bars" first />
             {t('colorGuide.guide.fullList')}
-          </Button>
-        </Link>
-        <Link href={PATHS.GUIDE_TAGS(guide)} passHref legacyBehavior>
-          <Button color="link" size="sm">
-            <InlineIcon icon="tags" first />
-            {t('colorGuide.guide.tags')}
           </Button>
         </Link>
         <MajorChangesButton guide={guide} />

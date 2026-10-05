@@ -58,61 +58,6 @@ const SettingForm: FC<(typeof SETTINGS)[number]> = ({ name: settingKey, textKey,
   );
 };
 
-const downloadBlob = (blob: Blob, filename: string) => {
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = filename;
-  link.click();
-  URL.revokeObjectURL(url);
-};
-
-const DeveloperTools: FC = () => {
-  const t = useTranslations();
-  const reindex = useApiMutation(() => AdminService.reindexColorGuide());
-  const [exportFailed, setExportFailed] = useState(false);
-  const exportGuide = useApiMutation(() => AdminService.exportColorGuide(), {
-    onSuccess: (blob) => {
-      setExportFailed(false);
-      downloadBlob(blob, 'mlpvc-colorguide.json');
-    },
-  });
-
-  return (
-    <section id="developer-tools" className="mt-4">
-      <h2 className="h5">{t('admin.settings.developerTools.heading')}</h2>
-      <FormGroup>
-        <Button color="secondary" size="sm" id="reindex-color-guide" disabled={reindex.isPending} onClick={() => reindex.mutate()}>
-          {t('admin.settings.developerTools.reindex.button')}
-        </Button>
-        <FormText className="d-block">{t('admin.settings.developerTools.reindex.help')}</FormText>
-        {reindex.isSuccess && <div className="text-success small">{reindex.data.message}</div>}
-        {reindex.error && <div className="text-danger small">{describeApiError(reindex.error)}</div>}
-      </FormGroup>
-      <FormGroup>
-        <Button
-          color="secondary"
-          size="sm"
-          id="export-color-guide"
-          disabled={exportGuide.isPending}
-          onClick={() => {
-            setExportFailed(false);
-            exportGuide.mutate(undefined, { onError: () => setExportFailed(true) });
-          }}
-        >
-          {t('admin.settings.developerTools.export.button')}
-        </Button>
-        <FormText className="d-block">{t('admin.settings.developerTools.export.help')}</FormText>
-        {(exportFailed || exportGuide.error) && (
-          <div className="text-danger small">
-            {exportGuide.error ? describeApiError(exportGuide.error) : t('admin.settings.developerTools.export.failed')}
-          </div>
-        )}
-      </FormGroup>
-    </section>
-  );
-};
-
 const SettingsPage: NextPage = () => {
   const { user } = useAuth();
   const isDeveloper = permission(user, 'developer');
@@ -121,7 +66,6 @@ const SettingsPage: NextPage = () => {
       {SETTINGS.filter((s) => s.name !== 'dev_role_label' || isDeveloper).map((s) => (
         <SettingForm key={s.name} {...s} />
       ))}
-      {isDeveloper && <DeveloperTools />}
     </AdminPage>
   );
 };

@@ -1,9 +1,24 @@
 import { IncomingMessage } from 'http';
 import { GetServerSidePropsContext } from 'next';
 
-import { GetPostsResult, GetShowIdResult, GetShowIdVoteResult, ShowListItem } from '@mlp-vectorclub/api-types';
+import {
+  GetPostsResult,
+  GetShowIdAdjacentResult,
+  GetShowIdResult,
+  GetShowIdVoteResult,
+  GetShowReservationInfoResult,
+  ShowListItem,
+} from '@mlp-vectorclub/api-types';
 import { ShowEntryPageProps, showTitleFactory } from 'src/components/show/ShowEntryPage';
-import { latestShowFetcher, postsFetcher, showFetcher, showListLookupFetcher, showVoteFetcher } from 'src/fetchers';
+import {
+  latestShowFetcher,
+  postsFetcher,
+  reservationInfoFetcher,
+  showAdjacentFetcher,
+  showFetcher,
+  showListLookupFetcher,
+  showVoteFetcher,
+} from 'src/fetchers';
 import { PATHS } from 'src/paths';
 import { wrapper } from 'src/store';
 import { Optional, SSRMessages } from 'src/types';
@@ -91,6 +106,15 @@ export const createShowGetServerSideProps = (type: ShowType) =>
       handleDataFetchingError(ctx, e);
     }
 
+    // Decoration of the page, the page still works without them
+    let adjacent: Optional<GetShowIdAdjacentResult>;
+    let reservationInfo: Optional<GetShowReservationInfoResult>;
+    try {
+      [adjacent, reservationInfo] = await Promise.all([showAdjacentFetcher({ id }, req)(), reservationInfoFetcher(req)()]);
+    } catch {
+      /* the sections are fetched again in the browser */
+    }
+
     titleSetter(store, showTitleFactory({ show: entry }));
     return {
       props: {
@@ -100,6 +124,8 @@ export const createShowGetServerSideProps = (type: ShowType) =>
         initialRequests: requests || null,
         initialReservations: reservations || null,
         initialVotes: votes || null,
+        initialAdjacent: adjacent || null,
+        initialReservationInfo: reservationInfo || null,
       },
     };
   });

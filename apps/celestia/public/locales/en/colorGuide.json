@@ -3,28 +3,19 @@
     "heading": "Color Guide List",
     "lead": "Here you can find all color guides maintained by the club staff",
     "breadcrumb": "Color Guides",
-    "tools": {
-      "heading": "Tools",
-      "sprite": {
-        "name": "Sprite template generator",
-        "description": "Create pony sprite reference images from our template"
-      },
-      "blending": {
-        "name": "Blending calculator",
-        "description": "Find an original color from two backgrounds and the blended results"
-      },
-      "blendingReverse": {
-        "name": "Blending reverser",
-        "description": "Undo a filter layer on an image or a color"
-      },
-      "picker": {
-        "name": "Color picker",
-        "description": "Read accurate colors from screencaps with picking areas"
-      }
-    },
     "devResources": "Resources for developers: <api>API</api>",
     "wip": "WIP",
-    "wipMeaning": "Work in Progress"
+    "wipMeaning": "Work in Progress",
+    "buttons": {
+      "blending": "Blending Calculator",
+      "picker": "Color Picker",
+      "tags": "Tags",
+      "sprite": "Sprite Template Generator",
+      "blendingReverse": "Blending Reverser",
+      "export": "Export",
+      "reindex": "Re-index"
+    },
+    "defaultGuideNotice": "You can configure which guide is loaded by default when you click the \"Color Guides\" navigation item in <settings>your settings</settings>."
   },
   "unknownGuide": "Unknown",
   "appearances": {

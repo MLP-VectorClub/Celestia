@@ -11,7 +11,7 @@ const MajorChangesButton: FC<{ guide: GuideName }> = ({ guide }) => {
   const t = useTranslations();
   return (
     <Link href={PATHS.GUIDE_CHANGES(guide)} passHref legacyBehavior>
-      <Button color="link" size="sm">
+      <Button color="guide-link" size="sm">
         <InlineIcon icon="exclamation-triangle" first />
         {t('colorGuide.nav.majorChanges')}
       </Button>

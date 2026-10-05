@@ -6,8 +6,11 @@ import {
   GetEventsIdResult,
   GetEventsRequest,
   GetEventsResult,
+  GetPostsIdDeviationResult,
   GetPostsRequest,
   GetPostsResult,
+  GetShowIdAdjacentResult,
+  GetShowReservationInfoResult,
   GetShowIdRequest,
   GetShowIdResult,
   GetShowIdVoteRequest,
@@ -77,6 +80,15 @@ export const latestShowFetcher = (req?: IncomingMessage) => () => fetchResource<
 
 export const showVoteFetcher = (params: GetShowIdVoteRequest, req?: IncomingMessage) => () =>
   fetchResource<GetShowIdVoteResult>(ENDPOINTS.SHOW_VOTE(params), req);
+
+export const showAdjacentFetcher = (params: GetShowIdRequest, req?: IncomingMessage) => () =>
+  fetchResource<GetShowIdAdjacentResult>(ENDPOINTS.SHOW_ADJACENT(params), req);
+
+export const reservationInfoFetcher = (req?: IncomingMessage) => () =>
+  fetchResource<GetShowReservationInfoResult>(ENDPOINTS.SHOW_RESERVATION_INFO, req);
+
+export const postDeviationFetcher = (params: { id: number }, req?: IncomingMessage) => () =>
+  fetchResource<GetPostsIdDeviationResult>(ENDPOINTS.POST_DEVIATION(params), req);
 
 export const postsFetcher = (params: GetPostsRequest, req?: IncomingMessage) => () =>
   fetchResource<GetPostsResult>(ENDPOINTS.POSTS(params), req);

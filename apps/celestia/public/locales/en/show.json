@@ -29,7 +29,21 @@
     "noRelatedAppearances": "No color guide entries are linked to this entry yet",
     "loadingSubject": "show entry",
     "breadcrumb": "Show",
-    "unknownType": "Show entry"
+    "unknownType": "Show entry",
+    "subtitle": "Vector Requests & Reservations",
+    "aboutReservations": "What Vector Reservations Are",
+    "reservationRules": "Reservation Rules",
+    "edit": "Edit",
+    "saveText": "Save",
+    "textHtml": "Text (HTML)",
+    "notesHeading": "Notes from the staff",
+    "adminHeading": "Administration area",
+    "metadata": "Metadata",
+    "guideRelations": "Guide relations",
+    "relatedHeading": "Related <guide>Color Guide</guide> {count, plural, one {page} other {pages}}",
+    "loadTextFailed": "Could not load the current data.",
+    "unlinked": "Available",
+    "linked": "Linked"
   },
   "post": {
     "requestsHeading": "Requests",
@@ -103,7 +117,31 @@
     },
     "addFinished": "Add finished reservation",
     "addRequest": "Add request",
-    "addReservation": "Add reservation"
+    "addReservation": "Add reservation",
+    "makeRequest": "Make a request",
+    "makeReservation": "Make a reservation",
+    "addFinishedReservation": "Add a reservation",
+    "listOfRequests": "List of Requests",
+    "finishedRequests": "Finished Requests",
+    "listOfReservations": "List of Reservations",
+    "finishedReservations": "Finished Reservations",
+    "none": "None yet.",
+    "finished": "Finished",
+    "postedInSection": "Posted in the <strong>{section}</strong> section",
+    "originalImage": "Original image",
+    "openSubmissions": "View open submissions",
+    "canBeContested": "Can be contested",
+    "contestHint": "Because this request was reserved more than 3 weeks ago it's now available for other members to reserve",
+    "deemedBroken": "Deemed broken",
+    "brokenHint": "The full size preview of this post was deemed unavailable and it is now marked as broken",
+    "previewUnavailable": "Preview unavailable",
+    "clickToView": "Click to view",
+    "approvedHint": "This submission has been accepted into the group gallery",
+    "sections": {
+      "chr": "Characters",
+      "obj": "Objects",
+      "bg": "Backgrounds"
+    }
   },
   "common": {
     "save": "Save"

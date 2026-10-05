@@ -21,7 +21,7 @@ export const PATHS = {
   SHORT_APPEARANCE: ({ id, label }: Pick<PreviewAppearance, 'id' | 'label'>) => `/cg/v/${pathSegmentWithId(id, label)}`,
   BLENDING: '/blending',
   BLENDING_REVERSE: '/blending-reverse',
-  PICKER: '/picker',
+  PICKER: '/cg/picker',
   EVENTS: '/events',
   EVENT: ({ id, name }: { id: Numeric; name: string }) => `/event/${pathSegmentWithId(id, name)}`,
   GUIDE_INDEX: '/cg',

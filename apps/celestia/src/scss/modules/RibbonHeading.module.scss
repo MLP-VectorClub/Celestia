@@ -1,0 +1,76 @@
+@use '../breakpoints' as *;
+
+// The old site's section headings: a colored ribbon that ends in an arrow, with the section's own buttons inside
+.ribbon {
+  position: relative;
+  left: -10px;
+  display: inline-block;
+  min-height: 30px;
+  padding: 3px 7px 3px 25px;
+  margin: 1rem 0 0.5rem;
+  font-family: var(--bs-body-font-family);
+  font-size: 1.3rem;
+  font-weight: normal;
+  line-height: 24px;
+  color: var(--ribbon-text);
+  background: var(--ribbon-bg);
+
+  @include media-breakpoint-up(md) {
+    &::after {
+      position: absolute;
+      top: 0;
+      right: -30px;
+      width: 0;
+      height: 0;
+      content: '';
+      border-color: transparent transparent transparent var(--ribbon-bg);
+      border-style: solid;
+      border-width: 30px 0 0 30px;
+    }
+  }
+
+  @include media-breakpoint-down(md) {
+    display: block;
+    left: 0;
+    text-align: center;
+    border-radius: 3px;
+  }
+
+  :global(.btn) {
+    padding: 0 0.4rem;
+    margin-left: 0.6rem;
+    font-size: 0.9rem;
+    line-height: 24px;
+    vertical-align: bottom;
+  }
+}
+
+.plain {
+  --ribbon-bg: #ccc;
+  --ribbon-text: #000;
+}
+
+.blue {
+  --ribbon-bg: #0070e9;
+  --ribbon-text: #eef;
+}
+
+.orange {
+  --ribbon-bg: #b40;
+  --ribbon-text: #fed;
+}
+
+.darkblue {
+  --ribbon-bg: #02a;
+  --ribbon-text: #ddf;
+}
+
+.green {
+  --ribbon-bg: #008000;
+  --ribbon-text: #dfd;
+}
+
+.ui {
+  --ribbon-bg: #357;
+  --ribbon-text: #dde6ee;
+}

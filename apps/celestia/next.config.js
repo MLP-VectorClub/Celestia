@@ -85,7 +85,7 @@ module.exports = {
       // URLs of the previous site
       { source: '/cg/blending', destination: '/blending', permanent: true },
       { source: '/cg/blending-reverse', destination: '/blending-reverse', permanent: true },
-      { source: '/cg/picker', destination: '/picker', permanent: true },
+      { source: '/picker', destination: '/cg/picker', permanent: true },
       { source: '/users/:user/cg/slot-history', destination: '/users/:user/cg/point-history', permanent: false },
       { source: '/cg/preferred', destination: '/cg', permanent: false },
       { source: '/logs', destination: '/admin/logs', permanent: true },
@@ -105,7 +105,7 @@ module.exports = {
           : rewrite
       ),
       // URLs of the previous site that are served by pages or by the API
-      { source: '/cg/picker/frame', destination: '/picker' },
+      { source: '/cg/picker/frame', destination: '/cg/picker' },
       { source: '/@:name/:rest(.+)', destination: '/u/:name?rest=:rest' },
       { source: '/@:name', destination: '/u/:name' },
       // The export files of an appearance, which the API serves from its palette and image routes
