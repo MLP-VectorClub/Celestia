@@ -46,8 +46,8 @@ Assistant, staff and admin differ only in their label and in which roles they ma
 | Major changes | `/cg/pony/changes` | same | pagination style | 🟡 |
 | Tags | `/cg/tags` | `/cg/pony/tags` | URL, "Return to Color Guides" / "Major Changes" buttons, staff "Refresh use count" / "Refresh usage data on this page" | ✅ |
 | Appearance | `/cg/pony/v/ID-Name` | `/cg/pony/v/ID` | canonical URL with the name, "Open image in new tab", "Download swatch file", "View as PNG", section layout | 🟡 |
-| Blending calculator | `/cg/blending` | `/blending` | URL, heading ("Color Blending Calculator"), "Back to Color Guide", credit link | 🟡 URL redirect left |
-| Blending reverser | `/cg/blending-reverse` | `/blending-reverse` | URL | 🟡 |
+| Blending calculator | `/cg/blending` | `/cg/blending` (old `/blending` redirects) | URL, heading ("Color Blending Calculator"), "Back to Color Guide", credit link | ✅ |
+| Blending reverser | `/cg/blending-reverse` | `/cg/blending-reverse` (old `/blending-reverse` redirects) | URL | ✅ |
 | Picker | `/cg/picker` | `/cg/picker` | (moved 2026-10-04) | 🟡 |
 | Episode / movie | `/episode/...` | same | Share button, staff Unlock, icon-only actions, reserver avatar chip, "added by", approved date | 🟡 |
 | Show list | `/show` | same | not yet compared | ❓ |

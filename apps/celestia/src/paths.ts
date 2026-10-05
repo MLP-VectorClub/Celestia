@@ -19,8 +19,8 @@ export const PATHS = {
       ? PATHS.PCG_APPEARANCE(ownerId, { id, label })
       : `/cg/${guide}/v/${pathSegmentWithId(id, label)}`,
   SHORT_APPEARANCE: ({ id, label }: Pick<PreviewAppearance, 'id' | 'label'>) => `/cg/v/${pathSegmentWithId(id, label)}`,
-  BLENDING: '/blending',
-  BLENDING_REVERSE: '/blending-reverse',
+  BLENDING: '/cg/blending',
+  BLENDING_REVERSE: '/cg/blending-reverse',
   PICKER: '/cg/picker',
   EVENTS: '/events',
   EVENT: ({ id, name }: { id: Numeric; name: string }) => `/event/${pathSegmentWithId(id, name)}`,

@@ -83,8 +83,8 @@ module.exports = {
     return [
       ...vercelConfig.redirects,
       // URLs of the previous site
-      { source: '/cg/blending', destination: '/blending', permanent: true },
-      { source: '/cg/blending-reverse', destination: '/blending-reverse', permanent: true },
+      { source: '/blending', destination: '/cg/blending', permanent: true },
+      { source: '/blending-reverse', destination: '/cg/blending-reverse', permanent: true },
       { source: '/picker', destination: '/cg/picker', permanent: true },
       { source: '/users/:user/cg/slot-history', destination: '/users/:user/cg/point-history', permanent: false },
       { source: '/cg/preferred', destination: '/cg', permanent: false },
