@@ -91,8 +91,7 @@ without `#`) and a draggable `ResizeHandle` that saves the list width. Pure part
 exact averages (including an area over two colors and one overlapping the image edge), round areas, size changes, deleting, list selection, editing and
 the per-image separation with the close confirmation. Differences from Winterchilla: select-all and delete act on the active image, not every image;
 the hex/rgb display toggle is gone (both are shown); clicking an existing area with the eyedropper places a new area instead of selecting it.
-The browser tests share `localStorage` with the app's settings, so they clear it first. Not covered by tests: the Copy button (needs the clipboard
-permission), dragging the resize handle, and the area color dialog.
+The browser tests share `localStorage` with the app's settings, so they clear it first. The Copy button (clipboard mocked), dragging the resize handle and the area color dialog are covered by `PickerControls.browser.test.tsx`.
 
 ## Stage 5 status: done, except strings
 
