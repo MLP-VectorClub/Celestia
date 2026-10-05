@@ -85,23 +85,34 @@
       "synonymTitle": "Make “{name}” a synonym",
       "unlinkBody": "“{name}” will be a standalone tag again and stay applied to the appearances tagged with “{target}”.",
       "deleteUsed": "“{name}” is used on {count, plural, one {# appearance} other {# appearances}}. Deleting it removes it from all of them.",
-      "deleteUnused": "“{name}” will be deleted."
+      "deleteUnused": "“{name}” will be deleted.",
+      "refreshAll": "Refresh usage data on this page"
     },
     "staffMenu": {
       "tagsMenu": "More tag actions",
       "tagMenu": "Actions for the tag {name}",
       "edit": "Edit tag",
       "delete": "Delete tag"
-    }
+    },
+    "perPage": "Displaying {count} items/page",
+    "returnToGuides": "Return to Color Guides",
+    "nameColumn": "Name",
+    "descriptionColumn": "Description",
+    "typeColumn": "Type",
+    "usesColumn": "Uses",
+    "searchFor": "Search for {name}",
+    "synonymOfLabel": "Synonym of"
   },
   "blending": {
-    "title": "Blending Calculator",
-    "lead": "Find an original color from two different backgrounds and the colors it produced when blended over them. Originally made by dasprid.",
-    "hint": "Shift+click a field to enter RGB values."
+    "title": "Color Blending Calculator",
+    "lead": "Originally made by <author>dasprid</author>",
+    "hint": "<strong>Shift+Click</strong> an input to open a dialog where you can enter RGB values",
+    "info": "This is a tool which helps you to find an original color, given two different background colors and the resulting blended color, when the original color is blended over it.",
+    "back": "Back to Color Guide"
   },
   "blendingReverse": {
     "title": "Blending Reverser",
-    "lead": "Reverse a filter layer applied to an image or a color"
+    "lead": "Reverse various filters applied to an image"
   },
   "picker": {
     "title": "Color Picker",

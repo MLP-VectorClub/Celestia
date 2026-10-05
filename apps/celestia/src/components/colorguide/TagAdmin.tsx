@@ -3,6 +3,7 @@ import { FC, useEffect, useState } from 'react';
 import { Alert, Button, FormGroup, FormText, Input, Label } from 'reactstrap';
 
 import { GetConfigResult, TagListItem } from '@mlp-vectorclub/api-types';
+import { IconButton } from 'src/components/shared/IconButton';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { FormDialog } from 'src/components/shared/dialogs/FormDialog';
@@ -137,57 +138,25 @@ const SynonymDialog: FC<BaseProps & { tag: TagListItem; isOpen: boolean; onClose
 };
 
 /** Per-tag management buttons: edit, delete, synonym handling, recount */
-export const TagAdminActions: FC<BaseProps & { tag: TagListItem }> = ({ tag, page, tagTypes }) => {
+/** The icon buttons next to a tag's name: edit, delete and make (or unlink) synonym; every one of them as a visible button, none behind a right click */
+export const TagRowActions: FC<BaseProps & { tag: TagListItem }> = ({ tag, page, tagTypes }) => {
   const t = useTranslations();
   const { confirm } = useDialog();
   const [dialog, setDialog] = useState<'edit' | 'synonym' | null>(null);
 
   const remove = useApiMutation((confirmed: boolean) => TagService.remove(tag.id, confirmed), { invalidate: tagsKey(page) });
   const unsynonym = useApiMutation((keepTagged: boolean) => TagService.removeSynonym(tag.id, keepTagged), { invalidate: tagsKey(page) });
-  const recount = useApiMutation(() => TagService.recountUses([tag.id]), { invalidate: tagsKey(page) });
-
-  const error = remove.error ?? unsynonym.error ?? recount.error;
-  const busy = remove.isPending || unsynonym.isPending || recount.isPending;
+  const error = remove.error ?? unsynonym.error;
+  const busy = remove.isPending || unsynonym.isPending;
 
   return (
-    <span className="ms-2 d-inline-flex flex-wrap gap-1 align-middle">
-      <small className="text-muted align-self-center">#{tag.id}</small>
-      <Button size="sm" color="ui" disabled={busy} onClick={() => setDialog('edit')}>
-        {t('colorGuide.tags.admin.edit')}
-      </Button>
-      {tag.synonymOf ? (
-        <Button
-          size="sm"
-          color="ui"
-          disabled={busy}
-          onClick={async () => {
-            if (
-              await confirm({
-                title: t('colorGuide.tags.admin.unlink'),
-                body: t('colorGuide.tags.admin.unlinkBody', { name: tag.name, target: tag.synonymOf?.name ?? '' }),
-                confirmLabel: t('colorGuide.tags.admin.unlinkConfirm'),
-              })
-            ) {
-              unsynonym.mutate(true);
-            }
-          }}
-        >
-          {t('colorGuide.tags.admin.unlink')}
-        </Button>
-      ) : (
-        <>
-          <Button size="sm" color="ui" disabled={busy} onClick={() => setDialog('synonym')}>
-            {t('colorGuide.tags.admin.makeSynonym')}
-          </Button>
-          <Button size="sm" color="ui" disabled={busy} onClick={() => recount.mutate()}>
-            {t('colorGuide.tags.admin.recount')}
-          </Button>
-        </>
-      )}
-      <Button
-        size="sm"
-        color="danger"
-        outline
+    <span className="utils d-inline-flex align-items-center">
+      <IconButton icon="pencil-alt" color="blue" title={t('colorGuide.tags.admin.edit')} className="edit" disabled={busy} onClick={() => setDialog('edit')} />
+      <IconButton
+        icon="trash"
+        color="red"
+        title={t('colorGuide.tags.admin.delete')}
+        className="delete"
         disabled={busy}
         onClick={async () => {
           if (
@@ -204,9 +173,29 @@ export const TagAdminActions: FC<BaseProps & { tag: TagListItem }> = ({ tag, pag
             remove.mutate(tag.uses > 0);
           }
         }}
-      >
-        {t('colorGuide.tags.admin.delete')}
-      </Button>
+      />
+      {tag.synonymOf ? (
+        <IconButton
+          icon="unlink"
+          color="orange"
+          title={t('colorGuide.tags.admin.unlink')}
+          className="unsynon"
+          disabled={busy}
+          onClick={async () => {
+            if (
+              await confirm({
+                title: t('colorGuide.tags.admin.unlink'),
+                body: t('colorGuide.tags.admin.unlinkBody', { name: tag.name, target: tag.synonymOf?.name ?? '' }),
+                confirmLabel: t('colorGuide.tags.admin.unlinkConfirm'),
+              })
+            ) {
+              unsynonym.mutate(true);
+            }
+          }}
+        />
+      ) : (
+        <IconButton icon="sitemap" color="darkblue" title={t('colorGuide.tags.admin.makeSynonym')} className="synon" disabled={busy} onClick={() => setDialog('synonym')} />
+      )}
       {error && (
         <Alert color="danger" fade={false} className="w-100 mb-0 py-1" role="alert">
           {describeApiError(error)}
@@ -215,5 +204,36 @@ export const TagAdminActions: FC<BaseProps & { tag: TagListItem }> = ({ tag, pag
       <TagFormDialog tag={tag} page={page} tagTypes={tagTypes} isOpen={dialog === 'edit'} onClose={() => setDialog(null)} />
       <SynonymDialog tag={tag} page={page} tagTypes={tagTypes} isOpen={dialog === 'synonym'} onClose={() => setDialog(null)} />
     </span>
+  );
+};
+
+/** The number of uses of a tag with the button that counts it again (synonyms have no count of their own) */
+export const TagUses: FC<{ tag: TagListItem; page: number; canRecount: boolean }> = ({ tag, page, canRecount }) => {
+  const t = useTranslations();
+  const recount = useApiMutation(() => TagService.recountUses([tag.id]), { invalidate: tagsKey(page) });
+  if (tag.synonymOf) return <span>-</span>;
+  return (
+    <>
+      <span>{tag.uses}</span>
+      {canRecount && (
+        <IconButton icon="sync" color="darkblue" title={t('colorGuide.tags.admin.recount')} className="refresh" disabled={recount.isPending} onClick={() => recount.mutate()} />
+      )}
+    </>
+  );
+};
+
+/** In the header of the uses column: count the uses of every tag on the page again */
+export const RefreshAllButton: FC<{ ids: number[]; page: number }> = ({ ids, page }) => {
+  const t = useTranslations();
+  const refresh = useApiMutation(() => TagService.recountUses(ids), { invalidate: tagsKey(page) });
+  return (
+    <IconButton
+      icon="sync"
+      color="darkblue"
+      title={t('colorGuide.tags.admin.refreshAll')}
+      className="refresh-all"
+      disabled={refresh.isPending || ids.length === 0}
+      onClick={() => refresh.mutate()}
+    />
   );
 };

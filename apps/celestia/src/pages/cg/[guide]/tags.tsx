@@ -1,12 +1,15 @@
-import { groupBy } from 'lodash';
 import { NextPage } from 'next';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
+import { Button } from 'reactstrap';
 
 import { GetConfigResult, GetTagsResult, GuideName } from '@mlp-vectorclub/api-types';
 import { GuideNotFound } from 'src/components/colorguide/GuideNotFound';
-import { Tag } from 'src/components/colorguide/Tag';
-import { NewTagButton, TagAdminActions } from 'src/components/colorguide/TagAdmin';
+import tableStyles from 'modules/TagsTable.module.scss';
+import { NewTagButton, RefreshAllButton, TagRowActions, TagUses } from 'src/components/colorguide/TagAdmin';
+import ButtonCollection from 'src/components/shared/ButtonCollection';
+import InlineIcon from 'src/components/shared/InlineIcon';
 import Content from 'src/components/shared/Content';
 import NoResultsAlert from 'src/components/shared/NoResultsAlert';
 import Pagination from 'src/components/shared/Pagination';
@@ -50,40 +53,78 @@ const TagsPage: NextPage<PropTypes> = ({ guide, page, initialTags, initialConfig
   const titleData = useMemo(() => titleFactory({ guide }), [guide]);
   useTitleSetter(dispatch, titleData);
 
-  const groups = useMemo(() => groupBy(data?.tags ?? [], (tag) => tag.type ?? ''), [data]);
-
   if (!guide) {
     return <GuideNotFound heading={t('colorGuide.notFound.unknownGuide')} noun={t('colorGuide.notFound.nouns.guide')} />;
   }
 
+  const tagsList = data?.tags ?? [];
   return (
     <Content>
-      <StandardHeading heading={t('colorGuide.tags.heading')} lead={t('colorGuide.tags.lead')} />
-      {canManage && config && <NewTagButton page={page} tagTypes={config.tagTypes} />}
+      <StandardHeading heading={t('colorGuide.tags.heading')} lead={t('colorGuide.tags.perPage', { count: data?.pagination.itemsPerPage ?? 50 })} />
+      <ButtonCollection>
+        <Button tag={Link} href={PATHS.GUIDE_INDEX} color="guide-link">
+          <InlineIcon icon="arrow-circle-left" first />
+          {t('colorGuide.tags.returnToGuides')}
+        </Button>
+        <Button tag={Link} href={PATHS.GUIDE_CHANGES(guide)} color="guide-link">
+          <InlineIcon icon="exclamation-triangle" first />
+          {t('colorGuide.nav.majorChanges')}
+        </Button>
+        {canManage && config && <NewTagButton page={page} tagTypes={config.tagTypes} />}
+      </ButtonCollection>
       <StatusAlert status={status} subject={t('colorGuide.tags.loadingSubject')} />
       {data?.tags.length === 0 && <NoResultsAlert message={t('colorGuide.tags.empty')} />}
       {data && data.tags.length > 0 && (
         <>
           <Pagination {...data.pagination} tooltipPos="bottom" />
-          {Object.entries(groups).map(([type, tags]) => (
-            <section key={type}>
-              <h2>{type === '' ? t('colorGuide.tags.noType') : (config?.tagTypes[type] ?? type)}</h2>
-              <ul className="list-unstyled">
-                {tags.map((tag) => (
-                  <li key={tag.id} className="mb-1">
-                    <Tag tag={tag} guide={guide} />{' '}
-                    <small className="text-muted">
-                      {tag.synonymOf
-                        ? t('colorGuide.tags.synonymOf', { name: tag.synonymOf.name })
-                        : t('colorGuide.tags.uses', { count: tag.uses })}
-                      {tag.title ? ` – ${tag.title}` : ''}
-                    </small>
-                    {canManage && config && <TagAdminActions tag={tag} page={page} tagTypes={config.tagTypes} />}
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))}
+          <table id="tags" className={tableStyles.tags}>
+            <thead>
+              <tr>
+                <th className="tid">ID</th>
+                <th className="name" colSpan={canManage ? 2 : 1}>
+                  {t('colorGuide.tags.nameColumn')}
+                </th>
+                <th className="title">{t('colorGuide.tags.descriptionColumn')}</th>
+                <th className="type">{t('colorGuide.tags.typeColumn')}</th>
+                <th className="uses">
+                  {t('colorGuide.tags.usesColumn')} {canManage && <RefreshAllButton ids={tagsList.filter((tag) => !tag.synonymOf).map((tag) => tag.id)} page={page} />}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {tagsList.map((tag) => (
+                <tr key={tag.id} className={`${tableStyles.row} ${tag.type ? tableStyles[tag.type] ?? '' : ''} typ-${tag.type ?? ''}`}>
+                  <td className="tid">{tag.id}</td>
+                  <td className="name">
+                    <Link href={PATHS.GUIDE(guide, { q: tag.name })} title={t('colorGuide.tags.searchFor', { name: tag.name })}>
+                      <InlineIcon icon="search" first size="sm" />
+                      {tag.name}
+                    </Link>
+                  </td>
+                  {canManage && config && (
+                    <td className="utils text-center">
+                      <TagRowActions tag={tag} page={page} tagTypes={config.tagTypes} />
+                    </td>
+                  )}
+                  <td className="title">
+                    {tag.title}
+                    {tag.synonymOf && (
+                      <>
+                        {tag.title && <br />}
+                        <em>
+                          {t('colorGuide.tags.synonymOfLabel')} <strong>{tag.synonymOf.name}</strong>
+                        </em>
+                      </>
+                    )}
+                  </td>
+                  <td className="type">{tag.type ? (config?.tagTypes[tag.type] ?? tag.type) : ''}</td>
+                  <td className="uses">
+                    <TagUses tag={tag} page={page} canRecount={canManage} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
           <Pagination {...data.pagination} tooltipPos="top" listClassName="mb-0" />
         </>
       )}

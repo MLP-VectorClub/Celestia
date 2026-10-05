@@ -1,0 +1,88 @@
+@use 'sass:color';
+@use '../vars' as *;
+
+// A row per tag, colored by the type of the tag like on the old site: pale background, strong text, buttons the other way round
+@mixin row-variant($base) {
+  $text: color.mix(white, $base, 10%);
+  $background: color.to-gamut(color.adjust($base, $lightness: 50%, $space: hsl), $method: clip);
+
+  color: $text;
+  background-color: $background;
+
+  a {
+    color: $text;
+  }
+
+  button {
+    color: $background !important;
+    background-color: $text !important;
+  }
+}
+
+.tags {
+  width: 100%;
+  margin-bottom: 1rem;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 0.2rem 0.4rem;
+    border: 1px solid #000;
+  }
+
+  th {
+    text-align: center;
+  }
+
+  td:first-child {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .name a {
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
+  .type,
+  .uses {
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .uses span {
+    margin-right: 0.3rem;
+  }
+
+  button {
+    vertical-align: middle;
+  }
+}
+
+.row {
+  @include row-variant($tag-color-default);
+
+  &.cat {
+    @include row-variant($tag-color-category);
+  }
+
+  &.spec {
+    @include row-variant($tag-color-species);
+  }
+
+  &.gen {
+    @include row-variant($tag-color-gender);
+  }
+
+  &.app {
+    @include row-variant($tag-color-clothing);
+  }
+
+  &.warn {
+    @include row-variant($tag-color-warning);
+  }
+
+  &.char {
+    @include row-variant($tag-color-character);
+  }
+}

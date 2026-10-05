@@ -90,8 +90,19 @@ module.exports = {
       { source: '/cg/preferred', destination: '/cg', permanent: false },
       { source: '/admin/useful-links', destination: '/admin/usefullinks', permanent: true },
       { source: '/logs', destination: '/admin/logs', permanent: true },
-      { source: '/logs/:page(\\d+)', destination: '/admin/logs', permanent: true },
-      { source: '/events/:page(\\d+)', destination: '/events', permanent: true },
+      // Page numbers in the path (`/cg/pony/2`, `/admin/logs/3`) are `?page=` here
+      { source: '/logs/:page(\\d+)', destination: '/admin/logs?page=:page', permanent: true },
+      { source: '/admin/logs/:page(\\d+)', destination: '/admin/logs?page=:page', permanent: true },
+      { source: '/admin/pcg-appearances/:page(\\d+)', destination: '/admin/pcg-appearances?page=:page', permanent: true },
+      { source: '/events/:page(\\d+)', destination: '/events?page=:page', permanent: true },
+      { source: '/cg/tags', destination: '/cg/pony/tags', permanent: true },
+      { source: '/cg/tags/:page(\\d+)', destination: '/cg/pony/tags?page=:page', permanent: true },
+      { source: '/cg/:guide(pony|eqg)/tags/:page(\\d+)', destination: '/cg/:guide/tags?page=:page', permanent: true },
+      { source: '/cg/:guide(pony|eqg)/changes/:page(\\d+)', destination: '/cg/:guide/changes?page=:page', permanent: true },
+      { source: '/cg/:guide(pony|eqg)/:page(\\d+)', destination: '/cg/:guide?page=:page', permanent: true },
+      { source: '/users/:user/cg/point-history/:page(\\d+)', destination: '/users/:user/cg/point-history?page=:page', permanent: true },
+      { source: '/users/:user/cg/slot-history/:page(\\d+)', destination: '/users/:user/cg/point-history?page=:page', permanent: true },
+      { source: '/docs', destination: `${NEXT_PUBLIC_BACKEND_HOST}/`, permanent: false },
     ];
   },
   async rewrites() {

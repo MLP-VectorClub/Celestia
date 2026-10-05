@@ -1,8 +1,12 @@
 import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { useMemo } from 'react';
+import { Alert, Button } from 'reactstrap';
 
 import Content from 'src/components/shared/Content';
+import ExternalLink from 'src/components/shared/ExternalLink';
+import InlineIcon from 'src/components/shared/InlineIcon';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import { BlendingTool } from 'src/components/tools/blending/BlendingTool';
 import { useTitleSetter } from 'src/hooks';
@@ -33,8 +37,23 @@ const BlendingPage: NextPage = () => {
 
   return (
     <Content>
-      <StandardHeading heading={t('colorGuide.blending.title')} lead={t('colorGuide.blending.lead')} />
-      <p className="text-center text-muted">{t('colorGuide.blending.hint')}</p>
+      <StandardHeading
+        heading={t('colorGuide.blending.title')}
+        lead={t.rich('colorGuide.blending.lead', {
+          author: (chunks) => <ExternalLink href="https://www.deviantart.com/dasprid">{chunks}</ExternalLink>,
+        })}
+      />
+      <Alert color="info" className="text-center">
+        <p>
+          <InlineIcon icon="info-circle" first />
+          {t('colorGuide.blending.info')}
+        </p>
+        <p>{t.rich('colorGuide.blending.hint', { strong: (chunks) => <strong>{chunks}</strong> })}</p>
+        <Button tag={Link} href={PATHS.GUIDE_INDEX} color="guide-link">
+          <InlineIcon icon="arrow-circle-left" first />
+          {t('colorGuide.blending.back')}
+        </Button>
+      </Alert>
       <BlendingTool />
     </Content>
   );
