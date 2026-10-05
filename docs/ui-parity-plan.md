@@ -60,6 +60,34 @@ Old site's computed colors: link button `#337287` on `#e1edf2` text, ribbons blu
 | Responsive layout, mobile | ❓ |
 | Dialogs (look and behavior): the old site's dialog component | ❓ |
 
+## Interactions the label diff cannot see (inventory of the old page scripts, 2026-10-05)
+
+The label diff only shows what is on the page. These behaviors live in `Winterchilla/assets/js` and each needs its own check (status after each item).
+
+**Right-click menus** (`jquery.ctxmenu.js`: a small menu titled after the target, items with icons, one marked default; Shift+right-click keeps the browser's own menu):
+- Color squares, guide list and appearance page (`guide.js`): *Copy HEX color code* (default, same as a click; the `#` follows the sidebar's "Copy # with color codes" toggle), *View RGB values* (same as Shift+click, a dialog with the path "Pony › Group › Color" and `rgb(r, g, b)`). ❌
+- Tags area of the appearance page, staff (`manage.jsx` 1217): *Create new tag*; each tag, titled "Tag: name": *Edit tag*, *Delete tag*, *Create new tag*. ❌
+- Color groups of the appearance page and list items, staff/owner (`manage.jsx` 1322, 1394): menu on the whole list "Color groups": *Re-order color groups*, *Create new group*, *Apply template (if empty)*; on a group: *Edit color group*, *Delete color group*, *Re-order color groups*, *Create new group*. ❌
+- Sprite (`manage.jsx` 1485): *Open image in new tab* (default once there is a sprite), *Copy image URL*, *Upload new sprite* (default without a sprite). 🟡 (`SpriteWrap` has a partial menu)
+- Admin logs, "view" switch button of a log entry (`log.js`): a click cycles the diff view (both / new / old), a right click cycles backwards, Shift+right click is the browser's menu. ❌
+- Picker: right click zooms out with the zoom tool. ✅ (`usePointerTools`)
+
+**Modifier clicks:** Shift+click on a color square shows its RGB values (❌); Shift+click on a "Reserve" button, developers only, opens "Reserve as" (user name and time) (❌); Shift+click on a blending calculator cell opens the RGB entry (✅ `RgbEntryDialog`); Alt+click in the picker (✅).
+
+**Keyboard:** the picker's shortcuts (✅), Enter / arrow keys in the tag input with autocomplete (`manage.jsx` 1884), the color palette widget's arrow keys (`jquery.ponycolorpalette.js`), dirty tracking of the account page's settings form (`profile.js` 254, the Save button only enables after a change). ❓
+
+**Clipboard:** copy for colors, URLs and share links (🟡), paste of colors and images into the hex inputs, blending calculator, reverser, picker and post image URL fields (`global.jsx`, `blending*.js`, `show/view.js`). ❓
+
+**Drag and drop / sorting:** sprite upload zone (drop a PNG onto the sprite, `jquery.uploadzone.js`) ❌; full list re-order (✅ `FullGuideReorder`); useful links order (🟡 arrows only); color group order (✅ dialog).
+
+**Lazy loading with IntersectionObserver:** episode posts (✅ built 2026-10-05), event entries, contributions lists, profile sections, full list previews, admin "most recent posts". ❓
+
+**Persistence (`localStorage`):** the copy-hash toggle (`leavehash`), picker settings (✅), guide sprite template state. ❓
+
+**Live updates (`websocket.js`):** new notifications and post changes arrive without a reload; Luna has no WebSocket server, so this stays out unless the user decides otherwise. ⛔
+
+**Autocomplete:** appearance search box, tag input, profile/user fields, show appearance linking, blending reverser colors. ❓
+
 ## Working order
 
 1. Guide list item and pagination (used by `/cg/pony`, search, pinned appearances).
