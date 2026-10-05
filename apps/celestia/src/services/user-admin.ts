@@ -13,4 +13,7 @@ export class UserAdminService {
     Axios.post<void>(`/users/${id}/personal-guide/points`, body);
 
   static recalculateHistory = (id: number) => Axios.post<void>(`/users/${id}/personal-guide/point-history/recalculation`);
+
+  /** Staff: forget the cached contribution counts of a profile */
+  static purgeContributionsCache = (id: number) => Axios.delete<void>(`/users/${id}/contributions/cache`);
 }

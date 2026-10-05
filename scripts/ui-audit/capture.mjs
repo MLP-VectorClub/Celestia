@@ -9,7 +9,7 @@ const pages = {
   cgindex: '/cg', guide: '/cg/pony', full: '/cg/pony/full', changes: '/cg/pony/changes', tags: '/cg/pony/tags',
   appearance: '/cg/pony/v/132', blending: '/cg/blending', reverse: '/cg/blending-reverse', picker: '/cg/picker',
   episode: '/episode/latest', show: '/show', movie: '/movie/1', events: '/events', event: '/event/1',
-  users: '/users', profile: '/users/136', pcgprofile: '/users/332', pcg: '/users/332/cg', pcghist: '/users/332/cg/point-history',
+  users: '/users', profile: '/users/136', pcgprofile: '/users/332', pendprofile: '/users/105', awaitprofile: '/users/120', pcg: '/users/332/cg', pcghist: '/users/332/cg/point-history',
   about: '/about', privacy: '/about/privacy', admin: '/admin', logs: '/admin/logs', usefullinks: '/admin/usefullinks', notices: '/admin/notices',
   account: '/users/136/account',
 };

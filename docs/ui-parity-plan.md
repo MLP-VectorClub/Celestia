@@ -39,7 +39,7 @@ Old site's computed colors: link button `#337287` on `#e1edf2` text, ribbons blu
 | Show list | `/show` | same | not yet compared | ❓ |
 | Events | `/events`, `/event/ID-Title` | same | event page: description, entries layout, "Finished image", update; URL with title | 🟡 |
 | Users | `/users` | same | not yet compared | ❓ |
-| Profile | `/users/ID` | same | sections (Personal, Color Guide, Episode pages, Pending reservations, Vectors waiting for approval, Preferences, Account limitations), buttons (Go to account settings, View personal color guide, Point history, Give points, change role) | ❌ |
+| Profile | `/users/ID` | same | rebuilt 2026-10-05: briefing (DeviantArt / vector app / Discord logos, role + change role dialog), previous names, contributions (info, staff purge), personal guide (progress, list, View / Point history / Give points, "What?" dialog), pending reservations (Fix / View / Cancel, Request Roulette), vectors waiting for approval (View / Check), preferences with per-field Save. Open: dev role label button for developers, lazy loaded sections | 🟡 |
 | Personal guide, point history | `/users/ID/cg...` | same | not yet compared | ❓ |
 | Account | `/users/ID/account` | same | sections and labels (Security, Discord account, Create password, Set e-mail address, Sign out, Sync / Unlink, Reveal characters, link to security settings) | ❌ |
 | Admin index | `/admin` | `/admin` | the page has buttons (Logs, Notices, PCG appearances, Useful links), "20 most recent posts" with View, developer tools | ❌ |

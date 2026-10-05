@@ -9,6 +9,9 @@ export class AccountService {
   static setPreference = <K extends keyof UserPrefs>(userId: number, key: K, value: UserPrefs[K]) =>
     Axios.put<{ value: unknown }>(`/users/${userId}/preferences/${key}`, { value: typeof value === 'boolean' ? Number(value) : value });
 
+  /** Every preference of the user (themselves or, for staff, anyone), defaults where nothing was set */
+  static getPreferences = (userId: number) => Axios.get<Partial<UserPrefs>>(`/users/${userId}/preferences`);
+
   static signOutEverywhere = () => Axios.post<void>('/users/signout', new URLSearchParams({ everywhere: '1' }));
 
   static syncDiscord = (userId: number) => Axios.post<void>(`/users/${userId}/discord/sync`);

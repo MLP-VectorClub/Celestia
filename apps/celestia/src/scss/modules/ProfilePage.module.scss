@@ -1,0 +1,110 @@
+@use '../breakpoints' as *;
+
+.briefing {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+
+  @include media-breakpoint-down(md) {
+    flex-flow: column nowrap;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+.title {
+  h1 {
+    margin: 0;
+    font-size: 2rem;
+    line-height: 1.2;
+  }
+
+  p {
+    margin: 0.25rem 0 0;
+    font-size: 1.2rem;
+    font-style: italic;
+  }
+}
+
+.da,
+.vectorAppLogo,
+.discordLogo {
+  height: 1em;
+  margin-left: 0.3em;
+  vertical-align: baseline;
+}
+
+.da {
+  display: inline-block;
+  width: 0.6em;
+
+  svg {
+    height: 100%;
+    fill: #05cc47;
+  }
+}
+
+.ids {
+  font-size: 0.8rem;
+  letter-spacing: -1px;
+}
+
+.details > section:not(:last-child) {
+  margin-bottom: 1.25rem;
+}
+
+.contributions li {
+  margin-left: 0.25rem;
+}
+
+.pcgList {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 0.25rem 0.75rem;
+  padding: 0;
+  margin: 0.5rem 0;
+  list-style: none;
+
+  a {
+    font-size: 1.3rem;
+    font-weight: bold;
+  }
+}
+
+.settings {
+  padding-top: 1rem;
+  margin-top: 1rem;
+  text-align: center;
+  border-top: 2px dashed rgba(#000, 0.25);
+
+  h3 {
+    margin: 1rem 0 0.5rem;
+    font-family: inherit;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+
+  h2 {
+    font-family: inherit;
+    font-size: 1.7rem;
+    font-weight: bold;
+  }
+
+  form {
+    margin-bottom: 0.4rem;
+  }
+
+  label {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.privacy {
+  margin-right: 0.3rem;
+  font-size: 0.8em;
+}

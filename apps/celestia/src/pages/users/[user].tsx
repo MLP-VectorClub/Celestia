@@ -4,11 +4,17 @@ import { useRouter } from 'next/router';
 import { useEffect, useMemo } from 'react';
 
 import { GetUsersIdProfileResult, GetUsersIdResult } from '@mlp-vectorclub/api-types';
-import AvatarWrap from 'src/components/shared/AvatarWrap';
 import Content from 'src/components/shared/Content';
 import StandardHeading from 'src/components/shared/StandardHeading';
-import { ProfileAwaitingApproval, ProfileContributions, ProfilePersonalGuides } from 'src/components/users/ProfileSections';
-import { ProfileStaffControls } from 'src/components/users/ProfileStaffControls';
+import { ProfileBriefing } from 'src/components/users/ProfileBriefing';
+import { ProfilePreferences } from 'src/components/users/ProfilePreferences';
+import {
+  ProfileAwaitingApproval,
+  ProfileContributions,
+  ProfilePendingReservations,
+  ProfilePersonalGuides,
+  ProfilePreviousNames,
+} from 'src/components/users/ProfileSections';
 import { profileFetcher, userFetcher } from 'src/fetchers';
 import { transformProfileParams, useAuth, useTitleSetter, useUser, useUserProfile } from 'src/hooks';
 import { PATHS } from 'src/paths';
@@ -17,7 +23,7 @@ import { coreActions } from 'src/store/slices';
 import { BreadcrumbEntry, Nullable, Optional, SSRMessages } from 'src/types';
 import { PublicUser } from 'src/types/api-alias';
 import { TitleFactory } from 'src/types/title';
-import { fixPath, getProfileTitle, handleDataFetchingError, mapRoleLabel } from 'src/utils';
+import { fixPath, getProfileTitle, handleDataFetchingError } from 'src/utils';
 import { titleSetter } from 'src/utils/core';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 
@@ -49,7 +55,7 @@ const ProfilePage: NextPage<PropTypes> = ({ initialUser, initialProfile }) => {
   const { query } = useRouter();
   const { user } = useUser(transformProfileParams(query), initialUser || undefined);
   const { profile } = useUserProfile({ id: user?.id ?? initialUser?.id ?? 0 }, initialProfile || undefined);
-  const { user: authUser, isStaff } = useAuth();
+  const { user: authUser, isStaff, signedIn } = useAuth();
 
   useEffect(() => {
     dispatch(coreActions.setTitle(getProfileTitle(user, authUser.id)));
@@ -61,26 +67,17 @@ const ProfilePage: NextPage<PropTypes> = ({ initialUser, initialProfile }) => {
   return (
     <Content>
       {!user && <StandardHeading heading={t('users.profile.notFound')} lead={t('users.profile.checkYourSpelling')} />}
-      {user && (
-        <>
-          <div className="d-flex justify-content-center align-items-center mb-2">
-            <AvatarWrap avatarUrl={user.avatarUrl} avatarProvider={user.avatarProvider} size={75} className="flex-grow-0" />
-          </div>
-          <StandardHeading heading={user.name} lead={mapRoleLabel(t, user.role)} />
-        </>
-      )}
+      {user && profile && <ProfileBriefing profile={profile} />}
       {profile && (
         <>
-          {profile.previousUsernames && profile.previousUsernames.length > 0 && (
-            <p className="text-center text-muted">
-              {t('users.profile.previousUsernames')}: {profile.previousUsernames.join(', ')}
-            </p>
-          )}
-          {profile.discordServerMember && <p className="text-center text-muted">{t('users.profile.discordMember')}</p>}
-          <ProfileStaffControls profile={profile} />
-          <ProfileAwaitingApproval profile={profile} />
-          <ProfilePersonalGuides profile={profile} />
-          <ProfileContributions profile={profile} />
+          <div className="details section-container">
+            <ProfilePreviousNames profile={profile} />
+            <ProfileContributions profile={profile} />
+            <ProfilePersonalGuides profile={profile} />
+            {signedIn && <ProfilePendingReservations profile={profile} />}
+            <ProfileAwaitingApproval profile={profile} />
+          </div>
+          <ProfilePreferences profile={profile} />
         </>
       )}
     </Content>
@@ -116,7 +113,7 @@ export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRMess
   titleSetter(store, titleFactory(props));
   return {
     props: {
-      ...(await typedServerSideTranslations(locale, ['users'])),
+      ...(await typedServerSideTranslations(locale, ['users', 'show'])),
       ...props,
     },
   };

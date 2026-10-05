@@ -29,6 +29,7 @@ import {
   faEye,
   faEyeDropper,
   faEyeSlash,
+  faFileAlt,
   faFolder,
   faGlobe,
   faGlobeAmericas,
@@ -38,6 +39,7 @@ import {
   faInfo,
   faInfoCircle,
   faLink,
+  faLightbulb,
   faPaintBrush,
   faPalette,
   faPencilAlt,
@@ -62,6 +64,7 @@ import {
   faUserPlus,
   faUsers,
   faVideo,
+  faWrench,
 } from '@fortawesome/free-solid-svg-icons';
 
 // Tell Font Awesome to skip adding the CSS automatically since it's being imported
@@ -73,6 +76,9 @@ const brandIcons: (IconDefinition | IconPack)[] = [faDeviantart, faDiscord, faTe
 library.add(
   ...brandIcons,
   faEye,
+  faWrench,
+  faLightbulb,
+  faFileAlt,
   faUpload,
   faRotateLeft,
   faPlug,
