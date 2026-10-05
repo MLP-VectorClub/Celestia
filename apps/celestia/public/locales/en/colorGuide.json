@@ -86,6 +86,12 @@
       "unlinkBody": "“{name}” will be a standalone tag again and stay applied to the appearances tagged with “{target}”.",
       "deleteUsed": "“{name}” is used on {count, plural, one {# appearance} other {# appearances}}. Deleting it removes it from all of them.",
       "deleteUnused": "“{name}” will be deleted."
+    },
+    "staffMenu": {
+      "tagsMenu": "More tag actions",
+      "tagMenu": "Actions for the tag {name}",
+      "edit": "Edit tag",
+      "delete": "Delete tag"
     }
   },
   "blending": {
@@ -145,7 +151,10 @@
       "removeImage": "Remove sprite image",
       "removeTitle": "Remove sprite image",
       "removeBody": "The sprite of this appearance will be removed.",
-      "none": "No sprite yet, click to choose one. Right click for more options."
+      "none": "No sprite yet, click to choose one. Right click for more options.",
+      "menu": "Sprite actions",
+      "openInNewTab": "Open image in new tab",
+      "copyUrl": "Copy image URL"
     },
     "relations": {
       "mutual": "Mutual",
@@ -366,5 +375,15 @@
       "inkscapeStep1": "Download <gpl>this file</gpl> and place it in the <code>…\\Inkscape\\share\\palettes</code> folder. If you don't plan on using the other swatches, deleting them should make your newly imported swatch easier to find.",
       "inkscapeStep2": "You will most likely have to restart Inkscape for the swatch to show up in the <em>Swatches</em> (<kbd>F6</kbd>) tool window's menu."
     }
+  },
+  "colorCopy": {
+    "rgbTitle": "RGB values for color {hex}",
+    "close": "Close",
+    "label": "{label}, {hex}: click to copy",
+    "failed": "Could not copy",
+    "widgetTitle": "Color Guide",
+    "widgetHint": "Clicking colored squares copies its HEX color to your clipboard. Shift-clicking will display RGB values instead.",
+    "copyHash": "Copy # with color codes",
+    "rgbOnClick": "Show RGB values instead of copying"
   }
 }

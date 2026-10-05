@@ -7,9 +7,11 @@ import ColorSquare from 'src/components/colorguide/ColorSquare';
 
 interface PropTypes {
   colorGroups?: ColorGroup[];
+  /** Name of the appearance, for the RGB values dialog */
+  appearanceLabel?: string;
 }
 
-const AppearanceItemColorGroups: FC<PropTypes> = ({ colorGroups }) => {
+const AppearanceItemColorGroups: FC<PropTypes> = ({ colorGroups, appearanceLabel }) => {
   const t = useTranslations();
   return colorGroups && colorGroups.length > 0 ? (
     <div className={styles.compactColorGroups} aria-label={t('colorGuide.appearance.colorGroups')}>
@@ -18,7 +20,7 @@ const AppearanceItemColorGroups: FC<PropTypes> = ({ colorGroups }) => {
           <span className={styles.compactColorGroupLabel}>{cg.label}</span>
           <div className={styles.compactColorList}>
             {cg.colors.map((c) => (
-              <ColorSquare key={c.id} color={c} compact />
+              <ColorSquare key={c.id} color={c} compact path={appearanceLabel ? [appearanceLabel, cg.label] : [cg.label]} />
             ))}
           </div>
         </div>

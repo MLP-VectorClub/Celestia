@@ -30,3 +30,29 @@
   width: 0.875rem;
   height: 0.875rem;
 }
+
+// "Copied to clipboard!" over the square right after a click
+.colorSquare {
+  position: relative;
+}
+
+.copied::after,
+.failed::after {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  z-index: 5;
+  padding: 0.1rem 0.4rem;
+  font-size: 0.75rem;
+  color: #fff;
+  white-space: nowrap;
+  pointer-events: none;
+  content: attr(data-feedback);
+  background: #198754;
+  border-radius: 0.2rem;
+  transform: translateX(-50%);
+}
+
+.failed::after {
+  background: #dc3545;
+}

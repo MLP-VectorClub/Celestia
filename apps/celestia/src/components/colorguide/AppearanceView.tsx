@@ -6,6 +6,7 @@ import { Button } from 'reactstrap';
 
 import { DetailedAppearance, GuideName } from '@mlp-vectorclub/api-types';
 import styles from 'modules/AppearancePage.module.scss';
+import { useColorCopyWidget } from 'src/components/colorguide/ColorCopyWidget';
 import { AppearanceColorGroups } from 'src/components/colorguide/AppearanceColorGroups';
 import { AppearanceCutieMarks } from 'src/components/colorguide/AppearanceCutieMarks';
 import {
@@ -20,6 +21,7 @@ import AppearanceTags from 'src/components/colorguide/AppearanceTags';
 import { GuideLink } from 'src/components/colorguide/GuideLink';
 import { GuideNotFound } from 'src/components/colorguide/GuideNotFound';
 import { NutshellLabel } from 'src/components/colorguide/NutshellLabel';
+import { TagMenu, TagsMenu } from 'src/components/colorguide/TagStaffMenus';
 import { SwatchDialog } from 'src/components/colorguide/SwatchDialog';
 import { ShareAppearanceButton } from 'src/components/colorguide/ShareAppearanceButton';
 import SpriteImage from 'src/components/colorguide/SpriteImage';
@@ -55,6 +57,7 @@ export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppe
   const t = useTranslations();
   const { appearance, status } = useDetailedAppearance({ id }, initialAppearance || undefined);
   const [swatchOpen, setSwatchOpen] = useState(false);
+  useColorCopyWidget();
 
   const seoData = useMemo<SeoData | null>(
     () =>
@@ -139,10 +142,15 @@ export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppe
         <>
           {(appearance.tags.length > 0 || appearance.canEdit) && (
             <section id="tags">
-              <AppearanceTags tags={appearance.tags} guide={appearance.guide ?? guide} />
+              <AppearanceTags
+                tags={appearance.tags}
+                guide={appearance.guide ?? guide}
+                renderExtra={appearance.canEdit ? (tag) => <TagMenu tag={tag} appearanceId={appearance.id} /> : undefined}
+              />
               {appearance.canEdit && (
                 <ButtonCollection leftAlign>
                   <EditTagsButton appearanceId={appearance.id} />
+                  <TagsMenu appearanceId={appearance.id} />
                 </ButtonCollection>
               )}
             </section>
@@ -173,7 +181,12 @@ export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppe
           <EditCutieMarksButton appearance={appearance} />
         </ButtonCollection>
       )}
-      <AppearanceColorGroups colorGroups={appearance.colorGroups} appearanceId={appearance.id} canEdit={appearance.canEdit} />
+      <AppearanceColorGroups
+        colorGroups={appearance.colorGroups}
+        appearanceId={appearance.id}
+        canEdit={appearance.canEdit}
+        appearanceLabel={appearance.label}
+      />
       {appearance.ownerId === null && (appearance.relatedAppearances.length > 0 || appearance.canEdit) && (
         <section className="related">
           <h2>{t('colorGuide.appearance.relatedAppearances')}</h2>

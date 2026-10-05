@@ -118,7 +118,7 @@ const AppearanceItem: FC<AppearanceItemProps> = ({ appearance, pinned = false, g
             )}
             <AppearanceItemNotes notes={appearance.notes} hasCutieMarks={appearance.hasCutieMarks} />
             {isOfficial && !pinned && <AppearanceItemTags tags={appearance.tags} guide={guide} />}
-            <AppearanceItemColorGroups colorGroups={appearance.colorGroups} />
+            <AppearanceItemColorGroups colorGroups={appearance.colorGroups} appearanceLabel={appearance.label} />
           </Col>
         </Row>
       </CardBody>

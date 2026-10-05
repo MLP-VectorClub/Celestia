@@ -9,15 +9,17 @@ import { hexToRgb } from 'src/utils';
 interface PropTypes {
   color: Color;
   hideColorInfo?: boolean;
+  /** Names that lead to the color, for the RGB values dialog */
+  path?: string[];
 }
 
-export const ColorListItem: FC<PropTypes> = ({ color, hideColorInfo }) => {
+export const ColorListItem: FC<PropTypes> = ({ color, hideColorInfo, path }) => {
   const rgb = useMemo(() => {
     if (!hideColorInfo && color.hex) return hexToRgb(color.hex);
   }, [color.hex, hideColorInfo]);
   return (
     <li key={color.id} className={styles.colorListItem}>
-      <ColorSquare color={color} />
+      <ColorSquare color={color} path={path} />
       <span className={classNames(styles.colorInfo, rgb && styles.detailed)}>
         <span className={styles.colorLabel}>{color.label}</span>
         {rgb && (

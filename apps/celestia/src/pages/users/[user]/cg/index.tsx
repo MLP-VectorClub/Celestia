@@ -6,6 +6,7 @@ import { useMemo } from 'react';
 import { Button } from 'reactstrap';
 
 import { GetUsersIdPersonalGuideAppearancesResult, GetUsersIdResult } from '@mlp-vectorclub/api-types';
+import { useColorCopyWidget } from 'src/components/colorguide/ColorCopyWidget';
 import { AppearanceCreateButton } from 'src/components/colorguide/AppearanceCreateButton';
 import AppearanceItem from 'src/components/colorguide/AppearanceItem';
 import ButtonCollection from 'src/components/shared/ButtonCollection';
@@ -53,6 +54,7 @@ const PersonalGuidePage: NextPage<PropTypes> = ({ userId, page, user, initialDat
 
   const titleData = useMemo(() => titleFactory({ user }), [user]);
   useTitleSetter(dispatch, titleData);
+  useColorCopyWidget();
 
   return (
     <Content>

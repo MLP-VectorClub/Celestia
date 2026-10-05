@@ -1,0 +1,25 @@
+.actionMenu {
+  display: inline-block;
+}
+
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  margin: 0 2px;
+  color: #337287;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 3px;
+
+  &:hover,
+  &:focus-visible,
+  &:global(.show) {
+    background: rgba(#000, 0.08);
+    border-color: rgba(#000, 0.2);
+  }
+}

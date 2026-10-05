@@ -1,16 +1,19 @@
 import classNames from 'classnames';
 import { useTranslations } from 'next-intl';
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import { Alert } from 'reactstrap';
 
 import { Sprite } from '@mlp-vectorclub/api-types';
 import styles from 'modules/SpriteWrap.module.scss';
 import { SpriteDialog } from 'src/components/colorguide/SpriteDialog';
 import SpriteImage from 'src/components/colorguide/SpriteImage';
+import { ActionMenu, ActionMenuItem } from 'src/components/shared/ActionMenu';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { describeApiError, useApiMutation } from 'src/hooks';
 import { AppearanceEditService } from 'src/services/appearance-edit';
 import { ENDPOINTS } from 'src/utils';
+import { copyText } from 'src/utils/clipboard';
+import { getSpriteUrl } from 'src/utils/color-guide';
 
 interface PropTypes {
   appearanceId: number;
@@ -19,13 +22,13 @@ interface PropTypes {
 
 /**
  * The sprite of an appearance for the people who may change it: an image (or an empty box when there is none) that takes a file straight away,
- * and a menu on a right click with the other things to do, as on the old site
+ * and a "⋯" menu with the other things to do (the old site had them in a right click menu)
  */
 export const SpriteWrap: FC<PropTypes> = ({ appearanceId, sprite }) => {
   const t = useTranslations();
   const { confirm } = useDialog();
   const input = useRef<HTMLInputElement>(null);
-  const [menu, setMenu] = useState(false);
+  const [copied, setCopied] = useState(false);
   const [dialog, setDialog] = useState(false);
 
   const options = { invalidate: [[ENDPOINTS.APPEARANCE({ id: appearanceId })]] };
@@ -33,21 +36,7 @@ export const SpriteWrap: FC<PropTypes> = ({ appearanceId, sprite }) => {
   const remove = useApiMutation(() => AppearanceEditService.removeSprite(appearanceId), options);
   const error = upload.error ?? remove.error;
 
-  // The menu goes away with a click anywhere or Escape
-  useEffect(() => {
-    if (!menu) return;
-    const close = () => setMenu(false);
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && close();
-    document.addEventListener('click', close);
-    document.addEventListener('keydown', onKey);
-    return () => {
-      document.removeEventListener('click', close);
-      document.removeEventListener('keydown', onKey);
-    };
-  }, [menu]);
-
   const askToRemove = async () => {
-    setMenu(false);
     if (
       await confirm({
         title: t('colorGuide.edit.sprite.removeTitle'),
@@ -59,17 +48,32 @@ export const SpriteWrap: FC<PropTypes> = ({ appearanceId, sprite }) => {
       remove.mutate();
   };
 
+  const spriteUrl = sprite ? getSpriteUrl(appearanceId, sprite, 600) : null;
+  const menuItems: ActionMenuItem[] = [
+    { key: 'open', label: t('colorGuide.edit.sprite.openInNewTab'), icon: 'external-link-alt', href: spriteUrl ?? undefined, external: true, disabled: !sprite },
+    {
+      key: 'copy',
+      label: copied ? t('common.copied') : t('colorGuide.edit.sprite.copyUrl'),
+      icon: 'clipboard',
+      disabled: !sprite,
+      onClick: () => {
+        if (!spriteUrl) return;
+        void copyText(new URL(spriteUrl, window.location.origin).toString()).then(setCopied);
+        setTimeout(() => setCopied(false), 1500);
+      },
+    },
+    { key: 'upload', label: t('colorGuide.edit.sprite.uploadNew'), icon: 'upload', onClick: () => setDialog(true) },
+    ...(sprite
+      ? [{ key: 'remove', label: t('colorGuide.edit.sprite.removeImage'), icon: 'trash' as const, danger: true, separated: true, onClick: () => void askToRemove() }]
+      : []),
+  ];
+
   return (
     <div className="text-center mb-3">
       <div
         className={classNames('upload-wrap', styles.wrap, { nosprite: !sprite })}
         data-testid="sprite-wrap"
         onClick={() => !sprite && input.current?.click()}
-        onContextMenu={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setMenu(true);
-        }}
       >
         {sprite ? (
           <SpriteImage appearanceId={appearanceId} sprite={sprite} height={300} />
@@ -89,28 +93,9 @@ export const SpriteWrap: FC<PropTypes> = ({ appearanceId, sprite }) => {
             if (file) upload.mutate(file);
           }}
         />
-        {menu && (
-          <ul className={styles.menu} role="menu">
-            <li role="none">
-              <a
-                role="menuitem"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setDialog(true);
-                }}
-              >
-                {t('colorGuide.edit.sprite.uploadNew')}
-              </a>
-            </li>
-            {sprite && (
-              <li role="none">
-                <a role="menuitem" onClick={() => void askToRemove()}>
-                  {t('colorGuide.edit.sprite.removeImage')}
-                </a>
-              </li>
-            )}
-          </ul>
-        )}
+        <div className={styles.menuButton} onClick={(e) => e.stopPropagation()}>
+          <ActionMenu title={t('colorGuide.edit.sprite.menu')} alignEnd items={menuItems} />
+        </div>
       </div>
       {error && (
         <Alert color="danger" fade={false} className="mt-2" role="alert" style={{ whiteSpace: 'pre-line' }}>

@@ -25,7 +25,7 @@ interface FormProps extends BaseProps {
   onClose: () => void;
 }
 
-const TagFormDialog: FC<FormProps> = ({ tag, page, tagTypes, isOpen, onClose }) => {
+export const TagFormDialog: FC<FormProps> = ({ tag, page, tagTypes, isOpen, onClose }) => {
   const t = useTranslations();
   const [name, setName] = useState('');
   const [type, setType] = useState('');

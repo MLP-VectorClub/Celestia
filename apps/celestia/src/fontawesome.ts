@@ -57,6 +57,7 @@ import {
   faTimes,
   faLock,
   faTrash,
+  faUpload,
   faUser,
   faUserPlus,
   faUsers,
@@ -72,6 +73,7 @@ const brandIcons: (IconDefinition | IconPack)[] = [faDeviantart, faDiscord, faTe
 library.add(
   ...brandIcons,
   faEye,
+  faUpload,
   faRotateLeft,
   faPlug,
   faInfoCircle,

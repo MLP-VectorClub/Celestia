@@ -19,11 +19,13 @@ interface PropTypes {
   /** Both are needed to show the editing controls: `canEdit` comes from the appearance */
   appearanceId?: number;
   canEdit?: boolean;
+  /** Name of the appearance, for the RGB values dialog */
+  appearanceLabel?: string;
 }
 
 type Editing = { kind: 'create' } | { kind: 'edit'; id: number } | { kind: 'order' } | null;
 
-export const AppearanceColorGroups: FC<PropTypes> = ({ colorGroups, appearanceId, canEdit = false }) => {
+export const AppearanceColorGroups: FC<PropTypes> = ({ colorGroups, appearanceId, canEdit = false, appearanceLabel }) => {
   const t = useTranslations();
   const { signedIn } = useAuth();
   const prefs = usePrefs(signedIn);
@@ -119,7 +121,7 @@ export const AppearanceColorGroups: FC<PropTypes> = ({ colorGroups, appearanceId
                 )}
                 <ul className="m-0 p-0">
                   {cg.colors.map((c) => (
-                    <ColorListItem key={c.id} color={c} hideColorInfo={Boolean(prefs?.cg_hideclrinfo)} />
+                    <ColorListItem key={c.id} color={c} hideColorInfo={Boolean(prefs?.cg_hideclrinfo)} path={[appearanceLabel, cg.label].filter(Boolean) as string[]} />
                   ))}
                 </ul>
               </CardBody>

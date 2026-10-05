@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { Button } from 'reactstrap';
 
 import { GetAppearancesPinnedResult, GetAppearancesResult, GuideName } from '@mlp-vectorclub/api-types';
+import { useColorCopyWidget } from 'src/components/colorguide/ColorCopyWidget';
 import { AppearanceCreateButton } from 'src/components/colorguide/AppearanceCreateButton';
 import AppearanceItem from 'src/components/colorguide/AppearanceItem';
 import { GuideNotFound } from 'src/components/colorguide/GuideNotFound';
@@ -69,6 +70,7 @@ const ColorGuidePage: NextPage<PropTypes> = ({ guide, page, q, initialData }) =>
 
   const titleData = useMemo(() => titleFactory({ guide, page, q }), [guide, page, q]);
   useTitleSetter(dispatch, titleData);
+  useColorCopyWidget();
 
   if (guide === null) {
     return <GuideNotFound heading={heading} />;

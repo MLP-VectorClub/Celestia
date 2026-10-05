@@ -5,6 +5,7 @@ import { FC, useCallback, useMemo, useState } from 'react';
 import { Button, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 
 import { GetAppearancesFullResult, GuideName } from '@mlp-vectorclub/api-types';
+import { useColorCopyWidget } from 'src/components/colorguide/ColorCopyWidget';
 import FullGuideGroups from 'src/components/colorguide/FullGuideGroups';
 import { FullGuideReorder } from 'src/components/colorguide/FullGuideReorder';
 import { GuideNotFound } from 'src/components/colorguide/GuideNotFound';
@@ -66,6 +67,7 @@ const FullGuidePage: NextPage<PropTypes> = ({ guide, sort, initialData }) => {
 
   const titleData = useMemo(() => titleFactory({ guide }), [guide]);
   useTitleSetter(dispatch, titleData);
+  useColorCopyWidget();
 
   const SortDropdown: FC<{ sortI18n: FullGuideSortField }> = useCallback(
     ({ sortI18n }) => (
