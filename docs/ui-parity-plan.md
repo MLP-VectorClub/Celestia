@@ -13,6 +13,7 @@ It complements `winterchilla-parity-plan.md` (data and features through the API)
 2. **Capture** both sites, as guest and as admin (user 136), for every page in the table below: `node scripts/ui-audit/capture.mjs <out dir> [page,page] [guest,admin]` writes a full page screenshot per page, site and role plus `inventory.json` (headings, links, buttons and inputs of the main column).
 3. **Diff the labels:** `scripts/ui-audit/diff.py <out dir> [page ...]` lists headings, links, buttons and inputs that exist on one site only. Then look at the two screenshots of the page and read the old Twig template (`Winterchilla/templates`), its scss (`assets/scss`) and its page script (`assets/js/pages`) for what the elements do.
 4. **Fix** the page, rebuild the instance, capture again. The Winterchilla UI tests (`Winterchilla/scripts/ui-test-celestia.sh`) must stay green.
+   The capture script bypasses the content security policy of the pages: a production build only allows its configured CDN host for images, the local sprite host would be blocked.
 5. Things that the old site's page scripts do on their own (a test session is signed out again when the DeviantArt refresh fails) are why the capture script signs in before every page.
 
 Old site's computed colors: link button `#337287` on `#e1edf2` text, ribbons blue `#0070e9`, orange `#bb4400`, green `#008000`, dark blue `#0022aa`, grey `#ccc`.

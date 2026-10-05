@@ -1,0 +1,76 @@
+// The old site's square icon buttons (`button.typcn`, 28px, 4px padding), colored the way its `.btn.link`, `.teal`, `.darkblue`, `.red` ... were
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 28px;
+  height: 28px;
+  padding: 4px;
+  margin: 5px 2px;
+  font-size: 16px;
+  line-height: 1;
+  color: var(--ib-text);
+  text-decoration: none;
+  cursor: pointer;
+  background-color: var(--ib-bg);
+  border: 2px solid transparent;
+  border-radius: 3px;
+  opacity: 0.85;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--ib-text);
+    text-decoration: none;
+    opacity: 1;
+  }
+
+  &:focus-visible {
+    border-color: rgba(#000, 0.3);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &[disabled],
+  &.disabled {
+    cursor: default;
+    opacity: 0.5;
+  }
+}
+
+.link {
+  --ib-bg: #337287;
+  --ib-text: #e1edf2;
+}
+
+.teal {
+  --ib-bg: #008080;
+  --ib-text: #dff;
+}
+
+.darkblue {
+  --ib-bg: #02a;
+  --ib-text: #ddf;
+}
+
+.blue {
+  --ib-bg: #0070e9;
+  --ib-text: #eef;
+}
+
+.red {
+  --ib-bg: #c00;
+  --ib-text: #fdd;
+}
+
+.orange {
+  --ib-bg: #b40;
+  --ib-text: #fed;
+}
+
+.green {
+  --ib-bg: #008000;
+  --ib-text: #dfd;
+}

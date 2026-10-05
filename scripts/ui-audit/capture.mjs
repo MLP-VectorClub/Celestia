@@ -19,7 +19,7 @@ const inventory = {};
 const roles = (process.argv[4] || 'guest,admin').split(',');
 for (const role of roles) {
   for (const [site, base] of Object.entries(sites)) {
-    const ctx = await b.newContext({ viewport: { width: 1280, height: 900 } });
+    const ctx = await b.newContext({ viewport: { width: 1280, height: 900 }, bypassCSP: true });
     const p = await ctx.newPage();
     for (const name of only) {
       const key = `${name}-${role}-${site}`;

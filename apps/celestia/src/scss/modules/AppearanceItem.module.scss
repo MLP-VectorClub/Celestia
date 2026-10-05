@@ -3,6 +3,37 @@
 .appearanceItem {
   .appearanceName {
     font-family: bs.$font-family-base;
+    font-size: 1.5rem;
     font-weight: bold;
   }
+}
+
+// An empty entry keeps the place of the sprite, like the old site's dashed box
+.spriteBox {
+  box-sizing: border-box;
+  width: 150px;
+  min-height: 150px;
+  border: 1px dashed rgba(#000, 0.4);
+}
+
+.header {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  gap: 0 0.5rem;
+}
+
+.buttons {
+  display: inline-flex;
+  flex-flow: row wrap;
+  align-items: center;
+}
+
+.pinIcon {
+  color: #357;
+}
+
+.update {
+  margin-bottom: 0.15rem;
+  font-size: 0.8rem;
 }

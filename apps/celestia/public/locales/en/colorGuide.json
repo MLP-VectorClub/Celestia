@@ -337,5 +337,32 @@
     "submit": "Create",
     "nameHelp": "Between 2 and 70 characters.",
     "template": "Add the default color groups"
+  },
+  "item": {
+    "viewPng": "View as PNG",
+    "swatch": "Download swatch file",
+    "edit": "Edit",
+    "pin": "Pin",
+    "unpin": "Unpin",
+    "delete": "Delete",
+    "lastMajorChange": "Last major change",
+    "pinned": "Pinned",
+    "private": "Private",
+    "swatchDialog": {
+      "title": "Download swatch file for {name}",
+      "chooseProgram": "Choose your drawing program:",
+      "chooseOne": "Choose one",
+      "inkscape": "Inkscape",
+      "illustrator": "Adobe Illustrator",
+      "close": "Close",
+      "illustratorTitle": "How to import swatches to Adobe Illustrator",
+      "illustratorStep1": "Because Illustrator uses a proprietary format for swatch files, you must download a script <script>by clicking here</script> to be able to import them from our site. Be sure to save it to an easy to find location because you'll need to browse for it every time you want to import colors.",
+      "illustratorStep2": "Once you have the script, <json>click here</json> to download the <code>.json</code> file that you'll need to use for the import.",
+      "illustratorStep3": "Now that you have the 2 files, open Illustrator, create/open a document, then go to <strong>File › Scripts › Other Script</strong> (or press {keys}) then find the file with the <code>.jsx</code> extension (the one you first downloaded). A dialog will appear telling you what to do next.",
+      "illustratorStep4": "Optional: If you'd like to make using the script faster, you can place it in the <code>…\\Adobe\\Adobe Illustrator *\\Presets\\*\\Scripts</code> folder, and after an Illustrator restart it'll be available as one of the options in the <strong>File › Scripts</strong> submenu.",
+      "inkscapeTitle": "How to import swatches to Inkscape",
+      "inkscapeStep1": "Download <gpl>this file</gpl> and place it in the <code>…\\Inkscape\\share\\palettes</code> folder. If you don't plan on using the other swatches, deleting them should make your newly imported swatch easier to find.",
+      "inkscapeStep2": "You will most likely have to restart Inkscape for the swatch to show up in the <em>Swatches</em> (<kbd>F6</kbd>) tool window's menu."
+    }
   }
 }
