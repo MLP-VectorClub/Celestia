@@ -112,7 +112,8 @@
       "delete": "Delete appearance",
       "unpin": "Unpin",
       "pin": "Pin",
-      "deleteBody": "“{label}” and all of its colors will be deleted. This cannot be undone. Delete anyway?"
+      "deleteBody": "“{label}” and all of its colors will be deleted. This cannot be undone. Delete anyway?",
+      "editRelations": "Edit relations"
     },
     "common": {
       "delete": "Delete",
@@ -229,7 +230,8 @@
     "colorGroups": "Color Groups",
     "spriteAlt": "Sprite image",
     "subject": "appearance",
-    "downloadGpl": "GIMP palette"
+    "downloadGpl": "GIMP palette",
+    "relatedHeading": "Related appearances"
   },
   "shortLink": {
     "looking": "Looking for appearance…",

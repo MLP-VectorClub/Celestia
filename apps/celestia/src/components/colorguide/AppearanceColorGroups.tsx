@@ -41,13 +41,15 @@ export const AppearanceColorGroups: FC<PropTypes> = ({ colorGroups, appearanceId
   const error = remove.error ?? template.error;
   return (
     <>
-      <h2>
-        <InlineIcon icon="palette" first size="xs" />
-        {t('colorGuide.edit.groups.count', { count: groups.length })}
-      </h2>
+      {editable && (
+        <h2>
+          <InlineIcon icon="palette" first size="xs" />
+          {t('colorGuide.edit.groups.count', { count: groups.length })}
+        </h2>
+      )}
       {editable && (
         <ButtonCollection leftAlign>
-          <Button size="sm" color="ui" onClick={() => setEditing({ kind: 'order' })} disabled={groups.length < 2}>
+          <Button size="sm" color="darkblue" onClick={() => setEditing({ kind: 'order' })} disabled={groups.length < 2}>
             <InlineIcon icon="sort" first />
             {t('colorGuide.edit.groups.reorder')}
           </Button>
@@ -57,7 +59,7 @@ export const AppearanceColorGroups: FC<PropTypes> = ({ colorGroups, appearanceId
           </Button>
           <Button
             size="sm"
-            color="ui"
+            color="darkblue"
             disabled={template.isPending}
             onClick={async () => {
               if (
@@ -88,13 +90,13 @@ export const AppearanceColorGroups: FC<PropTypes> = ({ colorGroups, appearanceId
                 <h3 className="text-center">{cg.label}</h3>
                 {editable && (
                   <ButtonCollection>
-                    <Button size="sm" color="ui" onClick={() => setEditing({ kind: 'edit', id: cg.id })} data-testid="edit-colorgroup-btn">
+                    <Button size="sm" color="darkblue" onClick={() => setEditing({ kind: 'edit', id: cg.id })} data-testid="edit-colorgroup-btn">
                       <InlineIcon icon="pencil-alt" first />
                       {t('colorGuide.edit.common.edit')}
                     </Button>
                     <Button
                       size="sm"
-                      color="danger"
+                      color="red"
                       data-testid="delete-colorgroup-btn"
                       disabled={remove.isPending}
                       onClick={async () => {

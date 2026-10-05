@@ -1,20 +1,26 @@
 import { useTranslations } from 'next-intl';
 import Head from 'next/head';
 import Link from 'next/link';
-import { FC, useMemo } from 'react';
+import { FC, Fragment, useMemo, useState } from 'react';
 import { Button } from 'reactstrap';
 
 import { DetailedAppearance, GuideName } from '@mlp-vectorclub/api-types';
 import styles from 'modules/AppearancePage.module.scss';
 import { AppearanceColorGroups } from 'src/components/colorguide/AppearanceColorGroups';
 import { AppearanceCutieMarks } from 'src/components/colorguide/AppearanceCutieMarks';
-import { AppearanceEditActions } from 'src/components/colorguide/AppearanceEditActions';
+import {
+  AppearanceHeaderActions,
+  EditCutieMarksButton,
+  EditRelationsButton,
+  EditTagsButton,
+} from 'src/components/colorguide/AppearanceEditActions';
 import { AppearanceLink } from 'src/components/colorguide/AppearanceLink';
 import { AppearanceNotes } from 'src/components/colorguide/AppearanceNotes';
 import AppearanceTags from 'src/components/colorguide/AppearanceTags';
 import { GuideLink } from 'src/components/colorguide/GuideLink';
 import { GuideNotFound } from 'src/components/colorguide/GuideNotFound';
 import { NutshellLabel } from 'src/components/colorguide/NutshellLabel';
+import { SwatchDialog } from 'src/components/colorguide/SwatchDialog';
 import { ShareAppearanceButton } from 'src/components/colorguide/ShareAppearanceButton';
 import SpriteImage from 'src/components/colorguide/SpriteImage';
 import { SpriteWrap } from 'src/components/colorguide/SpriteWrap';
@@ -29,6 +35,7 @@ import { useDetailedAppearance } from 'src/hooks';
 import { PATHS } from 'src/paths';
 import { Nullable } from 'src/types';
 import { assembleSeoUrl } from 'src/utils';
+import { formatShowHeading } from 'src/utils/show';
 import { getSpriteUrl } from 'src/utils/color-guide';
 
 interface AppearanceViewProps {
@@ -47,6 +54,7 @@ interface SeoData {
 export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppearance }) => {
   const t = useTranslations();
   const { appearance, status } = useDetailedAppearance({ id }, initialAppearance || undefined);
+  const [swatchOpen, setSwatchOpen] = useState(false);
 
   const seoData = useMemo<SeoData | null>(
     () =>
@@ -108,8 +116,7 @@ export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppe
       <ButtonCollection>
         <Button
           tag="a"
-          color="link"
-          size="sm"
+          color="guide-link"
           href={`${API_PREFIX}/appearances/${appearance.id}/image?type=palette&format=png`}
           target="_blank"
           rel="noopener"
@@ -117,50 +124,70 @@ export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppe
           <InlineIcon icon="image" first />
           {t('colorGuide.appearance.viewPng')}
         </Button>
-        <Button tag="a" color="primary" size="sm" href={`${API_PREFIX}/appearances/${appearance.id}/palette?format=json`}>
+        <Button color="teal" onClick={() => setSwatchOpen(true)}>
           <InlineIcon icon="paint-brush" first />
           {t('colorGuide.appearance.downloadSwatch')}
         </Button>
-        <Button tag="a" color="link" size="sm" href={`${API_PREFIX}/appearances/${appearance.id}/palette?format=gpl`}>
-          <InlineIcon icon="download" first />
-          {t('colorGuide.appearance.downloadGpl')}
-        </Button>
         {shortUrl && <ShareAppearanceButton shortUrl={shortUrl} />}
-        <AppearanceEditActions appearance={appearance} />
+        <AppearanceHeaderActions appearance={appearance} />
       </ButtonCollection>
+      <SwatchDialog appearanceId={appearance.id} name={appearance.label} isOpen={swatchOpen} onClose={() => setSwatchOpen(false)} />
 
       <StatusAlert status={status} subject={t('colorGuide.appearance.subject')} />
 
-      <AppearanceTags tags={appearance.tags} guide={appearance.guide ?? guide} />
-      <h2>
-        <InlineIcon icon="video" first size="xs" />
-        {t('colorGuide.appearance.featuredIn')}
-      </h2>
-      {appearance.relatedShows.length === 0 ? (
-        <p className="text-muted">{t('colorGuide.appearance.noShows')}</p>
-      ) : (
-        <ul>
-          {appearance.relatedShows.map((show) => (
-            <li key={show.id}>
-              <Link href={PATHS.EPISODE(show)}>{show.title}</Link>
-            </li>
-          ))}
-        </ul>
+      {appearance.ownerId === null && (
+        <>
+          {(appearance.tags.length > 0 || appearance.canEdit) && (
+            <section id="tags">
+              <AppearanceTags tags={appearance.tags} guide={appearance.guide ?? guide} />
+              {appearance.canEdit && (
+                <ButtonCollection leftAlign>
+                  <EditTagsButton appearanceId={appearance.id} />
+                </ButtonCollection>
+              )}
+            </section>
+          )}
+          <section id="related-shows">
+            <h2>
+              <InlineIcon icon="video" first size="xs" />
+              {t('colorGuide.appearance.featuredIn')}
+            </h2>
+            <p>
+              {appearance.relatedShows.map((show, index) => (
+                <Fragment key={show.id}>
+                  {index > 0 && ', '}
+                  <Link href={PATHS.EPISODE(show)}>{formatShowHeading(show)}</Link>
+                </Fragment>
+              ))}
+            </p>
+            <ButtonCollection leftAlign>
+              <EditRelationsButton appearanceId={appearance.id} kind="shows" />
+            </ButtonCollection>
+          </section>
+        </>
       )}
       <AppearanceNotes notes={appearance.notes} />
       <AppearanceCutieMarks label={appearance.label} cutieMarks={appearance.cutieMarks} colorGroups={appearance.colorGroups} />
+      {appearance.canEdit && appearance.cutieMarks.length === 0 && (
+        <ButtonCollection leftAlign>
+          <EditCutieMarksButton appearance={appearance} />
+        </ButtonCollection>
+      )}
       <AppearanceColorGroups colorGroups={appearance.colorGroups} appearanceId={appearance.id} canEdit={appearance.canEdit} />
-      <h2>{t('colorGuide.appearance.relatedAppearances')}</h2>
-      {appearance.relatedAppearances.length === 0 ? (
-        <p className="text-muted">{t('colorGuide.appearance.noRelated')}</p>
-      ) : (
-        <ul className="list-unstyled">
-          {appearance.relatedAppearances.map((related) => (
-            <li key={related.id}>
-              <AppearanceLink {...related} />
-            </li>
-          ))}
-        </ul>
+      {appearance.ownerId === null && (appearance.relatedAppearances.length > 0 || appearance.canEdit) && (
+        <section className="related">
+          <h2>{t('colorGuide.appearance.relatedAppearances')}</h2>
+          <ul className="list-unstyled">
+            {appearance.relatedAppearances.map((related) => (
+              <li key={related.id}>
+                <AppearanceLink {...related} />
+              </li>
+            ))}
+          </ul>
+          <ButtonCollection leftAlign>
+            <EditRelationsButton appearanceId={appearance.id} kind="relations" />
+          </ButtonCollection>
+        </section>
       )}
     </Content>
   );
