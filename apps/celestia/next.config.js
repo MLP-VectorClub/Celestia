@@ -91,7 +91,6 @@ module.exports = {
       { source: '/admin/useful-links', destination: '/admin/usefullinks', permanent: true },
       { source: '/logs', destination: '/admin/logs', permanent: true },
       { source: '/logs/:page(\\d+)', destination: '/admin/logs', permanent: true },
-      { source: '/admin/usefullinks', destination: '/admin/useful-links', permanent: true },
       { source: '/events/:page(\\d+)', destination: '/events', permanent: true },
     ];
   },
