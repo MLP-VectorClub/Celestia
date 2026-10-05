@@ -44,9 +44,9 @@ Assistant, staff and admin differ only in their label and in which roles they ma
 | Guide `/cg/pony` | `/cg/pony` | same | list items: sprite thumbnail, tag links (colored by type), per-item buttons (open image, view as PNG, download swatch file, staff edit / pin / unpin / delete), "last major change", pagination (page links, 60 pages), JSON export link, search form (ElasticSearch up) | ❌ |
 | Full list | `/cg/pony/full` | same | cards link text includes "AKA" and age, sort control as links, staff reorder | 🟡 |
 | Major changes | `/cg/pony/changes` | same | pagination style | 🟡 |
-| Tags | `/cg/tags` | `/cg/pony/tags` | URL, "Return to Color Guides" / "Major Changes" buttons, staff "Refresh use count" / "Refresh usage data on this page" | 🟡 |
+| Tags | `/cg/tags` | `/cg/pony/tags` | URL, "Return to Color Guides" / "Major Changes" buttons, staff "Refresh use count" / "Refresh usage data on this page" | ✅ |
 | Appearance | `/cg/pony/v/ID-Name` | `/cg/pony/v/ID` | canonical URL with the name, "Open image in new tab", "Download swatch file", "View as PNG", section layout | 🟡 |
-| Blending calculator | `/cg/blending` | `/blending` | URL, heading ("Color Blending Calculator"), "Back to Color Guide", credit link | 🟡 |
+| Blending calculator | `/cg/blending` | `/blending` | URL, heading ("Color Blending Calculator"), "Back to Color Guide", credit link | 🟡 URL redirect left |
 | Blending reverser | `/cg/blending-reverse` | `/blending-reverse` | URL | 🟡 |
 | Picker | `/cg/picker` | `/cg/picker` | (moved 2026-10-04) | 🟡 |
 | Episode / movie | `/episode/...` | same | Share button, staff Unlock, icon-only actions, reserver avatar chip, "added by", approved date | 🟡 |
