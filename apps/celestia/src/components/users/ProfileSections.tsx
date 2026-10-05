@@ -138,7 +138,7 @@ export const ProfilePersonalGuides: FC<PropTypes> = ({ profile }) => {
         {profile.sameUser && <Privacy level={profile.personalGuides === null ? 'staff' : 'public'} />}
         {t('users.profile.personalGuide')}
         {profile.sameUser && (
-          <Button color="darkblue" size="sm" size="sm" className="ms-2 personal-cg-say-what" onClick={() => setAboutOpen(true)}>
+          <Button color="darkblue" size="sm" className="ms-2 personal-cg-say-what" onClick={() => setAboutOpen(true)}>
             <InlineIcon icon="info" first />
             {t('users.profile.pcgWhat')}
           </Button>
