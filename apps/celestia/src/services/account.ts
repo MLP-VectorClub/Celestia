@@ -32,4 +32,19 @@ export class AccountService {
   /** The link in the verification mail carries `hash` and `action`; `verify` sets the address, `block` puts it on the do-not-send list */
   static verifyEmail = (hash: string, action: 'verify' | 'block') =>
     Axios.post<{ message: string }>('/users/email/verify', { hash, action });
+
+  /** The browsers the visitor is signed in on (Luna's own endpoint) */
+  static getSessions = () => Axios.get<{ sessions: BrowserSession[] }>('/users/sessions');
+
+  static deleteSession = (id: string) => Axios.delete<void>(`/users/sessions/${id}`);
+}
+
+export interface BrowserSession {
+  /** Opaque ID, the same value `DELETE /users/sessions/{id}` takes */
+  id: string;
+  device: string;
+  ip: string | null;
+  lastActiveAt: string;
+  createdAt: string;
+  current: boolean;
 }

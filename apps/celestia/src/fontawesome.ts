@@ -37,6 +37,7 @@ import {
   faHome,
   faImage,
   faInfo,
+  faKey,
   faInfoCircle,
   faLink,
   faLightbulb,
@@ -76,6 +77,7 @@ const brandIcons: (IconDefinition | IconPack)[] = [faDeviantart, faDiscord, faTe
 library.add(
   ...brandIcons,
   faEye,
+  faKey,
   faWrench,
   faLightbulb,
   faFileAlt,
