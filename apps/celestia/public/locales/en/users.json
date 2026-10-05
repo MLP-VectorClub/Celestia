@@ -97,7 +97,10 @@
     "pcgAbout": {
       "title": "About Personal Color Guides",
       "close": "Close"
-    }
+    },
+    "devRoleTitle": "Change developer's displayed role",
+    "devRoleLabel": "Role shown for developers",
+    "devRoleHelp": "How the developer role is named on profiles and elsewhere on the site."
   },
   "contributions": {
     "heading": "{type} by {name}",

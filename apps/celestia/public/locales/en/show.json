@@ -141,7 +141,8 @@
       "chr": "Characters",
       "obj": "Objects",
       "bg": "Backgrounds"
-    }
+    },
+    "view": "View"
   },
   "common": {
     "save": "Save"

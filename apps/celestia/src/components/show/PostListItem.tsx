@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { FC } from 'react';
+import { Button } from 'reactstrap';
 
 import { PostItem } from '@mlp-vectorclub/api-types';
 import styles from 'modules/PostList.module.scss';
@@ -24,7 +25,7 @@ const openSubmissionsUrl = (name: string) =>
  * A request or reservation as a card, laid out like the old site's: the image (the finished submission once there is one), the description,
  * when and by whom it was posted, reserved and finished, then the actions
  */
-export const PostListItem: FC<{ post: PostItem }> = ({ post }) => {
+export const PostListItem: FC<{ post: PostItem; viewOnly?: boolean }> = ({ post, viewOnly = false }) => {
   const t = useTranslations();
   const { user } = useAuth();
   const isStaff = permission(user, 'staff');
@@ -106,7 +107,14 @@ export const PostListItem: FC<{ post: PostItem }> = ({ post }) => {
       )}
 
       <div className={styles.actions}>
-        <PostActions post={post} />
+        {viewOnly ? (
+          <Button tag={Link} href={postAddress(post)} color="guide-link" size="sm">
+            <InlineIcon icon="arrow-right" first />
+            {t('show.post.view')}
+          </Button>
+        ) : (
+          <PostActions post={post} />
+        )}
       </div>
     </li>
   );

@@ -1,19 +1,22 @@
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { FC, PropsWithChildren, useMemo } from 'react';
+import { FC, PropsWithChildren, ReactNode, useMemo } from 'react';
+import { Button } from 'reactstrap';
 
+import ButtonCollection from 'src/components/shared/ButtonCollection';
 import Content from 'src/components/shared/Content';
+import InlineIcon from 'src/components/shared/InlineIcon';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import { useAuth, useTitleSetter } from 'src/hooks';
 import { useAppDispatch } from 'src/store';
 import { TitleFactory } from 'src/types/title';
 
+/** The pages behind the buttons of the admin area, in the old site's order */
 export const ADMIN_SECTIONS = [
-  { href: '/admin/logs', key: 'logs' },
-  { href: '/admin/notices', key: 'notices' },
-  { href: '/admin/useful-links', key: 'usefulLinks' },
-  { href: '/admin/pcg-appearances', key: 'pcgAppearances' },
-  { href: '/admin/settings', key: 'settings' },
+  { href: '/admin/logs', key: 'logs', icon: 'file-alt' },
+  { href: '/admin/notices', key: 'notices', icon: 'info-circle' },
+  { href: '/admin/usefullinks', key: 'usefulLinks', icon: 'link' },
+  { href: '/admin/pcg-appearances', key: 'pcgAppearances', icon: 'user' },
 ] as const;
 
 /** Names of the staff pages, also the keys under `admin.sections` */
@@ -29,10 +32,14 @@ export const adminTitle = (section: AdminSection): ReturnType<TitleFactory> => (
 
 interface PropTypes extends PropsWithChildren {
   section: AdminSection;
+  /** The line under the heading */
+  lead?: ReactNode;
+  /** Buttons of the page, shown before "Back to Admin Area" */
+  actions?: ReactNode;
 }
 
-/** Shell of the staff pages: sets the title, shows the section links and keeps non-staff visitors out */
-export const AdminPage: FC<PropTypes> = ({ section, children }) => {
+/** Shell of the staff pages: the heading, a "Back to Admin Area" button and a guard that keeps non-staff visitors out */
+export const AdminPage: FC<PropTypes> = ({ section, lead, actions, children }) => {
   const t = useTranslations();
   const dispatch = useAppDispatch();
   const { isStaff } = useAuth();
@@ -41,18 +48,20 @@ export const AdminPage: FC<PropTypes> = ({ section, children }) => {
 
   return (
     <Content>
-      <StandardHeading heading={t(`admin.sections.${section}`)} />
+      <StandardHeading heading={t(`admin.sections.${section}`)} lead={lead ?? (section === 'index' ? t('admin.indexLead') : undefined)} />
       {!isStaff ? (
         <p className="text-center text-muted">{t('admin.staffOnly')}</p>
       ) : (
         <>
-          <nav className="d-flex flex-wrap gap-3 justify-content-center mb-4" aria-label={t('admin.sections.index')}>
-            {ADMIN_SECTIONS.map((s) => (
-              <Link key={s.href} href={s.href}>
-                {t(`admin.sections.${s.key}`)}
-              </Link>
-            ))}
-          </nav>
+          {section !== 'index' && (
+            <ButtonCollection>
+              {actions}
+              <Button tag={Link} href="/admin" color="guide-link">
+                <InlineIcon icon="arrow-circle-left" first />
+                {t('admin.back')}
+              </Button>
+            </ButtonCollection>
+          )}
           {children}
         </>
       )}

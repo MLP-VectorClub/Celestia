@@ -1,11 +1,10 @@
 {
   "sections": {
     "index": "Admin Area",
-    "logs": "Global logs",
+    "logs": "Global Logs",
     "notices": "Manage notices",
     "usefulLinks": "Manage useful links",
-    "pcgAppearances": "All PCG appearances",
-    "settings": "Settings"
+    "pcgAppearances": "All PCG appearances"
   },
   "staffOnly": "This page is only available to staff.",
   "logs": {
@@ -20,7 +19,28 @@
     "ip": "IP",
     "when": "When",
     "webServer": "Web server",
-    "detailsFailed": "Could not load the details."
+    "detailsFailed": "Could not load the details.",
+    "perPage": "Displaying {count} items/page",
+    "show": "Show",
+    "all": "all",
+    "specificType": "Specific entry type",
+    "entriesFrom": "entries from",
+    "byPlaceholder": "any user / IP",
+    "apply": "Apply filter",
+    "clear": "Clear filters",
+    "timestamp": "Timestamp",
+    "initiatorColumn": "Initiator",
+    "event": "Event",
+    "none": "No log items found",
+    "searchBy": "Search for all entries by this user",
+    "searchIp": "Search for all entries from this address",
+    "visitProfile": "Visit profile",
+    "viewSwitch": "Switch between the old, the new and both values",
+    "view": {
+      "diff": "diff",
+      "new": "new",
+      "old": "old"
+    }
   },
   "pcg": {
     "loadFailed": "Could not load the personal guide appearances.",
@@ -53,12 +73,14 @@
       "fail": "Failure",
       "warn": "Warning",
       "caution": "Caution"
-    }
+    },
+    "lead": "Manage site-wide notices",
+    "hidden": "Hidden"
   },
   "links": {
     "url": "URL",
     "lowestRoleHelp": "Lowest role that sees the link",
-    "new": "New link",
+    "new": "Add link",
     "loadFailed": "Could not load the links.",
     "label": "Label",
     "lowestRole": "Lowest role",
@@ -73,23 +95,29 @@
     "deleteTitle": "Delete link",
     "deleteBody": "“{label}” will be deleted.",
     "labelHelp": "Label (3–35 characters)",
-    "tooltip": "Tooltip (optional)"
+    "tooltip": "Tooltip (optional)",
+    "lead": "Add, reorder and remove useful links",
+    "reorder": "Re-order links",
+    "reorderTitle": "Re-order links",
+    "reorderHelp": "Move the links with the arrows, the sidebar lists them in this order.",
+    "saveOrder": "Save order",
+    "andAbove": "{role} and above"
   },
-  "settings": {
-    "loadFailed": "Could not load this setting.",
-    "save": "Save",
-    "saved": "Saved.",
-    "reservationRules": {
-      "label": "Reservation rules",
-      "help": "Shown next to the reservation form."
-    },
-    "aboutReservations": {
-      "label": "About reservations",
-      "help": "Shown on the reservations info page."
-    },
-    "devRoleLabel": {
-      "label": "Developer role label",
-      "help": "How the developer role is named on profiles."
-    }
+  "indexLead": "Various tools related to managing the site",
+  "back": "Back to Admin Area",
+  "buttons": {
+    "logs": "Logs",
+    "notices": "Notices",
+    "usefulLinks": "Useful Links",
+    "pcgAppearances": "PCG Appearances"
+  },
+  "index": {
+    "elasticStatus": "Elasticsearch status",
+    "serverDown": "Server is down.",
+    "indices": "Indices",
+    "nodes": "Nodes",
+    "statusFailed": "Could not load the status.",
+    "recentPosts": "{count, plural, one {# Most recent post} other {# Most recent posts}}",
+    "recentFailed": "Could not load the posts."
   }
 }

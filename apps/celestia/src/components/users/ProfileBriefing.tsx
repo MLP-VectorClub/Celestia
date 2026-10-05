@@ -7,6 +7,7 @@ import styles from 'modules/ProfilePage.module.scss';
 import AvatarWrap from 'src/components/shared/AvatarWrap';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { ChangeRoleDialog } from 'src/components/users/ChangeRoleDialog';
+import { DevRoleLabelDialog } from 'src/components/users/DevRoleLabelDialog';
 import { mapRoleLabel } from 'src/utils';
 
 const VECTOR_APP_NAMES: Record<string, string> = { illustrator: 'Adobe Illustrator', inkscape: 'Inkscape', ponyscape: 'Ponyscape' };
@@ -22,6 +23,7 @@ const DeviantArtLogo: FC = () => (
 export const ProfileBriefing: FC<{ profile: UserProfile }> = ({ profile }) => {
   const t = useTranslations();
   const [changingRole, setChangingRole] = useState(false);
+  const [changingDevLabel, setChangingDevLabel] = useState(false);
   const { user } = profile;
   const vectorApp = profile.vectorApp ?? null;
 
@@ -63,6 +65,23 @@ export const ProfileBriefing: FC<{ profile: UserProfile }> = ({ profile }) => {
         </h1>
         <p>
           <span className="role-label">{mapRoleLabel(t, user.role)}</span>
+          {profile.devOnDev && (
+            <>
+              {' '}
+              <Button
+                color="link"
+                size="sm"
+                id="change-dev-role-mask"
+                className="p-0 align-baseline"
+                title={t('users.profile.devRoleTitle')}
+                aria-label={t('users.profile.devRoleTitle')}
+                onClick={() => setChangingDevLabel(true)}
+              >
+                <InlineIcon icon="pencil-alt" />
+              </Button>
+              <DevRoleLabelDialog isOpen={changingDevLabel} onClose={() => setChangingDevLabel(false)} />
+            </>
+          )}
           {profile.canEdit && profile.editableRoles && Object.keys(profile.editableRoles).length > 0 && (
             <>
               {' '}

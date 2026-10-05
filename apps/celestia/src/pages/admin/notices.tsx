@@ -3,10 +3,12 @@ import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { Button, FormGroup, FormText, Input, Label, Table } from 'reactstrap';
+import { Button, FormGroup, FormText, Input, Label } from 'reactstrap';
 
 import { Notice } from '@mlp-vectorclub/api-types';
 import { AdminPage } from 'src/components/admin/AdminPage';
+import { IconButton } from 'src/components/shared/IconButton';
+import InlineIcon from 'src/components/shared/InlineIcon';
 import Pagination from 'src/components/shared/Pagination';
 import TimeAgo from 'src/components/shared/TimeAgo';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
@@ -14,6 +16,7 @@ import { FormDialog } from 'src/components/shared/dialogs/FormDialog';
 import { describeApiError, fieldErrors, useApiMutation, useAuth } from 'src/hooks';
 import { AdminService } from 'src/services/admin';
 import { createAdminGetServerSideProps } from 'src/utils/admin-page';
+import { renderNoticeHtml } from 'src/utils/notice-html';
 import { validatePageParam } from 'src/utils/validate-page-param';
 
 const NOTICE_TYPES = ['info', 'success', 'fail', 'warn', 'caution'] as const;
@@ -121,63 +124,48 @@ const NoticesPage: NextPage = () => {
   const remove = useApiMutation((id: number) => AdminService.deleteNotice(id), { invalidate: [['/notices']] });
 
   return (
-    <AdminPage section="notices">
-      <Button color="success" size="sm" className="mb-3" onClick={() => setEditing(null)}>
-        {t('admin.notices.new')}
-      </Button>
+    <AdminPage
+      section="notices"
+      lead={t('admin.notices.lead')}
+      actions={
+        <Button color="success" id="create-notice" onClick={() => setEditing(null)}>
+          <InlineIcon icon="plus" first />
+          {t('admin.notices.create')}
+        </Button>
+      }
+    >
       {remove.error && <p className="text-danger">{describeApiError(remove.error)}</p>}
       {notices.isLoading && <p className="text-muted">{t('admin.loading')}</p>}
       {notices.isError && <p className="text-danger">{t('admin.notices.loadFailed')}</p>}
       {notices.data && (
         <>
           <Pagination {...notices.data.pagination} tooltipPos="bottom" />
-          <Table responsive size="sm">
-            <thead>
-              <tr>
-                <th>{t('admin.notices.type')}</th>
-                <th>{t('admin.notices.messageSource')}</th>
-                <th>{t('admin.notices.shownUntil')}</th>
-                <th />
-              </tr>
-            </thead>
-            <tbody>
-              {notices.data.notices.map((n) => (
-                <tr key={n.id}>
-                  <td>{t(`admin.notices.types.${n.type}`)}</td>
-                  <td>
-                    <code>{n.messageHtml}</code>
-                  </td>
-                  <td>
-                    <TimeAgo date={n.hideAfter} />
-                  </td>
-                  <td className="text-nowrap">
-                    <Button size="sm" color="ui" className="me-1" onClick={() => setEditing(n)}>
-                      {t('admin.notices.edit')}
-                    </Button>
-                    <Button
-                      size="sm"
-                      color="danger"
-                      outline
-                      disabled={remove.isPending}
-                      onClick={async () => {
-                        if (
-                          await confirm({
-                            title: t('admin.notices.deleteTitle'),
-                            body: t('admin.notices.deleteBody', { id: n.id }),
-                            color: 'danger',
-                            confirmLabel: t('admin.notices.delete'),
-                          })
-                        )
-                          remove.mutate(n.id);
-                      }}
-                    >
-                      {t('admin.notices.delete')}
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
+          <ul id="notice-list">
+            {notices.data.notices.map((n) => (
+              <li key={n.id} id={`notice-${n.id}`}>
+                {renderNoticeHtml(n.messageHtml)} – {t('admin.notices.hidden')} <TimeAgo date={n.hideAfter} />{' '}
+                <IconButton
+                  icon="trash"
+                  color="red"
+                  title={t('admin.notices.delete')}
+                  disabled={remove.isPending}
+                  className="delete-notice"
+                  onClick={async () => {
+                    if (
+                      await confirm({
+                        title: t('admin.notices.deleteTitle'),
+                        body: t('admin.notices.deleteBody', { id: n.id }),
+                        color: 'danger',
+                        confirmLabel: t('admin.notices.delete'),
+                      })
+                    )
+                      remove.mutate(n.id);
+                  }}
+                />
+                <IconButton icon="pencil-alt" color="blue" title={t('admin.notices.edit')} className="edit-notice" onClick={() => setEditing(n)} />
+              </li>
+            ))}
+          </ul>
           <Pagination {...notices.data.pagination} tooltipPos="top" listClassName="mb-0" />
         </>
       )}

@@ -17,7 +17,7 @@ const signInCookie = async (page: Page) =>
   page.context().addCookies([{ name: 'mlp_vector_club_session', value: 'e2e', url: 'http://127.0.0.1:4011' }]);
 
 test.describe('pages that are not for everybody answer 403 with the reason', () => {
-  for (const path of ['/admin', '/admin/logs', '/admin/notices', '/admin/useful-links', '/admin/settings']) {
+  for (const path of ['/admin', '/admin/logs', '/admin/notices', '/admin/usefullinks']) {
     test(`${path} is for staff only: guests and members get 403`, async ({ page, request }) => {
       await configure(request, {});
       const guest = await page.goto(path);
@@ -35,7 +35,7 @@ test.describe('pages that are not for everybody answer 403 with the reason', () 
   test('staff get the admin pages', async ({ page, request }) => {
     await configure(request, { signedIn: true, userRole: 'admin' });
     await signInCookie(page);
-    for (const path of ['/admin', '/admin/logs', '/admin/useful-links']) {
+    for (const path of ['/admin', '/admin/logs', '/admin/usefullinks']) {
       const response = await page.goto(path);
       expect(response?.status()).toBe(200);
       await expect(page.getByText('Error 403!')).toHaveCount(0);

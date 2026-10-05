@@ -14,5 +14,5 @@ export const createAdminGetServerSideProps = (section: AdminSection) =>
     if (!permission(store.getState().auth.initialUser, 'staff')) return forbidden(ctx);
 
     titleSetter(store, adminTitle(section));
-    return { props: { ...(await typedServerSideTranslations(locale, ['admin'])) } };
+    return { props: { ...(await typedServerSideTranslations(locale, ['admin', 'show'])) } };
   });

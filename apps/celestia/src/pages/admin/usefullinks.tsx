@@ -6,6 +6,8 @@ import { Button, FormGroup, Input, Label } from 'reactstrap';
 
 import { SidebarUsefulLink } from '@mlp-vectorclub/api-types';
 import { AdminPage } from 'src/components/admin/AdminPage';
+import { IconButton } from 'src/components/shared/IconButton';
+import InlineIcon from 'src/components/shared/InlineIcon';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { FormDialog } from 'src/components/shared/dialogs/FormDialog';
 import { describeApiError, fieldErrors, useApiMutation, useAuth, useConfig } from 'src/hooks';
@@ -111,74 +113,100 @@ const LinkDialog = ({ link, isOpen, onClose }: { link: SidebarUsefulLink | null;
   );
 };
 
+const ReorderDialog = ({ links, isOpen, onClose }: { links: SidebarUsefulLink[]; isOpen: boolean; onClose: () => void }) => {
+  const t = useTranslations();
+  const [order, setOrder] = useState<SidebarUsefulLink[]>(links);
+  useEffect(() => {
+    if (isOpen) setOrder(links);
+  }, [isOpen, links]);
+  const save = useApiMutation(() => AdminService.orderUsefulLinks(order.map((l) => l.id)), { invalidate: [KEY], onSuccess: onClose });
+  const move = (index: number, by: number) => {
+    const target = index + by;
+    if (target < 0 || target >= order.length) return;
+    const next = [...order];
+    [next[index], next[target]] = [next[target], next[index]];
+    setOrder(next);
+  };
+
+  return (
+    <FormDialog
+      title={t('admin.links.reorderTitle')}
+      isOpen={isOpen}
+      onClose={() => {
+        save.reset();
+        onClose();
+      }}
+      onSubmit={() => save.mutate()}
+      submitLabel={t('admin.links.saveOrder')}
+      busy={save.isPending}
+      error={save.error ? describeApiError(save.error) : null}
+    >
+      <p>{t('admin.links.reorderHelp')}</p>
+      <ol className="list-unstyled">
+        {order.map((l, i) => (
+          <li key={l.id} className="d-flex align-items-center gap-2 mb-1">
+            <IconButton icon="arrow-up" color="darkblue" title={t('admin.links.moveUp', { label: l.label })} disabled={i === 0} onClick={() => move(i, -1)} />
+            <IconButton icon="arrow-down" color="darkblue" title={t('admin.links.moveDown', { label: l.label })} disabled={i === order.length - 1} onClick={() => move(i, 1)} />
+            <span>{l.label}</span>
+          </li>
+        ))}
+      </ol>
+    </FormDialog>
+  );
+};
+
 const UsefulLinksPage: NextPage = () => {
   const t = useTranslations();
   const { isStaff } = useAuth();
+  const { config } = useConfig();
   const { confirm } = useDialog();
   const links = useQuery({ queryKey: KEY, queryFn: () => AdminService.usefulLinks().then((r) => r.data), enabled: isStaff });
   const [editing, setEditing] = useState<SidebarUsefulLink | null | undefined>(undefined);
+  const [reordering, setReordering] = useState(false);
   const remove = useApiMutation((id: number) => AdminService.deleteUsefulLink(id), { invalidate: [KEY] });
-  const reorder = useApiMutation((ids: number[]) => AdminService.orderUsefulLinks(ids), { invalidate: [KEY] });
-
-  const move = (index: number, by: number) => {
-    const ids = (links.data ?? []).map((l) => l.id);
-    const target = index + by;
-    if (target < 0 || target >= ids.length) return;
-    [ids[index], ids[target]] = [ids[target], ids[index]];
-    reorder.mutate(ids);
-  };
-  const error = remove.error ?? reorder.error;
-  const busy = remove.isPending || reorder.isPending;
+  const roleLabel = (role: string) => config?.roles?.[role as keyof typeof config.roles] ?? role;
 
   return (
-    <AdminPage section="usefulLinks">
-      <Button id="add-link" color="success" size="sm" className="mb-3" onClick={() => setEditing(null)}>
-        {t('admin.links.new')}
-      </Button>
-      {error && <p className="text-danger">{describeApiError(error)}</p>}
+    <AdminPage
+      section="usefulLinks"
+      lead={t('admin.links.lead')}
+      actions={
+        <>
+          <Button id="add-link" color="success" onClick={() => setEditing(null)}>
+            <InlineIcon icon="plus" first />
+            {t('admin.links.new')}
+          </Button>
+          <Button color="blue" id="reorder-links" disabled={(links.data?.length ?? 0) < 2} onClick={() => setReordering(true)}>
+            <InlineIcon icon="sort" first />
+            {t('admin.links.reorder')}
+          </Button>
+        </>
+      }
+    >
+      {remove.error && <p className="text-danger">{describeApiError(remove.error)}</p>}
       {links.isLoading && <p className="text-muted">{t('admin.loading')}</p>}
       {links.isError && <p className="text-danger">{t('admin.links.loadFailed')}</p>}
       {links.data && (
-        <ul className="list-group mb-3">
-          {links.data.map((l, i) => (
-            <li key={l.id} className="list-group-item d-flex flex-wrap align-items-center gap-2">
-              <span className="flex-grow-1">
-                <strong>{l.label}</strong>
-                <br />
-                <small className="text-muted">
-                  {l.url} · {t('admin.links.lowestRole')}: {l.minRole}
-                </small>
-              </span>
-              <span className="text-nowrap">
-                <Button
-                  size="sm"
-                  color="ui"
-                  className="me-1"
-                  aria-label={t('admin.links.moveUp', { label: l.label })}
-                  disabled={busy || i === 0}
-                  onClick={() => move(i, -1)}
-                >
-                  ↑
-                </Button>
-                <Button
-                  size="sm"
-                  color="ui"
-                  className="me-1"
-                  aria-label={t('admin.links.moveDown', { label: l.label })}
-                  disabled={busy || i === links.data.length - 1}
-                  onClick={() => move(i, 1)}
-                >
-                  ↓
-                </Button>
-                <Button size="sm" color="ui" className="edit-link me-1" onClick={() => setEditing(l)}>
+        <ol id="useful-links-list">
+          {links.data.map((l) => (
+            <li key={l.id} id={`link-${l.id}`}>
+              <a href={l.url} title={l.title ?? undefined} className="fw-bold">
+                {l.label}
+              </a>
+              <div>
+                <InlineIcon icon="eye" first />
+                {t('admin.links.andAbove', { role: roleLabel(l.minRole) })}
+              </div>
+              <div className="mb-1">
+                <Button size="sm" color="blue" className="edit-link me-2" onClick={() => setEditing(l)}>
+                  <InlineIcon icon="pencil-alt" first />
                   {t('admin.links.edit')}
                 </Button>
                 <Button
                   size="sm"
-                  color="danger"
+                  color="red"
                   className="delete-link"
-                  outline
-                  disabled={busy}
+                  disabled={remove.isPending}
                   onClick={async () => {
                     if (
                       await confirm({
@@ -191,14 +219,16 @@ const UsefulLinksPage: NextPage = () => {
                       remove.mutate(l.id);
                   }}
                 >
+                  <InlineIcon icon="trash" first />
                   {t('admin.links.delete')}
                 </Button>
-              </span>
+              </div>
             </li>
           ))}
-        </ul>
+        </ol>
       )}
       <LinkDialog link={editing ?? null} isOpen={editing !== undefined} onClose={() => setEditing(undefined)} />
+      <ReorderDialog links={links.data ?? []} isOpen={reordering} onClose={() => setReordering(false)} />
     </AdminPage>
   );
 };
