@@ -5,6 +5,7 @@ import {
   DeletePostsIdReservationResult,
   PostPostsCheckImageResult,
   PostPostsIdApprovalResult,
+  PostPostsIdReservationRequest,
   PostPostsIdReservationResult,
   PostPostsRequest,
   PostPostsResult,
@@ -20,7 +21,8 @@ export class PostService {
 
   static checkImage = (imageUrl: string) => Axios.post<PostPostsCheckImageResult>('/posts/check-image', { imageUrl });
 
-  static reserve = (id: number) => Axios.post<PostPostsIdReservationResult>(`/posts/${id}/reservation`);
+  static reserve = (id: number, data?: Omit<PostPostsIdReservationRequest, 'id'>) =>
+    Axios.post<PostPostsIdReservationResult>(`/posts/${id}/reservation`, data);
 
   static unreserve = (id: number) => Axios.delete<DeletePostsIdReservationResult>(`/posts/${id}/reservation`);
 

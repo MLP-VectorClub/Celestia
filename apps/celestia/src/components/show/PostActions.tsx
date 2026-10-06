@@ -9,11 +9,13 @@ import InlineIcon from 'src/components/shared/InlineIcon';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { PostEditDialog } from 'src/components/show/PostEditDialog';
 import { PostFinishDialog } from 'src/components/show/PostFinishDialog';
+import { PostReserveAsDialog } from 'src/components/show/PostReserveAsDialog';
 import { PostShareButton } from 'src/components/show/PostShareButton';
 import { describeApiError, useApiMutation, useAuth } from 'src/hooks';
 import { PostService } from 'src/services/posts';
 import { UnifiedErrorResponse } from 'src/types';
 import { ENDPOINTS } from 'src/utils';
+import { permission } from 'src/utils';
 import { getPostActions } from 'src/utils/post-actions';
 
 interface ActionItem {
@@ -31,6 +33,7 @@ export const PostActions: FC<{ post: PostItem }> = ({ post }) => {
   const { confirm } = useDialog();
   const [finishOpen, setFinishOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
+  const [reserveAsOpen, setReserveAsOpen] = useState(false);
   const [error, setError] = useState<UnifiedErrorResponse | null>(null);
 
   const invalidate = () => [
@@ -130,11 +133,16 @@ export const PostActions: FC<{ post: PostItem }> = ({ post }) => {
   return (
     <>
       {actions.reserve && (
-        <div className="mt-2">
+        <div className="mt-2 d-flex flex-wrap gap-1">
           <Button size="sm" color="primary" className="reserve-request" onClick={run(reserve)} disabled={busy}>
             <InlineIcon icon="user-plus" first />
             {t('show.post.actions.reserve')}
           </Button>
+          {permission(user, 'developer') && (
+            <Button size="sm" color="link" className="reserve-as" onClick={() => setReserveAsOpen(true)} disabled={busy}>
+              {t('show.post.reserveAs.button')}
+            </Button>
+          )}
         </div>
       )}
       <div className="mt-2">
@@ -165,6 +173,9 @@ export const PostActions: FC<{ post: PostItem }> = ({ post }) => {
           </Alert>
         )}
       </div>
+      {actions.reserve && permission(user, 'developer') && (
+        <PostReserveAsDialog post={post} isOpen={reserveAsOpen} onClose={() => setReserveAsOpen(false)} />
+      )}
       {actions.edit && <PostEditDialog post={post} isOpen={editOpen} onClose={() => setEditOpen(false)} />}
       {actions.finish && <PostFinishDialog post={post} isOpen={finishOpen} onClose={() => setFinishOpen(false)} />}
     </>

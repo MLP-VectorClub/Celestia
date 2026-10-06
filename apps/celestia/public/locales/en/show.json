@@ -149,7 +149,13 @@
     "theRequester": "the requester",
     "approvalUnavailable": "Approval data unavailable",
     "vectorAppTitle": "Uses {app} to make vectors",
-    "you": "You"
+    "you": "You",
+    "reserveAs": {
+      "button": "Reserve as…",
+      "title": "Reserve as another user",
+      "name": "DeviantArt name of the user to reserve for",
+      "anyway": "This user is not allowed to reserve requests, reserve it for them anyway"
+    }
   },
   "common": {
     "save": "Save"

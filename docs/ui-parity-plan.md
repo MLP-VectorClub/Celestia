@@ -86,7 +86,7 @@ The label diff only shows what is on the page. These behaviors live in `Winterch
 - Admin logs, "view" switch button of a log entry (`log.js`): a click cycles the diff view (both / new / old), a right click cycles backwards: becomes a visible three way switch when the admin pages are compared. ❌
 - Picker: right click zooms out with the zoom tool. ✅ (`usePointerTools`)
 
-**Modifier clicks:** Shift+click on a color square shows its RGB values (❌); Shift+click on a "Reserve" button, developers only, opens "Reserve as" (user name and time): Luna's `POST /posts/{id}/reservation` has no on-behalf parameters, so this needs a Luna change first, then a visible "Reserve as…" item (❌, low priority, developer tool); Shift+click on a blending calculator cell opens the RGB entry (✅ `RgbEntryDialog`); Alt+click in the picker (✅).
+**Modifier clicks:** Shift+click on a color square shows its RGB values (❌); Shift+click on a "Reserve" button, developers only, opens "Reserve as" (user name and time): Luna's `POST /posts/{id}/reservation` has no on-behalf parameters, (Luna supports `as` and `screwit` already, documented 2026-10-06) ✅ a visible "Reserve as…" button next to Reserve for developers (`PostReserveAsDialog`), the old item (❌, low priority, developer tool); Shift+click on a blending calculator cell opens the RGB entry (✅ `RgbEntryDialog`); Alt+click in the picker (✅).
 
 **Keyboard:** the picker's shortcuts (✅), Enter / arrow keys in the tag input with autocomplete (`manage.jsx` 1884), the color palette widget's arrow keys (`jquery.ponycolorpalette.js`), dirty tracking of the account page's settings form (`profile.js` 254, the Save button only enables after a change). ❓
 
