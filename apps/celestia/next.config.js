@@ -103,6 +103,17 @@ module.exports = {
       { source: '/users/:user/cg/point-history/:page(\\d+)', destination: '/users/:user/cg/point-history?page=:page', permanent: true },
       { source: '/users/:user/cg/slot-history/:page(\\d+)', destination: '/users/:user/cg/point-history?page=:page', permanent: true },
       { source: '/docs', destination: `${NEXT_PUBLIC_BACKEND_HOST}/`, permanent: false },
+      // Pages that have no counterpart here (browser recognition, websocket diagnostics, the old style guide) go to their section
+      { source: '/browser/:id?', destination: '/about', permanent: true },
+      { source: '/about/browser/:id?', destination: '/about', permanent: true },
+      { source: '/admin/wsdiag', destination: '/admin', permanent: true },
+      { source: '/components', destination: '/', permanent: true },
+      { source: '/users/:user/cg/:page(\\d+)', destination: '/users/:user/cg?page=:page', permanent: true },
+      // The old sign-in return addresses (the query with the code is kept)
+      { source: '/da-auth/end', destination: '/oauth/deviantart', permanent: false },
+      { source: '/da-auth/:path*', destination: '/', permanent: false },
+      { source: '/discord-connect/end', destination: '/oauth/discord', permanent: false },
+      { source: '/discord-connect/:path*', destination: '/', permanent: false },
     ];
   },
   async rewrites() {
@@ -120,7 +131,19 @@ module.exports = {
       { source: '/@:name/:rest(.+)', destination: '/u/:name?rest=:rest' },
       { source: '/@:name', destination: '/u/:name' },
       // The export files of an appearance, which the API serves from its palette and image routes
+      { source: '/cg/cutiemark/:id(\\d+).svg', destination: `${NEXT_PUBLIC_BACKEND_HOST}/cutie-marks/:id/image` },
+      { source: '/cg/cutiemark/download/:id(\\d+)(-[^/]*)?', destination: `${NEXT_PUBLIC_BACKEND_HOST}/cutie-marks/:id/download` },
+      { source: '/users/:user(\\d+)/cg/v/:id(\\d+).json', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/palette?format=json` },
+      { source: '/users/:user(\\d+)/cg/v/:id(\\d+).gpl', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/palette?format=gpl` },
+      { source: '/users/:user(\\d+)/cg/v/:id(\\d+).png', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/image?type=palette&format=png` },
+      { source: '/users/:user(\\d+)/cg/v/:id(\\d+)p.svg', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/image?type=preview&format=svg` },
+      { source: '/users/:user(\\d+)/cg/v/:id(\\d+)f.svg', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/image?type=facing&format=svg` },
       { source: '/cg/:guide/v/:id(\\d+).json', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/palette?format=json` },
+      { source: '/cg/v/:id(\\d+).gpl', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/palette?format=gpl` },
+      { source: '/cg/v/:id(\\d+).png', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/image?type=palette&format=png` },
+      { source: '/cg/v/:id(\\d+)p.svg', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/image?type=preview&format=svg` },
+      { source: '/cg/v/:id(\\d+)f.svg', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/image?type=facing&format=svg` },
+      { source: '/cg/v/:id(\\d+).json', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/palette?format=json` },
       { source: '/cg/:guide/v/:id(\\d+).gpl', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/palette?format=gpl` },
       { source: '/cg/:guide/v/:id(\\d+).png', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/image?type=palette&format=png` },
       { source: '/cg/:guide/v/:id(\\d+)p.svg', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/image?type=preview&format=svg` },

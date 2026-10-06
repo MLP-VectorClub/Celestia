@@ -111,3 +111,10 @@ The label diff only shows what is on the page. These behaviors live in `Winterch
 5. Blending / picker URLs, about, events, users, show list.
 6. Global sidebar and footer, dialogs, mobile.
 7. Behavior: go through every button of the old site's page scripts (`assets/js/pages`) and check that Celestia has the same action.
+
+## URL inventory (2026-10-06)
+
+Every route of Winterchilla's `config/routes/pages.php` was probed against Celestia (dev server, old-style URLs with made-up ids). Old URLs keep working through `next.config.js`:
+- Redirects: `/blending(-reverse)`, `/picker`, page numbers in paths, `/browser` and `/about/browser/*` (→ `/about`, browser recognition is not rebuilt), `/admin/wsdiag` (→ `/admin`), `/components` (→ `/`), `/da-auth/end` and `/discord-connect/end` (→ `/oauth/{provider}`, query kept), the other `/da-auth/*` and `/discord-connect/*` (→ `/`), `/users/{id}/cg/{page}`.
+- Rewrites to Luna: appearance exports (`.json .gpl .png p.svg f.svg`) for `/cg/{guide}/v/`, `/cg/v/` and `/users/{id}/cg/v/`, cutie marks `/cg/cutiemark/{id}.svg` and `/cg/cutiemark/download/{id}` (Luna `GET /cutie-marks/{id}/image|download`).
+- Still no page: `/cg/{guide}/tag-changes/{id}` (Luna has `GET /appearances/{id}/tag-changes`, staff), legacy `/s/r/{id}` forms.
