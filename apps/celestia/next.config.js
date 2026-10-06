@@ -104,8 +104,8 @@ module.exports = {
       { source: '/users/:user/cg/slot-history/:page(\\d+)', destination: '/users/:user/cg/point-history?page=:page', permanent: true },
       { source: '/docs', destination: `${NEXT_PUBLIC_BACKEND_HOST}/`, permanent: false },
       // Pages that have no counterpart here (browser recognition, websocket diagnostics, the old style guide) go to their section
-      { source: '/browser/:id?', destination: '/about', permanent: true },
-      { source: '/about/browser/:id?', destination: '/about', permanent: true },
+      { source: '/browser/:id?', destination: '/about/connection', permanent: true },
+      { source: '/about/browser/:id?', destination: '/about/connection', permanent: true },
       { source: '/admin/wsdiag', destination: '/admin', permanent: true },
       { source: '/components', destination: '/', permanent: true },
       { source: '/users/:user/cg/:page(\\d+)', destination: '/users/:user/cg?page=:page', permanent: true },

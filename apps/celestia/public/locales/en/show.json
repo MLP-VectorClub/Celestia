@@ -14,7 +14,7 @@
     },
     "others": {
       "heading": "Movies, Shorts & Specials",
-      "addNoun": "Entry"
+      "addNoun": "Show Entry"
     },
     "airDateFormat": "EEEE, do MMMM yyyy, H:mm:ss"
   },
@@ -163,7 +163,7 @@
     "delete": "Delete",
     "deleteTitle": "Delete show",
     "deleteBody": "“{title}” and its posts will be deleted. This cannot be undone.",
-    "addNew": "Add new {noun}"
+    "addNew": "Add {noun}"
   },
   "rating": {
     "none": "Not rated yet",

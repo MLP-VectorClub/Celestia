@@ -12,6 +12,7 @@
     "blendingCalc": "<calc>Color Blending Calculator</calc> originally made by <author>DASPRiD</author>",
     "headingFont": "<bold>Headings' font: </bold><link>{linkText}</link>",
     "daLogo": "<bold>DeviantArt logo</bold> © <link>{copyright}</link>",
+    "discordLogo": "<bold>Discord logo</bold> © <link>{copyright}</link>",
     "aiLogo": "<link>Adobe Illustrator CC logo</link> © {copyright}",
     "inkscapeLogo": "<link>Inkscape logo</link> © Inkscape team",
     "ponyscapeLogo": "<link>Ponyscape logo</link> © <author></author>",

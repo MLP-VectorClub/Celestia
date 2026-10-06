@@ -93,6 +93,13 @@ const AboutPage: NextPage = () => {
           })}
           <br />
 
+          {t.rich('about.attributions.discordLogo', {
+            copyright: 'Discord',
+            bold: (chunks: ReactNode) => <strong>{chunks}</strong>,
+            link: (chunks: ReactNode) => <ExternalLink href="https://discord.com/branding">{chunks}</ExternalLink>,
+          })}
+          <br />
+
           {t.rich('about.attributions.aiLogo', {
             copyright: 'Adobe Systems Inc.',
             link: (chunks: ReactNode) => (
