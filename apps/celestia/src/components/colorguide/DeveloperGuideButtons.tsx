@@ -32,11 +32,11 @@ export const DeveloperGuideButtons: FC = () => {
 
   return (
     <>
-      <Button color="primary" id="cg-export" disabled={exportGuide.isPending} onClick={() => exportGuide.mutate()}>
+      <Button size="sm" color="darkblue" id="cg-export" disabled={exportGuide.isPending} onClick={() => exportGuide.mutate()}>
         <InlineIcon icon="download" first />
         {t('colorGuide.index.buttons.export')}
       </Button>
-      <Button color="warning" id="cg-reindex" disabled={reindex.isPending} onClick={() => reindex.mutate()}>
+      <Button size="sm" color="orange" id="cg-reindex" disabled={reindex.isPending} onClick={() => reindex.mutate()}>
         <InlineIcon icon="database" first />
         {t('colorGuide.index.buttons.reindex')}
       </Button>

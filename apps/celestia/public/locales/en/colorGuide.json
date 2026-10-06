@@ -10,8 +10,6 @@
       "blending": "Blending Calculator",
       "picker": "Color Picker",
       "tags": "Tags",
-      "sprite": "Sprite Template Generator",
-      "blendingReverse": "Blending Reverser",
       "export": "Export",
       "reindex": "Re-index"
     },

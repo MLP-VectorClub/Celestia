@@ -70,14 +70,6 @@ const GuideIndexPage: NextPage<PropTypes> = ({ initialData }) => {
           <InlineIcon icon="tags" first />
           {t('colorGuide.index.buttons.tags')}
         </Button>
-        <Button tag={Link} href={PATHS.GUIDE_SPRITE} color="guide-link" size="sm">
-          <InlineIcon icon="image" first />
-          {t('colorGuide.index.buttons.sprite')}
-        </Button>
-        <Button tag={Link} href={PATHS.BLENDING_REVERSE} color="guide-link" size="sm">
-          <InlineIcon icon="rotate-left" first />
-          {t('colorGuide.index.buttons.blendingReverse')}
-        </Button>
         {signedIn && permission(user, 'developer') && <DeveloperGuideButtons />}
       </ButtonCollection>
 
