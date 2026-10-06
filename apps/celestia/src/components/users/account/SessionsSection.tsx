@@ -69,12 +69,33 @@ export const SessionsSection: FC = () => {
                       {t('users.account.delete')}
                     </Button>
                   )}
+                  {s.userAgent && (
+                    <Button
+                      color="darkblue"
+                      size="sm"
+                      className="useragent ms-1"
+                      onClick={() =>
+                        void confirm({
+                          title: t('users.account.userAgentTitle'),
+                          body: <code className="d-block text-break">{s.userAgent}</code>,
+                          confirmLabel: t('common.actions.close'),
+                        })
+                      }
+                    >
+                      <InlineIcon icon="eye" first />
+                      {t('users.account.userAgent')}
+                    </Button>
+                  )}
                 </div>
-                <small className="d-block created">
-                  {t('users.account.created')} <TimeAgo date={s.createdAt} />
-                </small>
+                {s.createdAt && (
+                  <small className="d-block created">
+                    {t('users.account.created')} <TimeAgo date={s.createdAt} />
+                  </small>
+                )}
                 <small className="d-block used">
-                  {s.current ? <em>{t('users.account.currentSession')}</em> : (
+                  {s.current ? (
+                    <em>{t('users.account.currentSession')}</em>
+                  ) : (
                     <>
                       {t('users.account.lastUsed')} <TimeAgo date={s.lastActiveAt} />
                     </>
@@ -89,7 +110,14 @@ export const SessionsSection: FC = () => {
               id="sign-out-everywhere"
               disabled={everywhere.isPending}
               onClick={async () => {
-                if (await confirm({ title: t('users.account.signOutEverywhereTitle'), body: t('users.account.signOutEverywhereBody'), color: 'danger', confirmLabel: t('users.account.signOutEverywhere') })) {
+                if (
+                  await confirm({
+                    title: t('users.account.signOutEverywhereTitle'),
+                    body: t('users.account.signOutEverywhereBody'),
+                    color: 'danger',
+                    confirmLabel: t('users.account.signOutEverywhere'),
+                  })
+                ) {
                   everywhere.mutate();
                 }
               }}

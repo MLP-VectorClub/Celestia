@@ -248,7 +248,9 @@
     "emailIntro1": "A valid e-mail will allow you to log in without using a DeviantArt account in the next version of our site.",
     "emailIntro2": "You will not be signed up to any mailing lists or sent unsolicited spam, this is strictly for authentication and account recovery purposes.",
     "passwordIntro1": "A password will allow you to log in without using a DeviantArt account in the next version of our site.",
-    "passwordIntro2": "Only a hashed version of your password is stored in our database, so even if our systems are compromised your password will not be leaked in plain text."
+    "passwordIntro2": "Only a hashed version of your password is stored in our database, so even if our systems are compromised your password will not be leaked in plain text.",
+    "userAgent": "UA",
+    "userAgentTitle": "User agent"
   },
   "staffTools": {
     "amountPlaceholder": "Amount (negative takes points)",

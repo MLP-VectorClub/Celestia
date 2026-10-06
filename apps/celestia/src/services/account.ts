@@ -1,5 +1,6 @@
 import Axios from 'axios';
 
+import { BrowserSession } from '@mlp-vectorclub/api-types';
 import { UserPrefs } from 'src/types/api-alias';
 
 /**
@@ -37,14 +38,4 @@ export class AccountService {
   static getSessions = () => Axios.get<{ sessions: BrowserSession[] }>('/users/sessions');
 
   static deleteSession = (id: string) => Axios.delete<void>(`/users/sessions/${id}`);
-}
-
-export interface BrowserSession {
-  /** Opaque ID, the same value `DELETE /users/sessions/{id}` takes */
-  id: string;
-  device: string;
-  ip: string | null;
-  lastActiveAt: string;
-  createdAt: string;
-  current: boolean;
 }
