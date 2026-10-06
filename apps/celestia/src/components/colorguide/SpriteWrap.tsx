@@ -30,6 +30,7 @@ export const SpriteWrap: FC<PropTypes> = ({ appearanceId, sprite }) => {
   const input = useRef<HTMLInputElement>(null);
   const [copied, setCopied] = useState(false);
   const [dialog, setDialog] = useState(false);
+  const [dragging, setDragging] = useState(false);
 
   const options = { invalidate: [[ENDPOINTS.APPEARANCE({ id: appearanceId })]] };
   const upload = useApiMutation((file: File) => AppearanceEditService.uploadSprite(appearanceId, file), options);
@@ -71,9 +72,22 @@ export const SpriteWrap: FC<PropTypes> = ({ appearanceId, sprite }) => {
   return (
     <div className="text-center mb-3">
       <div
-        className={classNames('upload-wrap', styles.wrap, { nosprite: !sprite })}
+        className={classNames('upload-wrap', styles.wrap, { nosprite: !sprite, [styles.dragging]: dragging })}
         data-testid="sprite-wrap"
         onClick={() => !sprite && input.current?.click()}
+        // Like the old site's upload zone, an image dropped onto the sprite is uploaded straight away
+        onDragOver={(e) => {
+          if (!e.dataTransfer.types.includes('Files')) return;
+          e.preventDefault();
+          setDragging(true);
+        }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={(e) => {
+          e.preventDefault();
+          setDragging(false);
+          const file = e.dataTransfer.files[0];
+          if (file && /^image\/(png|jpeg)$/.test(file.type)) upload.mutate(file);
+        }}
       >
         {sprite ? (
           <SpriteImage appearanceId={appearanceId} sprite={sprite} height={300} />

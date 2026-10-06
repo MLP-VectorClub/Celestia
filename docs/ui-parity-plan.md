@@ -92,7 +92,7 @@ The label diff only shows what is on the page. These behaviors live in `Winterch
 
 **Clipboard:** copy for colors, URLs and share links (🟡), paste of colors and images into the hex inputs, blending calculator, reverser, picker and post image URL fields (`global.jsx`, `blending*.js`, `show/view.js`). ❓
 
-**Drag and drop / sorting:** sprite upload zone (drop a PNG onto the sprite, `jquery.uploadzone.js`) ❌; full list re-order (✅ `FullGuideReorder`); useful links order (🟡 arrows only); color group order (✅ dialog).
+**Drag and drop / sorting:** sprite upload zone (drop a PNG onto the sprite, `jquery.uploadzone.js`) ✅ `SpriteWrap` 2026-10-06; full list re-order (✅ `FullGuideReorder`); useful links order (🟡 arrows only); color group order (✅ dialog).
 
 **Lazy loading with IntersectionObserver:** episode posts (✅ built 2026-10-05), event entries, contributions lists, profile sections, full list previews, admin "most recent posts". ❓
 
