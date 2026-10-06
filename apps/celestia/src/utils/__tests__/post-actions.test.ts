@@ -18,11 +18,15 @@ const post = (overrides: Partial<PostItem> = {}): PostItem => ({
   finishedAt: null,
   deviationId: null,
   approved: false,
+  approvedAt: null,
+  approvedBy: null,
   broken: false,
   overdue: false,
   canEdit: false,
   ...overrides,
 });
+
+const reserver = (id: number, name: string) => ({ id, name, avatarUrl: null, avatarProvider: 'deviantart' as const, vectorApp: null });
 
 const guest = { id: null, role: null } as const;
 const member = { id: 20, role: 'member' } as const;
@@ -35,18 +39,18 @@ describe('getPostActions', () => {
 
   it('lets members reserve an open request', () => {
     expect(getPostActions(post(), member).reserve).toBe(true);
-    expect(getPostActions(post({ reservedBy: { id: 99, name: 'Other' } }), member).reserve).toBe(false);
+    expect(getPostActions(post({ reservedBy: reserver(99, 'Other') }), member).reserve).toBe(false);
   });
 
   it('lets only the reserver (or staff) finish and cancel a reservation', () => {
-    const reserved = post({ reservedBy: { id: 20, name: 'Me' } });
+    const reserved = post({ reservedBy: reserver(20, 'Me') });
     expect(getPostActions(reserved, member)).toMatchObject({ finish: true, unreserve: true, reserve: false });
     expect(getPostActions(reserved, { id: 21, role: 'member' })).toMatchObject({ finish: false, unreserve: false });
     expect(getPostActions(reserved, staff)).toMatchObject({ finish: true, unreserve: true });
   });
 
   it('offers approval for finished posts and its removal to staff only', () => {
-    const finished = post({ reservedBy: { id: 20, name: 'Me' }, finishedAt: '2026-01-02T00:00:00+00:00', deviationId: 'dabc' });
+    const finished = post({ reservedBy: reserver(20, 'Me'), finishedAt: '2026-01-02T00:00:00+00:00', deviationId: 'dabc' });
     expect(getPostActions(finished, member)).toMatchObject({ approve: true, unfinish: true, finish: false, unapprove: false });
     const approved = { ...finished, approved: true };
     expect(getPostActions(approved, member)).toMatchObject({ approve: false, unfinish: false, unapprove: false });
@@ -55,7 +59,7 @@ describe('getPostActions', () => {
 
   it('lets the poster delete an unreserved request', () => {
     expect(getPostActions(post(), { id: 10, role: 'user' }).deleteRequest).toBe(true);
-    expect(getPostActions(post({ reservedBy: { id: 20, name: 'Me' } }), { id: 10, role: 'user' }).deleteRequest).toBe(false);
+    expect(getPostActions(post({ reservedBy: reserver(20, 'Me') }), { id: 10, role: 'user' }).deleteRequest).toBe(false);
   });
 });
 
@@ -70,11 +74,11 @@ describe('getPostActions editing', () => {
 
   it('lets the poster change the image of a request until somebody reserves it', () => {
     expect(getPostActions(post(), posterOnly).changeImage).toBe(true);
-    expect(getPostActions(post({ reservedBy: { id: 20, name: 'Me' } }), posterOnly).changeImage).toBe(false);
+    expect(getPostActions(post({ reservedBy: reserver(20, 'Me') }), posterOnly).changeImage).toBe(false);
   });
 
   it('lets the poster change the image of their reservation', () => {
-    expect(getPostActions(post({ kind: 'reservation', reservedBy: { id: 10, name: 'Poster' } }), posterOnly).changeImage).toBe(true);
+    expect(getPostActions(post({ kind: 'reservation', reservedBy: reserver(10, 'Poster') }), posterOnly).changeImage).toBe(true);
   });
 
   it('locks the image of approved posts, also for staff, and hides it from strangers', () => {

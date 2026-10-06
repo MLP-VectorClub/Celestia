@@ -1,18 +1,30 @@
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { useTranslations } from 'next-intl';
 import { FC, useState } from 'react';
 import { Alert, Button } from 'reactstrap';
 
 import { PostItem } from '@mlp-vectorclub/api-types';
+import { IconButton } from 'src/components/shared/IconButton';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { PostEditDialog } from 'src/components/show/PostEditDialog';
 import { PostFinishDialog } from 'src/components/show/PostFinishDialog';
 import { PostImageDialog } from 'src/components/show/PostImageDialog';
+import { PostShareButton } from 'src/components/show/PostShareButton';
 import { describeApiError, useApiMutation, useAuth } from 'src/hooks';
 import { PostService } from 'src/services/posts';
 import { UnifiedErrorResponse } from 'src/types';
 import { ENDPOINTS } from 'src/utils';
 import { getPostActions } from 'src/utils/post-actions';
+
+interface ActionItem {
+  key: string;
+  icon: IconProp;
+  color: 'darkblue' | 'blue' | 'red' | 'orange' | 'green';
+  label: string;
+  onClick: () => void;
+  className?: string;
+}
 
 export const PostActions: FC<{ post: PostItem }> = ({ post }) => {
   const t = useTranslations();
@@ -52,92 +64,123 @@ export const PostActions: FC<{ post: PostItem }> = ({ post }) => {
       if (await confirm({ title, body, color, confirmLabel: title })) run(mutation)();
     };
 
-  if (!Object.values(actions).some(Boolean)) return null;
+  const ask = (title: string, body: string, mutation: (typeof mutations)[number], color = 'danger') =>
+    confirmThen(title, body, mutation, color);
+  const isOwnReservation = user.id !== null && post.reservedBy?.id === user.id;
+
+  // The same buttons in the same order as the old site's post cards; three or more of them (Share included) shrink to icons with a tooltip
+  const items: ActionItem[] = [];
+  if (actions.edit)
+    items.push({
+      key: 'edit',
+      icon: 'pencil-alt',
+      color: 'darkblue',
+      label: t('show.post.actions.edit'),
+      onClick: () => setEditOpen(true),
+      className: 'edit',
+    });
+  if (actions.changeImage)
+    items.push({
+      key: 'image',
+      icon: 'image',
+      color: 'blue',
+      label: t('show.post.actions.changeImage'),
+      onClick: () => setImageOpen(true),
+    });
+  if (actions.unbreak)
+    items.push({ key: 'unbreak', icon: 'plug', color: 'orange', label: t('show.post.actions.unbreak'), onClick: run(unbreak) });
+  if (actions.unreserve) {
+    items.push({
+      key: 'cancel',
+      icon: 'user-times',
+      color: 'red',
+      label: t('show.post.actions.cancelReservation'),
+      onClick: ask(t('show.post.actions.cancelReservation'), t('show.post.actions.cancelReservationBody'), unreserve),
+      className: 'cancel',
+    });
+  }
+  if (actions.finish) {
+    items.push({
+      key: 'finish',
+      icon: 'paperclip',
+      color: 'green',
+      label: isOwnReservation ? t('show.post.actions.finishOwn') : t('show.post.actions.finish'),
+      onClick: () => setFinishOpen(true),
+      className: 'finish',
+    });
+  }
+  if (actions.unfinish) {
+    items.push({
+      key: 'unfinish',
+      icon: 'eject',
+      color: 'orange',
+      label: t('show.post.actions.unfinish'),
+      onClick: ask(t('show.post.actions.unfinish'), t('show.post.actions.unfinishBody'), unfinish, 'warning'),
+    });
+  }
+  if (actions.approve)
+    items.push({ key: 'check', icon: 'check', color: 'green', label: t('show.post.actions.approve'), onClick: run(approve) });
+  if (actions.deleteRequest) {
+    items.push({
+      key: 'delete',
+      icon: 'trash',
+      color: 'red',
+      label: t('show.post.actions.delete'),
+      onClick: ask(t('show.post.actions.deleteRequest'), t('show.post.actions.cannotUndo'), deleteRequest),
+    });
+  }
+  if (actions.unapprove) {
+    items.push({
+      key: 'unlock',
+      icon: 'lock-open',
+      color: 'orange',
+      label: t('show.post.actions.removeApproval'),
+      onClick: ask(t('show.post.actions.removeApproval'), t('show.post.actions.removeApprovalBody'), unapprove, 'warning'),
+    });
+  }
+  const compact = items.length + 1 >= 3;
 
   return (
-    <div className="mt-2">
-      <div className="d-flex flex-wrap gap-1">
-        {actions.edit && (
-          <Button size="sm" color="ui" className="edit" onClick={() => setEditOpen(true)} disabled={busy}>
-            {t('show.post.actions.edit')}
-          </Button>
-        )}
-        {actions.changeImage && (
-          <Button size="sm" color="ui" onClick={() => setImageOpen(true)} disabled={busy}>
-            {t('show.post.actions.changeImage')}
-          </Button>
-        )}
-        {actions.unbreak && (
-          <Button size="sm" color="warning" onClick={run(unbreak)} disabled={busy}>
-            {t('show.post.actions.unbreak')}
-          </Button>
-        )}
-        {actions.reserve && (
+    <>
+      {actions.reserve && (
+        <div className="mt-2">
           <Button size="sm" color="primary" className="reserve-request" onClick={run(reserve)} disabled={busy}>
-            <InlineIcon icon="plus" first />
+            <InlineIcon icon="user-plus" first />
             {t('show.post.actions.reserve')}
           </Button>
-        )}
-        {actions.finish && (
-          <Button size="sm" color="success" className="finish" onClick={() => setFinishOpen(true)} disabled={busy}>
-            {t('show.post.actions.finish')}
-          </Button>
-        )}
-        {actions.approve && (
-          <Button size="sm" color="success" onClick={run(approve)} disabled={busy}>
-            {t('show.post.actions.approve')}
-          </Button>
-        )}
-        {actions.unapprove && (
-          <Button
-            size="sm"
-            color="warning"
-            onClick={confirmThen(t('show.post.actions.removeApproval'), t('show.post.actions.removeApprovalBody'), unapprove, 'warning')}
-            disabled={busy}
-          >
-            {t('show.post.actions.removeApproval')}
-          </Button>
-        )}
-        {actions.unfinish && (
-          <Button
-            size="sm"
-            color="warning"
-            onClick={confirmThen(t('show.post.actions.unfinish'), t('show.post.actions.unfinishBody'), unfinish, 'warning')}
-            disabled={busy}
-          >
-            {t('show.post.actions.unfinish')}
-          </Button>
-        )}
-        {actions.unreserve && (
-          <Button
-            size="sm"
-            color="link"
-            className="cancel"
-            onClick={confirmThen(t('show.post.actions.cancelReservation'), t('show.post.actions.cancelReservationBody'), unreserve)}
-            disabled={busy}
-          >
-            {t('show.post.actions.cancelReservation')}
-          </Button>
-        )}
-        {actions.deleteRequest && (
-          <Button
-            size="sm"
-            color="danger"
-            onClick={confirmThen(t('show.post.actions.deleteRequest'), t('show.post.actions.cannotUndo'), deleteRequest)}
-            disabled={busy}
-          >
-            {t('show.post.actions.delete')}
-          </Button>
+        </div>
+      )}
+      <div className="mt-2">
+        <div className="d-flex flex-wrap gap-1">
+          {items.map((item) =>
+            compact ? (
+              <IconButton
+                key={item.key}
+                icon={item.icon}
+                color={item.color}
+                title={item.label}
+                className={item.className}
+                onClick={item.onClick}
+                disabled={busy}
+              />
+            ) : (
+              <Button key={item.key} size="sm" color={item.color} className={item.className} onClick={item.onClick} disabled={busy}>
+                <InlineIcon icon={item.icon} first />
+                {item.label}
+              </Button>
+            )
+          )}
+          <PostShareButton postId={post.id} compact={compact} />
+        </div>
+        {error && (
+          <Alert color="danger" fade={false} className="mt-2 mb-0 py-1" role="alert">
+            {describeApiError(error)}
+          </Alert>
         )}
       </div>
-      {error && (
-        <Alert color="danger" fade={false} className="mt-2 mb-0 py-1" role="alert">
-          {describeApiError(error)}
-        </Alert>
-      )}
       {actions.edit && <PostEditDialog post={post} isOpen={editOpen} onClose={() => setEditOpen(false)} />}
       {actions.changeImage && <PostImageDialog post={post} isOpen={imageOpen} onClose={() => setImageOpen(false)} />}
       {actions.finish && <PostFinishDialog post={post} isOpen={finishOpen} onClose={() => setFinishOpen(false)} />}
-    </div>
+    </>
   );
 };

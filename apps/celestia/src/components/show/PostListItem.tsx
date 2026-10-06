@@ -6,15 +6,16 @@ import { Button } from 'reactstrap';
 
 import { PostItem } from '@mlp-vectorclub/api-types';
 import styles from 'modules/PostList.module.scss';
+import AvatarWrap from 'src/components/shared/AvatarWrap';
 import ExternalLink from 'src/components/shared/ExternalLink';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import TimeAgo from 'src/components/shared/TimeAgo';
 import UserLink from 'src/components/shared/UserLink';
-import { PostShareButton } from 'src/components/show/PostShareButton';
 import { PostActions } from 'src/components/show/PostActions';
 import { DeviationImage, ScreencapImage } from 'src/components/show/PostImages';
-import { permission } from 'src/utils';
 import { useAuth } from 'src/hooks';
+import { VectorApp } from 'src/types/api-alias';
+import { permission } from 'src/utils';
 
 /** The link of a post's own address (`/s/1z`, the ID in base 36) */
 const postAddress = (post: PostItem) => `/s/${post.id.toString(36)}`;
@@ -63,7 +64,10 @@ export const PostListItem: FC<{ post: PostItem; viewOnly?: boolean }> = ({ post,
         <>
           {post.type && (
             <em className={styles.infoLine}>
-              {t.rich('show.post.postedInSection', { section: t(`show.post.sections.${post.type}`), strong: (chunks) => <strong>{chunks}</strong> })}
+              {t.rich('show.post.postedInSection', {
+                section: t(`show.post.sections.${post.type}`),
+                strong: (chunks) => <strong>{chunks}</strong>,
+              })}
             </em>
           )}
           {post.finishedAt && (
@@ -71,6 +75,27 @@ export const PostListItem: FC<{ post: PostItem; viewOnly?: boolean }> = ({ post,
               {t('show.post.finished')} <strong>{<TimeAgo date={post.finishedAt} />}</strong>
             </em>
           )}
+          {post.approved &&
+            (post.approvedAt ? (
+              <em className={styles.infoLine}>
+                {t('show.post.approved')} <strong>{<TimeAgo date={post.approvedAt} />}</strong>
+                {post.approvedBy && (
+                  <>
+                    {' '}
+                    {t('show.post.by')}{' '}
+                    {post.approvedBy.id === post.reservedBy?.id ? (
+                      t('show.post.theReserver')
+                    ) : isRequest && post.approvedBy.id === post.postedBy?.id ? (
+                      t('show.post.theRequester')
+                    ) : (
+                      <UserLink id={post.approvedBy.id} name={post.approvedBy.name} />
+                    )}
+                  </>
+                )}
+              </em>
+            ) : (
+              <em className={styles.infoLine}>{t('show.post.approvalUnavailable')}</em>
+            ))}
           <span className={styles.infoLine}>
             <ExternalLink href={post.fullsizeUrl}>
               <InlineIcon icon="link" first />
@@ -89,7 +114,17 @@ export const PostListItem: FC<{ post: PostItem; viewOnly?: boolean }> = ({ post,
       )}
 
       {post.reservedBy && (
-        <span className={styles.reserver}>
+        <span
+          className={styles.reserver}
+          title={post.reservedBy.vectorApp ? t('show.post.vectorAppTitle', { app: post.reservedBy.vectorApp }) : undefined}
+        >
+          <AvatarWrap
+            avatarProvider={post.reservedBy.avatarProvider}
+            avatarUrl={post.reservedBy.avatarUrl}
+            vectorApp={post.reservedBy.vectorApp as VectorApp | null}
+            size={30}
+            className="me-1"
+          />
           <UserLink id={post.reservedBy.id} name={post.reservedBy.name} />
         </span>
       )}
@@ -114,10 +149,7 @@ export const PostListItem: FC<{ post: PostItem; viewOnly?: boolean }> = ({ post,
             {t('show.post.view')}
           </Button>
         ) : (
-          <>
-            <PostShareButton postId={post.id} />
-            <PostActions post={post} />
-          </>
+          <PostActions post={post} />
         )}
       </div>
     </li>

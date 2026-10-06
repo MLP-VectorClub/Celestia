@@ -3,12 +3,13 @@ import { FC, RefObject, useRef, useState } from 'react';
 import { Button, FormGroup, InputGroup, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
 import styles from 'modules/ShareAppearanceButton.module.scss';
+import { IconButton } from 'src/components/shared/IconButton';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { APP_HOST } from 'src/config';
 import { useCopyToClipboard } from 'src/hooks/copy';
 
 /** Shows the post's own address (`/s/1z`) with a copy button, like the old site's "Share" button */
-export const PostShareButton: FC<{ postId: number }> = ({ postId }) => {
+export const PostShareButton: FC<{ postId: number; compact?: boolean }> = ({ postId, compact = false }) => {
   const t = useTranslations();
   const [open, setOpen] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -20,11 +21,23 @@ export const PostShareButton: FC<{ postId: number }> = ({ postId }) => {
 
   return (
     <>
-      <Button color="blue" size="sm" onClick={() => setOpen(true)}>
-        <InlineIcon icon="share" first />
-        {t('show.share.button')}
-      </Button>
-      <Modal centered fade={false} isOpen={open} onExit={() => setOpen(false)} innerRef={modalRef} onOpened={() => setVisible(true)} onClosed={() => setVisible(false)}>
+      {compact ? (
+        <IconButton icon="share" color="blue" title={t('show.share.button')} onClick={() => setOpen(true)} />
+      ) : (
+        <Button color="blue" size="sm" onClick={() => setOpen(true)}>
+          <InlineIcon icon="share" first />
+          {t('show.share.button')}
+        </Button>
+      )}
+      <Modal
+        centered
+        fade={false}
+        isOpen={open}
+        onExit={() => setOpen(false)}
+        innerRef={modalRef}
+        onOpened={() => setVisible(true)}
+        onClosed={() => setVisible(false)}
+      >
         <ModalHeader className="bg-ui text-white">
           <InlineIcon icon="share" first />
           {t('show.share.title', { id: postId })}

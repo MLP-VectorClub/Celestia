@@ -49,7 +49,7 @@ Assistant, staff and admin differ only in their label and in which roles they ma
 | Blending calculator | `/cg/blending` | `/cg/blending` (old `/blending` redirects) | URL, heading ("Color Blending Calculator"), "Back to Color Guide", credit link | ✅ |
 | Blending reverser | `/cg/blending-reverse` | `/cg/blending-reverse` (old `/blending-reverse` redirects) | URL | ✅ |
 | Picker | `/cg/picker` | `/cg/picker` | (moved 2026-10-04) | 🟡 |
-| Episode / movie | `/episode/...` | same | Share button, staff Unlock, icon-only actions, reserver avatar chip, "added by", approved date | 🟡 |
+| Episode / movie | `/episode/...` | same | "added by" (open); done 2026-10-06: per-post Share, staff Unlock, icon-only actions (3+ buttons incl. Share), reserver avatar chip, approved date and approver (needs Luna with PostReserver / approvedAt) | 🟡 |
 | Show list | `/show` | same | not yet compared | 🟡 add buttons relabelled "Add Episode" / "Add Show Entry" 2026-10-06 |
 | Events | `/events`, `/event/ID-Title` | same | event page: description, entries layout, "Finished image", update; URL with title | 🟡 page layout done 2026-10-06 (heading, finished image, description, entry cards; Edit/Withdraw skipped, Luna answers 501); canonical URL with the title done 2026-10-06 |
 | Users | `/users` | same | not yet compared | 🟡 groups match (Administrator, Staff, Assistants, Club Members, DeviantArt Users); counts differ only through the data snapshot |

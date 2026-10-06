@@ -70,16 +70,17 @@
       "unbreak": "Unbreak",
       "reserve": "Reserve",
       "finish": "Mark as finished",
-      "approve": "Approve",
-      "removeApproval": "Remove approval",
+      "approve": "Check",
+      "removeApproval": "Unlock",
       "unfinish": "Unfinish",
-      "cancelReservation": "Cancel reservation",
+      "cancelReservation": "Cancel Reservation",
       "delete": "Delete",
       "removeApprovalBody": "The post will be unlocked again.",
       "unfinishBody": "The finished image will be removed from this post.",
       "cancelReservationBody": "The request will be open for others to reserve again.",
       "deleteRequest": "Delete request",
-      "cannotUndo": "This cannot be undone."
+      "cannotUndo": "This cannot be undone.",
+      "finishOwn": "I'm finished"
     },
     "fields": {
       "description": "Description",
@@ -142,7 +143,11 @@
       "obj": "Objects",
       "bg": "Backgrounds"
     },
-    "view": "View"
+    "view": "View",
+    "theReserver": "the reserver",
+    "theRequester": "the requester",
+    "approvalUnavailable": "Approval data unavailable",
+    "vectorAppTitle": "Uses {app} to make vectors"
   },
   "common": {
     "save": "Save"
