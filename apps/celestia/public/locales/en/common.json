@@ -148,5 +148,9 @@
     "failed": "Failed to fetch {subject}, please try again later.",
     "loading": "Loading {subject}, please wait…"
   },
-  "avatarAlt": "Avatar image"
+  "avatarAlt": "Avatar image",
+  "sessionEnded": {
+    "title": "Session refresh issue",
+    "body": "We couldn't refresh your DeviantArt session automatically, so you have been signed out. Please sign in with DeviantArt to continue."
+  }
 }

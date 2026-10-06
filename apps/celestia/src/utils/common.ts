@@ -47,7 +47,10 @@ const mapHttpResponse = (err: AxiosError | unknown): UnifiedErrorResponse => {
     case 419:
       return { type: UnifiedErrorResponseTypes.MISSING_CSRF_TOKEN };
     case 401:
-      return { type: UnifiedErrorResponseTypes.AUTHENTICATION_ERROR };
+      return {
+        type: UnifiedErrorResponseTypes.AUTHENTICATION_ERROR,
+        ...(get(err, 'response.data.deviantArtRequired') === true ? { deviantArtRequired: true } : {}),
+      };
     case 422: {
       const body = isValidationErrorResponse(err)
         ? err.response.data

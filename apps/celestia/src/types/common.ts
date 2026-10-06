@@ -67,6 +67,8 @@ export enum UnifiedErrorResponseTypes {
 type UnifiedErrorBody =
   | {
       type: UnifiedErrorResponseTypes.AUTHENTICATION_ERROR;
+      /** The API ended the session because DeviantArt no longer accepts the member's token */
+      deviantArtRequired?: boolean;
     }
   | {
       type: UnifiedErrorResponseTypes.RATE_LIMITED;

@@ -21,6 +21,10 @@ interface CurrentUserHookValue {
   authCheck: {
     status: Status;
   };
+  /** The visitor's data is being refreshed in the background (the API may be renewing the DeviantArt session) */
+  refreshing: boolean;
+  /** The API signed the visitor out because their DeviantArt session could not be renewed */
+  sessionEnded: boolean;
 }
 
 export function useAuth(): CurrentUserHookValue {
@@ -32,6 +36,8 @@ export function useAuth(): CurrentUserHookValue {
     fetchStatus,
     data: user,
     isError,
+    error: queryError,
+    isFetching,
   } = useQuery({
     queryKey: [ENDPOINTS.USERS_ME],
     queryFn: currentUserFetcher,
@@ -49,5 +55,10 @@ export function useAuth(): CurrentUserHookValue {
     authCheck: {
       status: mapQueryStatus(status, fetchStatus),
     },
+    refreshing: signedIn && isFetching,
+    sessionEnded:
+      isError &&
+      (queryError as UnifiedErrorResponse | null)?.type === UnifiedErrorResponseTypes.AUTHENTICATION_ERROR &&
+      Boolean((queryError as { deviantArtRequired?: boolean }).deviantArtRequired),
   };
 }
