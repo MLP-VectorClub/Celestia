@@ -43,7 +43,8 @@
     "relatedHeading": "Related <guide>Color Guide</guide> {count, plural, one {page} other {pages}}",
     "loadTextFailed": "Could not load the current data.",
     "unlinked": "Available",
-    "linked": "Linked"
+    "linked": "Linked",
+    "addedBy": "{type} added by"
   },
   "post": {
     "requestsHeading": "Requests",
@@ -52,7 +53,7 @@
     "noReservations": "There are no reservations yet",
     "loadingSubject": "posts",
     "requested": "Requested",
-    "reserved": "Added",
+    "reserved": "Reserved",
     "by": "by",
     "reservedBy": "Reserved by",
     "finishedAs": "Finished as",
@@ -147,7 +148,8 @@
     "theReserver": "the reserver",
     "theRequester": "the requester",
     "approvalUnavailable": "Approval data unavailable",
-    "vectorAppTitle": "Uses {app} to make vectors"
+    "vectorAppTitle": "Uses {app} to make vectors",
+    "you": "You"
   },
   "common": {
     "save": "Save"

@@ -4,12 +4,20 @@ import { useRouter } from 'next/router';
 import { FC, useMemo, useState } from 'react';
 import { Button } from 'reactstrap';
 
-import { GetPostsResult, GetShowIdAdjacentResult, GetShowIdResult, GetShowIdVoteResult, GetShowReservationInfoResult } from '@mlp-vectorclub/api-types';
+import {
+  GetPostsResult,
+  GetShowIdAdjacentResult,
+  GetShowIdResult,
+  GetShowIdVoteResult,
+  GetShowReservationInfoResult,
+} from '@mlp-vectorclub/api-types';
 import styles from 'modules/ShowEntry.module.scss';
 import { AppearanceLink } from 'src/components/colorguide/AppearanceLink';
 import Content from 'src/components/shared/Content';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import StatusAlert from 'src/components/shared/StatusAlert';
+import TimeAgo from 'src/components/shared/TimeAgo';
+import UserLink from 'src/components/shared/UserLink';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { EpisodeHeading } from 'src/components/show/EpisodeHeading';
 import { PostList } from 'src/components/show/PostList';
@@ -88,7 +96,20 @@ export const ShowEntryPage: FC<ShowEntryPageProps> = ({
 
   return (
     <Content>
-      <EpisodeHeading show={show} initialAdjacent={initialAdjacent} />
+      <EpisodeHeading
+        show={show}
+        initialAdjacent={initialAdjacent}
+        addedBy={
+          show.postedByUser && (
+            <p className="added-by">
+              <em>
+                {t('show.entry.addedBy', { type: t(`show.index.typeNames.${show.type}`) })}{' '}
+                <UserLink id={show.postedByUser.id} name={show.postedByUser.name} /> <TimeAgo date={show.createdAt} />
+              </em>
+            </p>
+          )
+        }
+      />
 
       <ReservationTexts initial={initialReservationInfo} />
 

@@ -34,6 +34,10 @@ export const PostListItem: FC<{ post: PostItem; viewOnly?: boolean }> = ({ post,
   const isRequest = post.kind === 'request';
   const finished = post.deviationId !== null && post.finishedAt !== null;
   const noQuotes = post.label.includes('"');
+  // Like the old site, who requested something is only shown to staff, the requester and the reserver
+  const isRequester = user.id !== null && post.postedBy?.id === user.id;
+  const isReserver = user.id !== null && post.reservedBy?.id === user.id;
+  const showRequester = isRequest && (isStaff || isRequester || isReserver);
 
   return (
     <li id={`post-${post.id}`} data-kind={post.kind} className={classNames(styles.card, { [styles.broken]: post.broken })}>
@@ -46,10 +50,15 @@ export const PostListItem: FC<{ post: PostItem; viewOnly?: boolean }> = ({ post,
         <Link href={postAddress(post)}>
           <TimeAgo date={post.postedAt} />
         </Link>
-        {post.postedBy && (
+        {showRequester && post.postedBy && (
           <>
             {' '}
-            {t('show.post.by')} <UserLink id={post.postedBy.id} name={post.postedBy.name} />
+            {t('show.post.by')}{' '}
+            {isRequester ? (
+              <UserLink id={post.postedBy.id} name={t('show.post.you')} />
+            ) : (
+              <UserLink id={post.postedBy.id} name={post.postedBy.name} />
+            )}
           </>
         )}
       </em>
