@@ -193,5 +193,11 @@
     "muffinsLabel": "{count, plural, one {# muffin} other {# muffins}}",
     "votes": "{count, plural, one {# vote} other {# votes}}",
     "totalVotes": "{count, plural, one {# vote in total} other {# votes in total}}"
+  },
+  "share": {
+    "button": "Share",
+    "title": "Sharing post #{id}",
+    "help": "Use the link below to link to this post directly:",
+    "copy": "Copy to clipboard"
   }
 }

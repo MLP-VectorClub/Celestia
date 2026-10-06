@@ -10,6 +10,7 @@ import ExternalLink from 'src/components/shared/ExternalLink';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import TimeAgo from 'src/components/shared/TimeAgo';
 import UserLink from 'src/components/shared/UserLink';
+import { PostShareButton } from 'src/components/show/PostShareButton';
 import { PostActions } from 'src/components/show/PostActions';
 import { DeviationImage, ScreencapImage } from 'src/components/show/PostImages';
 import { permission } from 'src/utils';
@@ -113,7 +114,10 @@ export const PostListItem: FC<{ post: PostItem; viewOnly?: boolean }> = ({ post,
             {t('show.post.view')}
           </Button>
         ) : (
-          <PostActions post={post} />
+          <>
+            <PostShareButton postId={post.id} />
+            <PostActions post={post} />
+          </>
         )}
       </div>
     </li>

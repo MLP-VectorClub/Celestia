@@ -30,7 +30,8 @@ for (const role of roles) {
         if (role !== 'guest') await p.goto(`${base}/test-login/${ACCOUNTS[role]}`).catch(() => {});
         await p.goto(base + pages[name], { waitUntil: 'networkidle', timeout: 45000 }).catch(() => {});
         await p.waitForTimeout(1200);
-        await p.screenshot({ path: `${out}/${key}.png`, fullPage: true });
+        const height = await p.evaluate(() => document.documentElement.scrollHeight);
+        await p.screenshot({ path: `${out}/${key}.png`, fullPage: true, clip: { x: 0, y: 0, width: 1280, height: Math.min(height, 4000) } });
         inventory[key] = await p.evaluate(() => {
           const scope = document.querySelector('#content, #main, main') || document.body;
           const vis = (e) => !!(e.offsetWidth || e.offsetHeight || e.getClientRects().length);

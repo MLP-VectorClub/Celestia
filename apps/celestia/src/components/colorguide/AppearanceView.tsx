@@ -98,7 +98,9 @@ export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppe
       ) : (
         appearance.sprite && (
           <div className={styles.spriteImage}>
-            <SpriteImage appearanceId={appearance.id} sprite={appearance.sprite} height={300} />
+            <a href={getSpriteUrl(appearance.id, appearance.sprite, 600)} target="_blank" rel="noopener" title={t('colorGuide.edit.sprite.openInNewTab')}>
+              <SpriteImage appearanceId={appearance.id} sprite={appearance.sprite} height={300} />
+            </a>
           </div>
         )
       )}
