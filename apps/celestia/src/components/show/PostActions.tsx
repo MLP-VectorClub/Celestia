@@ -9,7 +9,6 @@ import InlineIcon from 'src/components/shared/InlineIcon';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { PostEditDialog } from 'src/components/show/PostEditDialog';
 import { PostFinishDialog } from 'src/components/show/PostFinishDialog';
-import { PostImageDialog } from 'src/components/show/PostImageDialog';
 import { PostShareButton } from 'src/components/show/PostShareButton';
 import { describeApiError, useApiMutation, useAuth } from 'src/hooks';
 import { PostService } from 'src/services/posts';
@@ -32,7 +31,6 @@ export const PostActions: FC<{ post: PostItem }> = ({ post }) => {
   const { confirm } = useDialog();
   const [finishOpen, setFinishOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
-  const [imageOpen, setImageOpen] = useState(false);
   const [error, setError] = useState<UnifiedErrorResponse | null>(null);
 
   const invalidate = () => [
@@ -47,10 +45,9 @@ export const PostActions: FC<{ post: PostItem }> = ({ post }) => {
   const approve = useApiMutation(() => PostService.approve(post.id), options);
   const unapprove = useApiMutation(() => PostService.unapprove(post.id), options);
   const deleteRequest = useApiMutation(() => PostService.deleteRequest(post.id), options);
-  const unbreak = useApiMutation(() => PostService.unbreak(post.id), options);
 
   const actions = getPostActions(post, user);
-  const mutations = [reserve, unreserve, unfinish, approve, unapprove, deleteRequest, unbreak];
+  const mutations = [reserve, unreserve, unfinish, approve, unapprove, deleteRequest];
   const busy = mutations.some((m) => m.isPending);
 
   const run = (mutation: (typeof mutations)[number]) => () => {
@@ -79,16 +76,6 @@ export const PostActions: FC<{ post: PostItem }> = ({ post }) => {
       onClick: () => setEditOpen(true),
       className: 'edit',
     });
-  if (actions.changeImage)
-    items.push({
-      key: 'image',
-      icon: 'image',
-      color: 'blue',
-      label: t('show.post.actions.changeImage'),
-      onClick: () => setImageOpen(true),
-    });
-  if (actions.unbreak)
-    items.push({ key: 'unbreak', icon: 'plug', color: 'orange', label: t('show.post.actions.unbreak'), onClick: run(unbreak) });
   if (actions.unreserve) {
     items.push({
       key: 'cancel',
@@ -179,7 +166,6 @@ export const PostActions: FC<{ post: PostItem }> = ({ post }) => {
         )}
       </div>
       {actions.edit && <PostEditDialog post={post} isOpen={editOpen} onClose={() => setEditOpen(false)} />}
-      {actions.changeImage && <PostImageDialog post={post} isOpen={imageOpen} onClose={() => setImageOpen(false)} />}
       {actions.finish && <PostFinishDialog post={post} isOpen={finishOpen} onClose={() => setFinishOpen(false)} />}
     </>
   );
