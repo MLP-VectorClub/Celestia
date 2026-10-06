@@ -10,6 +10,7 @@ import { EventEntries } from 'src/components/events/EventEntries';
 import { EventFinishedImage } from 'src/components/events/EventFinishedImage';
 import Content from 'src/components/shared/Content';
 import InlineIcon from 'src/components/shared/InlineIcon';
+import { LongDate } from 'src/components/shared/LongDate';
 import NoResultsAlert from 'src/components/shared/NoResultsAlert';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import StatusAlert from 'src/components/shared/StatusAlert';
@@ -21,11 +22,11 @@ import { useAppDispatch, wrapper } from 'src/store';
 import { Nullable, Optional, SSRMessages } from 'src/types';
 import { DatabaseRole } from 'src/types/api-alias';
 import { TitleFactory } from 'src/types/title';
-import { formatLongDate, handleDataFetchingError, notFound } from 'src/utils';
+import { handleDataFetchingError, notFound } from 'src/utils';
 import { titleSetter } from 'src/utils/core';
 import { typedServerSideTranslations } from 'src/utils/i18n';
-import { canonicalPathRedirect } from 'src/utils/url';
 import { mapRoleLabel } from 'src/utils/role-label';
+import { canonicalPathRedirect } from 'src/utils/url';
 
 interface PropTypes {
   id: number;
@@ -91,7 +92,7 @@ const EventPage: NextPage<PropTypes> = ({ id, initialEvent }) => {
         {/* The API sends the description rendered and sanitized (the old site's rendering of the Markdown source) */}
         <div dangerouslySetInnerHTML={{ __html: event.descriptionHtml }} />
         <p>
-          {t('events.details.acceptedUntil', { time: formatLongDate(new Date(event.endsAt)) })}{' '}
+          {t.rich('events.details.acceptedUntil', { time: () => <LongDate date={event.endsAt} /> })}{' '}
           {event.maxEntries !== null ? t('events.details.maxEntries', { count: event.maxEntries }) : t('events.details.unlimitedEntries')}
         </p>
         {event.ended && <p className="color-blue">{t('events.details.concluded')}</p>}

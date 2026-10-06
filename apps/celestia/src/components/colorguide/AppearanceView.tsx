@@ -178,7 +178,7 @@ export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppe
       )}
       <AppearanceNotes notes={appearance.notes} />
       <AppearanceCutieMarks label={appearance.label} cutieMarks={appearance.cutieMarks} colorGroups={appearance.colorGroups} />
-      {appearance.canEdit && appearance.cutieMarks.length === 0 && (
+      {appearance.canEdit && (
         <ButtonCollection leftAlign>
           <EditCutieMarksButton appearance={appearance} />
         </ButtonCollection>

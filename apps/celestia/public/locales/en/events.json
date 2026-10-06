@@ -28,7 +28,7 @@
     "finishedImage": "Finished image",
     "finishedImageUnavailable": "Could not load preview, use this link to view the deviation:",
     "description": "Description",
-    "acceptedUntil": "Entries will be accepted until {time}.",
+    "acceptedUntil": "Entries will be accepted until <time></time>.",
     "maxEntries": "{count, plural, one {Entrants can submit a maximum of # entry each.} other {Entrants can submit a maximum of # entries each.}}",
     "unlimitedEntries": "Entrants can submit an unlimited number of entries each.",
     "concluded": "This event has concluded. Thank you to everyone who participated!",

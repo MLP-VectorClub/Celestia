@@ -131,8 +131,6 @@ module.exports = {
       { source: '/@:name/:rest(.+)', destination: '/u/:name?rest=:rest' },
       { source: '/@:name', destination: '/u/:name' },
       // The export files of an appearance, which the API serves from its palette and image routes
-      { source: '/cg/cutiemark/:id(\\d+).svg', destination: `${NEXT_PUBLIC_BACKEND_HOST}/cutie-marks/:id/image` },
-      { source: '/cg/cutiemark/download/:id(\\d+)(-[^/]*)?', destination: `${NEXT_PUBLIC_BACKEND_HOST}/cutie-marks/:id/download` },
       { source: '/users/:user(\\d+)/cg/v/:id(\\d+).json', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/palette?format=json` },
       { source: '/users/:user(\\d+)/cg/v/:id(\\d+).gpl', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/palette?format=gpl` },
       { source: '/users/:user(\\d+)/cg/v/:id(\\d+).png', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/image?type=palette&format=png` },

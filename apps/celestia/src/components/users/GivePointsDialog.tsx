@@ -4,8 +4,8 @@ import { FC, useState } from 'react';
 import { FormGroup, FormText, Input, Label } from 'reactstrap';
 
 import { UserProfile } from '@mlp-vectorclub/api-types';
-import { FormDialog } from 'src/components/shared/dialogs/FormDialog';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
+import { FormDialog } from 'src/components/shared/dialogs/FormDialog';
 import { describeApiError, fieldErrors, useApiMutation } from 'src/hooks';
 import { UserAdminService } from 'src/services/user-admin';
 import { ENDPOINTS } from 'src/utils';
@@ -30,9 +30,19 @@ export const GivePointsDialog: FC<{ profile: UserProfile; isOpen: boolean; onClo
     {
       invalidate: [[pointsKey(userId)], [ENDPOINTS.USER_PROFILE({ id: userId })]],
       onSuccess: () => {
+        const given = Number(amount);
         setAmount('');
         setComment('');
         onClose();
+        // Like the old site, the result is announced once the dialog has closed
+        void confirm({
+          title: t('users.givePoints.doneTitle'),
+          body: t(given > 0 ? 'users.givePoints.doneGive' : 'users.givePoints.doneTake', {
+            count: Math.abs(given),
+            name: profile.user.name,
+          }),
+          confirmLabel: t('common.actions.close'),
+        });
       },
     }
   );
@@ -64,6 +74,7 @@ export const GivePointsDialog: FC<{ profile: UserProfile; isOpen: boolean; onClo
       }}
       onSubmit={() => void submit()}
       submitLabel={t('users.givePoints.continue')}
+      submitTestId="dialog-btn-continue"
       busy={grant.isPending}
       error={grant.error ? describeApiError(grant.error) : null}
     >
@@ -73,6 +84,7 @@ export const GivePointsDialog: FC<{ profile: UserProfile; isOpen: boolean; onClo
         <Label for="give-points-amount">{t('users.givePoints.amount')}</Label>
         <Input
           id="give-points-amount"
+          name="amount"
           type="number"
           step={1}
           min={available.data ? -available.data.amount : undefined}
@@ -87,6 +99,7 @@ export const GivePointsDialog: FC<{ profile: UserProfile; isOpen: boolean; onClo
         <Label for="give-points-comment">{t('users.givePoints.comment')}</Label>
         <Input
           id="give-points-comment"
+          name="comment"
           type="textarea"
           maxLength={140}
           value={comment}

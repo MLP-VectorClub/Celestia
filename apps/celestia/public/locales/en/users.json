@@ -331,7 +331,10 @@
     "confirmGive": "Give {count, plural, one {# point} other {# points}} to {name}",
     "confirmTake": "Take {count, plural, one {# point} other {# points}} from {name}",
     "bodyGive": "You are about to give {count, plural, one {# point} other {# points}} to {name}. The {count, plural, one {point} other {points}} will be given to them immediately, and they will not receive any notification on the site. Are you sure?",
-    "bodyTake": "You are about to take {count, plural, one {# point} other {# points}} from {name}. The {count, plural, one {point} other {points}} will be taken from them immediately, and they will not receive any notification on the site. Are you sure?"
+    "bodyTake": "You are about to take {count, plural, one {# point} other {# points}} from {name}. The {count, plural, one {point} other {points}} will be taken from them immediately, and they will not receive any notification on the site. Are you sure?",
+    "doneTitle": "Points updated",
+    "doneGive": "You've successfully given {count, plural, one {# point} other {# points}} to {name}",
+    "doneTake": "You've successfully taken {count, plural, one {# point} other {# points}} from {name}"
   },
   "pcgAbout": {
     "p1": "The Personal Color Guide is a place where you can store and share colors for any of your OCs, similar to our <guide>Official Color Guide</guide>. You have full control over the colors and other metadata for any OCs you add to the system, and you can chose to keep your PCG publicly visible on your profile or make individual appearances private and share them with only certain people using a direct link.",
