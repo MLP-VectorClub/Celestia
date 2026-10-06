@@ -7,6 +7,7 @@ import {
   GetEventsIdResult,
   GetEventsRequest,
   GetEventsResult,
+  GetEventsIdFinishedImageResult,
   GetPostsIdDeviationResult,
   GetPostsRequest,
   GetPostsResult,
@@ -34,6 +35,7 @@ import {
   eventsFetcher,
   personalGuideFetcher,
   pointHistoryFetcher,
+  eventFinishedImageFetcher,
   postDeviationFetcher,
   postsFetcher,
   profileFetcher,
@@ -160,6 +162,18 @@ export function usePosts(params: GetPostsRequest, initialData?: GetPostsResult) 
 export function useShowAdjacent(params: GetShowIdRequest, initialData?: GetShowIdAdjacentResult) {
   const { data } = useQuery({ queryKey: [ENDPOINTS.SHOW_ADJACENT(params)], queryFn: showAdjacentFetcher(params), initialData });
   return data;
+}
+
+/** The DeviantArt submission that shows a finished event collaboration, loaded when the page asks for it. A failed lookup is not retried */
+export function useEventFinishedImage(params: GetEventsIdRequest, enabled: boolean) {
+  const { data, status, fetchStatus } = useQuery<GetEventsIdFinishedImageResult>({
+    queryKey: [ENDPOINTS.EVENT_FINISHED_IMAGE(params)],
+    queryFn: eventFinishedImageFetcher(params),
+    enabled,
+    retry: false,
+    staleTime: 10 * 60 * 1000,
+  });
+  return { image: data, status: mapQueryStatus(status, fetchStatus) };
 }
 
 /** The two texts at the top of every episode page */

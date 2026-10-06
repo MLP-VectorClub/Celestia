@@ -22,6 +22,20 @@
     "submittedBy": "by {name}",
     "backToList": "All events",
     "entriesDisabled": "Submitting entries is currently disabled",
-    "loadingSubject": "event"
+    "loadingSubject": "event",
+    "collaborationFor": "Collaboration for {role}",
+    "ended": "Ended",
+    "finishedImage": "Finished image",
+    "finishedImageUnavailable": "Could not load preview, use this link to view the deviation:",
+    "description": "Description",
+    "acceptedUntil": "Entries will be accepted until {time}.",
+    "maxEntries": "{count, plural, one {Entrants can submit a maximum of # entry each.} other {Entrants can submit a maximum of # entries each.}}",
+    "unlimitedEntries": "Entrants can submit an unlimited number of entries each.",
+    "concluded": "This event has concluded. Thank you to everyone who participated!",
+    "entryPreview": "event entry preview",
+    "by": "By",
+    "submitted": "Submitted",
+    "lastEdited": "Last edited",
+    "specialRoleDiscord": "Discord Server Members"
   }
 }

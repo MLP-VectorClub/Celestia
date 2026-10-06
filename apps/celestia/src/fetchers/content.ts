@@ -6,6 +6,7 @@ import {
   GetEventsIdResult,
   GetEventsRequest,
   GetEventsResult,
+  GetEventsIdFinishedImageResult,
   GetPostsIdDeviationResult,
   GetPostsRequest,
   GetPostsResult,
@@ -86,6 +87,9 @@ export const showAdjacentFetcher = (params: GetShowIdRequest, req?: IncomingMess
 
 export const reservationInfoFetcher = (req?: IncomingMessage) => () =>
   fetchResource<GetShowReservationInfoResult>(ENDPOINTS.SHOW_RESERVATION_INFO, req);
+
+export const eventFinishedImageFetcher = (params: GetEventsIdRequest, req?: IncomingMessage) => () =>
+  fetchResource<GetEventsIdFinishedImageResult>(ENDPOINTS.EVENT_FINISHED_IMAGE(params), req);
 
 export const postDeviationFetcher = (params: { id: number }, req?: IncomingMessage) => () =>
   fetchResource<GetPostsIdDeviationResult>(ENDPOINTS.POST_DEVIATION(params), req);

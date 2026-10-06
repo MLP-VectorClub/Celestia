@@ -1,28 +1,29 @@
 import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
-import Image from 'next/image';
 import Link from 'next/link';
+import pluralize from 'pluralize';
 import { useMemo } from 'react';
-import { Alert, Card, CardBody, CardText, CardTitle, Col, Row } from 'reactstrap';
 
 import { GetEventsIdResult } from '@mlp-vectorclub/api-types';
+import { EventEntries } from 'src/components/events/EventEntries';
+import { EventFinishedImage } from 'src/components/events/EventFinishedImage';
 import Content from 'src/components/shared/Content';
-import ExternalLink from 'src/components/shared/ExternalLink';
+import InlineIcon from 'src/components/shared/InlineIcon';
 import NoResultsAlert from 'src/components/shared/NoResultsAlert';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import StatusAlert from 'src/components/shared/StatusAlert';
 import TimeAgo from 'src/components/shared/TimeAgo';
-import UserLink from 'src/components/shared/UserLink';
 import { eventFetcher } from 'src/fetchers';
-import { useEvent, useTitleSetter } from 'src/hooks';
+import { useAuth, useEvent, useTitleSetter } from 'src/hooks';
 import { PATHS } from 'src/paths';
 import { useAppDispatch, wrapper } from 'src/store';
 import { Nullable, Optional, SSRMessages } from 'src/types';
+import { DatabaseRole } from 'src/types/api-alias';
 import { TitleFactory } from 'src/types/title';
-import { handleDataFetchingError, notFound } from 'src/utils';
+import { formatLongDate, handleDataFetchingError, notFound } from 'src/utils';
 import { titleSetter } from 'src/utils/core';
 import { typedServerSideTranslations } from 'src/utils/i18n';
-import { createFavMeUrl } from 'src/utils/url';
+import { mapRoleLabel } from 'src/utils/role-label';
 
 interface PropTypes {
   id: number;
@@ -41,6 +42,7 @@ const EventPage: NextPage<PropTypes> = ({ id, initialEvent }) => {
   const t = useTranslations();
   const dispatch = useAppDispatch();
   const { event, status } = useEvent({ id }, initialEvent || undefined);
+  const { isStaff } = useAuth();
 
   const titleData = useMemo(() => titleFactory({ event: event || null }), [event]);
   useTitleSetter(dispatch, titleData);
@@ -54,44 +56,53 @@ const EventPage: NextPage<PropTypes> = ({ id, initialEvent }) => {
     );
   }
 
+  const roleName = event.entryRole?.startsWith('spec_')
+    ? t('events.details.specialRoleDiscord')
+    : pluralize(mapRoleLabel(t, (event.entryRole ?? 'user') as DatabaseRole), 2);
+
   return (
     <Content>
-      <StandardHeading heading={event.name} lead={t('events.details.addedBy', { name: event.addedBy.name })} />
-      <p>
-        {t('events.list.starts')}: <TimeAgo date={event.startsAt} /> · {t('events.list.ends')}: <TimeAgo date={event.endsAt} />
-      </p>
+      <StandardHeading
+        heading={event.name}
+        lead={
+          <>
+            {t('events.details.collaborationFor', { role: roleName })} &bull; {t('events.details.ended')} <TimeAgo date={event.endsAt} />
+          </>
+        }
+      />
+
       {event.resultFavMe && (
-        <Alert color="success" fade={false}>
-          {t('events.details.winner')}:{' '}
-          <ExternalLink href={createFavMeUrl(event.resultFavMe)}>{createFavMeUrl(event.resultFavMe)}</ExternalLink>
-        </Alert>
+        <section>
+          <h2>
+            <InlineIcon icon="image" first size="xs" />
+            {t('events.details.finishedImage')}
+          </h2>
+          <EventFinishedImage id={event.id} favMeId={event.resultFavMe} />
+        </section>
       )}
-      {event.descriptionSrc && <p style={{ whiteSpace: 'pre-wrap' }}>{event.descriptionSrc}</p>}
-      <Alert color="ui" fade={false}>
-        {t('events.details.entriesDisabled')}
-      </Alert>
-      <h2>{t('events.details.entries', { count: event.entries.length })}</h2>
-      {event.entries.length === 0 && <NoResultsAlert message={t('events.details.noEntries')} />}
-      <Row>
-        {event.entries.map((entry) => (
-          <Col key={entry.id} xs="12" sm="6" lg="4" className="mb-3">
-            <Card>
-              {entry.previewUrl && (
-                <Image src={entry.previewUrl} alt={entry.title} width={400} height={300} unoptimized className="card-img-top" />
-              )}
-              <CardBody>
-                <CardTitle tag="h3" className="h5">
-                  {entry.fullUrl ? <ExternalLink href={entry.fullUrl}>{entry.title}</ExternalLink> : entry.title}
-                </CardTitle>
-                <CardText>
-                  {t('events.details.submittedBy', { name: '' })}
-                  <UserLink id={entry.submittedBy.id} name={entry.submittedBy.name} />
-                </CardText>
-              </CardBody>
-            </Card>
-          </Col>
-        ))}
-      </Row>
+
+      <section>
+        <h2>
+          <InlineIcon icon="info-circle" first size="xs" />
+          {t('events.details.description')}
+        </h2>
+        {/* The API sends the description rendered and sanitized (the old site's rendering of the Markdown source) */}
+        <div dangerouslySetInnerHTML={{ __html: event.descriptionHtml }} />
+        <p>
+          {t('events.details.acceptedUntil', { time: formatLongDate(new Date(event.endsAt)) })}{' '}
+          {event.maxEntries !== null ? t('events.details.maxEntries', { count: event.maxEntries }) : t('events.details.unlimitedEntries')}
+        </p>
+        {event.ended && <p className="color-blue">{t('events.details.concluded')}</p>}
+      </section>
+
+      <section>
+        <h2>
+          <InlineIcon icon="users" first size="xs" />
+          {t('events.details.entries', { count: event.entries.length })}
+        </h2>
+        {event.entries.length === 0 && <NoResultsAlert message={t('events.details.noEntries')} />}
+        <EventEntries entries={event.entries} isStaff={isStaff} />
+      </section>
       <Link href={PATHS.EVENTS}>{t('events.details.backToList')}</Link>
     </Content>
   );
@@ -115,7 +126,7 @@ export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRMess
   titleSetter(store, titleFactory({ event: event || null }));
   return {
     props: {
-      ...(await typedServerSideTranslations(locale, ['events'])),
+      ...(await typedServerSideTranslations(locale, ['events', 'show'])),
       id,
       initialEvent: event || null,
     },

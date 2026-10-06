@@ -70,6 +70,7 @@ export const ENDPOINTS = {
   POST_DEVIATION: ({ id }: { id: number }) => `/posts/${id}/deviation`,
   EVENTS: (params?: GetEventsRequest) => buildUrl(`/events`, params),
   EVENT: ({ id }: GetEventsIdRequest) => `/events/${id}`,
+  EVENT_FINISHED_IMAGE: ({ id }: GetEventsIdRequest) => `/events/${id}/finished-image`,
   TAGS: (params?: GetTagsRequest) => buildUrl(`/tags`, params),
   USER_PROFILE: ({ id }: GetUsersIdProfileRequest) => `/users/${id}/profile`,
   USER_CONTRIBUTIONS: ({ id, type, ...params }: GetUsersIdContributionsTypeRequest) =>

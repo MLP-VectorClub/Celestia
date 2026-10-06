@@ -51,7 +51,7 @@ Assistant, staff and admin differ only in their label and in which roles they ma
 | Picker | `/cg/picker` | `/cg/picker` | (moved 2026-10-04) | 🟡 |
 | Episode / movie | `/episode/...` | same | Share button, staff Unlock, icon-only actions, reserver avatar chip, "added by", approved date | 🟡 |
 | Show list | `/show` | same | not yet compared | ❓ |
-| Events | `/events`, `/event/ID-Title` | same | event page: description, entries layout, "Finished image", update; URL with title | 🟡 |
+| Events | `/events`, `/event/ID-Title` | same | event page: description, entries layout, "Finished image", update; URL with title | 🟡 page layout done 2026-10-06 (heading, finished image, description, entry cards; Edit/Withdraw skipped, Luna answers 501); title in the URL left |
 | Users | `/users` | same | not yet compared | ❓ |
 | Profile | `/users/ID` | same | rebuilt 2026-10-05: briefing (DeviantArt / vector app / Discord logos, role + change role dialog), previous names, contributions (info, staff purge), personal guide (progress, list, View / Point history / Give points, "What?" dialog), pending reservations (Fix / View / Cancel, Request Roulette), vectors waiting for approval (View / Check), preferences with per-field Save. Open: dev role label button for developers, lazy loaded sections | 🟡 |
 | Personal guide, point history | `/users/ID/cg...` | same | not yet compared | ❓ |

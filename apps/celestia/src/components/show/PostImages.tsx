@@ -17,7 +17,7 @@ const ImagePromise: FC<{ deviation?: boolean }> = ({ deviation = false }) => (
 );
 
 /** An image of a post that is only requested once it is near the viewport, with a spinner in its place until it has loaded */
-const LazyImage: FC<{ src: string; alt: string }> = ({ src, alt }) => {
+export const LazyImage: FC<{ src: string; alt: string }> = ({ src, alt }) => {
   const [ref, seen] = useInView<HTMLSpanElement>();
   const [loaded, setLoaded] = useState(false);
   return (
