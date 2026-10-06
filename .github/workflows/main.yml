@@ -12,7 +12,6 @@ jobs:
     timeout-minutes: 15
     runs-on: ${{ matrix.os }}
     env:
-      API_JSON_PATH: ${{ secrets.API_JSON_PATH }}
       NEXT_PUBLIC_API_PREFIX: /api
       NEXT_PUBLIC_BACKEND_HOST: https://api.example.com
       NEXT_PUBLIC_CDN_DOMAIN: cdn.example.com

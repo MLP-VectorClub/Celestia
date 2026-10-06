@@ -25,8 +25,9 @@ const value: Appearance = {/* … */};
 
 ## Building
 
-1. Make a copy of `.env.example` named `.env`
-2. Add the full path to the API schema definition (either a URL or a file path) as the `API_JSON_PATH` (wrap it in `"` if it contains spaces)
-3. Run `yarn build`
+By default the types are built from the OpenAPI document of the Luna commit pinned in `luna-api.lock` (the file `docs/openapi/api-docs.json` that Luna keeps in source control, downloaded from GitHub and checked against the lock's sha256), so builds and tests do not depend on what is deployed. Run `pnpm build`.
+
+- Pin another Luna commit (after Luna changed its API and was pushed): `pnpm --filter @mlp-vectorclub/api-types lock <commit>` (a branch or tag works too, the default is the tip of `main`), then commit `luna-api.lock` together with the Celestia change that needs it.
+- To build against something else (a locally running Luna, a document that is not pushed yet) make a copy of `.env.example` named `.env` and set `API_JSON_PATH` to a URL or file path; it takes precedence over the lock.
 
 Check the build output for the location of the generated files. The process also creates an optimized copy of the schema JSON alongside the type definition file.

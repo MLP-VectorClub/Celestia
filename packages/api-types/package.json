@@ -7,7 +7,8 @@
   ],
   "scripts": {
     "build": "node --disable-warning=DEP0169 ./util/generate-types.js",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "lock": "node ./util/lock.js"
   },
   "homepage": "https://github.com/MLP-VectorClub/Celestia/tree/main/packages/api-types",
   "repository": {

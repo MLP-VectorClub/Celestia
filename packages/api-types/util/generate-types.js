@@ -6,6 +6,7 @@ require('dotenv').config();
 
 const filePath = process.env.API_JSON_PATH;
 const outputDir = 'dist';
+const { fetchLockedSchemaText } = require('./lock-source');
 
 function toCamel(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -114,8 +115,9 @@ function generateIndex(schema) {
 
   let schema;
   if (!filePath) {
-    console.error('API_JSON_PATH is not set');
-    process.exit(1);
+    // Without API_JSON_PATH the types come from the Luna commit pinned in luna-api.lock, so builds and tests do not depend on what is deployed
+    schema = JSON.parse(await fetchLockedSchemaText());
+    console.log('API schema successfully downloaded and verified');
   } else if (/^https?:\/\//.test(filePath)) {
     console.log(`Downloading API schema from ${filePath}…`);
     schema = await fetch(filePath).then((r) => {
