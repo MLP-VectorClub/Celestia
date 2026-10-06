@@ -2,22 +2,26 @@ import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
-import { Table } from 'reactstrap';
+import Link from 'next/link';
+import { Button, Table } from 'reactstrap';
 
 import { GetUsersIdPersonalGuidePointHistoryResult, GetUsersIdResult } from '@mlp-vectorclub/api-types';
+import ButtonCollection from 'src/components/shared/ButtonCollection';
 import Content from 'src/components/shared/Content';
+import InlineIcon from 'src/components/shared/InlineIcon';
 import NoResultsAlert from 'src/components/shared/NoResultsAlert';
 import Pagination from 'src/components/shared/Pagination';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import StatusAlert from 'src/components/shared/StatusAlert';
 import TimeAgo from 'src/components/shared/TimeAgo';
+import { RecalculateHistoryButton } from 'src/components/users/RecalculateHistoryButton';
 import { pointHistoryFetcher, userFetcher } from 'src/fetchers';
 import { useAuth, usePointHistory, useTitleSetter } from 'src/hooks';
 import { PATHS } from 'src/paths';
 import { useAppDispatch, wrapper } from 'src/store';
 import { Nullable, Optional, SSRMessages } from 'src/types';
 import { TitleFactory } from 'src/types/title';
-import { handleDataFetchingError, notFound } from 'src/utils';
+import { handleDataFetchingError, notFound, permission } from 'src/utils';
 import { titleSetter } from 'src/utils/core';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 import { parseUserIdParam } from 'src/utils/profile';
@@ -63,7 +67,15 @@ const PointHistoryPage: NextPage<PropTypes> = ({ userId, page, user, initialData
     <Content>
       <StandardHeading
         heading={ownHistory ? t('users.pointHistory.headingOwn') : t('users.pointHistory.heading', { name: user?.name ?? '' })}
+        lead={data ? t('users.pointHistory.itemsPerPage', { count: data.pagination.itemsPerPage }) : undefined}
       />
+      <ButtonCollection>
+        <Button tag={Link} href={PATHS.USER(userId)} color="guide-link" size="sm">
+          <InlineIcon icon="user" first />
+          {t('users.pointHistory.profilePage')}
+        </Button>
+        {permission(me, 'developer') && <RecalculateHistoryButton userId={userId} />}
+      </ButtonCollection>
       <StatusAlert status={status} subject={t('users.pointHistory.loadingSubject')} errorMessage={t('users.pointHistory.forbidden')} />
       {data?.entries.length === 0 && <NoResultsAlert message={t('users.pointHistory.empty')} />}
       {data && data.entries.length > 0 && (

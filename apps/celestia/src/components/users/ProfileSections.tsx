@@ -121,12 +121,9 @@ const PersonalGuideAbout: FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
 
 export const ProfilePersonalGuides: FC<PropTypes> = ({ profile }) => {
   const t = useTranslations();
-  const { isStaff, user: authUser } = useAuth();
-  const { confirm } = useDialog();
+  const { isStaff } = useAuth();
   const [aboutOpen, setAboutOpen] = useState(false);
   const [givingPoints, setGivingPoints] = useState(false);
-  const recalc = useApiMutation(() => UserAdminService.recalculateHistory(profile.user.id));
-  const isDeveloper = permission(authUser, 'developer');
   const showPrivate = profile.sameUser || isStaff;
   const progress = profile.personalGuideProgress;
   if (profile.personalGuides === null && !showPrivate) return null;
@@ -186,24 +183,7 @@ export const ProfilePersonalGuides: FC<PropTypes> = ({ profile }) => {
             <GivePointsDialog profile={profile} isOpen={givingPoints} onClose={() => setGivingPoints(false)} />
           </>
         )}
-        {isDeveloper && (
-          <Button
-            color="ui"
-            disabled={recalc.isPending}
-            onClick={async () => {
-              if (await confirm({ title: t('users.profile.pcgRecalculate'), body: t('users.staffTools.recalculate'), confirmLabel: t('users.profile.pcgRecalculate') })) recalc.mutate();
-            }}
-          >
-            <InlineIcon icon="sync" first />
-            {t('users.profile.pcgRecalculate')}
-          </Button>
-        )}
       </div>
-      {recalc.error && (
-        <Alert color="danger" fade={false} role="alert">
-          {describeApiError(recalc.error)}
-        </Alert>
-      )}
       <PersonalGuideAbout isOpen={aboutOpen} onClose={() => setAboutOpen(false)} />
     </section>
   );

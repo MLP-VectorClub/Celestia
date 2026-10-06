@@ -136,7 +136,10 @@
     "when": "When",
     "breadcrumb": "Point History",
     "forbidden": "Only the user and staff can see the point history",
-    "headingOwn": "Your Point History"
+    "headingOwn": "Your Point History",
+    "itemsPerPage": "Displaying {count} items/page",
+    "profilePage": "Profile page",
+    "recalculate": "Recalculate"
   },
   "account": {
     "heading": "Account Settings",
