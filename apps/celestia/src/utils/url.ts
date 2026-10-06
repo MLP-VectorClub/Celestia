@@ -32,4 +32,12 @@ export const pathSegmentWithId = (id: Numeric, str: string) => {
   return urlSafeString.length === 0 ? `${id}` : `${id}-${urlSafeString}`;
 };
 
+/** Where a page with the name in its address should send visitors that came without it or with an old name, with the query string kept; `null` when the address is canonical */
+export const canonicalPathRedirect = (resolvedUrl: string, canonicalPath: string): string | null => {
+  const queryStart = resolvedUrl.indexOf('?');
+  const path = queryStart === -1 ? resolvedUrl : resolvedUrl.slice(0, queryStart);
+  if (path === canonicalPath) return null;
+  return canonicalPath + (queryStart === -1 ? '' : resolvedUrl.slice(queryStart));
+};
+
 export const createFavMeUrl = (favMe: FavMe) => `http://fav.me/${favMe}`;

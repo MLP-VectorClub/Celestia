@@ -1,3 +1,4 @@
+import { StatusCodes } from 'http-status-codes';
 import { NextPage } from 'next';
 import { useMemo } from 'react';
 
@@ -12,6 +13,7 @@ import { TitleFactory } from 'src/types/title';
 import { getAppearanceTitle, getGuideLabel, handleDataFetchingError, notFound, resolveGuideName } from 'src/utils';
 import { titleSetter } from 'src/utils/core';
 import { typedServerSideTranslations } from 'src/utils/i18n';
+import { canonicalPathRedirect } from 'src/utils/url';
 
 interface PropTypes {
   guide: GuideName;
@@ -76,6 +78,12 @@ export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRMess
     } catch (e) {
       handleDataFetchingError(ctx, e);
     }
+  }
+
+  // Like the old site, an address without the name (or with another one) goes to the canonical one
+  if (appearance && appearance.ownerId === null) {
+    const canonical = canonicalPathRedirect(ctx.resolvedUrl, PATHS.APPEARANCE(appearance));
+    if (canonical) return { redirect: { destination: canonical, statusCode: StatusCodes.MOVED_PERMANENTLY } };
   }
 
   const props: PropTypes = {

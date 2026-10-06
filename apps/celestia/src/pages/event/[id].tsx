@@ -1,3 +1,4 @@
+import { StatusCodes } from 'http-status-codes';
 import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -23,6 +24,7 @@ import { TitleFactory } from 'src/types/title';
 import { formatLongDate, handleDataFetchingError, notFound } from 'src/utils';
 import { titleSetter } from 'src/utils/core';
 import { typedServerSideTranslations } from 'src/utils/i18n';
+import { canonicalPathRedirect } from 'src/utils/url';
 import { mapRoleLabel } from 'src/utils/role-label';
 
 interface PropTypes {
@@ -121,6 +123,11 @@ export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRMess
     event = await eventFetcher({ id }, req)();
   } catch (e) {
     handleDataFetchingError(ctx, e);
+  }
+
+  if (event) {
+    const canonical = canonicalPathRedirect(ctx.resolvedUrl, PATHS.EVENT(event));
+    if (canonical) return { redirect: { destination: canonical, statusCode: StatusCodes.MOVED_PERMANENTLY } };
   }
 
   titleSetter(store, titleFactory({ event: event || null }));
