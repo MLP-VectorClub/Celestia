@@ -7,6 +7,9 @@ export class UserAdminService {
   static setRole = (id: number, value: PutUsersIdRoleRequest['value']) =>
     Axios.put<PutUsersIdRoleResult | undefined>(`/users/${id}/role`, { value });
 
+  /** Whether the user has a free personal guide slot (the API answers with an error that says why not) */
+  static checkSlots = (id: number) => Axios.get<unknown>(`/users/${id}/personal-guide/slots`);
+
   static getPoints = (id: number) => Axios.get<GetUsersIdPersonalGuidePointsResult>(`/users/${id}/personal-guide/points`);
 
   static grantPoints = (id: number, body: { amount: number; comment?: string }) =>

@@ -2,23 +2,24 @@ import { IncomingMessage } from 'http';
 
 import {
   GetConfigResult,
+  GetEventsIdFinishedImageResult,
   GetEventsIdRequest,
   GetEventsIdResult,
   GetEventsRequest,
   GetEventsResult,
-  GetEventsIdFinishedImageResult,
   GetPostsIdDeviationResult,
   GetPostsRequest,
   GetPostsResult,
   GetShowIdAdjacentResult,
-  GetShowReservationInfoResult,
   GetShowIdRequest,
   GetShowIdResult,
   GetShowIdVoteRequest,
   GetShowIdVoteResult,
   GetShowLatestResult,
   GetShowRequest,
+  GetShowReservationInfoResult,
   GetShowResult,
+  GetShowUpcomingResult,
   GetTagsRequest,
   GetTagsResult,
   GetUsersIdContributionsTypeRequest,
@@ -87,6 +88,8 @@ export const showAdjacentFetcher = (params: GetShowIdRequest, req?: IncomingMess
 
 export const reservationInfoFetcher = (req?: IncomingMessage) => () =>
   fetchResource<GetShowReservationInfoResult>(ENDPOINTS.SHOW_RESERVATION_INFO, req);
+
+export const upcomingShowsFetcher = (req?: IncomingMessage) => () => fetchResource<GetShowUpcomingResult>(ENDPOINTS.SHOW_UPCOMING, req);
 
 export const eventFinishedImageFetcher = (params: GetEventsIdRequest, req?: IncomingMessage) => () =>
   fetchResource<GetEventsIdFinishedImageResult>(ENDPOINTS.EVENT_FINISHED_IMAGE(params), req);

@@ -1,8 +1,10 @@
 import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
-import { FormGroup, Input, Label } from 'reactstrap';
+import { Button, FormGroup, Input, Label } from 'reactstrap';
 
 import { DetailedAppearance } from '@mlp-vectorclub/api-types';
+import { AppearanceWipeDialog } from 'src/components/colorguide/AppearanceWipeDialog';
+import InlineIcon from 'src/components/shared/InlineIcon';
 import { FormDialog } from 'src/components/shared/dialogs/FormDialog';
 import { describeApiError, fieldErrors, useApiMutation } from 'src/hooks';
 import { AppearanceEditService } from 'src/services/appearance-edit';
@@ -21,6 +23,7 @@ export const AppearanceMetaDialog: FC<PropTypes> = ({ appearance, isOpen, onClos
   const [notes, setNotes] = useState('');
   const [isPrivate, setIsPrivate] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [wipeOpen, setWipeOpen] = useState(false);
 
   // The raw (editable) notes are not part of the public appearance, they come from the metadata endpoint
   const load = useApiMutation(() => AppearanceEditService.getMetadata(appearance.id), {
@@ -106,6 +109,13 @@ export const AppearanceMetaDialog: FC<PropTypes> = ({ appearance, isOpen, onClos
           {t('colorGuide.edit.meta.private')}
         </Label>
       </FormGroup>
+      <div className="text-center mt-3">
+        <Button type="button" color="red" size="sm" className="selective-wipe" onClick={() => setWipeOpen(true)}>
+          <InlineIcon icon="eraser" first />
+          {t('colorGuide.edit.meta.selectiveWipe')}
+        </Button>
+      </div>
+      <AppearanceWipeDialog appearance={appearance} isOpen={wipeOpen} onClose={() => setWipeOpen(false)} />
     </FormDialog>
   );
 };

@@ -74,7 +74,9 @@
     "csrfInitializing": "Fetching CSRF token",
     "authInitializing": "Fetching user data",
     "usefulLinks": "Useful links",
-    "unreadNotifications": "Unread notifications"
+    "unreadNotifications": "Unread notifications",
+    "happeningSoon": "Happening soon",
+    "airs": "Airs"
   },
   "contact": {
     "header": "Contact Us",

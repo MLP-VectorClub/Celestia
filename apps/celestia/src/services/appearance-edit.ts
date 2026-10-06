@@ -1,6 +1,7 @@
 import Axios from 'axios';
 
 import {
+  DeleteAppearancesIdContentsRequest,
   DeleteAppearancesIdPinResult,
   DeleteAppearancesIdSpriteResult,
   GetAppearancesIdCutieMarksResult,
@@ -28,6 +29,9 @@ export class AppearanceEditService {
   static update = (id: number, data: Omit<PutAppearancesIdRequest, 'id'>) => Axios.put<PutAppearancesIdResult>(`/appearances/${id}`, data);
 
   static remove = (id: number) => Axios.delete<void>(`/appearances/${id}`);
+
+  /** Selectively clears parts of an appearance, what to clear goes in the body */
+  static clear = (id: number, data: Omit<DeleteAppearancesIdContentsRequest, 'id'>) => Axios.delete<void>(`/appearances/${id}/contents`, { data });
 
   static pin = (id: number) => Axios.post<PostAppearancesIdPinResult>(`/appearances/${id}/pin`);
 

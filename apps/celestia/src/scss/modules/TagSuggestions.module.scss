@@ -1,0 +1,36 @@
+.list {
+  padding: 0;
+  margin: 0.25rem 0 0;
+  list-style: none;
+}
+
+.item {
+  display: inline-block;
+  padding: 2px 8px;
+  margin: 0 4px 4px 0;
+  font-family: monospace;
+  color: #333;
+  cursor: pointer;
+  background: #eee;
+  border: 1px solid #bbb;
+  border-radius: 3px;
+
+  &:hover,
+  &.active {
+    background: #cfe3ea;
+    border-color: #337287;
+  }
+
+  &.synonym {
+    font-style: italic;
+  }
+}
+
+.name {
+  font-weight: bold;
+}
+
+.uses {
+  font-size: 0.85em;
+  opacity: 0.7;
+}

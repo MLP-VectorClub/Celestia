@@ -6,10 +6,12 @@ import { Button, FormGroup, FormText, Input, Label } from 'reactstrap';
 
 import { GuideName } from '@mlp-vectorclub/api-types';
 import InlineIcon from 'src/components/shared/InlineIcon';
+import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { FormDialog } from 'src/components/shared/dialogs/FormDialog';
 import { describeApiError, fieldErrors, useApiMutation } from 'src/hooks';
 import { PATHS } from 'src/paths';
 import { AppearanceEditService } from 'src/services/appearance-edit';
+import { UserAdminService } from 'src/services/user-admin';
 
 interface PropTypes {
   /** The official guide the appearance is added to, personal guides when missing */
@@ -29,6 +31,10 @@ export const AppearanceCreateButton: FC<PropTypes> = ({ guide, ownerId, kind }) 
   const [label, setLabel] = useState('');
   const [notes, setNotes] = useState('');
   const [template, setTemplate] = useState(true);
+  const { confirm } = useDialog();
+
+  // Like the old site, a personal guide first checks that there is a free slot, and says so when there is not, before the form opens
+  const checkSlots = useApiMutation(() => UserAdminService.checkSlots(ownerId as number), { onSuccess: () => setOpen(true) });
 
   const create = useApiMutation(
     () =>
@@ -54,7 +60,25 @@ export const AppearanceCreateButton: FC<PropTypes> = ({ guide, ownerId, kind }) 
 
   return (
     <>
-      <Button id="new-appearance-btn" data-testid="create-appearance-btn" color="success" size="sm" onClick={() => setOpen(true)}>
+      <Button
+        id="new-appearance-btn"
+        data-testid="create-appearance-btn"
+        color="success"
+        size="sm"
+        onClick={() =>
+          ownerId === undefined
+            ? setOpen(true)
+            : checkSlots.mutate(undefined as never, {
+                onError: (e) =>
+                  void confirm({
+                    title: t('colorGuide.create.noSlotsTitle'),
+                    body: describeApiError(e),
+                    confirmLabel: t('common.actions.close'),
+                  }),
+              })
+        }
+        disabled={checkSlots.isPending}
+      >
         <InlineIcon icon="plus" first />
         {t('colorGuide.guide.addNew', { kind })}
       </Button>

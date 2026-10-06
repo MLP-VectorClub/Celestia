@@ -3,11 +3,12 @@ import { FC, useEffect, useState } from 'react';
 import { Alert, Button, FormGroup, FormText, Input, Label } from 'reactstrap';
 
 import { GetConfigResult, TagListItem } from '@mlp-vectorclub/api-types';
+import { TagSuggestions } from 'src/components/colorguide/TagSuggestions';
 import { IconButton } from 'src/components/shared/IconButton';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { FormDialog } from 'src/components/shared/dialogs/FormDialog';
-import { describeApiError, fieldErrors, useApiMutation } from 'src/hooks';
+import { describeApiError, fieldErrors, useApiMutation, useTagSuggestions } from 'src/hooks';
 import { TagService } from 'src/services/tags';
 import { ENDPOINTS } from 'src/utils';
 
@@ -104,15 +105,20 @@ export const NewTagButton: FC<BaseProps> = (props) => {
 
 const SynonymDialog: FC<BaseProps & { tag: TagListItem; isOpen: boolean; onClose: () => void }> = ({ tag, page, isOpen, onClose }) => {
   const t = useTranslations();
+  // The target is found by typing its name (and picked from the list) or entered as its ID
   const [target, setTarget] = useState('');
-  const save = useApiMutation(() => TagService.makeSynonym(tag.id, Number(target)), {
+  const [picked, setPicked] = useState<{ id: number; name: string } | null>(null);
+  const typedId = /^\d+$/.test(target.trim()) ? Number(target.trim()) : NaN;
+  const targetId = picked?.id ?? typedId;
+  const suggestions = useTagSuggestions(picked || Number.isInteger(typedId) ? '' : target, { not: tag.id, enabled: isOpen });
+  const save = useApiMutation(() => TagService.makeSynonym(tag.id, targetId), {
     invalidate: tagsKey(page),
     onSuccess: () => {
       setTarget('');
+      setPicked(null);
       onClose();
     },
   });
-  const targetId = Number(target);
 
   return (
     <FormDialog
@@ -130,8 +136,24 @@ const SynonymDialog: FC<BaseProps & { tag: TagListItem; isOpen: boolean; onClose
     >
       <FormGroup>
         <Label for="synonym-target">{t('colorGuide.tags.admin.mergeInto')}</Label>
-        <Input id="synonym-target" type="number" min={1} value={target} onChange={(e) => setTarget(e.target.value)} />
-        <FormText>{t('colorGuide.tags.admin.mergeHelp')}</FormText>
+        <Input
+          id="synonym-target"
+          autoComplete="off"
+          value={target}
+          onChange={(e) => {
+            setTarget(e.target.value);
+            setPicked(null);
+          }}
+        />
+        <TagSuggestions
+          suggestions={suggestions}
+          active={null}
+          onPick={(found) => {
+            setPicked({ id: found.id, name: found.name });
+            setTarget(found.name);
+          }}
+        />
+        <FormText>{picked ? t('colorGuide.tags.admin.mergePicked', { id: picked.id }) : t('colorGuide.tags.admin.mergeHelp')}</FormText>
       </FormGroup>
     </FormDialog>
   );
@@ -151,7 +173,14 @@ export const TagRowActions: FC<BaseProps & { tag: TagListItem }> = ({ tag, page,
 
   return (
     <span className="utils d-inline-flex align-items-center">
-      <IconButton icon="pencil-alt" color="blue" title={t('colorGuide.tags.admin.edit')} className="edit" disabled={busy} onClick={() => setDialog('edit')} />
+      <IconButton
+        icon="pencil-alt"
+        color="blue"
+        title={t('colorGuide.tags.admin.edit')}
+        className="edit"
+        disabled={busy}
+        onClick={() => setDialog('edit')}
+      />
       <IconButton
         icon="trash"
         color="red"
@@ -194,7 +223,14 @@ export const TagRowActions: FC<BaseProps & { tag: TagListItem }> = ({ tag, page,
           }}
         />
       ) : (
-        <IconButton icon="sitemap" color="darkblue" title={t('colorGuide.tags.admin.makeSynonym')} className="synon" disabled={busy} onClick={() => setDialog('synonym')} />
+        <IconButton
+          icon="sitemap"
+          color="darkblue"
+          title={t('colorGuide.tags.admin.makeSynonym')}
+          className="synon"
+          disabled={busy}
+          onClick={() => setDialog('synonym')}
+        />
       )}
       {error && (
         <Alert color="danger" fade={false} className="w-100 mb-0 py-1" role="alert">
@@ -216,7 +252,14 @@ export const TagUses: FC<{ tag: TagListItem; page: number; canRecount: boolean }
     <>
       <span>{tag.uses}</span>
       {canRecount && (
-        <IconButton icon="sync" color="darkblue" title={t('colorGuide.tags.admin.recount')} className="refresh" disabled={recount.isPending} onClick={() => recount.mutate()} />
+        <IconButton
+          icon="sync"
+          color="darkblue"
+          title={t('colorGuide.tags.admin.recount')}
+          className="refresh"
+          disabled={recount.isPending}
+          onClick={() => recount.mutate()}
+        />
       )}
     </>
   );

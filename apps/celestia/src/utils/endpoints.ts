@@ -63,6 +63,7 @@ export const ENDPOINTS = {
   SHOW_BY_ID: ({ id }: GetShowIdRequest) => `/show/${id}`,
   SHOW_LATEST: `/show/latest`,
   SHOW_VOTE: ({ id }: GetShowIdVoteRequest) => `/show/${id}/vote`,
+  SHOW_UPCOMING: '/show/upcoming',
   SHOW_ADJACENT: ({ id }: GetShowIdRequest) => `/show/${id}/adjacent`,
   SHOW_RESERVATION_INFO: `/show/reservation-info`,
   POSTS: (params: GetPostsRequest) => buildUrl(`/posts`, params),

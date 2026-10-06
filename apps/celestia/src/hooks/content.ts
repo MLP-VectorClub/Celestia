@@ -3,20 +3,20 @@ import { useMemo } from 'react';
 
 import {
   GetConfigResult,
+  GetEventsIdFinishedImageResult,
   GetEventsIdRequest,
   GetEventsIdResult,
   GetEventsRequest,
   GetEventsResult,
-  GetEventsIdFinishedImageResult,
   GetPostsIdDeviationResult,
   GetPostsRequest,
   GetPostsResult,
   GetShowIdAdjacentResult,
-  GetShowReservationInfoResult,
   GetShowIdRequest,
   GetShowIdResult,
   GetShowIdVoteRequest,
   GetShowIdVoteResult,
+  GetShowReservationInfoResult,
   GetTagsRequest,
   GetTagsResult,
   GetUsersIdContributionsTypeRequest,
@@ -32,10 +32,10 @@ import {
   configFetcher,
   contributionsFetcher,
   eventFetcher,
+  eventFinishedImageFetcher,
   eventsFetcher,
   personalGuideFetcher,
   pointHistoryFetcher,
-  eventFinishedImageFetcher,
   postDeviationFetcher,
   postsFetcher,
   profileFetcher,
@@ -44,6 +44,7 @@ import {
   showFetcher,
   showVoteFetcher,
   tagsFetcher,
+  upcomingShowsFetcher,
 } from 'src/fetchers';
 import { ENDPOINTS, mapQueryStatus } from 'src/utils';
 import { compilePatterns } from 'src/utils/config';
@@ -162,6 +163,17 @@ export function usePosts(params: GetPostsRequest, initialData?: GetPostsResult) 
 export function useShowAdjacent(params: GetShowIdRequest, initialData?: GetShowIdAdjacentResult) {
   const { data } = useQuery({ queryKey: [ENDPOINTS.SHOW_ADJACENT(params)], queryFn: showAdjacentFetcher(params), initialData });
   return data;
+}
+
+/** The show entries that air within 6 months, for the sidebar. Asked again every few minutes, an entry drops out of the list once it has aired */
+export function useUpcomingShows() {
+  const { data } = useQuery({
+    queryKey: [ENDPOINTS.SHOW_UPCOMING],
+    queryFn: upcomingShowsFetcher(),
+    staleTime: 5 * 60 * 1000,
+    refetchInterval: 10 * 60 * 1000,
+  });
+  return data?.show ?? [];
 }
 
 /** The DeviantArt submission that shows a finished event collaboration, loaded when the page asks for it. A failed lookup is not retried */

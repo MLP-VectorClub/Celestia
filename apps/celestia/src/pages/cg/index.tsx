@@ -12,10 +12,10 @@ import ButtonCollection from 'src/components/shared/ButtonCollection';
 import Content from 'src/components/shared/Content';
 import ExternalLink from 'src/components/shared/ExternalLink';
 import { GuideIcon } from 'src/components/shared/GuideIcon';
+import InlineIcon from 'src/components/shared/InlineIcon';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import { API_DOCS_URL, GUIDE_NAMES } from 'src/config';
 import { guideIndexFetcher } from 'src/fetchers';
-import InlineIcon from 'src/components/shared/InlineIcon';
 import { useAuth, useGuideIndex, useTitleSetter } from 'src/hooks';
 import { PATHS } from 'src/paths';
 import { useAppDispatch, wrapper } from 'src/store';
@@ -48,7 +48,10 @@ const GuideIndexPage: NextPage<PropTypes> = ({ initialData }) => {
     <Content>
       <StandardHeading heading={t('colorGuide.index.heading')} lead={t('colorGuide.index.lead')} />
       <p className="text-center">
-        {t.rich('colorGuide.index.devResources', { api: (chunks) => <ExternalLink href={API_DOCS_URL}>{chunks}</ExternalLink> })}{' '}
+        {t.rich('colorGuide.index.devResources', {
+          export: (chunks) => <ExternalLink href="/dist/mlpvc-colorguide.json">{chunks}</ExternalLink>,
+          api: (chunks) => <ExternalLink href={API_DOCS_URL}>{chunks}</ExternalLink>,
+        })}{' '}
         <Badge tag="abbr" color="danger" id={wipMeaning}>
           {t('colorGuide.index.wip')}
         </Badge>

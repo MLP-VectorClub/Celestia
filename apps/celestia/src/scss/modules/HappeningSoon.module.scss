@@ -1,0 +1,80 @@
+// The calendar leaves of the sidebar's "Happening soon" list, like the old site's
+.list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-align: left;
+
+  li {
+    display: block;
+    white-space: nowrap;
+
+    &:not(:last-child) {
+      margin-bottom: 5px;
+    }
+
+    > * {
+      vertical-align: middle;
+    }
+  }
+}
+
+.calendar {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  background: #fafafa;
+  box-shadow: inset 0 0 5px rgba(#000, 0.3);
+
+  > * {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+  }
+}
+
+.top {
+  height: 15px;
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 15px;
+  color: #fff;
+  text-transform: uppercase;
+  background: #c00 linear-gradient(to bottom, rgba(#000, 0) 0%, rgba(#000, 0.1) 100%);
+
+  &.movie {
+    background-color: #b40;
+  }
+
+  &.event {
+    background-color: #0070e9;
+  }
+}
+
+.bottom {
+  height: 25px;
+  font-size: 1.5em;
+  line-height: 25px;
+  color: #000;
+  border: 1px solid #777;
+  border-top: 0;
+}
+
+.meta {
+  display: inline-block;
+  max-width: calc(100% - 50px);
+  margin-left: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.25;
+
+  > * {
+    display: block;
+  }
+}
+
+.time {
+  font-size: 0.85em;
+}

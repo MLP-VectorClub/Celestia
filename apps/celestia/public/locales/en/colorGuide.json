@@ -3,7 +3,7 @@
     "heading": "Color Guide List",
     "lead": "Here you can find all color guides maintained by the club staff",
     "breadcrumb": "Color Guides",
-    "devResources": "Resources for developers: <api>API</api>",
+    "devResources": "Resources for developers: <export>JSON Export</export> / <api>API</api>",
     "wip": "WIP",
     "wipMeaning": "Work in Progress",
     "buttons": {
@@ -68,8 +68,8 @@
       "type": "Type",
       "noType": "No type",
       "new": "New tag",
-      "mergeInto": "ID of the tag to merge into",
-      "mergeHelp": "The ID is shown next to each tag in this list. All uses of this tag move to the target.",
+      "mergeInto": "Tag to merge into",
+      "mergeHelp": "Start typing the name of the tag and pick it from the list, or enter its ID. All uses of this tag move to the target.",
       "edit": "Edit",
       "unlink": "Unlink synonym",
       "makeSynonym": "Make synonym",
@@ -84,7 +84,8 @@
       "unlinkBody": "“{name}” will be a standalone tag again and stay applied to the appearances tagged with “{target}”.",
       "deleteUsed": "“{name}” is used on {count, plural, one {# appearance} other {# appearances}}. Deleting it removes it from all of them.",
       "deleteUnused": "“{name}” will be deleted.",
-      "refreshAll": "Refresh usage data on this page"
+      "refreshAll": "Refresh usage data on this page",
+      "mergePicked": "Tag #{id} selected. All uses of this tag move to it."
     },
     "staffMenu": {
       "tagsMenu": "More tag actions",
@@ -141,7 +142,8 @@
       "title": "Edit metadata",
       "name": "Name",
       "notes": "Notes",
-      "private": "Private (hidden from everyone except you and staff)"
+      "private": "Private (hidden from everyone except you and staff)",
+      "selectiveWipe": "Selective wipe"
     },
     "tags": {
       "title": "Edit tags",
@@ -233,6 +235,27 @@
       "editTitle": "Edit color group",
       "colorName": "Color {n} name",
       "colorValue": "Color {n} value"
+    },
+    "wipe": {
+      "title": "Selectively wipe data from {label}",
+      "intro": "Select which of the following actions to execute below.",
+      "colorGroups": "Color Groups",
+      "colors": {
+        "nothing": "Nothing",
+        "hex": "HEX values",
+        "colors": "Colors",
+        "groups": "Color groups"
+      },
+      "notes": "Clear notes",
+      "sprite": "Clear sprite image",
+      "tags": "Remove all tags",
+      "makePrivate": "Make private",
+      "resetKey": "Generate new private sharing key",
+      "submit": "Clear data",
+      "nothing": "You didn't select any data to clear",
+      "confirmTitle": "Wipe selected data",
+      "confirmBody": "The action you are about to perform is irreversible. Are you sure you want to proceed?",
+      "confirm": "Wipe selected data"
     }
   },
   "appearance": {
@@ -357,7 +380,8 @@
     "title": "Add a new {kind}",
     "submit": "Create",
     "nameHelp": "Between 2 and 70 characters.",
-    "template": "Add the default color groups"
+    "template": "Add the default color groups",
+    "noSlotsTitle": "No free slot"
   },
   "item": {
     "viewPng": "View as PNG",

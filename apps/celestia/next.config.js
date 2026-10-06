@@ -130,6 +130,8 @@ module.exports = {
       { source: '/cg/picker/frame', destination: '/cg/picker' },
       { source: '/@:name/:rest(.+)', destination: '/u/:name?rest=:rest' },
       { source: '/@:name', destination: '/u/:name' },
+      // The public color guide export of the old site (other tools read it from this address)
+      { source: '/dist/mlpvc-colorguide.json', destination: `${NEXT_PUBLIC_BACKEND_HOST}/color-guide/export` },
       // The export files of an appearance, which the API serves from its palette and image routes
       { source: '/users/:user(\\d+)/cg/v/:id(\\d+).json', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/palette?format=json` },
       { source: '/users/:user(\\d+)/cg/v/:id(\\d+).gpl', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/palette?format=gpl` },

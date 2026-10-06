@@ -1,6 +1,6 @@
 import Axios from 'axios';
 
-import { PostTagsRequest, PutTagsIdRequest, PutTagsIdSynonymRequest } from '@mlp-vectorclub/api-types';
+import { GetTagsAutocompleteResult, PostTagsRequest, PutTagsIdRequest, PutTagsIdSynonymRequest } from '@mlp-vectorclub/api-types';
 
 export type TagBody = Pick<PostTagsRequest, 'name' | 'type' | 'title'>;
 
@@ -19,6 +19,9 @@ export class TagService {
 
   static removeSynonym = (id: number, keepTagged: boolean) =>
     Axios.delete<unknown>(`/tags/${id}/synonym`, { params: keepTagged ? { keepTagged: 1 } : undefined });
+
+  /** Tags with the text in their name, most used first (at most 5) */
+  static autocomplete = (s: string, not?: number) => Axios.get<GetTagsAutocompleteResult>('/tags/autocomplete', { params: { s, ...(not ? { not } : {}) } });
 
   static recountUses = (tagIds: number[]) => Axios.post<unknown>('/tags/recount-uses', { tagIds });
 }
