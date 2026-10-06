@@ -50,18 +50,18 @@ Assistant, staff and admin differ only in their label and in which roles they ma
 | Blending reverser | `/cg/blending-reverse` | `/cg/blending-reverse` (old `/blending-reverse` redirects) | URL | ✅ |
 | Picker | `/cg/picker` | `/cg/picker` | (moved 2026-10-04) | 🟡 |
 | Episode / movie | `/episode/...` | same | Share button, staff Unlock, icon-only actions, reserver avatar chip, "added by", approved date | 🟡 |
-| Show list | `/show` | same | not yet compared | ❓ |
+| Show list | `/show` | same | not yet compared | 🟡 add buttons relabelled "Add Episode" / "Add Show Entry" 2026-10-06 |
 | Events | `/events`, `/event/ID-Title` | same | event page: description, entries layout, "Finished image", update; URL with title | 🟡 page layout done 2026-10-06 (heading, finished image, description, entry cards; Edit/Withdraw skipped, Luna answers 501); title in the URL left |
-| Users | `/users` | same | not yet compared | ❓ |
+| Users | `/users` | same | not yet compared | 🟡 groups match (Administrator, Staff, Assistants, Club Members, DeviantArt Users); counts differ only through the data snapshot |
 | Profile | `/users/ID` | same | rebuilt 2026-10-05: briefing (DeviantArt / vector app / Discord logos, role + change role dialog), previous names, contributions (info, staff purge), personal guide (progress, list, View / Point history / Give points, "What?" dialog), pending reservations (Fix / View / Cancel, Request Roulette), vectors waiting for approval (View / Check), preferences with per-field Save. Open: dev role label button for developers, lazy loaded sections | 🟡 |
 | Personal guide, point history | `/users/ID/cg...` | same | not yet compared | ❓ |
-| Account | `/users/ID/account` | same | sections and labels (Security, Discord account, Create password, Set e-mail address, Sign out, Sync / Unlink, Reveal characters, link to security settings) | ❌ |
+| Account | `/users/ID/account` | same | sections and labels (Security, Discord account, Create password, Set e-mail address, Sign out, Sync / Unlink, Reveal characters, link to security settings) | 🟡 rebuilt (sessions, security, Discord, DeviantArt sections); spot-checked as developer 2026-10-06, per-role check outstanding |
 | Admin index | `/admin` | `/admin` | rebuilt 2026-10-05: button row, developer Elasticsearch status, 20 most recent posts. Not ported: Clear Stat Cache (deploys reload php-fpm), WS diagnostics | ✅ |
 | Logs | `/admin/logs` | same | rebuilt: filter form (type select, user / IP / me / Web server), table like the old one, entry details as rows with the diff / new / old switch. Details are generic rows from Luna's structured data, not the old per type texts | 🟡 |
 | Notices | `/admin/notices` | same | list with Hidden time and icon buttons, Create notice, Back | ✅ |
 | Useful links | `/admin/usefullinks` | same (redirect from `/admin/useful-links`) | Add link, Re-order links (dialog with arrows, the old site drags), list with role and Edit / Delete | ✅ |
 | PCG appearances | `/admin/pcg-appearances` | same | not yet compared | ❓ |
-| About, privacy | `/about`, `/about/privacy` | same | about: "What's after the @ sign in the footer", GitHub / Discord / Loading.io / Pony Life links | 🟡 |
+| About, privacy | `/about`, `/about/privacy` | same | about: "What's after the @ sign in the footer", GitHub / Discord / Loading.io / Pony Life links | 🟡 Discord logo credit added 2026-10-06; the "@ sign in the footer" section differs on purpose (two repositories); Loading.io credit not needed |
 
 ## Global (every page)
 
