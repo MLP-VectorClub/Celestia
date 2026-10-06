@@ -217,6 +217,9 @@ const SearchBar: FC<PropTypes> = ({ initialQuery, guide }) => {
               aria-autocomplete="list"
               aria-activedescendant={acOptionId(activeResult)}
             />
+            <Button color="success" type="submit" name="btnl" title={t('colorGuide.search.lucky')}>
+              <InlineIcon icon="bolt" />
+            </Button>
             <Button outline type="reset" disabled={clearButtonDisabled} innerRef={clearButtonRef}>
               <InlineIcon icon="times" />
             </Button>

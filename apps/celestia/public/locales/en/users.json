@@ -12,7 +12,7 @@
     }
   },
   "userList": {
-    "heading": "{count, plural, one {# Regular User} other {# Regular Users}}",
+    "heading": "{count, plural, one {{count, number, ::group-off} DeviantArt User} other {{count, number, ::group-off} DeviantArt Users}}",
     "loadingSubject": "list of users"
   },
   "profile": {

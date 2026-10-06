@@ -350,7 +350,8 @@
     "button": "Search",
     "clear": "Clear search",
     "loading": "Loading suggestions…",
-    "help": "Highlight suggestions with <up></up> <down></down>, then press <enter></enter> to accept. Pressing <enter></enter> without highlighting one will take you to the search results page. This box can be closed with <esc></esc>"
+    "help": "Highlight suggestions with <up></up> <down></down>, then press <enter></enter> to accept. Pressing <enter></enter> without highlighting one will take you to the search results page. This box can be closed with <esc></esc>",
+    "lucky": "I'm feeling lucky"
   },
   "create": {
     "title": "Add a new {kind}",

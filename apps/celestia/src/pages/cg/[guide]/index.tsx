@@ -148,6 +148,10 @@ export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRMess
     }
   }
 
+  // The "I'm feeling lucky" button: go straight to the first result
+  const lucky = query.btnl !== undefined ? appearances?.appearances?.[0] : undefined;
+  if (lucky) return { redirect: { destination: PATHS.APPEARANCE(lucky), statusCode: 302 } };
+
   const props: PropTypes = {
     guide,
     page,
