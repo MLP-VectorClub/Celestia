@@ -9,12 +9,14 @@ import Sidebar from 'src/components/Sidebar';
 import Breadcrumbs from 'src/components/shared/Breadcrumbs';
 import Notices from 'src/components/shared/Notices';
 import { useLayout, useNutshellMode } from 'src/hooks';
+import { useSidebarSwipe } from 'src/hooks/sidebar-swipe';
 
 const layoutDisabledClass = 'layout-disabled';
 
 const Layout: FC<PropsWithChildren> = ({ children }) => {
   const { disabled } = useLayout();
   const { enabled: nutshellNames } = useNutshellMode();
+  useSidebarSwipe();
 
   useEffect(() => {
     document.body.className = classNames({ [layoutDisabledClass]: disabled, 'nutshell-names': nutshellNames });

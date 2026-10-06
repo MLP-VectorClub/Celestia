@@ -67,7 +67,7 @@ Assistant, staff and admin differ only in their label and in which roles they ma
 
 | Item | Status |
 |---|---|
-| Sidebar: useful links look, notifications ("Unread notifications"), sign out / sign in buttons, "Color Guide" copy-hash widget on guide pages, voting widget | ❓ |
+| Sidebar: useful links look, notifications ("Unread notifications", ✅ 2026-10-07: list with link and mark-read tick, unread count on the sidebar toggler, polled every minute instead of the old websocket), sign out / sign in buttons, "Color Guide" copy-hash widget on guide pages, voting widget | ❓ |
 | Footer: old site shows "Running Winterchilla@commit created N ago | API Docs | Privacy Policy | Contact Us" | 🟡 |
 | Breadcrumbs, header navigation | ✅ (order matches, Events dropped on 2026-10-04) |
 | "Work in progress" banner (Celestia only) | ⛔ remove at cutover |
@@ -90,3 +90,5 @@ The label diff only shows what is on the page. These behaviors live in `Winterch
 ## Gap audit through the old front end's API calls (2026-10-07)
 
 Every `$.API.*` call of the old page scripts (81 distinct) was compared with what Celestia calls. Real gaps found and closed: the "Selective wipe" dialog of the appearance editor (`DELETE /appearances/{id}/contents`, `AppearanceWipeDialog`, opened from "Edit metadata"), tag name autocomplete in the tag editor and when picking a synonym target (`GET /tags/autocomplete`, new in Luna), the sidebar's "Happening soon" list with its countdown (`GET /show/upcoming`, new in Luna; the Celestia widget was an empty stub), the slot check before the personal guide create form opens (`GET /users/{id}/personal-guide/slots`), and the public color guide export (`/dist/mlpvc-colorguide.json`, other tools read that address; Luna's `GET /color-guide/export` is public and cached for an hour now, the schema file is served at `/dist/mlpvc-colorguide-schema.json`, "JSON Export" is linked from the guide index). Not gaps: `DELETE /admin/stat-cache` (replaced by the deploy), event entry endpoints (disabled on both sides), calls Celestia makes through another path (post reload / lazyload, color groups of an appearance, session status poll).
+
+**Found afterwards (2026-10-07):** the sidebar notifications were not working at all (Celestia's widget printed raw objects, Luna had no `GET /notifications`): Luna now lists the unread ones with their post and show, Celestia renders them (`SidebarNotifications`, `useNotifications`) and shows the unread count on the mobile sidebar toggler (the old `.notif-cnt`); checked in Chromium (seeded notification appears, link goes to the post, tick removes it). A failed screencap now calls `GET /posts/{id}/reload` once (the old lazyload fallback: Derpibooru merge or marking the post broken) and swiping left closes the mobile sidebar (`useSidebarSwipe`). Log types and notification types of both sites were compared; the only missing log types (`derpimerge`, `staff_limits`) are ported.

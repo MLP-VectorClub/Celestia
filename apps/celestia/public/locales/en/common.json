@@ -75,6 +75,12 @@
     "authInitializing": "Fetching user data",
     "usefulLinks": "Useful links",
     "unreadNotifications": "Unread notifications",
+    "notificationPostFinished": "Your <post>request</post> under {show} has been fulfilled",
+    "notificationPostApproved": "A <post>post</post> you reserved under {show} has been added to the club gallery",
+    "notificationRequestGone": "Your request has been fulfilled",
+    "notificationPostGone": "A post you reserved has been added to the club gallery",
+    "notificationMarkRead": "Mark read",
+    "notificationCount": "New notifications",
     "happeningSoon": "Happening soon",
     "airs": "Airs"
   },

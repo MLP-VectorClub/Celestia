@@ -22,6 +22,21 @@
   position: absolute;
   left: bs.$nav-link-padding-y;
 
+  .notif-cnt {
+    position: absolute;
+    z-index: 6;
+    bottom: 0;
+    right: 0;
+    padding: 0 4px;
+    color: #c00;
+    background: #fff;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    line-height: 1.5em;
+    pointer-events: none;
+  }
+
   @include media-breakpoint-up($sidebar-breakpoint-up) {
     display: none;
   }

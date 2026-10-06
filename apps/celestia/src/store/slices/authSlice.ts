@@ -28,7 +28,6 @@ export interface AuthState {
     open: boolean;
     side: AuthModalSide;
   };
-  notifications: Record<string, unknown>[];
 }
 
 const initialState: AuthState = {
@@ -53,7 +52,6 @@ const initialState: AuthState = {
     open: false,
     side: AuthModalSide.SIGN_IN,
   },
-  notifications: [],
 };
 
 const clearModalState = (state: typeof initialState) => {

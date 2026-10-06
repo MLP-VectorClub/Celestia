@@ -3,6 +3,7 @@ import Axios from 'axios';
 import {
   DeletePostsIdFinishResult,
   DeletePostsIdReservationResult,
+  GetPostsIdReloadResult,
   PostPostsCheckImageResult,
   PostPostsIdApprovalResult,
   PostPostsIdReservationRequest,
@@ -23,6 +24,9 @@ export class PostService {
 
   static reserve = (id: number, data?: Omit<PostPostsIdReservationRequest, 'id'>) =>
     Axios.post<PostPostsIdReservationResult>(`/posts/${id}/reservation`, data);
+
+  /** Checks the images of a post after one of them failed to load (may mark the post broken or replace a moved Derpibooru image) */
+  static reload = (id: number) => Axios.get<GetPostsIdReloadResult>(`/posts/${id}/reload`);
 
   static unreserve = (id: number) => Axios.delete<DeletePostsIdReservationResult>(`/posts/${id}/reservation`);
 

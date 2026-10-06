@@ -1,6 +1,6 @@
 import Axios from 'axios';
 
-import { BrowserSession } from '@mlp-vectorclub/api-types';
+import { BrowserSession, GetNotificationsResult } from '@mlp-vectorclub/api-types';
 import { UserPrefs } from 'src/types/api-alias';
 
 /**
@@ -12,6 +12,10 @@ export class AccountService {
 
   /** Every preference of the user (themselves or, for staff, anyone), defaults where nothing was set */
   static getPreferences = (userId: number) => Axios.get<Partial<UserPrefs>>(`/users/${userId}/preferences`);
+
+  static getNotifications = () => Axios.get<GetNotificationsResult>('/notifications');
+
+  static markNotificationRead = (id: number) => Axios.post<void>(`/notifications/${id}/read`);
 
   static signOutEverywhere = () => Axios.post<void>('/users/signout', new URLSearchParams({ everywhere: '1' }));
 
