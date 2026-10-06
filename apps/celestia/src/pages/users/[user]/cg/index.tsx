@@ -6,9 +6,9 @@ import { useMemo } from 'react';
 import { Button } from 'reactstrap';
 
 import { GetUsersIdPersonalGuideAppearancesResult, GetUsersIdResult } from '@mlp-vectorclub/api-types';
-import { useColorCopyWidget } from 'src/components/colorguide/ColorCopyWidget';
 import { AppearanceCreateButton } from 'src/components/colorguide/AppearanceCreateButton';
 import AppearanceItem from 'src/components/colorguide/AppearanceItem';
+import { useColorCopyWidget } from 'src/components/colorguide/ColorCopyWidget';
 import ButtonCollection from 'src/components/shared/ButtonCollection';
 import Content from 'src/components/shared/Content';
 import InlineIcon from 'src/components/shared/InlineIcon';
@@ -16,6 +16,7 @@ import NoResultsAlert from 'src/components/shared/NoResultsAlert';
 import Pagination from 'src/components/shared/Pagination';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import StatusAlert from 'src/components/shared/StatusAlert';
+import UserLink from 'src/components/shared/UserLink';
 import { personalGuideFetcher, userFetcher } from 'src/fetchers';
 import { useAuth, usePersonalGuide, useTitleSetter } from 'src/hooks';
 import { PATHS } from 'src/paths';
@@ -48,7 +49,7 @@ const PersonalGuidePage: NextPage<PropTypes> = ({ userId, page, user, initialDat
   const t = useTranslations();
   const dispatch = useAppDispatch();
   const { query } = useRouter();
-  const { user: visitor } = useAuth();
+  const { user: visitor, isStaff } = useAuth();
   const currentPage = validatePageParam(query.page, page);
   const { data, status } = usePersonalGuide({ id: userId, page: currentPage }, currentPage === page ? initialData || undefined : undefined);
 
@@ -58,14 +59,23 @@ const PersonalGuidePage: NextPage<PropTypes> = ({ userId, page, user, initialDat
 
   return (
     <Content>
-      <StandardHeading heading={t('users.personalGuide.heading', { name: user?.name ?? '' })} lead={t('users.personalGuide.lead')} />
+      <StandardHeading
+        heading={t('users.personalGuide.heading', { name: user?.name ?? '' })}
+        lead={t.rich('users.personalGuide.lead', {
+          name: user?.name ?? '',
+          user: (chunks) => (user ? <UserLink id={user.id} name={user.name} /> : chunks),
+        })}
+      />
       <ButtonCollection>
         {visitor.id === userId && <AppearanceCreateButton kind="pony" ownerId={userId} />}
-        <Link href={PATHS.USER_PCG_POINT_HISTORY(userId)} passHref legacyBehavior>
-          <Button color="link" size="sm">
-            {t('users.personalGuide.pointHistory')}
-          </Button>
-        </Link>
+        {(visitor.id === userId || isStaff) && (
+          <Link href={PATHS.USER_PCG_POINT_HISTORY(userId)} passHref legacyBehavior>
+            <Button color="guide-link" size="sm">
+              <InlineIcon icon="file-alt" first />
+              {t('users.personalGuide.pointHistory')}
+            </Button>
+          </Link>
+        )}
       </ButtonCollection>
       <StatusAlert status={status} subject={t('users.personalGuide.loadingSubject')} />
       {data?.appearances.length === 0 && <NoResultsAlert message={t('users.personalGuide.empty')} />}

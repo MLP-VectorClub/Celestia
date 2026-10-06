@@ -119,7 +119,7 @@
   },
   "personalGuide": {
     "heading": "{name}'s Personal Color Guide",
-    "lead": "Appearances created by this user",
+    "lead": "Unofficial colors maintained by <user>{name}</user>",
     "empty": "There are no appearances in this guide yet",
     "loadingSubject": "personal guide",
     "private": "Private appearance",
