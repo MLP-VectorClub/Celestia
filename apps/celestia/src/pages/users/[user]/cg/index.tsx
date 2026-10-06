@@ -67,7 +67,7 @@ const PersonalGuidePage: NextPage<PropTypes> = ({ userId, page, user, initialDat
         })}
       />
       <ButtonCollection>
-        {visitor.id === userId && <AppearanceCreateButton kind="pony" ownerId={userId} />}
+        {visitor.id === userId && <AppearanceCreateButton kind="appearance" ownerId={userId} />}
         {(visitor.id === userId || isStaff) && (
           <Link href={PATHS.USER_PCG_POINT_HISTORY(userId)} passHref legacyBehavior>
             <Button color="guide-link" size="sm">
