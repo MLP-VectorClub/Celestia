@@ -33,19 +33,29 @@ type ShowType = ShowListItem['type'];
 /**
  * Turns the path segment into a show entry ID: `latest`, `S1E3` / `S1E3-title` (episodes), or a numeric `12` / `12-title`
  */
+/**
+ * `S1E3`, `S1E3-title` and the two-part form of the old site, `S9E25-26-title`: the season and the episode numbers to try, first the one in the
+ * address and then the second part's
+ */
+export const parseEpisodeSegment = (segment: string): { season: number; episodes: number[] } | null => {
+  const match = /^S(\d+)E(\d+)(?:-(\d+)(?=-|$))?(?:-.*)?$/i.exec(segment);
+  if (!match) return null;
+  return { season: Number(match[1]), episodes: [Number(match[2]), ...(match[3] ? [Number(match[3])] : [])] };
+};
+
 const resolveShowId = async (type: ShowType, segment: string, req: IncomingMessage): Promise<Optional<number>> => {
   if (type === 'episode' && segment === 'latest') {
     return (await latestShowFetcher(req)()).id;
   }
 
   if (type === 'episode') {
-    const match = /^S(\d+)E(\d+)(?:-.*)?$/i.exec(segment);
-    if (match) {
-      const result = await showListLookupFetcher(
-        { types: ['episode'], order: 'series', season: Number(match[1]), episode: Number(match[2]) },
-        req
-      )();
-      return result.show[0]?.id;
+    const parsed = parseEpisodeSegment(segment);
+    if (parsed) {
+      for (const episode of parsed.episodes) {
+        const result = await showListLookupFetcher({ types: ['episode'], order: 'series', season: parsed.season, episode }, req)();
+        if (result.show[0]) return result.show[0].id;
+      }
+      return undefined;
     }
   }
 
