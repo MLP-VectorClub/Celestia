@@ -48,6 +48,8 @@
     "owner": "Owner",
     "private": "Private",
     "created": "Created",
+    "cutieMarks": "Cutie marks",
+    "sprite": "Sprite",
     "empty": "There are no personal guide appearances yet."
   },
   "loading": "Loading…",

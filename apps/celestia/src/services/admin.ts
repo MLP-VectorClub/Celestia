@@ -2,20 +2,17 @@ import Axios from 'axios';
 
 import {
   GetAdminLogsIdResult,
+  GetAdminPcgAppearancesResult,
   GetAdminLogsRequest,
   GetAdminLogsResult,
   GetNoticesRequest,
   GetNoticesResult,
   GetUsefulLinksResult,
-  Pagination,
   PostNoticesRequest,
 } from '@mlp-vectorclub/api-types';
 
 export type SiteSettingKey = 'reservation_rules' | 'about_reservations' | 'dev_role_label';
-export interface PcgAppearancesResult {
-  appearances: Array<{ id: number; label: string; ownerId: number; private: boolean; createdAt: string }>;
-  pagination: Pagination;
-}
+export type PcgAppearancesResult = GetAdminPcgAppearancesResult;
 export type NoticeBody = PostNoticesRequest;
 export type UsefulLinkBody = { label: string; url: string; title?: string; minRole: string };
 

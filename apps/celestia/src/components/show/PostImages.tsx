@@ -5,7 +5,6 @@ import { FC, useRef, useState } from 'react';
 import { PostItem } from '@mlp-vectorclub/api-types';
 import styles from 'modules/PostList.module.scss';
 import { ImageZoomLink } from 'src/components/shared/ImageZoomLink';
-import InlineIcon from 'src/components/shared/InlineIcon';
 import LoadingRing from 'src/components/shared/LoadingRing';
 import { useApiMutation, useInView, usePostDeviation } from 'src/hooks';
 import { PostService } from 'src/services/posts';
@@ -102,9 +101,7 @@ export const DeviationImage: FC<{ post: PostItem; deviationId: string }> = ({ po
             hidden={!loaded}
           />
           {loaded && post.approved && (
-            <span className={styles.approvedMark} title={t('show.post.approvedHint')}>
-              <InlineIcon icon="check-circle" className="fa-2x" />
-            </span>
+            <span className={styles.approvedMark} title={t('show.post.approvedHint')} />
           )}
         </a>
       )}

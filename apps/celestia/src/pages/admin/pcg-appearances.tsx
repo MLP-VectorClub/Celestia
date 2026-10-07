@@ -6,8 +6,11 @@ import { useRouter } from 'next/router';
 import { Table } from 'reactstrap';
 
 import { AdminPage } from 'src/components/admin/AdminPage';
+import SpriteImage from 'src/components/colorguide/SpriteImage';
+import InlineIcon from 'src/components/shared/InlineIcon';
 import Pagination from 'src/components/shared/Pagination';
 import TimeAgo from 'src/components/shared/TimeAgo';
+import UserLink from 'src/components/shared/UserLink';
 import { useAuth } from 'src/hooks';
 import { PATHS } from 'src/paths';
 import { AdminService } from 'src/services/admin';
@@ -41,24 +44,50 @@ const PcgAppearancesPage: NextPage = () => {
                 <th>{t('admin.pcg.label')}</th>
                 <th>{t('admin.pcg.owner')}</th>
                 <th>{t('admin.pcg.created')}</th>
+                <th>{t('admin.pcg.cutieMarks')}</th>
+                <th>{t('admin.pcg.sprite')}</th>
               </tr>
             </thead>
             <tbody>
-              {list.data.appearances.map((a) => (
+              {list.data.appearances.map((a) => {
+                const ownerId = a.owner?.id ?? a.ownerId ?? 0;
+                return (
                 <tr key={a.id}>
                   <td>{a.id}</td>
                   <td>
-                    <Link href={PATHS.PCG_APPEARANCE(a.ownerId, a)}>{a.label}</Link>
+                    <Link href={PATHS.PCG_APPEARANCE(ownerId, a)}>{a.label}</Link>
                     {a.private && <small className="text-muted ms-2">{t('admin.pcg.private')}</small>}
                   </td>
                   <td>
-                    <Link href={PATHS.USER_PCG(a.ownerId)}>#{a.ownerId}</Link>
+                    {a.owner ? <UserLink id={a.owner.id} name={a.owner.name} /> : <Link href={PATHS.USER_PCG(ownerId)}>#{a.ownerId}</Link>}
                   </td>
                   <td>
                     <TimeAgo date={a.createdAt} />
                   </td>
+                  <td className="cutiemarks">
+                    {a.cutieMarks.length === 0 ? (
+                      <InlineIcon icon="times" />
+                    ) : (
+                      a.cutieMarks.map((cm) => (
+                        <Link key={cm.id} href={PATHS.PCG_APPEARANCE(ownerId, a)} className="me-1">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={cm.viewUrl} alt={t('admin.pcg.cutieMarks')} height={40} />
+                        </Link>
+                      ))
+                    )}
+                  </td>
+                  <td className="sprite">
+                    {a.sprite ? (
+                      <Link href={PATHS.PCG_APPEARANCE(ownerId, a)}>
+                        <SpriteImage appearanceId={a.id} sprite={a.sprite} height={60} />
+                      </Link>
+                    ) : (
+                      <InlineIcon icon="times" />
+                    )}
+                  </td>
                 </tr>
-              ))}
+                );
+              })}
             </tbody>
           </Table>
           <Pagination {...list.data.pagination} tooltipPos="top" listClassName="mb-0" />

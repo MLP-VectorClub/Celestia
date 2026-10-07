@@ -1,6 +1,7 @@
 @use '../breakpoints' as *;
 
 $request-orange: #bb4400;
+$deviation-green: #71a972;
 
 // The cards of requests and reservations: one continuous wrapping row that grows each card to fill the line, like the old site's lists
 .list {
@@ -82,27 +83,32 @@ $request-orange: #bb4400;
 }
 
 .deviation a {
-  border-width: 2px;
+  border: 0;
 
   img {
+    border: 2px solid $deviation-green;
     background-color: rgba($request-orange, 0.05);
   }
 }
 
 .approved a {
   position: relative;
+
+  img {
+    background-color: rgba($deviation-green, 0.05);
+  }
 }
 
+// The old site's approved badge, drawn over the bottom left corner of the image
 .approvedMark {
   position: absolute;
   bottom: 2px;
   left: 2px;
   width: 40px;
   height: 40px;
-  color: #198754;
   cursor: help;
-  background: rgba(#fff, 0.85);
-  border-radius: 50%;
+  background: url('/img/approved.svg?v=2') no-repeat center;
+  background-size: 40px;
 }
 
 .unavailable {
