@@ -24,6 +24,12 @@
       transform: scale(0.9);
     }
   }
+
+  // A color without a value (blank in the guide) is the transparency grid, like next to deviations
+  &:empty {
+    background: url('/img/transparency.svg');
+    background-size: 16px;
+  }
 }
 
 .compactColorSquare {
