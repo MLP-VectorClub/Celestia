@@ -12,6 +12,7 @@ import { AppearancePreview } from 'src/components/colorguide/AppearancePreview';
 import ExternalLink from 'src/components/shared/ExternalLink';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import TimeAgo from 'src/components/shared/TimeAgo';
+import { Tooltipped } from 'src/components/shared/Tooltipped';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { PostImageDialog } from 'src/components/show/PostImageDialog';
 import { DeviationImage, ScreencapImage } from 'src/components/show/PostImages';
@@ -69,9 +70,21 @@ export const ProfileContributions: FC<PropTypes> = ({ profile }) => {
         {t('users.profile.contributions')}{' '}
         <InlineIcon icon="info" size="sm" className="text-primary" title={t('users.profile.contributionsHint', { duration: profile.contributionsCacheDuration })} />
         {isStaff && (
-          <Button color="link" size="sm" id="purge-contrib-cache" title={t('users.profile.purgeCache')} aria-label={t('users.profile.purgeCache')} disabled={purge.isPending} onClick={() => purge.mutate()}>
-            <InlineIcon icon="sync" />
-          </Button>
+          <Tooltipped title={t('users.profile.purgeCache')}>
+            {(ref) => (
+              <Button
+                color="link"
+                size="sm"
+                id="purge-contrib-cache"
+                innerRef={ref}
+                aria-label={t('users.profile.purgeCache')}
+                disabled={purge.isPending}
+                onClick={() => purge.mutate()}
+              >
+                <InlineIcon icon="sync" />
+              </Button>
+            )}
+          </Tooltipped>
         )}
       </h2>
       <ul>

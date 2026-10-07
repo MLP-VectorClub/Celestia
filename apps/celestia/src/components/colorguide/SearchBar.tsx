@@ -23,6 +23,7 @@ import styles from 'modules/SearchBar.module.scss';
 import { AppearancePreview } from 'src/components/colorguide/AppearancePreview';
 import { NutshellLabel } from 'src/components/colorguide/NutshellLabel';
 import InlineIcon from 'src/components/shared/InlineIcon';
+import { Tooltipped } from 'src/components/shared/Tooltipped';
 import { useGuideAutocomplete } from 'src/hooks';
 import { PATHS } from 'src/paths';
 import { Nullable, Status } from 'src/types';
@@ -217,9 +218,13 @@ const SearchBar: FC<PropTypes> = ({ initialQuery, guide }) => {
               aria-autocomplete="list"
               aria-activedescendant={acOptionId(activeResult)}
             />
-            <Button color="success" type="submit" name="btnl" title={t('colorGuide.search.lucky')}>
-              <InlineIcon icon="bolt" />
-            </Button>
+            <Tooltipped title={t('colorGuide.search.lucky')}>
+              {(ref) => (
+                <Button color="success" type="submit" name="btnl" innerRef={ref} aria-label={t('colorGuide.search.lucky')}>
+                  <InlineIcon icon="bolt" />
+                </Button>
+              )}
+            </Tooltipped>
             <Button outline type="reset" disabled={clearButtonDisabled} innerRef={clearButtonRef}>
               <InlineIcon icon="times" />
             </Button>

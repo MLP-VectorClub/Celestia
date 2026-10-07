@@ -8,6 +8,8 @@ interface CopyToClipboardHook {
   containerRef?: RefObject<HTMLElement>;
   targetRef: RefObject<HTMLElement>;
   copyButtonRef: RefObject<HTMLElement>;
+  /** Leave the "copied" tooltip to the caller (a button that has a tooltip of its own shows both texts in it) */
+  hideTooltip?: boolean;
 }
 
 interface CopyToClipboardHookResult {
@@ -21,6 +23,7 @@ export const useCopyToClipboard = ({
   copyButtonRef,
   targetRef,
   containerRef,
+  hideTooltip = false,
 }: CopyToClipboardHook): CopyToClipboardHookResult => {
   const t = useTranslations();
   const [copyStatus, setCopyStatus] = useState(false);
@@ -49,12 +52,12 @@ export const useCopyToClipboard = ({
 
   const TooltipComponent = useMemo(
     () =>
-      enabled ? (
+      enabled && !hideTooltip ? (
         <Tooltip target={copyButtonRef} isOpen={copyStatus} fade={false}>
           {t('common.copied')}
         </Tooltip>
       ) : null,
-    [copyButtonRef, copyStatus, enabled, t]
+    [copyButtonRef, copyStatus, enabled, hideTooltip, t]
   );
 
   return {

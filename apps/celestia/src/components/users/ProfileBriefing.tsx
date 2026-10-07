@@ -6,6 +6,7 @@ import { UserProfile } from '@mlp-vectorclub/api-types';
 import styles from 'modules/ProfilePage.module.scss';
 import AvatarWrap from 'src/components/shared/AvatarWrap';
 import InlineIcon from 'src/components/shared/InlineIcon';
+import { Tooltipped } from 'src/components/shared/Tooltipped';
 import { ChangeRoleDialog } from 'src/components/users/ChangeRoleDialog';
 import { DevRoleLabelDialog } from 'src/components/users/DevRoleLabelDialog';
 import { mapRoleLabel } from 'src/utils';
@@ -36,9 +37,13 @@ export const ProfileBriefing: FC<{ profile: UserProfile }> = ({ profile }) => {
         <h1>
           <span className="username">{user.name}</span>
           {profile.deviantArtUrl && (
-            <a className={styles.da} href={profile.deviantArtUrl} title={t('users.profile.visitDa')} target="_blank" rel="noopener noreferrer">
-              <DeviantArtLogo />
-            </a>
+            <Tooltipped title={t('users.profile.visitDa')}>
+              {(ref) => (
+                <a className={styles.da} href={profile.deviantArtUrl!} ref={ref} aria-label={t('users.profile.visitDa')} target="_blank" rel="noopener noreferrer">
+                  <DeviantArtLogo />
+                </a>
+              )}
+            </Tooltipped>
           )}
           {vectorApp && (
             // eslint-disable-next-line @next/next/no-img-element

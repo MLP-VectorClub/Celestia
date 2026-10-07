@@ -10,6 +10,7 @@ import { AdminPage } from 'src/components/admin/AdminPage';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import Pagination from 'src/components/shared/Pagination';
 import TimeAgo from 'src/components/shared/TimeAgo';
+import { Tooltipped } from 'src/components/shared/Tooltipped';
 import { PATHS } from 'src/paths';
 import { useAuth } from 'src/hooks';
 import { AdminService } from 'src/services/admin';
@@ -171,12 +172,20 @@ const LogsPage: NextPage = () => {
           <option>you</option>
           <option>your IP</option>
         </datalist>
-        <Button color="blue" title={t('admin.logs.apply')} aria-label={t('admin.logs.apply')}>
-          <InlineIcon icon="search" />
-        </Button>
-        <Button type="reset" color="orange" title={t('admin.logs.clear')} aria-label={t('admin.logs.clear')} disabled={!type && !by}>
-          <InlineIcon icon="times" />
-        </Button>
+        <Tooltipped title={t('admin.logs.apply')}>
+          {(ref) => (
+            <Button color="blue" innerRef={ref} aria-label={t('admin.logs.apply')}>
+              <InlineIcon icon="search" />
+            </Button>
+          )}
+        </Tooltipped>
+        <Tooltipped title={t('admin.logs.clear')}>
+          {(ref) => (
+            <Button type="reset" color="orange" innerRef={ref} aria-label={t('admin.logs.clear')} disabled={!type && !by}>
+              <InlineIcon icon="times" />
+            </Button>
+          )}
+        </Tooltipped>
       </form>
       {logs.isLoading && <p className="text-muted text-center">{t('admin.loading')}</p>}
       {logs.isError && <p className="text-danger text-center">{t('admin.logs.loadFailed')}</p>}
@@ -213,14 +222,29 @@ const LogsPage: NextPage = () => {
                     </em>
                   </td>
                   <td className="ip">
-                    <Button color="link" size="sm" className="p-0 me-1 search-user" title={t('admin.logs.searchBy')} onClick={() => filter({ by: entry.initiator?.name ?? 'Web server' })}>
-                      <InlineIcon icon="search" size="sm" />
-                    </Button>
+                    <Tooltipped title={t('admin.logs.searchBy')}>
+                      {(ref) => (
+                        <Button
+                          color="link"
+                          size="sm"
+                          innerRef={ref}
+                          className="p-0 me-1 search-user"
+                          aria-label={t('admin.logs.searchBy')}
+                          onClick={() => filter({ by: entry.initiator?.name ?? 'Web server' })}
+                        >
+                          <InlineIcon icon="search" size="sm" />
+                        </Button>
+                      )}
+                    </Tooltipped>
                     {entry.initiator ? (
                       <>
-                        <Link href={PATHS.USER(entry.initiator.id)} title={t('admin.logs.visitProfile')} className="me-1">
-                          <InlineIcon icon="user" size="sm" />
-                        </Link>
+                        <Tooltipped title={t('admin.logs.visitProfile')}>
+                          {(ref) => (
+                            <Link href={PATHS.USER(entry.initiator!.id)} ref={ref} aria-label={t('admin.logs.visitProfile')} className="me-1">
+                              <InlineIcon icon="user" size="sm" />
+                            </Link>
+                          )}
+                        </Tooltipped>
                         <span className="name">{entry.initiator.name}</span>
                       </>
                     ) : (
@@ -229,9 +253,20 @@ const LogsPage: NextPage = () => {
                     <br />
                     {entry.ip && (
                       <>
-                        <Button color="link" size="sm" className="p-0 me-1 search-ip" title={t('admin.logs.searchIp')} onClick={() => filter({ by: entry.ip as string })}>
-                          <InlineIcon icon="search" size="sm" />
-                        </Button>
+                        <Tooltipped title={t('admin.logs.searchIp')}>
+                          {(ref) => (
+                            <Button
+                              color="link"
+                              size="sm"
+                              innerRef={ref}
+                              className="p-0 me-1 search-ip"
+                              aria-label={t('admin.logs.searchIp')}
+                              onClick={() => filter({ by: entry.ip as string })}
+                            >
+                              <InlineIcon icon="search" size="sm" />
+                            </Button>
+                          )}
+                        </Tooltipped>
                         <span className="address">{entry.ip}</span>
                       </>
                     )}

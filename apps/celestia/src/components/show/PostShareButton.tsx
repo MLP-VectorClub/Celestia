@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 import { FC, RefObject, useRef, useState } from 'react';
-import { Button, FormGroup, InputGroup, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Button, FormGroup, InputGroup, Modal, ModalBody, ModalFooter, ModalHeader, Tooltip } from 'reactstrap';
 
 import styles from 'modules/ShareAppearanceButton.module.scss';
 import { IconButton } from 'src/components/shared/IconButton';
@@ -13,10 +13,17 @@ export const PostShareButton: FC<{ postId: number; compact?: boolean }> = ({ pos
   const t = useTranslations();
   const [open, setOpen] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [hovered, setHovered] = useState(false);
   const copyButtonRef = useRef<HTMLButtonElement>(null) as RefObject<HTMLButtonElement>;
   const urlRef = useRef<HTMLElement>(null) as RefObject<HTMLElement>;
   const modalRef = useRef<HTMLElement>(null) as RefObject<HTMLElement>;
-  const { tooltip, clearCopyStatus } = useCopyToClipboard({ enabled: visible, copyButtonRef, targetRef: urlRef, containerRef: modalRef });
+  const { copyStatus, clearCopyStatus } = useCopyToClipboard({
+    enabled: visible,
+    copyButtonRef,
+    targetRef: urlRef,
+    containerRef: modalRef,
+    hideTooltip: true,
+  });
   const url = `${APP_HOST}/s/${postId.toString(36)}`;
 
   return (
@@ -49,9 +56,17 @@ export const PostShareButton: FC<{ postId: number; compact?: boolean }> = ({ pos
               <span className={`input-group-text flex-grow-1 ${styles.appearanceLinkInput}`} ref={urlRef}>
                 {url}
               </span>
-              <Button color="secondary" innerRef={copyButtonRef} onMouseLeave={clearCopyStatus}>
-                <InlineIcon icon="clipboard" first />
-                {t('show.share.copy')}
+              <Button
+                color="secondary"
+                innerRef={copyButtonRef}
+                aria-label={t('show.share.copy')}
+                onMouseEnter={() => setHovered(true)}
+                onMouseLeave={() => {
+                  setHovered(false);
+                  clearCopyStatus();
+                }}
+              >
+                <InlineIcon icon="clipboard" />
               </Button>
             </InputGroup>
           </FormGroup>
@@ -61,8 +76,12 @@ export const PostShareButton: FC<{ postId: number; compact?: boolean }> = ({ pos
             {t('common.actions.close')}
           </Button>
         </ModalFooter>
+        {visible && (
+          <Tooltip target={copyButtonRef} isOpen={hovered || copyStatus} fade={false}>
+            {copyStatus ? t('common.copied') : t('show.share.copy')}
+          </Tooltip>
+        )}
       </Modal>
-      {tooltip}
     </>
   );
 };
