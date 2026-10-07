@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
 import {
@@ -46,6 +46,7 @@ import {
   tagsFetcher,
   upcomingShowsFetcher,
 } from 'src/fetchers';
+import { Status } from 'src/types';
 import { ENDPOINTS, mapQueryStatus } from 'src/utils';
 import { compilePatterns } from 'src/utils/config';
 
@@ -176,16 +177,42 @@ export function useUpcomingShows() {
   return data?.show ?? [];
 }
 
-/** The DeviantArt submission that shows a finished event collaboration, loaded when the page asks for it. A failed lookup is not retried */
-export function useEventFinishedImage(params: GetEventsIdRequest, enabled: boolean) {
-  const { data, status, fetchStatus } = useQuery<GetEventsIdFinishedImageResult>({
-    queryKey: [ENDPOINTS.EVENT_FINISHED_IMAGE(params)],
-    queryFn: eventFinishedImageFetcher(params),
+/** What the API answers with (202) while it fetches DeviantArt's details in the background */
+interface PendingAnswer {
+  pending: true;
+  retryAfter: number;
+}
+const isPending = (data: unknown): data is PendingAnswer => typeof data === 'object' && data !== null && 'pending' in data;
+const MAX_PENDING_CHECKS = 12;
+
+/** Asks again while the API is still fetching the submission (up to a minute or so); an answer that never arrives counts as a failed lookup */
+function useSubmissionQuery<T>(queryKey: string, queryFn: () => Promise<T>, enabled: boolean) {
+  const client = useQueryClient();
+  const { data, status, fetchStatus } = useQuery<T | PendingAnswer>({
+    queryKey: [queryKey],
+    queryFn,
     enabled,
     retry: false,
     staleTime: 10 * 60 * 1000,
+    refetchInterval: (query) =>
+      isPending(query.state.data) && query.state.dataUpdateCount < MAX_PENDING_CHECKS ? Math.max(3, query.state.data.retryAfter) * 1000 : false,
   });
-  return { image: data, status: mapQueryStatus(status, fetchStatus) };
+  const waiting = isPending(data);
+  const gaveUp = waiting && (client.getQueryState([queryKey])?.dataUpdateCount ?? 0) >= MAX_PENDING_CHECKS;
+  return {
+    data: waiting ? undefined : data,
+    status: gaveUp ? Status.FAILURE : waiting ? Status.LOAD : mapQueryStatus(status, fetchStatus),
+  };
+}
+
+/** The DeviantArt submission that shows a finished event collaboration, loaded when the page asks for it. A failed lookup is not retried */
+export function useEventFinishedImage(params: GetEventsIdRequest, enabled: boolean) {
+  const { data, status } = useSubmissionQuery<GetEventsIdFinishedImageResult>(
+    ENDPOINTS.EVENT_FINISHED_IMAGE(params),
+    eventFinishedImageFetcher(params),
+    enabled
+  );
+  return { image: data, status };
 }
 
 /** The two texts at the top of every episode page */
@@ -196,12 +223,6 @@ export function useReservationInfo(initialData?: GetShowReservationInfoResult) {
 
 /** The DeviantArt submission of a finished post, only looked up once `enabled` (the post is in view). A failed lookup is not retried */
 export function usePostDeviation(params: { id: number }, enabled: boolean) {
-  const { data, status, fetchStatus } = useQuery<GetPostsIdDeviationResult>({
-    queryKey: [ENDPOINTS.POST_DEVIATION(params)],
-    queryFn: postDeviationFetcher(params),
-    enabled,
-    retry: false,
-    staleTime: 10 * 60 * 1000,
-  });
-  return { deviation: data, status: mapQueryStatus(status, fetchStatus) };
+  const { data, status } = useSubmissionQuery<GetPostsIdDeviationResult>(ENDPOINTS.POST_DEVIATION(params), postDeviationFetcher(params), enabled);
+  return { deviation: data, status };
 }
