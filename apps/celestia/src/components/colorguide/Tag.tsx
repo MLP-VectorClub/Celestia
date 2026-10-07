@@ -1,7 +1,7 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import classNames from 'classnames';
 import Link from 'next/link';
-import { FC, memo } from 'react';
+import { FC, ReactNode, memo } from 'react';
 
 import { GuideName, SlimGuideTag } from '@mlp-vectorclub/api-types';
 import styles from 'modules/Tag.module.scss';
@@ -31,17 +31,40 @@ interface PropTypes {
   tag: SlimGuideTag;
   className?: string;
   guide?: Nullable<GuideName>;
+  /** Controls inside the tag, after its name (staff menus) */
+  extra?: ReactNode;
 }
 
-const TagComponent: FC<PropTypes> = ({ tag, className, guide = null }) => {
+const TagComponent: FC<PropTypes> = ({ tag, className, guide = null, extra }) => {
   const tagTypeClass = tag.type && tag.type in TAG_CLASS_MAP && TAG_CLASS_MAP[tag.type];
-  const finalClassName = classNames(styles.tag, tagTypeClass, { [styles.synonym]: 'synonymOf' in tag && tag.synonymOf }, className);
+  const finalClassName = classNames(
+    styles.tag,
+    tagTypeClass,
+    { [styles.synonym]: 'synonymOf' in tag && tag.synonymOf, [styles.withExtra]: Boolean(extra) },
+    className
+  );
   const content = (
     <>
       {tag.type && <InlineIcon icon={TAG_ICON_MAP[tag.type]} first />}
       {tag.name}
     </>
   );
+
+  // The controls live inside the tag's own box, so the link (a button cannot be inside of one) is only the name
+  if (extra) {
+    return (
+      <span className={finalClassName}>
+        {guide ? (
+          <Link href={PATHS.GUIDE(guide, { q: tag.name })} className={styles.tagLink}>
+            {content}
+          </Link>
+        ) : (
+          <span>{content}</span>
+        )}
+        {extra}
+      </span>
+    );
+  }
 
   if (guide) {
     return (

@@ -5,6 +5,7 @@ import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from
 
 import styles from 'modules/ActionMenu.module.scss';
 import InlineIcon from 'src/components/shared/InlineIcon';
+import { Tooltipped } from 'src/components/shared/Tooltipped';
 
 export interface ActionMenuItem {
   key: string;
@@ -40,9 +41,13 @@ export const ActionMenu: FC<PropTypes> = ({ title, items, className, alignEnd = 
 
   return (
     <UncontrolledDropdown className={classNames(styles.actionMenu, className)}>
-      <DropdownToggle tag="button" type="button" className={styles.toggle} title={title} aria-label={title}>
-        <InlineIcon icon="ellipsis-h" />
-      </DropdownToggle>
+      <Tooltipped title={title}>
+        {(ref) => (
+          <DropdownToggle tag="button" type="button" className={styles.toggle} innerRef={ref} aria-label={title}>
+            <InlineIcon icon="ellipsis-h" />
+          </DropdownToggle>
+        )}
+      </Tooltipped>
       <DropdownMenu end={alignEnd} container="body">
         {visible.map((item) => (
           <div key={item.key}>

@@ -71,3 +71,35 @@
     @include tag-variant($tag-color-character);
   }
 }
+
+// A tag with controls inside: the name is the link, the menu button sits in the same colored box
+.withExtra {
+  display: inline-flex;
+  align-items: center;
+  padding-right: 0.1rem;
+
+  button {
+    width: 1.3rem;
+    height: 1.3rem;
+    margin: 0 0 0 0.2rem;
+    color: inherit;
+    border-radius: 3px;
+
+    &:hover,
+    &:focus-visible,
+    &:global(.show) {
+      background: rgba(0, 0, 0, 0.12);
+      border-color: transparent;
+    }
+  }
+
+  :global(.dropdown) {
+    display: inline-flex;
+  }
+}
+
+.tagLink,
+.tagLink:hover {
+  color: inherit;
+  text-decoration: none;
+}

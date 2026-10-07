@@ -1,4 +1,4 @@
-import { FC, Fragment, ReactNode, useMemo } from 'react';
+import { FC, ReactNode, useMemo } from 'react';
 
 import { GuideName, SlimGuideTag } from '@mlp-vectorclub/api-types';
 import styles from 'modules/AppearanceTags.module.scss';
@@ -9,7 +9,7 @@ import { sortTagsByType } from 'src/utils';
 interface PropTypes {
   tags: SlimGuideTag[];
   guide?: Nullable<GuideName>;
-  /** Something after each tag, e.g. staff controls */
+  /** Something inside each tag, after its name, e.g. staff controls */
   renderExtra?: (tag: SlimGuideTag) => ReactNode;
 }
 
@@ -26,10 +26,7 @@ const AppearanceItemTags: FC<PropTypes> = ({ tags, guide, renderExtra }) => {
   return (
     <div className={styles.tags}>
       {sortedTags.map((tag) => (
-        <Fragment key={tag.id}>
-          <Tag tag={tag} guide={guide} />
-          {renderExtra?.(tag)}
-        </Fragment>
+        <Tag key={tag.id} tag={tag} guide={guide} extra={renderExtra?.(tag)} />
       ))}
     </div>
   );
