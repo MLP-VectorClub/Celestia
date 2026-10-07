@@ -30,7 +30,8 @@ export const AppearanceCreateButton: FC<PropTypes> = ({ guide, ownerId, kind }) 
   const [open, setOpen] = useState(false);
   const [label, setLabel] = useState('');
   const [notes, setNotes] = useState('');
-  const [template, setTemplate] = useState(true);
+  const [template, setTemplate] = useState(false);
+  const [isPrivate, setIsPrivate] = useState(false);
   const { confirm } = useDialog();
 
   // Like the old site, a personal guide first checks that there is a free slot, and says so when there is not, before the form opens
@@ -44,6 +45,7 @@ export const AppearanceCreateButton: FC<PropTypes> = ({ guide, ownerId, kind }) 
         ...(guide ? { guide } : {}),
         // Flags are sent as 1/0, see AccountService
         template: Number(template) as unknown as boolean,
+        private: Number(isPrivate) as unknown as boolean,
       }),
     {
       onSuccess: (data) => {
@@ -51,6 +53,8 @@ export const AppearanceCreateButton: FC<PropTypes> = ({ guide, ownerId, kind }) 
         setOpen(false);
         setLabel('');
         setNotes('');
+        setTemplate(false);
+        setIsPrivate(false);
         if (data.id) void push(PATHS.APPEARANCE({ id: data.id, label: label.trim(), guide: guide ?? null, ownerId }));
       },
     }
@@ -120,14 +124,18 @@ export const AppearanceCreateButton: FC<PropTypes> = ({ guide, ownerId, kind }) 
             maxLength={1000}
           />
         </FormGroup>
-        {guide && (
-          <FormGroup check>
-            <Input id="new-appearance-template" type="checkbox" checked={template} onChange={(e) => setTemplate(e.target.checked)} />
-            <Label for="new-appearance-template" check>
-              {t('colorGuide.create.template')}
-            </Label>
-          </FormGroup>
-        )}
+        <FormGroup check>
+          <Input id="new-appearance-private" type="checkbox" checked={isPrivate} onChange={(e) => setIsPrivate(e.target.checked)} />
+          <Label for="new-appearance-private" check>
+            {t(guide ? 'colorGuide.create.privateStaff' : 'colorGuide.create.private')}
+          </Label>
+        </FormGroup>
+        <FormGroup check>
+          <Input id="new-appearance-template" type="checkbox" checked={template} onChange={(e) => setTemplate(e.target.checked)} />
+          <Label for="new-appearance-template" check>
+            {t('colorGuide.create.template')}
+          </Label>
+        </FormGroup>
       </FormDialog>
     </>
   );

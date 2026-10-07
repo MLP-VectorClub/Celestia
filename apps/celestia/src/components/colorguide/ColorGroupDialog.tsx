@@ -8,13 +8,9 @@ import { FormDialog } from 'src/components/shared/dialogs/FormDialog';
 import { describeApiError, fieldErrors, useApiMutation, useConfig } from 'src/hooks';
 import { ColorGroupService } from 'src/services/color-groups';
 import { ENDPOINTS } from 'src/utils';
+import { ColorTextParseError, ColorTextRow, colorsToText, parseColorsText } from 'src/utils/color-group-text';
 
-interface ColorRow {
-  /** Rows without an ID are created, rows that disappear are deleted by the API */
-  id?: number;
-  label: string;
-  hex: string;
-}
+type ColorRow = ColorTextRow;
 
 interface PropTypes {
   appearanceId: number;
@@ -33,6 +29,9 @@ export const ColorGroupDialog: FC<PropTypes> = ({ appearanceId, groupId, isOpen,
   const [rows, setRows] = useState<ColorRow[]>([emptyRow()]);
   const [major, setMajor] = useState(false);
   const [reason, setReason] = useState('');
+  // The old site's plain text editor: the same colors as one line each, null while the interactive editor is shown
+  const [text, setText] = useState<string | null>(null);
+  const [parseError, setParseError] = useState<ColorTextParseError | null>(null);
 
   const existing = useQuery({
     queryKey: ['color-group', groupId],
@@ -48,12 +47,35 @@ export const ColorGroupDialog: FC<PropTypes> = ({ appearanceId, groupId, isOpen,
     setRows((existing.data.colors ?? []).map((c) => ({ id: c.id, label: c.label ?? '', hex: c.hex ?? '' })));
   }, [existing.data]);
 
-  const hexError = (hex: string) => hex !== '' && patterns && !patterns.hexColor.test(hex);
-  const anyInvalidHex = useMemo(() => rows.some((r) => hexError(r.hex)), [rows, patterns]); // eslint-disable-line react-hooks/exhaustive-deps
+  /** The colors as they are now, read from the text when that is being edited */
+  const readRows = (): ColorRow[] | null => {
+    if (text === null) return rows;
+    try {
+      setParseError(null);
+      return parseColorsText(text);
+    } catch (e) {
+      if (!(e instanceof ColorTextParseError)) throw e;
+      setParseError(e);
+      return null;
+    }
+  };
+  const toggleEditor = () => {
+    if (text === null) {
+      setText(colorsToText(rows));
+      return;
+    }
+    const parsed = readRows();
+    if (!parsed) return;
+    setRows(parsed.length > 0 ? parsed : [emptyRow()]);
+    setText(null);
+  };
 
-  const body = () => ({
+  const hexError = (hex: string) => hex !== '' && patterns && !patterns.hexColor.test(hex);
+  const anyInvalidHex = useMemo(() => (text === null ? rows : []).some((r) => hexError(r.hex)), [rows, text, patterns]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const body = (list: ColorRow[]) => ({
     label: label.trim(),
-    colors: rows
+    colors: list
       .filter((r) => r.label.trim() !== '')
       .map((r) => ({ ...(r.id ? { id: r.id } : {}), label: r.label.trim(), hex: r.hex.trim() === '' ? null : r.hex.trim() })),
     major: Number(major) as unknown as boolean,
@@ -61,12 +83,14 @@ export const ColorGroupDialog: FC<PropTypes> = ({ appearanceId, groupId, isOpen,
   });
 
   const save = useApiMutation(
-    () => (groupId === undefined ? ColorGroupService.create(appearanceId, body()) : ColorGroupService.update(groupId, body())),
+    (list: ColorRow[]) =>
+      groupId === undefined ? ColorGroupService.create(appearanceId, body(list)) : ColorGroupService.update(groupId, body(list)),
     {
       invalidate: [[ENDPOINTS.APPEARANCE({ id: appearanceId })]],
       onSuccess: () => {
         setMajor(false);
         setReason('');
+        setText(null);
         onClose();
       },
     }
@@ -93,9 +117,15 @@ export const ColorGroupDialog: FC<PropTypes> = ({ appearanceId, groupId, isOpen,
       isOpen={isOpen}
       onClose={() => {
         save.reset();
+        setText(null);
+        setParseError(null);
         onClose();
       }}
-      onSubmit={() => !anyInvalidHex && save.mutate()}
+      onSubmit={() => {
+        const list = readRows();
+        if (!list || list.some((r) => hexError(r.hex))) return;
+        save.mutate(list);
+      }}
       submitLabel={t('colorGuide.edit.common.save')}
       busy={save.isPending || existing.isFetching}
       error={error && !handled ? describeApiError(error as never) : error && handled ? Object.values(errors)[0] : null}
@@ -113,55 +143,111 @@ export const ColorGroupDialog: FC<PropTypes> = ({ appearanceId, groupId, isOpen,
           disabled={existing.isFetching}
         />
       </FormGroup>
-      <Label>{t('colorGuide.edit.colorGroup.colors')}</Label>
-      {rows.map((row, i) => (
-        <InputGroup key={row.id ?? `new-${i}`} className="mb-1">
+      <div className="d-flex align-items-center justify-content-between">
+        <Label className="mb-1">{t('colorGuide.edit.colorGroup.colors')}</Label>
+        <Button
+          type="button"
+          size="sm"
+          color="darkblue"
+          className="mb-1"
+          id="color-editor-toggle"
+          onClick={toggleEditor}
+          disabled={existing.isFetching}
+        >
+          <InlineIcon icon={text === null ? 'file-alt' : 'pencil-alt'} first />
+          {text === null ? t('colorGuide.edit.colorGroup.plainText') : t('colorGuide.edit.colorGroup.interactive')}
+        </Button>
+      </div>
+      {text !== null ? (
+        <>
           <Input
-            aria-label={t('colorGuide.edit.colorGroup.colorName', { n: i + 1 })}
-            data-testid="form-color-label"
-            placeholder={t('colorGuide.edit.colorGroup.name')}
-            value={row.label}
-            onChange={(e) => update(i, { label: e.target.value })}
-            maxLength={30}
-            disabled={existing.isFetching}
+            type="textarea"
+            data-testid="form-color-text"
+            aria-label={t('colorGuide.edit.colorGroup.plainText')}
+            rows={Math.min(16, Math.max(6, text.split('\n').length))}
+            className="font-monospace"
+            spellCheck={false}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            invalid={Boolean(parseError)}
           />
-          <Input
-            aria-label={t('colorGuide.edit.colorGroup.colorValue', { n: i + 1 })}
-            data-testid="form-color-hex"
-            placeholder={t('colorGuide.edit.colorGroup.hex')}
-            value={row.hex}
-            onChange={(e) => update(i, { hex: e.target.value })}
-            invalid={Boolean(hexError(row.hex))}
-            disabled={existing.isFetching}
-            style={{ maxWidth: '9rem' }}
-          />
-          <Button type="button" outline onClick={() => move(i, -1)} disabled={i === 0} aria-label={t('colorGuide.edit.colorGroup.moveUp')}>
-            <InlineIcon icon="arrow-up" />
+          <FormText>{t('colorGuide.edit.colorGroup.textHelp')}</FormText>
+          {parseError && (
+            <FormText color="danger" tag="div" className="mt-1">
+              {t('colorGuide.edit.colorGroup.parseError', { line: parseError.lineNumber })}
+              <pre className="mb-1">
+                <code>{parseError.line}</code>
+              </pre>
+              {parseError.missing.length > 0
+                ? t('colorGuide.edit.colorGroup.parseMissing', {
+                    what: parseError.missing
+                      .map((m) =>
+                        m === 'hex' ? t('colorGuide.edit.colorGroup.missing_hex') : t('colorGuide.edit.colorGroup.missing_name')
+                      )
+                      .join(' / '),
+                  })
+                : t('colorGuide.edit.colorGroup.parseTypos')}
+            </FormText>
+          )}
+        </>
+      ) : (
+        <>
+          {rows.map((row, i) => (
+            <InputGroup key={row.id ?? `new-${i}`} className="mb-1">
+              <Input
+                aria-label={t('colorGuide.edit.colorGroup.colorName', { n: i + 1 })}
+                data-testid="form-color-label"
+                placeholder={t('colorGuide.edit.colorGroup.name')}
+                value={row.label}
+                onChange={(e) => update(i, { label: e.target.value })}
+                maxLength={30}
+                disabled={existing.isFetching}
+              />
+              <Input
+                aria-label={t('colorGuide.edit.colorGroup.colorValue', { n: i + 1 })}
+                data-testid="form-color-hex"
+                placeholder={t('colorGuide.edit.colorGroup.hex')}
+                value={row.hex}
+                onChange={(e) => update(i, { hex: e.target.value })}
+                invalid={Boolean(hexError(row.hex))}
+                disabled={existing.isFetching}
+                style={{ maxWidth: '9rem' }}
+              />
+              <Button
+                type="button"
+                outline
+                onClick={() => move(i, -1)}
+                disabled={i === 0}
+                aria-label={t('colorGuide.edit.colorGroup.moveUp')}
+              >
+                <InlineIcon icon="arrow-up" />
+              </Button>
+              <Button
+                type="button"
+                outline
+                onClick={() => move(i, 1)}
+                disabled={i === rows.length - 1}
+                aria-label={t('colorGuide.edit.colorGroup.moveDown')}
+              >
+                <InlineIcon icon="arrow-down" />
+              </Button>
+              <Button
+                type="button"
+                outline
+                color="danger"
+                onClick={() => setRows((c) => c.filter((_, idx) => idx !== i))}
+                aria-label={t('colorGuide.edit.colorGroup.removeColor')}
+              >
+                <InlineIcon icon="times" />
+              </Button>
+            </InputGroup>
+          ))}
+          <Button type="button" size="sm" color="link" onClick={() => setRows((c) => [...c, emptyRow()])}>
+            <InlineIcon icon="plus" first />
+            {t('colorGuide.edit.colorGroup.addColor')}
           </Button>
-          <Button
-            type="button"
-            outline
-            onClick={() => move(i, 1)}
-            disabled={i === rows.length - 1}
-            aria-label={t('colorGuide.edit.colorGroup.moveDown')}
-          >
-            <InlineIcon icon="arrow-down" />
-          </Button>
-          <Button
-            type="button"
-            outline
-            color="danger"
-            onClick={() => setRows((c) => c.filter((_, idx) => idx !== i))}
-            aria-label={t('colorGuide.edit.colorGroup.removeColor')}
-          >
-            <InlineIcon icon="times" />
-          </Button>
-        </InputGroup>
-      ))}
-      <Button type="button" size="sm" color="link" onClick={() => setRows((c) => [...c, emptyRow()])}>
-        <InlineIcon icon="plus" first />
-        {t('colorGuide.edit.colorGroup.addColor')}
-      </Button>
+        </>
+      )}
       {anyInvalidHex && <FormText color="danger">{t('colorGuide.edit.colorGroup.hexInvalid')}</FormText>}
       <FormGroup check className="mt-3">
         <Input id={`cg-major-${groupId ?? 'new'}`} type="checkbox" checked={major} onChange={(e) => setMajor(e.target.checked)} />
