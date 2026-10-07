@@ -1,9 +1,30 @@
 const { NEXT_PUBLIC_CDN_DOMAIN, NEXT_PUBLIC_BACKEND_HOST, NEXT_PUBLIC_API_PREFIX } = process.env;
-const { promisify } = require('util');
-const execFile = promisify(require('child_process').execFile);
+const { execFileSync } = require('child_process');
 const vercelConfig = require('./vercel.json');
 
 const devMode = process.env.NODE_ENV === 'development';
+
+/** `<short commit>;<commit time>`. Deploys pass the deployed commit explicitly (see deploy.conf): the deploy worktree isn't the git repo, so asking git from here could describe some other checkout */
+const makeBuildId = () => {
+  if (process.env.BUILD_GIT_INFO) {
+    console.log(`Using build ID from BUILD_GIT_INFO: ${process.env.BUILD_GIT_INFO}`);
+    return process.env.BUILD_GIT_INFO;
+  }
+  try {
+    const buildId = execFileSync('git', ['log', '-1', '--pretty=%h;%ct']).toString().trim();
+    console.log(`Generated build ID: ${buildId}`);
+    return buildId;
+  } catch (e) {
+    const buildId = `;${Math.floor(Date.now())}`;
+    console.log(`Failed to generate build id, falling back to dummy value: ${buildId}`);
+    console.error(e);
+    return buildId;
+  }
+};
+const BUILD_ID = makeBuildId();
+const COMMIT = BUILD_ID.split(';')[0];
+// Only for a real commit: the dummy build ID has none, and then there is no deployment to tell apart
+const DEPLOYMENT_ID = /^[a-f0-9]{4,}$/i.test(COMMIT) ? COMMIT : undefined;
 
 /** @type {import('next').NextConfig} */
 module.exports = {
@@ -15,25 +36,12 @@ module.exports = {
     locales: ['en'],
     defaultLocale: 'en',
   },
-  generateBuildId: async () => {
-    // Deploys pass the deployed commit explicitly (see deploy.conf): the deploy worktree isn't the
-    // git repo, so asking git from here could describe some other checkout
-    if (process.env.BUILD_GIT_INFO) {
-      console.log(`Using build ID from BUILD_GIT_INFO: ${process.env.BUILD_GIT_INFO}`);
-      return process.env.BUILD_GIT_INFO;
-    }
-    try {
-      const { stdout } = await execFile('git', ['log', '-1', '--pretty=%h;%ct']);
-      const buildId = stdout.trim();
-      console.log(`Generated build ID: ${buildId}`);
-      return buildId;
-    } catch (e) {
-      const buildId = `;${Math.floor(Date.now())}`;
-      console.log(`Failed to generate build id, falling back to dummy value: ${buildId}`);
-      console.error(e);
-      return buildId;
-    }
-  },
+  generateBuildId: async () => BUILD_ID,
+  // Next.js 16.2+ notices an old page talking to a new deployment (and the other way round) by this id, and then loads the page again instead of failing
+  // on a script that no longer exists. With a deployment ID the build ID is constant, so the commit and its time that the footer shows come from
+  // NEXT_PUBLIC_BUILD_ID, see src/utils/build-id-parser.ts
+  deploymentId: DEPLOYMENT_ID,
+  env: { NEXT_PUBLIC_BUILD_ID: BUILD_ID },
   images: {
     remotePatterns: [{ hostname: NEXT_PUBLIC_CDN_DOMAIN }, { hostname: 'a.deviantart.net' }],
   },
