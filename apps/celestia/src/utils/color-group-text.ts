@@ -65,3 +65,49 @@ export const parseColorsText = (text: string): ColorTextRow[] => {
 
   return rows;
 };
+
+export type ColorTextTokenKind = 'comment' | 'hex' | 'name' | 'id' | 'invalid' | 'plain';
+
+export interface ColorTextToken {
+  text: string;
+  kind: ColorTextTokenKind;
+}
+
+/**
+ * Splits one line of the plain text editor into the parts the highlighting colors (the old site's CodeMirror mode): comments (also colors that are
+ * commented out), the HEX value, the name and the ID of an existing color; whatever cannot be read is `invalid`
+ */
+export const tokenizeColorLine = (line: string): ColorTextToken[] => {
+  if (/^\/\//.test(line)) return [{ text: line, kind: 'comment' }];
+  if (line === '') return [];
+
+  const tokens: ColorTextToken[] = [];
+  let rest = line;
+  const take = (length: number, kind: ColorTextTokenKind) => {
+    tokens.push({ text: rest.slice(0, length), kind });
+    rest = rest.slice(length);
+  };
+
+  const hex = /^#?[a-f\d]*/i.exec(rest)?.[0] ?? '';
+  const digits = hex.replace('#', '');
+  if (hex !== '') take(hex.length, digits.length === 3 || digits.length === 6 || (hex === '#' && rest.trim() === '#') ? 'hex' : 'invalid');
+
+  const spacing = /^\s*/.exec(rest)?.[0] ?? '';
+  if (spacing !== '') take(spacing.length, 'plain');
+  if (rest === '') return tokens;
+
+  const withId = /^(.*?)(\s*)(ID:)(\d+)(\s*)$/.exec(rest);
+  const name = withId ? withId[1] : rest.trimEnd();
+  if (name.length >= 3 && name.length <= 30 && /^[ -~]+$/.test(name)) take(name.length, 'name');
+  else if (name !== '') take(name.length, 'invalid');
+  if (rest === '') return tokens;
+
+  if (withId && /^\s*ID:\d+\s*$/.test(rest)) {
+    const gap = /^\s*/.exec(rest)?.[0] ?? '';
+    if (gap !== '') take(gap.length, 'plain');
+    take(rest.trimEnd().length, 'id');
+    if (rest !== '') take(rest.length, 'plain');
+  } else take(rest.length, rest.trim() === '' ? 'plain' : 'invalid');
+
+  return tokens;
+};

@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { Button, FormGroup, FormText, Input, InputGroup, Label } from 'reactstrap';
 
+import { ColorTextEditor } from 'src/components/colorguide/ColorTextEditor';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { FormDialog } from 'src/components/shared/dialogs/FormDialog';
 import { describeApiError, fieldErrors, useApiMutation, useConfig } from 'src/hooks';
@@ -160,15 +161,11 @@ export const ColorGroupDialog: FC<PropTypes> = ({ appearanceId, groupId, isOpen,
       </div>
       {text !== null ? (
         <>
-          <Input
-            type="textarea"
-            data-testid="form-color-text"
-            aria-label={t('colorGuide.edit.colorGroup.plainText')}
+          <ColorTextEditor
+            label={t('colorGuide.edit.colorGroup.plainText')}
             rows={Math.min(16, Math.max(6, text.split('\n').length))}
-            className="font-monospace"
-            spellCheck={false}
             value={text}
-            onChange={(e) => setText(e.target.value)}
+            onChange={setText}
             invalid={Boolean(parseError)}
           />
           <FormText>{t('colorGuide.edit.colorGroup.textHelp')}</FormText>
