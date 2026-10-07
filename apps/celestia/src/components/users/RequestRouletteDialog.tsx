@@ -5,6 +5,7 @@ import { Alert, Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'react
 import Axios from 'axios';
 
 import { PostItem, ShowListItem } from '@mlp-vectorclub/api-types';
+import { ImageZoomLink } from 'src/components/shared/ImageZoomLink';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import TimeAgo from 'src/components/shared/TimeAgo';
 import { describeApiError, useApiMutation, useAuth } from 'src/hooks';
@@ -73,10 +74,10 @@ export const RequestRouletteDialog: FC<{ isOpen: boolean; onClose: () => void }>
             <li id={`request-${suggestion.id}`} className={postStyles.card}>
               {!imageFailed && (
                 <div className={postStyles.image}>
-                  <a href={suggestion.fullsizeUrl} target="_blank" rel="noopener noreferrer">
+                  <ImageZoomLink href={suggestion.fullsizeUrl} alt={suggestion.label}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={suggestion.fullsizeUrl} alt={suggestion.label} onError={() => setImageFailed(true)} />
-                  </a>
+                  </ImageZoomLink>
                 </div>
               )}
               {suggestion.label && <span className={postStyles.label}>{suggestion.label}</span>}

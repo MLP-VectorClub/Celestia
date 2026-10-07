@@ -5,6 +5,7 @@ import { FC } from 'react';
 import { GetEventsIdResult } from '@mlp-vectorclub/api-types';
 import styles from 'modules/PostList.module.scss';
 import ExternalLink from 'src/components/shared/ExternalLink';
+import { ImageZoomLink } from 'src/components/shared/ImageZoomLink';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import TimeAgo from 'src/components/shared/TimeAgo';
 import UserLink from 'src/components/shared/UserLink';
@@ -29,9 +30,9 @@ export const EventEntries: FC<{ entries: GetEventsIdResult['entries']; isStaff: 
           <li key={entry.id} id={`entry-${entry.id}`} className={classNames(styles.card)}>
             {entry.previewUrl && (
               <div className={styles.image}>
-                <a href={entry.fullUrl ?? entry.previewUrl} target="_blank" rel="noopener noreferrer">
+                <ImageZoomLink href={entry.fullUrl ?? entry.previewUrl} alt={t('events.details.entryPreview')}>
                   <LazyImage src={entry.previewUrl} alt={t('events.details.entryPreview')} />
-                </a>
+                </ImageZoomLink>
               </div>
             )}
             <strong className="d-block my-1">

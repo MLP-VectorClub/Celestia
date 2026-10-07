@@ -4,6 +4,7 @@ import { FC, useRef, useState } from 'react';
 
 import { PostItem } from '@mlp-vectorclub/api-types';
 import styles from 'modules/PostList.module.scss';
+import { ImageZoomLink } from 'src/components/shared/ImageZoomLink';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import LoadingRing from 'src/components/shared/LoadingRing';
 import { useApiMutation, useInView, usePostDeviation } from 'src/hooks';
@@ -52,7 +53,7 @@ export const ScreencapImage: FC<{ post: PostItem }> = ({ post }) => {
   });
   return (
     <div className={classNames(styles.image, styles.screencap)}>
-      <a href={post.fullsizeUrl} target="_blank" rel="noopener noreferrer">
+      <ImageZoomLink href={post.fullsizeUrl} alt={post.label}>
         <LazyImage
           src={post.previewUrl}
           alt={post.label}
@@ -62,7 +63,7 @@ export const ScreencapImage: FC<{ post: PostItem }> = ({ post }) => {
             reload.mutate();
           }}
         />
-      </a>
+      </ImageZoomLink>
     </div>
   );
 };
