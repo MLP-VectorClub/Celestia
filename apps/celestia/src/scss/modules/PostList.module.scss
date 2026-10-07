@@ -64,7 +64,9 @@ $request-orange: #bb4400;
     max-width: 100%;
     font-size: 0;
     color: inherit;
-    background: #fff;
+    // The old site's transparency grid shows through images with see-through parts
+    background: url('/img/transparency.svg');
+    background-size: 16px;
     border: 1px solid;
   }
 
@@ -81,6 +83,10 @@ $request-orange: #bb4400;
 
 .deviation a {
   border-width: 2px;
+
+  img {
+    background-color: rgba($request-orange, 0.05);
+  }
 }
 
 .approved a {
