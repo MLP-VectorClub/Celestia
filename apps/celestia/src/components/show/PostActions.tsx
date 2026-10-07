@@ -133,7 +133,7 @@ export const PostActions: FC<{ post: PostItem }> = ({ post }) => {
   return (
     <>
       {actions.reserve && (
-        <div className="mt-2 d-flex flex-wrap gap-1">
+        <div className="mt-2 d-flex flex-wrap justify-content-center gap-1">
           <Button size="sm" color="primary" className="reserve-request" onClick={run(reserve)} disabled={busy}>
             <InlineIcon icon="user-plus" first />
             {t('show.post.actions.reserve')}
@@ -146,7 +146,7 @@ export const PostActions: FC<{ post: PostItem }> = ({ post }) => {
         </div>
       )}
       <div className="mt-2">
-        <div className="d-flex flex-wrap gap-1">
+        <div className="d-flex flex-wrap justify-content-center gap-1">
           {items.map((item) =>
             compact ? (
               <IconButton
