@@ -12,9 +12,13 @@ import { ADMIN_SECTIONS, AdminPage } from 'src/components/admin/AdminPage';
 import ButtonCollection from 'src/components/shared/ButtonCollection';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { PostListItem } from 'src/components/show/PostListItem';
+import { API_HOST } from 'src/config';
 import { useAuth } from 'src/hooks';
 import { createAdminGetServerSideProps } from 'src/utils/admin-page';
 import { permission } from 'src/utils/permission';
+
+/** Luna's Laravel Horizon dashboard (queues), which only lets developers in; it lives on the API's own address, outside the API prefix */
+const HORIZON_URL = `${API_HOST.replace(/^http:\/\/(?!localhost|127\.)/, 'https://')}/horizon`;
 
 const SearchStatus: FC = () => {
   const t = useTranslations();
@@ -68,6 +72,12 @@ const AdminIndexPage: NextPage = () => {
             {t(`admin.buttons.${s.key}`)}
           </Button>
         ))}
+        {permission(user, 'developer') && (
+          <Button tag="a" href={HORIZON_URL} target="_blank" rel="noopener noreferrer" color="guide-link" className="horizon">
+            <InlineIcon icon="external-link-alt" first />
+            {t('admin.buttons.queues')}
+          </Button>
+        )}
       </ButtonCollection>
       {permission(user, 'developer') && <SearchStatus />}
       <section className="recent-posts">

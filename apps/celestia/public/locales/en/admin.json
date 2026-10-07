@@ -109,7 +109,8 @@
     "logs": "Logs",
     "notices": "Notices",
     "usefulLinks": "Useful Links",
-    "pcgAppearances": "PCG Appearances"
+    "pcgAppearances": "PCG Appearances",
+    "queues": "Queues (Horizon)"
   },
   "index": {
     "elasticStatus": "Elasticsearch status",
