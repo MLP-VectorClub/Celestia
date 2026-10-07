@@ -11,6 +11,7 @@ import { Provider } from 'react-redux';
 import Layout from 'src/components/Layout';
 import ProgressIndicator from 'src/components/ProgressIndicator';
 import TitleManager from 'src/components/TitleManager';
+import { TestConsoleCapture } from 'src/components/TestConsoleCapture';
 import AuthModal from 'src/components/modals/AuthModal';
 import DeployBanner from 'src/components/shared/DeployBanner';
 import { FetchFailureView } from 'src/components/shared/FetchFailureView';
@@ -37,6 +38,7 @@ const Celestia: AppComponent = ({ Component, ...rest }) => {
       {/* A fixed time zone keeps next-intl's output identical on the server and in the browser (dates are formatted with date-fns, not next-intl) */}
       <NextIntlClientProvider locale={locale || 'en'} messages={props.pageProps.messages} timeZone="UTC">
         <QueryClientProvider client={queryClient}>
+          <TestConsoleCapture />
           <TitleManager />
           <DeployBanner />
           <ProgressIndicator />

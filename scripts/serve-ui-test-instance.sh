@@ -14,6 +14,8 @@ export NEXT_PUBLIC_BACKEND_HOST="${NEXT_PUBLIC_BACKEND_HOST:-http://127.0.0.1:87
 export NEXT_PUBLIC_FRONTEND_HOST="${NEXT_PUBLIC_FRONTEND_HOST:-http://localhost:3000}"
 export NEXT_PUBLIC_CDN_DOMAIN="${NEXT_PUBLIC_CDN_DOMAIN:-127.0.0.1}"
 export NEXT_PUBLIC_API_PREFIX="${NEXT_PUBLIC_API_PREFIX:-/api}"
+# The browser tests read console errors and warnings from window.__appConsoleErrors (src/components/TestConsoleCapture.tsx)
+export NEXT_PUBLIC_CAPTURE_CONSOLE=1
 
 echo "Building into $NEXT_DIR (the instance keeps serving $CURRENT meanwhile)"
 rm -rf "$NEXT_DIR"
