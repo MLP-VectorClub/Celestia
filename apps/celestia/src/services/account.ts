@@ -1,6 +1,6 @@
 import Axios from 'axios';
 
-import { BrowserSession, GetNotificationsResult } from '@mlp-vectorclub/api-types';
+import { BrowserSession, GetNotificationsResult, PostUsersMeSocketTokenResult } from '@mlp-vectorclub/api-types';
 import { UserPrefs } from 'src/types/api-alias';
 
 /**
@@ -14,6 +14,9 @@ export class AccountService {
   static getPreferences = (userId: number) => Axios.get<Partial<UserPrefs>>(`/users/${userId}/preferences`);
 
   static getNotifications = () => Axios.get<GetNotificationsResult>('/notifications');
+
+  /** A one time token for one connection to the websocket server, ask again for every (re)connection */
+  static getSocketToken = () => Axios.post<PostUsersMeSocketTokenResult>('/users/me/socket-token');
 
   static markNotificationRead = (id: number) => Axios.post<void>(`/notifications/${id}/read`);
 

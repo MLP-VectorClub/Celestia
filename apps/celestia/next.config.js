@@ -4,6 +4,14 @@ const vercelConfig = require('./vercel.json');
 
 const devMode = process.env.NODE_ENV === 'development';
 
+/** The address of the websocket server (the same as `wsServerHost` of Luna's /config) in the form the CSP's connect-src wants it, empty when there is none */
+const WS_ORIGINS = (() => {
+  const host = process.env.NEXT_PUBLIC_WS_HOST;
+  if (!host) return '';
+  const url = new URL(host);
+  return `${url.origin} ${url.protocol === 'https:' ? 'wss' : 'ws'}://${url.host}`;
+})();
+
 /** `<short commit>;<commit time>`. Deploys pass the deployed commit explicitly (see deploy.conf): the deploy worktree isn't the git repo, so asking git from here could describe some other checkout */
 const makeBuildId = () => {
   if (process.env.BUILD_GIT_INFO) {
@@ -51,7 +59,13 @@ module.exports = {
     quietDeps: true,
   },
   async headers() {
-    return vercelConfig.headers.reduce((acc, entry) => {
+    return vercelConfig.headers.reduce((acc, originalEntry) => {
+      // Browsers may connect to the websocket server that pushes notifications (https for the first requests, wss/ws after the upgrade)
+      const withWebsocketHost = (header) =>
+        WS_ORIGINS && /content-security-policy/i.test(header.key)
+          ? { ...header, value: header.value.replace(/connect-src ([^;]+)(;|$)/, `connect-src $1 ${WS_ORIGINS}$2`) }
+          : header;
+      const entry = { ...originalEntry, headers: originalEntry.headers.map(withWebsocketHost) };
       // Allow all scripts in development mode
       const config = devMode
         ? {

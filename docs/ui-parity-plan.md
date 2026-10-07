@@ -97,12 +97,18 @@ Image zoom (the old fluidbox on post screencaps, event entry previews and the re
 
 Post cards and admin (2026-10-07): the transparency grid behind post images, the old green deviation border and tint with the 40px approved badge (`/img/approved.svg`), and the PCG appearance list's owner name, cutie mark and sprite columns (Luna's `GET /admin/pcg-appearances` returns `owner`, `sprite`, `cutieMarks` now). Broken image detection for unfinished posts exists (a failed screencap calls `GET /posts/{id}/reload` once per post; seen in the browser and in production's access log); like on the old site only a 404 of the image marks a post broken, so an image the server can fetch but a visitor's browser cannot stays as it is.
 
-## TODO: websocket server for notifications (not wired, 2026-10-07)
+## Websocket notifications (built 2026-10-07)
 
-Winterchilla's page script (`assets/js/websocket.js`) connects to the **Muffins** socket.io server (`WS_SERVER_HOST`, handed to the page as `wsServerHost`) and gets pushed `notif-cnt` the moment a notification is sent, then fetches `GET /notifications`. Luna answers `wsServerHost: null` ("it has no websocket server") and Celestia has no socket client, so notifications are currently **polled once a minute and when the tab gets focus** (`useNotifications`). That works, but a new notification shows up to a minute late. What a real connection needs:
-- Muffins authenticates a socket from the visitor's Winterchilla cookie by looking it up in the `mlpvc-rr` `sessions` table (`authByCookie`, `src/utils.ts`). After the cutover those sessions are gone (Luna uses Sanctum cookies and tokens in `luna_sessions` / `personal_access_tokens`), so either Muffins learns Luna's session/token tables or Luna hands out a short lived socket token (`GET /users/me/socket-token`) that Celestia sends when it connects.
-- Something has to tell Muffins that a notification was sent: Luna's `Notification::send` would call Muffins' `notify-pls` (or publish on Redis) the way Winterchilla's `Notification::create` did, and Muffins pushes `notif-cnt` to that user's sockets.
-- Celestia: a small `useNotificationSocket` (socket.io-client) that, on `notif-cnt`, invalidates the `/notifications` query; keep the polling as the fallback when the server is down (the old page also had a "degraded mode"). `wsServerHost` has to come from Luna's `GET /config`.
-- Also from the same server and not ported: `navigate` (which page each client is on, shown on the old admin "WS diagnostics" page via `devquery`), `status`, `update`. Only needed if that diagnostics page is wanted back.
-- Until then Muffins can stay up unchanged for Winterchilla while it is still serving; it can be shut down when Winterchilla goes read-only (nobody sends notifications through it any more).
+Winterchilla's page script connected to the **Muffins** socket.io server and was pushed `notif-cnt` when a notification was sent. Celestia does the same now (`useNotificationSocket`,
+`src/hooks/notifications.ts`): the browser asks Luna for a one time token (`POST /users/me/socket-token`), connects with it (a new token for every reconnection), and invalidates the
+notification list when `notif-cnt` arrives. The connection is loaded on demand (`socket.io-client`), polling stays as the safety net (every minute, every five minutes while connected),
+and nothing happens when Luna's `GET /config` has no `wsServerHost`. Luna announces notifications to Muffins (`POST /notify`), Muffins validates tokens with Luna, see `Luna/CLAUDE.md` and
+`Muffins/README.md`. Checked locally with all three running: the token is accepted, the new notification appears the moment it is sent (one list fetch, no polling), marking one read updates the list.
 
+To switch it on in production (nothing changes until these are set):
+- Muffins `.env` (`/var/node/Muffins`): `ORIGIN_REGEX=^https://(next\.)?mlpvector\.club$` (it only allows the old site now), `LUNA_URL=http://api.mlpvector.club`; deploy Muffins and `pm2 restart`.
+  Its `DB_NAME` stays `mlpvc-rr` until the shared database; the count it pushes is then Winterchilla's, which Celestia ignores (it only refetches the list).
+- nginx of `ws.mlpvector.club`: add the `location = /notify { return 404; }` block of `Muffins/setup/nginx.conf`.
+- Luna `.env`: `WS_SERVER_HOST=https://ws.mlpvector.club:8443`, `WS_SERVER_URL=http://127.0.0.1:3672`, `WS_SERVER_KEY=` the key that Muffins and Winterchilla use.
+- Celestia `.env` (read when it is built): `NEXT_PUBLIC_WS_HOST=https://ws.mlpvector.club:8443` (adds the server to the CSP's `connect-src`), then deploy it.
+Not ported: `navigate`, `status`, `devquery` and `update` of the old page (the admin "WS diagnostics" page), nobody uses them.
