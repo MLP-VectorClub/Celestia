@@ -162,7 +162,7 @@
       "removeImage": "Remove sprite image",
       "removeTitle": "Remove sprite image",
       "removeBody": "The sprite of this appearance will be removed.",
-      "none": "No sprite yet, click to choose one. Right click for more options.",
+      "none": "No sprite yet, click to choose one. Use the ⋯ menu for more options.",
       "menu": "Sprite actions",
       "openInNewTab": "Open image in new tab",
       "copyUrl": "Copy image URL"
