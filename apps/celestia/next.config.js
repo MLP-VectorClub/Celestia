@@ -1,5 +1,7 @@
 const { NEXT_PUBLIC_CDN_DOMAIN, NEXT_PUBLIC_BACKEND_HOST, NEXT_PUBLIC_API_PREFIX } = process.env;
 const { execFileSync } = require('child_process');
+const { readFileSync } = require('fs');
+const { join } = require('path');
 const vercelConfig = require('./vercel.json');
 
 const devMode = process.env.NODE_ENV === 'development';
@@ -12,11 +14,23 @@ const WS_ORIGINS = (() => {
   return `${url.origin} ${url.protocol === 'https:' ? 'wss' : 'ws'}://${url.host}`;
 })();
 
+const DIST_DIR = process.env.NEXT_DIST_DIR || '.next';
+
+/** The build's own record of its commit (deploy.conf writes it next to the build): the running server loads this config again, without the environment of the build */
+const readRecordedBuildInfo = () => {
+  try {
+    return readFileSync(join(__dirname, DIST_DIR, 'BUILD_GIT_INFO'), 'utf8').trim() || undefined;
+  } catch {
+    return undefined;
+  }
+};
+
 /** `<short commit>;<commit time>`. Deploys pass the deployed commit explicitly (see deploy.conf): the deploy worktree isn't the git repo, so asking git from here could describe some other checkout */
 const makeBuildId = () => {
-  if (process.env.BUILD_GIT_INFO) {
-    console.log(`Using build ID from BUILD_GIT_INFO: ${process.env.BUILD_GIT_INFO}`);
-    return process.env.BUILD_GIT_INFO;
+  const known = process.env.BUILD_GIT_INFO || readRecordedBuildInfo();
+  if (known) {
+    console.log(`Using build ID from BUILD_GIT_INFO: ${known}`);
+    return known;
   }
   try {
     const buildId = execFileSync('git', ['log', '-1', '--pretty=%h;%ct']).toString().trim();
@@ -37,7 +51,7 @@ const DEPLOYMENT_ID = /^[a-f0-9]{4,}$/i.test(COMMIT) ? COMMIT : undefined;
 /** @type {import('next').NextConfig} */
 module.exports = {
   // A separate build directory lets a server that is running (the browser test instance) keep its build while another one is made
-  distDir: process.env.NEXT_DIST_DIR || '.next',
+  distDir: DIST_DIR,
   reactStrictMode: true,
   transpilePackages: ['@mlp-vectorclub/ui'],
   i18n: {
