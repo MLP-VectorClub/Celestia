@@ -22,8 +22,8 @@ const DeployBanner: FC = () => {
             <InlineIcon icon="sync" spin first />
             We&apos;re deploying an update, this will only take a moment&hellip;
           </>
-        )}{' '}
-        <Button color="ui" size="sm" onClick={reload}>
+        )}
+        <Button color="ui" size="sm" className="ms-3" onClick={reload}>
           Reload
         </Button>
       </Alert>
