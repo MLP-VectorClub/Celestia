@@ -61,6 +61,12 @@
   gap: 0.4rem;
   align-items: center;
 
+  // The heading font's letters sit lower in their line than the middle of the box, so what shares the line is nudged down to the letters' middle
+  > * {
+    position: relative;
+    top: 0.25rem;
+  }
+
   :global(.btn) {
     --bs-btn-padding-y: 0.15rem;
     --bs-btn-padding-x: 0.5rem;
@@ -142,6 +148,16 @@
 
 .privacy {
   display: inline-flex;
+  flex: none;
   align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
   font-size: 1.3rem;
+
+  // The globe and the lock are not equally wide: one height, centered in a box of one size
+  > :global(.svg-inline--fa) {
+    width: auto;
+    height: 1.4rem;
+  }
 }
