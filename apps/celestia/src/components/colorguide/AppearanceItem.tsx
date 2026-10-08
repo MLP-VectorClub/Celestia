@@ -62,7 +62,7 @@ const AppearanceItem: FC<AppearanceItemProps> = ({ appearance, pinned = false, g
           </Col>
           <Col>
             <div className={styles.header}>
-              {appearance.private && <InlineIcon icon="lock" first className="text-warning" title={t('colorGuide.item.private')} />}
+              {appearance.private && <InlineIcon icon="lock" first className="text-orange" title={t('colorGuide.item.private')} />}
               {pinned && <InlineIcon icon="thumbtack" first className={styles.pinIcon} title={t('colorGuide.item.pinned')} />}
               <Link href={appearanceLink} className={styles.appearanceName}>
                 <NutshellLabel appearance={appearance} />

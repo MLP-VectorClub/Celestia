@@ -180,6 +180,8 @@ export const ProfilePersonalGuides: FC<PropTypes> = ({ profile }) => {
                   id={a.id}
                   label={a.private && !showPrivate ? t('users.profile.private') : a.label}
                   previewData={a.previewData}
+                  isPrivate={a.private && showPrivate}
+                  privateTitle={t('users.personalGuide.private')}
                   href={PATHS.PCG_APPEARANCE(profile.user.id, a)}
                 />
               </li>
