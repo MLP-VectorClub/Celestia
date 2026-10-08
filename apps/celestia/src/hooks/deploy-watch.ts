@@ -11,11 +11,14 @@ const POLL_INTERVAL_MS = 4000;
  * unreachable — a `pm2 reload` gap, or a JS chunk from a build that's
  * since been replaced on disk — by watching for failed client-side
  * navigations and chunk-load errors, then polls a cheap same-origin
- * request until the app responds again and reloads the page to pick up
- * the new build.
+ * request until the app responds again, then asks the visitor to reload to
+ * pick up the new build (it never reloads by itself: they may be in the
+ * middle of filling in a form).
  */
-export const useDeployWatcher = (): boolean => {
+export const useDeployWatcher = (): { unreachable: boolean; ready: boolean; reload: VoidFunction } => {
   const [unreachable, setUnreachable] = useState(false);
+  // The app answers again: the visitor reloads when they choose to, a reload by itself would throw away what they were typing
+  const [ready, setReady] = useState(false);
   // Where the visitor was going, so that the page that loads after the update is that one and not the one they were on
   const pendingUrl = useRef<string | null>(null);
 
@@ -61,10 +64,7 @@ export const useDeployWatcher = (): boolean => {
     const poll = setInterval(async () => {
       try {
         const res = await fetch(HEALTH_CHECK_PATH, { method: 'HEAD', cache: 'no-store' });
-        if (res.ok) {
-          if (pendingUrl.current) window.location.assign(pendingUrl.current);
-          else window.location.reload();
-        }
+        if (res.ok) setReady(true);
       } catch {
         // still down, keep polling
       }
@@ -73,5 +73,10 @@ export const useDeployWatcher = (): boolean => {
     return () => clearInterval(poll);
   }, [unreachable]);
 
-  return unreachable;
+  const reload = () => {
+    if (pendingUrl.current) window.location.assign(pendingUrl.current);
+    else window.location.reload();
+  };
+
+  return { unreachable, ready, reload };
 };
