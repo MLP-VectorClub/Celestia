@@ -15,31 +15,52 @@
 
 .title {
   h1 {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 0.3em;
+    align-items: center;
     margin: 0;
     font-size: 2rem;
     line-height: 1.2;
   }
 
   p {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 0.3rem;
+    align-items: center;
     margin: 0.25rem 0 0;
     font-size: 1.2rem;
     font-style: italic;
+
+    :global(.btn) {
+      --bs-btn-padding-y: 0.1rem;
+      --bs-btn-padding-x: 0.4rem;
+      --bs-btn-font-size: 0.85rem;
+
+      line-height: 1.3;
+    }
   }
 }
 
+// The logos behind the name: one height, centered on the name's letters (the heading font sits low in its line, hence the nudge)
 .da,
 .vectorAppLogo,
 .discordLogo {
-  height: 1em;
-  margin-left: 0.3em;
-  vertical-align: baseline;
+  position: relative;
+  top: 0.08em;
+  flex: none;
+  height: 0.9em;
+  width: auto;
 }
 
 .da {
   display: inline-block;
-  width: 0.6em;
+  width: 0.54em;
 
   svg {
+    display: block;
+    width: 100%;
     height: 100%;
     fill: #05cc47;
   }
