@@ -4,7 +4,8 @@
     "logs": "Global Logs",
     "notices": "Manage notices",
     "usefulLinks": "Manage useful links",
-    "pcgAppearances": "All PCG appearances"
+    "pcgAppearances": "All PCG appearances",
+    "wsdiag": "WebSocket Server Diagnostics"
   },
   "staffOnly": "This page is only available to staff.",
   "logs": {
@@ -112,7 +113,8 @@
     "notices": "Notices",
     "usefulLinks": "Useful Links",
     "pcgAppearances": "PCG Appearances",
-    "queues": "Queues (Horizon)"
+    "queues": "Queues (Horizon)",
+    "wsdiag": "WS"
   },
   "index": {
     "elasticStatus": "Elasticsearch status",
@@ -122,5 +124,22 @@
     "statusFailed": "Could not load the status.",
     "recentPosts": "{count, plural, one {# Most recent post} other {# Most recent posts}}",
     "recentFailed": "Could not load the posts."
+  },
+  "wsdiag": {
+    "developerOnly": "This page is only available to developers.",
+    "status": "Status",
+    "paused": "Paused while hovering entries",
+    "states": {
+      "checking": "Checking status…",
+      "connected": "Connected",
+      "disconnected": "Disconnected, or the Socket.IO server is down",
+      "unconfigured": "The API does not name a websocket server (WS_SERVER_HOST)",
+      "denied": "The server did not answer the query, it only answers developers"
+    },
+    "network": "Network {n}",
+    "yourNetwork": "Your network",
+    "id": "ID:",
+    "users": "Users:",
+    "pages": "Pages:"
   }
 }

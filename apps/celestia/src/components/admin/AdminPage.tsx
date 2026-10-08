@@ -19,8 +19,11 @@ export const ADMIN_SECTIONS = [
   { href: '/admin/pcg-appearances', key: 'pcgAppearances', icon: 'user' },
 ] as const;
 
+/** Developer-only pages, listed after the others for developers */
+export const DEVELOPER_SECTIONS = [{ href: '/admin/wsdiag', key: 'wsdiag', icon: 'code' }] as const;
+
 /** Names of the staff pages, also the keys under `admin.sections` */
-export type AdminSection = 'index' | (typeof ADMIN_SECTIONS)[number]['key'];
+export type AdminSection = 'index' | (typeof ADMIN_SECTIONS)[number]['key'] | (typeof DEVELOPER_SECTIONS)[number]['key'];
 
 export const adminTitle = (section: AdminSection): ReturnType<TitleFactory> => ({
   title: [`admin.sections.${section}`],

@@ -1,14 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import Axios from 'axios';
 import { NextPage } from 'next';
-import { FC } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { FC } from 'react';
 import { Button } from 'reactstrap';
 
 import { GetAdminPostsRecentResult, GetAdminSearchStatusResult } from '@mlp-vectorclub/api-types';
 import postStyles from 'modules/PostList.module.scss';
-import { ADMIN_SECTIONS, AdminPage } from 'src/components/admin/AdminPage';
+import { ADMIN_SECTIONS, AdminPage, DEVELOPER_SECTIONS } from 'src/components/admin/AdminPage';
 import ButtonCollection from 'src/components/shared/ButtonCollection';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { PostListItem } from 'src/components/show/PostListItem';
@@ -22,7 +22,10 @@ const HORIZON_URL = `${API_HOST.replace(/^http:\/\/(?!localhost|127\.)/, 'https:
 
 const SearchStatus: FC = () => {
   const t = useTranslations();
-  const status = useQuery({ queryKey: ['/admin/search-status'], queryFn: () => Axios.get<GetAdminSearchStatusResult>('/admin/search-status').then((r) => r.data) });
+  const status = useQuery({
+    queryKey: ['/admin/search-status'],
+    queryFn: () => Axios.get<GetAdminSearchStatusResult>('/admin/search-status').then((r) => r.data),
+  });
   return (
     <section className="elastic-status">
       <h2>
@@ -72,6 +75,13 @@ const AdminIndexPage: NextPage = () => {
             {t(`admin.buttons.${s.key}`)}
           </Button>
         ))}
+        {permission(user, 'developer') &&
+          DEVELOPER_SECTIONS.map((s) => (
+            <Button key={s.href} tag={Link} href={s.href} color="guide-link">
+              <InlineIcon icon={s.icon} first />
+              {t(`admin.buttons.${s.key}`)}
+            </Button>
+          ))}
         {permission(user, 'developer') && (
           <Button tag="a" href={HORIZON_URL} target="_blank" rel="noopener noreferrer" color="guide-link" className="horizon">
             <InlineIcon icon="external-link-alt" first />

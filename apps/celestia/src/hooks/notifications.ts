@@ -1,16 +1,16 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { useConfig } from 'src/hooks/content';
 import { AccountService } from 'src/services/account';
+import { acquireSocket, announcePage } from 'src/utils/websocket';
 
 export const NOTIFICATIONS_KEY = '/notifications';
 /** Whether the websocket connection that announces new notifications is up, kept in the query cache so that the polling can calm down while it is */
 const SOCKET_CONNECTED_KEY = ['notification-socket-connected'];
 const POLL_WITHOUT_SOCKET_MS = 60e3;
 const POLL_WITH_SOCKET_MS = 5 * 60e3;
-/** How long a socket that Luna's token was refused for (or that cannot connect) is left alone before the next try */
-const RETRY_AFTER_REFUSAL_MS = 30e3;
 
 const useSocketConnected = (): boolean =>
   useQuery({ queryKey: SOCKET_CONNECTED_KEY, queryFn: () => false, enabled: false, initialData: false, staleTime: Infinity }).data;
@@ -30,11 +30,13 @@ export function useNotifications(enabled: boolean) {
 }
 
 /**
- * The old site's websocket connection (Muffins): it tells the browser that its notifications changed the moment a notification is sent or read
- * somewhere else, instead of waiting for the next poll. Does nothing when Luna names no websocket server; a server that is down just leaves the polling.
+ * The old site's websocket connection (Muffins, {@see acquireSocket}): it tells the browser that its notifications changed the moment a notification
+ * is sent or read somewhere else, instead of waiting for the next poll. Also reports the page the visitor is on, for the developer diagnostics.
+ * Does nothing when Luna names no websocket server; a server that is down just leaves the polling.
  */
 export function useNotificationSocket(enabled: boolean) {
   const queryClient = useQueryClient();
+  const router = useRouter();
   const { config } = useConfig();
   const host = config?.wsServerHost;
 
@@ -42,45 +44,41 @@ export function useNotificationSocket(enabled: boolean) {
     if (!enabled || !host) return undefined;
 
     let cancelled = false;
-    let disconnect: VoidFunction = () => undefined;
+    let cleanup: VoidFunction = () => undefined;
     const setConnected = (value: boolean) => queryClient.setQueryData(SOCKET_CONNECTED_KEY, value);
 
-    // Loaded when it is needed: visitors without an account or a websocket server never download the client
-    void import('socket.io-client').then(({ io }) => {
-      if (cancelled) return;
+    acquireSocket(host)
+      .then(({ socket, release }) => {
+        const onConnect = () => setConnected(true);
+        const onDisconnect = () => setConnected(false);
+        const onRefusal = () => setConnected(false);
+        const onCount = () => void queryClient.invalidateQueries({ queryKey: [NOTIFICATIONS_KEY] });
+        const onRoute = (url: string) => announcePage(socket, url);
+        socket.on('connect', onConnect);
+        socket.on('auth', onConnect);
+        socket.on('disconnect', onDisconnect);
+        socket.on('auth-guest', onRefusal);
+        socket.on('notif-cnt', onCount);
+        router.events.on('routeChangeComplete', onRoute);
+        setConnected(socket.connected);
 
-      const socket = io(host, {
-        reconnectionDelay: 10e3,
-        // Every connection, the first and each reconnection, proves who it is with a new one time token. Without one the server treats it as a guest
-        auth: (callback) => {
-          AccountService.getSocketToken()
-            .then((response) => callback({ token: response.data.token }))
-            .catch(() => callback({}));
-        },
-      });
-      let retry: ReturnType<typeof setTimeout> | undefined;
-
-      socket.on('connect', () => setConnected(true));
-      socket.on('disconnect', () => setConnected(false));
-      // The server did not accept the token: the visitor is a guest for it, so it has nothing to say to them. Try again later with a fresh token
-      socket.on('auth-guest', () => {
-        setConnected(false);
-        socket.disconnect();
-        retry = setTimeout(() => !cancelled && socket.connect(), RETRY_AFTER_REFUSAL_MS);
-      });
-      socket.on('auth', () => setConnected(true));
-      socket.on('notif-cnt', () => void queryClient.invalidateQueries({ queryKey: [NOTIFICATIONS_KEY] }));
-
-      disconnect = () => {
-        clearTimeout(retry);
-        socket.disconnect();
-      };
-    });
+        cleanup = () => {
+          socket.off('connect', onConnect);
+          socket.off('auth', onConnect);
+          socket.off('disconnect', onDisconnect);
+          socket.off('auth-guest', onRefusal);
+          socket.off('notif-cnt', onCount);
+          router.events.off('routeChangeComplete', onRoute);
+          release();
+        };
+        if (cancelled) cleanup();
+      })
+      .catch(() => undefined);
 
     return () => {
       cancelled = true;
-      disconnect();
+      cleanup();
       setConnected(false);
     };
-  }, [enabled, host, queryClient]);
+  }, [enabled, host, queryClient, router.events]);
 }

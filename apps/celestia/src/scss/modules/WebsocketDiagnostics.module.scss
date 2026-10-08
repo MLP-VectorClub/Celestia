@@ -1,0 +1,72 @@
+@use '../vars' as *;
+
+.heart {
+  display: inline-block;
+  color: red;
+  will-change: transform;
+
+  &.beat {
+    animation: beat 0.3s linear;
+  }
+
+  &.dead {
+    color: black;
+  }
+}
+
+@keyframes beat {
+  from,
+  to {
+    transform: scale(1);
+  }
+  33% {
+    transform: scale(0.5);
+  }
+  66% {
+    transform: scale(1.5);
+  }
+}
+
+.responseTime {
+  font-family: monospace;
+}
+
+.networks {
+  display: flex;
+  flex-flow: row wrap;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.network {
+  flex: 1 1 auto;
+  margin: 0.3rem;
+  padding: 0.6rem;
+  border: 1px solid rgba(black, 0.2);
+  background: rgba(black, 0.05);
+
+  h3 {
+    margin: 0 0 0.6rem;
+  }
+
+  code {
+    font-family: monospace;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 0.75em;
+    list-style: none;
+
+    li::before {
+      content: '-';
+      margin-right: 0.75em;
+    }
+  }
+}
+
+.current {
+  margin-left: 0.4rem;
+  color: #d00;
+}

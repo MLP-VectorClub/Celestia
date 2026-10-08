@@ -133,7 +133,7 @@ Legend: ✅ exists in Celestia · 🟡 exists but a stub or incomplete · ❌ mi
 | `/admin/usefullinks` | ❌ | list: `GET /useful-links` (staff; `/sidebar` is visitor-filtered); CRUD `POST/PUT/DELETE /useful-links[/{id}]`, `PUT /useful-links/order` |
 | `/admin/notices` | ❌ | `GET /notices?page&size`, `POST/PUT/DELETE /notices[/{id}]` (`GET /notices/current` already feeds the banner). |
 | `/admin/pcg-appearances/{page}` | ⛔ | dropped (no data endpoint, not being ported) |
-| `/admin/wsdiag` | ⛔ | developer-only WebSocket diagnostics |
+| `/admin/wsdiag` | ✅ | developer-only WebSocket diagnostics (`/admin/wsdiag`, live list from Muffins) |
 | Site settings dialogs (reservation rules, about-reservations, dev role label) | ❌ | `GET/PUT /settings/{key}` |
 
 ### Sitewide shell (affects every page)

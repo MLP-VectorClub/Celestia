@@ -27,7 +27,9 @@ import {
   faEnvelope,
   faExclamationTriangle,
   faExternalLinkAlt,
+  faCode,
   faForward,
+  faMapMarkerAlt,
   faEye,
   faEyeDropper,
   faEyeSlash,
@@ -161,6 +163,8 @@ library.add(
   faChevronRight,
   faGlobeAmericas,
   faExternalLinkAlt,
+  faCode,
+  faMapMarkerAlt,
   faArrowCircleLeft,
   faExclamationTriangle
 );
