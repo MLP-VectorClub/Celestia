@@ -28,6 +28,12 @@
   }
 }
 
+// A big target around the small chevron; the negative margins keep the footer's layout as it was
 #git-info-toggle {
+  padding: 10px 12px;
+  margin: -10px 0 -10px -12px;
+  color: inherit;
   cursor: pointer;
+  background: none;
+  border: 0;
 }

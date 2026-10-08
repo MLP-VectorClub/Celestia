@@ -8,9 +8,13 @@ import { NutshellLabel } from 'src/components/colorguide/NutshellLabel';
 import { PATHS } from 'src/paths';
 
 export const AppearanceLink: FC<
-  Pick<PreviewAppearance, 'id' | 'label' | 'guide'> & Partial<Pick<PreviewAppearance, 'previewData' | 'ownerId' | 'nutshellNames'>>
-> = ({ id, label, guide, previewData, ownerId, nutshellNames }) => (
-  <Link href={PATHS.APPEARANCE({ id, label, guide })} className={styles.appearanceLink}>
+  Pick<PreviewAppearance, 'id' | 'label'> &
+    Partial<Pick<PreviewAppearance, 'guide' | 'previewData' | 'ownerId' | 'nutshellNames'>> & {
+      /** Where the link goes when it is not the appearance's page in a guide (personal guide appearances) */
+      href?: string;
+    }
+> = ({ id, label, guide, previewData, ownerId, nutshellNames, href }) => (
+  <Link href={href ?? PATHS.APPEARANCE({ id, label, guide: guide! })} className={styles.appearanceLink}>
     <AppearancePreview data={previewData} className={styles.appearancePreview} />
     <span className="appearance-name">
       <NutshellLabel appearance={{ label, ownerId, nutshellNames }} />

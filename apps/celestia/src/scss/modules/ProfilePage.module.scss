@@ -54,6 +54,37 @@
   margin-bottom: 1.25rem;
 }
 
+// Section headings: the privacy marker, the title and the heading's own buttons and hints share one centered line, at one size
+.sections > section > h2 {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 0.4rem;
+  align-items: center;
+
+  :global(.btn) {
+    --bs-btn-padding-y: 0.15rem;
+    --bs-btn-padding-x: 0.5rem;
+    --bs-btn-font-size: 0.85rem;
+
+    margin: 0;
+    font-family: var(--bs-body-font-family);
+    line-height: 1.4;
+  }
+
+  // Hint icons and icon-only buttons are one size, whatever the heading's size
+  > :global(.svg-inline--fa),
+  :global(.btn) > :global(.svg-inline--fa:only-child) {
+    flex: none;
+    width: 1.1rem;
+    height: 1.1rem;
+    font-size: 1.1rem;
+  }
+
+  :global(.btn-link) {
+    padding-inline: 0.25rem;
+  }
+}
+
 .contributions li {
   margin-left: 0.25rem;
 }
@@ -69,6 +100,11 @@
   a {
     font-size: 1.3rem;
     font-weight: bold;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
   }
 }
 
@@ -105,6 +141,7 @@
 }
 
 .privacy {
-  margin-right: 0.3rem;
-  font-size: 0.8em;
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.3rem;
 }

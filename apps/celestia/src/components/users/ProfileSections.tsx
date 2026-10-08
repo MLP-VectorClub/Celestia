@@ -8,7 +8,7 @@ import { Alert, Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'react
 import { PostItem, ShowListItem, UserProfile } from '@mlp-vectorclub/api-types';
 import postStyles from 'modules/PostList.module.scss';
 import styles from 'modules/ProfilePage.module.scss';
-import { AppearancePreview } from 'src/components/colorguide/AppearancePreview';
+import { AppearanceLink } from 'src/components/colorguide/AppearanceLink';
 import ExternalLink from 'src/components/shared/ExternalLink';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import TimeAgo from 'src/components/shared/TimeAgo';
@@ -68,7 +68,12 @@ export const ProfileContributions: FC<PropTypes> = ({ profile }) => {
       <h2>
         {profile.sameUser && <Privacy level="public" />}
         {t('users.profile.contributions')}{' '}
-        <InlineIcon icon="info" size="sm" className="text-primary" title={t('users.profile.contributionsHint', { duration: profile.contributionsCacheDuration })} />
+        <InlineIcon
+          icon="info"
+          size="sm"
+          className="text-primary"
+          title={t('users.profile.contributionsHint', { duration: profile.contributionsCacheDuration })}
+        />
         {isStaff && (
           <Tooltipped title={t('users.profile.purgeCache')}>
             {(ref) => (
@@ -91,7 +96,10 @@ export const ProfileContributions: FC<PropTypes> = ({ profile }) => {
         {profile.contributions.map((c) => {
           const text = (
             <>
-              <span className="amt">{c.count}</span> <span className="expl">{pluralize(c.noun, c.count)} {c.verb}</span>
+              <span className="amt">{c.count}</span>{' '}
+              <span className="expl">
+                {pluralize(c.noun, c.count)} {c.verb}
+              </span>
             </>
           );
           const linked = LINKED_CONTRIBUTIONS.includes(c.type) && (c.type !== 'requests' || profile.sameUser || isStaff);
@@ -148,7 +156,7 @@ export const ProfilePersonalGuides: FC<PropTypes> = ({ profile }) => {
         {profile.sameUser && <Privacy level={profile.personalGuides === null ? 'staff' : 'public'} />}
         {t('users.profile.personalGuide')}
         {profile.sameUser && (
-          <Button color="darkblue" size="sm" className="ms-2 personal-cg-say-what" onClick={() => setAboutOpen(true)}>
+          <Button color="darkblue" size="sm" className="personal-cg-say-what" onClick={() => setAboutOpen(true)}>
             <InlineIcon icon="info" first />
             {t('users.profile.pcgWhat')}
           </Button>
@@ -156,7 +164,10 @@ export const ProfilePersonalGuides: FC<PropTypes> = ({ profile }) => {
       </h2>
       {showPrivate && progress && (
         <p className="personal-cg-progress">
-          {t(profile.sameUser ? 'users.profile.pcgProgressYou' : 'users.profile.pcgProgressUser', { slots: progress.slots ?? 0, requests: progress.requestsToNext ?? 10 })}
+          {t(profile.sameUser ? 'users.profile.pcgProgressYou' : 'users.profile.pcgProgressUser', {
+            slots: progress.slots ?? 0,
+            requests: progress.requestsToNext ?? 10,
+          })}
         </p>
       )}
       {profile.personalGuides === null && <p className="text-muted">{t('users.profile.personalGuidePrivate')}</p>}
@@ -165,10 +176,12 @@ export const ProfilePersonalGuides: FC<PropTypes> = ({ profile }) => {
           {guides.length > 0 ? (
             guides.map((a) => (
               <li key={a.id}>
-                <span className="me-1 d-inline-block align-middle" style={{ width: 16, height: 16 }}>
-                  <AppearancePreview data={a.previewData} className="w-100 h-100" />
-                </span>
-                <Link href={PATHS.PCG_APPEARANCE(profile.user.id, a)}>{a.private && !showPrivate ? t('users.profile.private') : a.label}</Link>
+                <AppearanceLink
+                  id={a.id}
+                  label={a.private && !showPrivate ? t('users.profile.private') : a.label}
+                  previewData={a.previewData}
+                  href={PATHS.PCG_APPEARANCE(profile.user.id, a)}
+                />
               </li>
             ))
           ) : (
@@ -214,7 +227,8 @@ const ProfilePostCard: FC<{ post: ProfilePost; actions: ReactNode; deviation?: b
         {t(post.kind === 'request' && post.reservedAt && !deviation ? 'users.profile.reservedUnder' : 'users.profile.postedUnder')}{' '}
         <Link href={PATHS.EPISODE(post.show)} title={post.show.title}>
           {formatShowId(post.show)}
-        </Link> <TimeAgo date={(!deviation && post.kind === 'request' && post.reservedAt) || post.postedAt} />
+        </Link>{' '}
+        <TimeAgo date={(!deviation && post.kind === 'request' && post.reservedAt) || post.postedAt} />
       </em>
       {post.overdue && (
         <strong className={`${postStyles.note} ${postStyles.contest}`} title={t('show.post.contestHint')}>
@@ -255,7 +269,7 @@ export const ProfilePendingReservations: FC<PropTypes> = ({ profile }) => {
         <Privacy level="staff" />
         {t('users.profile.pendingTitle')}
         {profile.sameUser && posts.length < 4 && (
-          <Button color="orange" size="sm" className="ms-2" id="suggestion" onClick={() => setRoulette(true)}>
+          <Button color="orange" size="sm" id="suggestion" onClick={() => setRoulette(true)}>
             <InlineIcon icon="lightbulb" first />
             {t('users.profile.suggestion')}
           </Button>
@@ -291,7 +305,14 @@ export const ProfilePendingReservations: FC<PropTypes> = ({ profile }) => {
                         color="red"
                         disabled={cancel.isPending}
                         onClick={async () => {
-                          if (await confirm({ title: t('users.profile.cancelTitle'), body: t('users.profile.cancelBody'), color: 'danger', confirmLabel: t('users.profile.cancel') })) {
+                          if (
+                            await confirm({
+                              title: t('users.profile.cancelTitle'),
+                              body: t('users.profile.cancelBody'),
+                              color: 'danger',
+                              confirmLabel: t('users.profile.cancel'),
+                            })
+                          ) {
                             cancel.mutate(post.id);
                           }
                         }}
@@ -314,8 +335,25 @@ export const ProfilePendingReservations: FC<PropTypes> = ({ profile }) => {
       ) : (
         <p>{t('users.profile.pendingNonMember')}</p>
       )}
-      {fixing && <PostImageDialog post={fixing} isOpen onClose={() => { setFixing(null); refresh(); }} />}
-      {roulette && <RequestRouletteDialog isOpen onClose={() => { setRoulette(false); refresh(); }} />}
+      {fixing && (
+        <PostImageDialog
+          post={fixing}
+          isOpen
+          onClose={() => {
+            setFixing(null);
+            refresh();
+          }}
+        />
+      )}
+      {roulette && (
+        <RequestRouletteDialog
+          isOpen
+          onClose={() => {
+            setRoulette(false);
+            refresh();
+          }}
+        />
+      )}
     </section>
   );
 };
@@ -345,7 +383,14 @@ export const ProfileAwaitingApproval: FC<PropTypes> = ({ profile }) => {
             {t.rich('users.profile.approvalCount', { who, count: posts.length, strong: (c) => <strong>{c}</strong> })}{' '}
             {profile.sameUser && t('users.profile.approvalOwnAdvice', { count: posts.length })}
           </p>
-          {visitorIsMember && <p>{t.rich('users.profile.approvalCheckHint', { count: posts.length, strong: (c) => <strong className="text-success">{c}</strong> })}</p>}
+          {visitorIsMember && (
+            <p>
+              {t.rich('users.profile.approvalCheckHint', {
+                count: posts.length,
+                strong: (c) => <strong className="text-success">{c}</strong>,
+              })}
+            </p>
+          )}
           {isStaff && profile.deviantArtUrl && (
             <div className="mb-2">
               <Button

@@ -22,10 +22,16 @@ const FooterVersionInfo: FC = () => {
 
   return (
     <>
-      <span id="git-info-toggle" className="me-2" onClick={toggleGitInfo}>
+      <button
+        type="button"
+        id="git-info-toggle"
+        className="me-2"
+        aria-label={gitInfoOpen ? t('common.footer.hideGitInfo') : t('common.footer.showGitInfo')}
+        onClick={toggleGitInfo}
+      >
         <InlineIcon icon={gitInfoOpen ? 'chevron-left' : 'chevron-right'} fixedWidth />
-      </span>
-      <UncontrolledTooltip target="git-info-toggle" placement="top" fade={false}>
+      </button>
+      <UncontrolledTooltip target="git-info-toggle" placement="top" fade={false} offset={[0, 14]}>
         {gitInfoOpen ? t('common.footer.hideGitInfo') : t('common.footer.showGitInfo')}
       </UncontrolledTooltip>
       {gitInfoOpen ? <FooterGitInfo {...connectionInfo} /> : <FooterLastUpdateInfo {...connectionInfo} />}
