@@ -10,6 +10,7 @@ import { PostListItem } from 'src/components/show/PostListItem';
 import { RibbonHeading } from 'src/components/show/RibbonHeading';
 import { StaffReservationDialog } from 'src/components/show/StaffReservationDialog';
 import { useAuth, usePosts } from 'src/hooks';
+import { useLocationHash } from 'src/hooks/location-hash';
 import { Status } from 'src/types';
 import { permission } from 'src/utils';
 
@@ -23,10 +24,11 @@ const REQUEST_TYPES = ['chr', 'obj', 'bg'] as const;
 
 const Cards: FC<{ posts: PostItem[] }> = ({ posts }) => {
   const t = useTranslations();
+  const hash = useLocationHash();
   return (
     <ul className={styles.list} data-empty={t('show.post.none')}>
       {posts.map((post) => (
-        <PostListItem key={post.id} post={post} />
+        <PostListItem key={post.id} post={post} highlighted={hash === `post-${post.id}`} />
       ))}
     </ul>
   );
@@ -51,7 +53,13 @@ export const PostList: FC<PropTypes> = ({ showId, kind, initialData }) => {
 
   const createButton = (canCreate || (isRequest && !signedIn)) && (
     <>
-      <Button color="success" size="sm" onClick={() => setCreating(true)} disabled={!signedIn} id={isRequest ? 'request-btn' : 'reservation-btn'}>
+      <Button
+        color="success"
+        size="sm"
+        onClick={() => setCreating(true)}
+        disabled={!signedIn}
+        id={isRequest ? 'request-btn' : 'reservation-btn'}
+      >
         {t(isRequest ? 'show.post.makeRequest' : 'show.post.makeReservation')}
       </Button>
       {signedIn && <PostCreateDialog showId={showId} kind={kind} isOpen={creating} onClose={() => setCreating(false)} />}

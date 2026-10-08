@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { FC } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { Button } from 'reactstrap';
 
 import { PostItem } from '@mlp-vectorclub/api-types';
@@ -27,8 +27,17 @@ const openSubmissionsUrl = (name: string) =>
  * A request or reservation as a card, laid out like the old site's: the image (the finished submission once there is one), the description,
  * when and by whom it was posted, reserved and finished, then the actions
  */
-export const PostListItem: FC<{ post: PostItem; viewOnly?: boolean }> = ({ post, viewOnly = false }) => {
+export const PostListItem: FC<{ post: PostItem; viewOnly?: boolean; highlighted?: boolean }> = ({
+  post,
+  viewOnly = false,
+  highlighted = false,
+}) => {
   const t = useTranslations();
+  const cardRef = useRef<HTMLLIElement>(null);
+  // A link to a post (`/s/…`) lands on its card: it is marked and brought into view, below the header (the card can appear after the page, with the posts)
+  useEffect(() => {
+    if (highlighted) cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [highlighted]);
   const { user } = useAuth();
   const isStaff = permission(user, 'staff');
   const isRequest = post.kind === 'request';
@@ -40,7 +49,12 @@ export const PostListItem: FC<{ post: PostItem; viewOnly?: boolean }> = ({ post,
   const showRequester = isRequest && (isStaff || isRequester || isReserver);
 
   return (
-    <li id={`post-${post.id}`} data-kind={post.kind} className={classNames(styles.card, { [styles.broken]: post.broken })}>
+    <li
+      id={`post-${post.id}`}
+      ref={cardRef}
+      data-kind={post.kind}
+      className={classNames(styles.card, { [styles.broken]: post.broken, [styles.highlight]: highlighted })}
+    >
       {finished && post.deviationId ? <DeviationImage post={post} deviationId={post.deviationId} /> : <ScreencapImage post={post} />}
 
       {post.label && <span className={classNames(styles.label, { [styles.noQuotes]: noQuotes })}>{post.label}</span>}

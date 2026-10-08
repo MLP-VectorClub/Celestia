@@ -19,6 +19,8 @@ $deviation-green: #71a972;
 }
 
 .card {
+  // Where a link to the card scrolls it: clear of the navbar
+  scroll-margin-top: 4.5rem;
   flex: 1 0 auto;
   box-sizing: border-box;
   margin: 5px;
@@ -40,8 +42,9 @@ $deviation-green: #71a972;
   }
 
   &.highlight {
-    background-color: rgba(#2c73b1, 0.15);
-    border-color: rgba(#2c73b1, 0.3);
+    // Over the other states' colors (a broken card), as on the old site
+    background-color: rgba(#2c73b1, 0.15) !important;
+    border-color: rgba(#2c73b1, 0.3) !important;
   }
 
   &.broken {
