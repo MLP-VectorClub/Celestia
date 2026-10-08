@@ -2,7 +2,10 @@
   "apps": [
     {
       "name": "Celestia",
-      "script": "pnpm start",
+      "script": "node_modules/next/dist/bin/next",
+      "args": "start",
+      "exec_mode": "cluster",
+      "instances": 2,
       "log_date_format": "YYYY-MM-DD HH:mm:ss Z",
       "out_file": "logs/pm2-out.log",
       "error_file": "logs/pm2-error.log",
