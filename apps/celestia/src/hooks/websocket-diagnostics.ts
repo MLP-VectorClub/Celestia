@@ -7,6 +7,8 @@ export interface DiagnosticsClient {
   current: boolean;
   network: string | null;
   page?: string;
+  /** The site the visitor connected from (the old site or this one) */
+  origin?: string;
   connectedSince?: string;
   user: { id: string; name?: string; role?: string };
 }

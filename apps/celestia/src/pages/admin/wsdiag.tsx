@@ -20,6 +20,15 @@ const ALERT_COLORS: Record<DiagnosticsState, string> = {
   denied: 'danger',
 };
 
+/** `https://next.mlpvector.club` → `next.mlpvector.club`, whatever else a client sent as its origin is shown as it came */
+const originHost = (origin: string): string => {
+  try {
+    return new URL(origin).host;
+  } catch {
+    return origin;
+  }
+};
+
 /** Connections that come from the same network (the server hashes the address), as the old diagnostics listed them */
 const NetworkCard: FC<{ id: string; index: number; connections: DiagnosticsClient[] }> = ({ id, index, connections }) => {
   const t = useTranslations();
@@ -35,8 +44,11 @@ const NetworkCard: FC<{ id: string; index: number; connections: DiagnosticsClien
     return [...byId.values()];
   }, [connections]);
   const pages = useMemo(() => {
-    const byPage = new Map<string, string | undefined>();
-    connections.forEach((c) => c.page && byPage.set(c.page, c.connectedSince));
+    // The same path on the old and the new site are different pages
+    const byPage = new Map<string, { page: string; origin?: string; since?: string }>();
+    connections.forEach(
+      (c) => c.page && byPage.set(`${c.origin ?? ''}${c.page}`, { page: c.page, origin: c.origin, since: c.connectedSince })
+    );
     return [...byPage.entries()];
   }, [connections]);
 
@@ -69,9 +81,10 @@ const NetworkCard: FC<{ id: string; index: number; connections: DiagnosticsClien
             <strong>{t('admin.wsdiag.pages')}</strong>
           </p>
           <ul>
-            {pages.map(([page, since]) => (
-              <li key={page}>
-                <a href={page} target="_blank" rel="noreferrer">
+            {pages.map(([key, { page, origin, since }]) => (
+              <li key={key}>
+                {origin && <span className="text-muted">{originHost(origin)} </span>}
+                <a href={`${origin ?? ''}${page}`} target="_blank" rel="noreferrer">
                   {page}
                 </a>{' '}
                 {since && `(${since})`}
