@@ -61,7 +61,7 @@ export const ShareAppearanceButton: FC<PropTypes> = ({ shortUrl }) => {
         <ModalBody>
           <p>{t('colorGuide.share.help')}</p>
           <FormGroup>
-            <InputGroup>
+            <InputGroup className="flex-nowrap">
               <span className={`input-group-text flex-grow-1 ${styles.appearanceLinkInput}`} ref={urlInputRef}>
                 {shortUrl}
               </span>

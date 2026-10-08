@@ -52,7 +52,7 @@ export const PostShareButton: FC<{ postId: number; compact?: boolean }> = ({ pos
         <ModalBody>
           <p>{t('show.share.help')}</p>
           <FormGroup>
-            <InputGroup>
+            <InputGroup className="flex-nowrap">
               <span className={`input-group-text flex-grow-1 ${styles.appearanceLinkInput}`} ref={urlRef}>
                 {url}
               </span>

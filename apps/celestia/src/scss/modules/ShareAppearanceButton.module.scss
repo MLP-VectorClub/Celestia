@@ -1,7 +1,10 @@
+// The link takes the room the copy button leaves, on one line (the group does not wrap, a long address is cut off with an ellipsis)
 .appearanceLinkInput {
   user-select: all;
-  width: 100%;
-  text-overflow: ellipsis;
+  flex: 1 1 0;
+  min-width: 0;
   overflow: hidden;
-  flex-grow: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
 }
