@@ -115,7 +115,7 @@ const authSlice = createSlice({
       })
       .addCase(registerThunk.rejected, (state: AuthState, action) => {
         state.register.status = Status.FAILURE;
-        state.register.error = action.error as UnifiedErrorResponse;
+        state.register.error = action.payload as UnifiedErrorResponse;
       })
       .addMatcher(
         (action): action is PayloadAction<{ auth: AuthState }> => isAction(action) && action.type === HYDRATE,
