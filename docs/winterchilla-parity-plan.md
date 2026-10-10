@@ -1,8 +1,44 @@
 # Winterchilla → Celestia parity plan
 
-Status: **plan only** (2026-10-01), revised against Winterchilla `1073e4fb` (146 operations; the Winterchilla session answered gaps G1–G10, see §8). Nothing here is implemented, deployed or pointed at production.
-Source of truth: Winterchilla `3ec4e41c` — `public/dist/api.json` (135 operations), `docs/api-path-alignment.md`,
-`tests/Browser/Api/*` (HTTP contract), `tests/Browser/{Admin,User,Guest}` (page behavior), `config/routes/pages.php` (route list).
+**Status (2026-10-10): built and deployed.** The sections below were written as a plan on 2026-10-01 and are kept for the reasoning behind the decisions (data
+contract, write conventions, shared components); where a status in them disagrees with this block, this block is right. The page inventory in §2 is current.
+
+## Current status (2026-10-10)
+
+Deployed to https://next.mlpvector.club: Celestia (Next.js), Luna (Laravel API) and Muffins (websocket server). Winterchilla still serves the old site; the shared database
+cutover has not happened (DeviantArt token sync in Luna stays off until it). The "work in progress" banner is still on.
+
+| Area | State |
+|---|---|
+| Public pages (guide, full list, changes, tags, appearance, shows, episodes, events, users, profile, personal guide, about) | ✅ built, see §2 |
+| Member flows (reserve, finish, approve, take over an overdue reservation, requests, voting, account, Discord, preferences) | ✅ |
+| Guide editing (metadata, inline tag editor, sprite, cutie marks, color groups, relations, shows, order, selective wipe, share links of private appearances) | ✅ |
+| Staff / admin (tags, shows, roles, PCG points, logs, notices, useful links, PCG appearance list, settings dialogs, developer tools, websocket diagnostics) | ✅ |
+| Client tools (blending, blending reverser, color picker) | ✅ |
+| Sitewide (notices, sidebar links, notifications over REST and websocket, "happening soon", Discord invitation rules, deploy banner, updating page) | ✅ |
+| Side-by-side visual comparison with the old site | 🟡 done page by page until 2026-10-06, see `ui-parity-plan.md` for which pages have not been compared |
+
+**Verification numbers.** Winterchilla's browser suite against Celestia and Luna (`Winterchilla/scripts/ui-test-celestia.sh`): 112 passed, 0 failed. The tests that only make sense on
+the old site (`winterchilla-only`: 21 tests or files, three of them whole files (the dialog test page and the DeviantArt and Discord sign-in flows through the old fake OAuth provider), the rest drive its own DOM, `/components`, `/docs`, diagnose and browser pages) are left out; 17 `celestia-only` tests cover
+Celestia's own versions of the editor flows (dialogs, tag editor, relations, share links, takeover, sort menu). Celestia's own tests: 434 (unit and real-browser component
+tests), 30.8 % of lines. Luna: 289 tests.
+
+**Open items (known, 2026-10-10)**
+- Private appearances: the share link, the page, its sprite, PNG and swatch files and the cutie mark downloads work with the token, and the owner can generate a new link (✅ built 2026-10-10).
+  What the old site did not do either: a visitor who arrived with a token does not get the token in their own Share button (only people who may edit do).
+- Staff "Add new appearance" in another user's personal guide: Luna's `POST /appearances` creates in the caller's own guide, so this needs an API change (the old API had no owner parameter either).
+- Tag autocomplete only suggests tags that are in use (the API's behavior); tags nobody uses yet have to be typed in full.
+- Cutie mark file details differ in cosmetic ways (download file name, `width="100%"` on the SVG).
+- Not compared side by side yet: `/show`, `/users`, personal guide and point history pages, `/admin/pcg-appearances`, narrow / mobile layouts.
+- Not verified on production in a browser: signed in websocket notifications, the live `/admin/wsdiag` page, the updating page and the deploy banner on a real deploy (whether Cloudflare
+  replaces the 503 body is unknown), and the changes of 2026-10-10 (tag editor, reserver pill, takeover, Discord button, sprite sizes, private share links).
+- Tests: the DeviantArt and Discord sign-in flows have no automated browser test against Celestia (`scripts/check-oauth-popup.mjs` covers the popup); a Discord server member cannot be
+  created through the seed or the API for a browser test; the guide editing dialogs, most pages and the websocket hooks have no unit tests.
+
+**Not ported on purpose:** event entry creation (disabled in the old site as well; editing and withdrawing entries is ported), the tag changes page (an unfinished stub on the old site,
+Luna has the data endpoint), `/components`, `/docs` (redirects to Luna's API docs), the diagnose pages, the old `/da-auth` and `/discord-connect` routes (redirected to Luna's OAuth),
+the browser recognition page (`/browser`, `/about/browser` redirect to `/about/connection`), `DELETE /admin/stat-cache` (the deploy reloads php-fpm), taking over an overdue
+reservation as staff (the old site only offered it to other members).
 
 Ground rules
 - UI is built from **data**. Fields Winterchilla marks as UI details (`li`, `html`, `cgs`, `section`, `render`, `list`, `suggestion`,
@@ -13,7 +49,7 @@ Ground rules
 - Do not port `export_vars`; do not touch production or deploy (the user decides).
 - `CLAUDE.md` / `AGENTS.md` are not edited by this plan.
 
-## 1. Before any new page: drift between Celestia and the new spec
+## 1. Before any new page: drift between Celestia and the new spec (historical, done in phase 0)
 
 Verified 2026-10-01: `api.json` generated from Winterchilla `origin/main` (`1073e4fb`) builds with the existing `packages/api-types` generator, and
 `tsc --noEmit` in `apps/celestia` then reports **101 errors** (clean before). Hot spots: `services/user.ts` (Luna-only auth types), the color guide
@@ -84,68 +120,59 @@ tag admin, show admin, user role / PCG points, logs, notices, useful links, sett
 Checked: request bodies of these flows against Luna (`:8766`, bearer token) and Winterchilla (`:8768` through the CSRF proxy); UI not clicked through.
 
 
-## 2. Page inventory
+## 2. Page inventory (current)
 
-Legend: ✅ exists in Celestia · 🟡 exists but a stub or incomplete · ❌ missing · ⛔ not ported (Twig/server concern).
-"gSSP" = endpoints for `getServerSideProps` (all anonymous-readable unless noted; the visitor's cookie is forwarded so permission flags such as
-`canEdit` are correct).
+Legend: ✅ built and checked against the old behavior · 🟡 built, differs in a way noted · ❌ missing · ⛔ not ported on purpose.
 
 ### Public / guest pages
 
-| Winterchilla route | Celestia | gSSP endpoints / notes |
+| Winterchilla route | Celestia | Notes |
 |---|---|---|
-| `/` homepage redirect | ✅ `pages/index.ts` | `GET /user-prefs/me?keys[]=cg_defaultguide,p_homelastep` |
-| `/about`, `/about/privacy` | ✅ | static |
-| `/about/connection` (+`/about/browser/{session}` and `/browser/{session}`) | ✅ connection / ⛔ browser | `GET /about/connection`. Browser-recognition page dropped. |
-| `/show` (+`/episodes/{page}`, `/movies/{page}`) | 🟡 `pages/show.tsx` | `GET /show?types[]&order&page&size` ×2 (exists). Add `/episodes/[page]`, `/movies/[page]` as redirects to `/show?page=`. |
-| `/episode/{S#E#}`, `/episode/pony/…`, `/episode/{id}-slug`, `/movie/{id}`, `/{st}/{id}`, `/episode/latest` | ❌ | `GET /show/latest` or `GET /show?season=&episode=` to resolve `S1E1`/`latest` to an id (redirect to `/episode/{id}-slug`), then `GET /show/{id}`, `GET /posts?showId=&kind=request`, `GET /posts?showId=&kind=reservation`, `GET /show/{id}/vote` (data form, no `html`), `GET /show/next` for the "next up" notice. `show.relatedAppearances` replaces the "characters in this episode" HTML. |
-| `/events/{page}` | ❌ | `GET /events?page&size` |
-| `/event/{id}` | ❌ | `GET /events/{id}` (has `entries`, `canEnter`, `canVote`, `ongoing`, `ended`). Entry submission is disabled server-side (501), render read-only. |
-| `/cg` (index) | ✅ | `GET /color-guide` |
-| `/cg/{guide}` | ✅ | `GET /appearances`, `GET /appearances/pinned` |
-| `/cg/{guide}/full` | ✅ (needs `/all` repoint) | `GET /appearances/all?guide&previews`; `sort_by` stays snake_case on the page URL only |
-| `/cg/{guide}/changes/{page}` | ✅ | `GET /color-guide/major-changes` |
-| `/cg/{guide}/v/{id}-slug` (+ short `/cg/v/{id}`) | 🟡 | `GET /appearances/{id}` (`DetailedAppearance`, `canEdit`, `cutieMarks`). `relatedAppearances` and `relatedShows` are now part of the payload. Missing on the page: those two sections, tag list as editable chips, share/export buttons, cutie-mark facing. |
-| `/cg/{guide}/tags/{page}` | ❌ | `GET /tags?page&size` (`canEdit` drives the edit UI), `GET /config` for `tagTypes` |
-| `/cg/{guide}/tag-changes/{id}` | ⛔ | dropped (staff/dev tool, no data endpoint) |
-| `/cg/{guide}/preferred` | ❌ | redirect from `cg_defaultguide` pref |
-| `/blending`, `/cg/blending`, `/cg/blending-reverse` | ❌ | client-only tools (no API). Port with a canvas/CSS colour-math util. |
-| `/cg/picker`, `/cg/picker/frame` | ❌ | client-only (image upload → sample colours). No API. |
-| `/cg/cutiemark/{id}.svg`, `/cg/cutiemark/download/{id}` | ❌ | `CutieMark.viewUrl` points at the file; link to it instead of proxying. |
-| `/cg/v/{id}.png|.svg|…` (export formats) | ❌ | `GET /appearances/{id}/sprite` and `/preview` cover sprite and preview SVG only; palette/PNG/GPL/JSON exports are not provided by design: generate them client-side from `colorGroups` (drop the `APPEARANCE_PALETTE` TODO). |
-| `/s/{id}` post share link | ❌ | `GET /posts/{id}/location?showId` → redirect to the show page (`castle.url`) |
-| `/users` | ✅ (staff) | `GET /users` |
-| `/users/{id}`, `/@name`, `/u/{name}`, `/{u|settings}` | 🟡 `users/[user].tsx` (avatar + role only) | `GET /users/{id}/profile` (user, `sameUser`, `canEdit`, `editableRoles`, `contributions` counts, `personalGuides`, `awaitingApproval`, `previousUsernames`, `discordServerMember`); `/users/da/{username}` resolves names; `/u/{uuid}` is not ported (developer-only tool). |
-| `/users/{id}/contrib/{type}/{page}` | ❌ | `GET /users/{id}/contributions/{type}?page&size`, type ∈ `cms-provided|requests|reservations|finished-posts|fulfilled-requests` |
-| `/users/{id}/cg/{page}` (personal guide) | ❌ | `GET /users/{id}/personal-guide/appearances` (`canManage` drives the add button), `GET /users/{id}/personal-guide/slots` (204/409 for the "can add" check) |
-| `/users/{id}/cg/{point,slot}-history/{page}` | ❌ | `GET /users/{id}/personal-guide/point-history` |
-| `/users/{id}/cg/{guide}/v/{id}` (PCG appearance) | ❌ | same page component as `/cg/{guide}/v/{id}` with the owner in the breadcrumb |
-| `/users/{id}/account`, `/users/verify` | ❌ | account: `GET /user-prefs/me`, `GET /users/{id}/profile` for prefs/Discord state; password, e-mail change/verify and sessions follow Luna's flows (those Winterchilla endpoints are `x-internal`). |
-| `/da-auth*`, `/discord-connect/*` | 🟡 `oauth/[provider]` (Luna flow) | Luna owns sign-in; Discord sync/unlink are in the spec now (`POST /users/{userId}/discord/sync`, `DELETE /users/{userId}/discord`) |
-| `/docs`, `/components`, `/manifest`, `/muffin-rating`, `/diagnose/*`, `/test-*` | ⛔ | Twig/dev/test pages. `manifest` can be a Next route handler if the PWA manifest is wanted; `muffin-rating` is an SVG easter egg — skip or port as a static image. |
+| `/` homepage redirect | ✅ `pages/index.ts` | preference `cg_defaultguide` / `p_homelastep` |
+| `/about`, `/about/privacy`, `/about/connection` | ✅ | `/about/browser`, `/browser` redirect to `/about/connection` |
+| `/show` (+`/episodes/{page}`, `/movies/{page}`) | ✅ | the page routes redirect to `/show?page=` |
+| `/episode/{S#E#}`, `/episode/{id}-slug`, `/episode/latest`, `/movie/{id}`, `/{st}/{id}` | ✅ `episode`, `movie`, `short`, `special`, `show/[id]` | canonical redirects; request / reservation lists, voting, reserver pill, overdue takeover |
+| `/events`, `/events/{page}`, `/event/{id}` | ✅ | entry cards with edit and withdraw for the author and staff (creating entries is disabled on both sides) |
+| `/cg` (index), `/cg/{guide}`, `/cg/{guide}/full`, `/cg/{guide}/changes/{page}` | ✅ | list items with sprite ⋯ menu, tags, buttons; full list with sort menu and staff reorder |
+| `/cg/{guide}/v/{id}-slug` (+ short `/cg/v/{id}`) | ✅ | related shows and appearances, inline tag editor, share link (with the token for private ones), 300px sprite from the 600px file |
+| `/cg/{guide}/tags/{page}` | ✅ | staff tag admin |
+| `/cg/{guide}/tag-changes/{id}` | ⛔ | an unfinished stub on the old site (always 404) |
+| `/cg/{guide}/preferred` | 🟡 | `/cg/preferred` redirects to `/cg` |
+| `/blending`, `/cg/blending`, `/cg/blending-reverse`, `/cg/picker`, `/cg/picker/frame` | ✅ | old addresses redirect |
+| `/cg/cutiemark/{id}.svg`, `/cg/cutiemark/download/{id}` | ✅ | proxied from Luna, takes the share token |
+| `/cg/v/{id}.png|.svg|.json|.gpl` (exports) | ✅ | rewritten to Luna's `/appearances/{id}/image` and `/palette` |
+| `/s/{id}` post share link | ✅ | `GET /posts/{id}/location`, the post is highlighted on arrival |
+| `/users`, `/users/{id}`, `/@name`, `/u/{name}`, `/{u|settings}` | ✅ | profile with briefing, contributions, personal guide, pending reservations, preferences |
+| `/users/{id}/contrib/{type}/{page}` | ✅ | |
+| `/users/{id}/cg/{page}`, `/users/{id}/cg/{point,slot}-history/{page}`, `/users/{id}/cg/{guide}/v/{id}` | ✅ | slot history redirects to point history |
+| `/users/{id}/account`, `/users/verify` | ✅ | sessions, security, Discord, DeviantArt, preferences |
+| `/da-auth*`, `/discord-connect/*` | ✅ | Luna's OAuth (`/oauth/[provider]`), old routes redirect |
+| `/manifest`, `/muffin-rating` | ✅ | |
+| `/docs`, `/components`, `/diagnose/*`, `/test-*` | ⛔ | `/docs` redirects to Luna's API docs; `/test-login/{id}` exists for browser tests only (`E2E_TEST_LOGIN=1`) |
 
 ### Staff / admin pages
 
-| Winterchilla route | Celestia | gSSP endpoints / notes |
+| Winterchilla route | Celestia | Notes |
 |---|---|---|
-| `/admin` | ❌ | index of links; gate on role from `/users/me` |
-| `/admin/logs/{page}` (+ `/logs`) | ❌ | `GET /admin/logs?type&initiatorId&page&size`; detail dialog `GET /admin/logs/{id}` (`details: [[any]]`, loosely typed) |
-| `/admin/usefullinks` | ❌ | list: `GET /useful-links` (staff; `/sidebar` is visitor-filtered); CRUD `POST/PUT/DELETE /useful-links[/{id}]`, `PUT /useful-links/order` |
-| `/admin/notices` | ❌ | `GET /notices?page&size`, `POST/PUT/DELETE /notices[/{id}]` (`GET /notices/current` already feeds the banner). |
-| `/admin/pcg-appearances/{page}` | ⛔ | dropped (no data endpoint, not being ported) |
-| `/admin/wsdiag` | ✅ | developer-only WebSocket diagnostics (`/admin/wsdiag`, live list from Muffins) |
-| Site settings dialogs (reservation rules, about-reservations, dev role label) | ❌ | `GET/PUT /settings/{key}` |
+| `/admin` | ✅ | index, developer Elasticsearch status, recent posts |
+| `/admin/logs/{page}` (+ `/logs`) | ✅ | filters, entry details with the both / new / old switch |
+| `/admin/usefullinks`, `/admin/notices` | ✅ | |
+| `/admin/pcg-appearances/{page}` | 🟡 | built, not compared side by side |
+| `/admin/wsdiag` | ✅ | developer-only, live list of connected websocket clients with their origin |
+| Site settings (reservation rules, about reservations, developer role label) | ✅ | edited where they are shown (`ReservationTexts`, `DevRoleLabelDialog`) |
 
-### Sitewide shell (affects every page)
+### Sitewide shell
 
-| Piece | Celestia | Data source |
+| Piece | Celestia | Notes |
 |---|---|---|
-| Notices banner | ✅ `Notices` | `GET /notices/current` (HTML in `messageHtml` is intentional — sanitise before `dangerouslySetInnerHTML`, `html-to-react` is already a dependency) |
-| Sidebar links | ✅ Celestia fetches for everyone and lists them; guests see the `guest` links once Luna's matching change (2026-10-03) is deployed | `GET /useful-links/sidebar` |
-| Header navigation | ✅ in Winterchilla's order (2026-10-03), plus Events | `MainNavigation`, Winterchilla's header template |
-| Sidebar notifications | 🟡 | `GET /notifications` is HTML-only and `x-internal`; notifications come from Luna's own API |
-| "Happening soon" / upcoming | 🟡 stub (`HappeningSoon`) | `GET /show/next` (one entry) and `GET /events`; `/about/upcoming` is `x-internal` |
+| Notices banner | ✅ `Notices` | sanitized HTML |
+| Sidebar links | ✅ | guests get the `guest` links |
+| Header navigation | ✅ | Winterchilla's order, plus Events |
+| Sidebar notifications | ✅ | REST list plus websocket push (Muffins), unread count on the mobile toggler |
+| "Happening soon" | ✅ | `GET /show/upcoming` with a countdown |
+| Join Discord button | ✅ | hidden for users on the server (`discordServerMember` of `/users/me`) and for those who hid it |
 | Prefs | ✅ | `GET /user-prefs/me` |
+| Deploy banner / updating page | ✅ | asks for a reload instead of reloading, nginx serves the updating page while the app restarts |
 
 ## 3. Global data: `/config`, auth, prefs
 
@@ -226,7 +253,7 @@ New:
    `getServerSideProps` helper around the existing `validatePageParam`. Existing `utils/pagination.ts` keeps its tests.
 8. **Utilities** — `PermissionGate` (renders by `canEdit`/`canManage`/role), client-only tools lib for blending/picker.
 
-## 6. Order of work
+## 6. Order of work (all phases are done, kept for reference)
 
 0. **Foundations** (1 PR): regenerate `api-types`; fix drift (§1); `useConfig`; `useApiMutation`/`ApiError`; dialog system; `PermissionGate`; hand-write/derive the Luna auth types.
 1. **Read-only parity**, cheapest first: events list+detail → profile (full `UserProfile`) → contributions → personal guide + point history →

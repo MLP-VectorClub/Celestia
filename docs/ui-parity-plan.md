@@ -41,17 +41,17 @@ Assistant, staff and admin differ only in their label and in which roles they ma
 | Page | Old URL | Celestia URL | Gaps found | Status |
 |---|---|---|---|---|
 | Guide list `/cg` | `/cg` | `/cg` | JSON export link, API link text, "your settings" notice for guests | 🟡 |
-| Guide `/cg/pony` | `/cg/pony` | same | list items: sprite thumbnail, tag links (colored by type), per-item buttons (open image, view as PNG, download swatch file, staff edit / pin / unpin / delete), "last major change", pagination (page links, 60 pages), JSON export link, search form (ElasticSearch up) | ❌ |
+| Guide `/cg/pony` | `/cg/pony` | same | built since the first audit: list items with sprite thumbnail (and the "⋯" menu: open, copy URL, staff upload / remove), tag links, per-item buttons, "last major change", pagination, JSON export link, search form. Not compared side by side since 2026-10-05 | 🟡 |
 | Full list | `/cg/pony/full` | same | cards link text includes "AKA" and age, sort control as links, staff reorder | 🟡 |
 | Major changes | `/cg/pony/changes` | same | pagination style | 🟡 |
 | Tags | `/cg/tags` | `/cg/pony/tags` | URL, "Return to Color Guides" / "Major Changes" buttons, staff "Refresh use count" / "Refresh usage data on this page" | ✅ |
-| Appearance | `/cg/pony/v/ID-Name` | `/cg/pony/v/ID` | canonical URL with the name (301 redirect added 2026-10-06), "Open image in new tab", "Download swatch file", "View as PNG", section layout | 🟡 |
+| Appearance | `/cg/pony/v/ID-Name` | same (canonical URL with the name, 301 from the short form) | done: "Open image in new tab", "Download swatch file", "View as PNG", inline tag editor (chips, suggestions with use counts, plain text mode, 2026-10-10), faded synonym tags, sprite shown at 300px from the 600px file, Share dialog with the token of a private appearance and "Generate a new link". Section layout not re-compared since 2026-10-06 | 🟡 |
 | Blending calculator | `/cg/blending` | `/cg/blending` (old `/blending` redirects) | URL, heading ("Color Blending Calculator"), "Back to Color Guide", credit link | ✅ |
 | Blending reverser | `/cg/blending-reverse` | `/cg/blending-reverse` (old `/blending-reverse` redirects) | URL | ✅ |
 | Picker | `/cg/picker` | `/cg/picker` | (moved 2026-10-04) | 🟡 |
-| Episode / movie | `/episode/...` | same | "added by" (open); done 2026-10-06: per-post Share, staff Unlock, icon-only actions (3+ buttons incl. Share), reserver avatar chip, approved date and approver (needs Luna with PostReserver / approvedAt) | 🟡 |
+| Episode / movie | `/episode/...` | same | "added by" (open); done 2026-10-06: per-post Share, staff Unlock, icon-only actions (3+ buttons incl. Share), approved date and approver; done 2026-10-10: the reserver in the avatar pill with the "Reserved by:" caption and vector app tint (the same `UserLinkWithAvatar` as the cutie mark credits), overdue reservations (3 weeks) can be taken over by other members, who see the post as free, while staff see the reserver ("Reserved … by …"); the "Can be contested" note shows to every member who may reserve (the old site: reserver and staff only) | 🟡 |
 | Show list | `/show` | same | not yet compared | 🟡 add buttons relabelled "Add Episode" / "Add Show Entry" 2026-10-06 |
-| Events | `/events`, `/event/ID-Title` | same | event page: description, entries layout, "Finished image", update; URL with title | 🟡 page layout done 2026-10-06 (heading, finished image, description, entry cards; Edit/Withdraw skipped, Luna answers 501); canonical URL with the title done 2026-10-06 |
+| Events | `/events`, `/event/ID-Title` | same | event page: description, entries layout, "Finished image", update; URL with title | 🟡 page layout done 2026-10-06 (heading, finished image, description, entry cards), canonical URL with the title done 2026-10-06; Edit / Withdraw of an entry (author and staff, `/event-entries/{id}`, the event must still run for authors) done 2026-10-10 (creating entries is disabled on both sides) |
 | Users | `/users` | same | not yet compared | 🟡 groups match (Administrator, Staff, Assistants, Club Members, DeviantArt Users); counts differ only through the data snapshot |
 | Profile | `/users/ID` | same | rebuilt 2026-10-05: briefing (DeviantArt / vector app / Discord logos, role + change role dialog), previous names, contributions (info, staff purge), personal guide (progress, list, View / Point history / Give points, "What?" dialog), pending reservations (Fix / View / Cancel, Request Roulette), vectors waiting for approval (View / Check), preferences with per-field Save. Open: dev role label button for developers, lazy loaded sections | 🟡 |
 | Personal guide, point history | `/users/ID/cg...` | same | not yet compared | 🟡 personal guide: lead text and Point history button (owner / staff only) match since 2026-10-06; open: staff "Add new appearance" in another user's guide (Luna's `POST /appearances` always creates in the caller's own guide, the old API had no owner parameter either), point history page matches since 2026-10-06 (items per page, Profile page, developer Recalculate moved here from the profile, as on the old site) |
@@ -60,19 +60,19 @@ Assistant, staff and admin differ only in their label and in which roles they ma
 | Logs | `/admin/logs` | same | rebuilt: filter form (type select, user / IP / me / Web server), table like the old one, entry details as rows with the diff / new / old switch. Details are generic rows from Luna's structured data, not the old per type texts | 🟡 |
 | Notices | `/admin/notices` | same | list with Hidden time and icon buttons, Create notice, Back | ✅ |
 | Useful links | `/admin/usefullinks` | same (redirect from `/admin/useful-links`) | Add link, Re-order links (dialog with arrows, the old site drags), list with role and Edit / Delete | ✅ |
-| PCG appearances | `/admin/pcg-appearances` | same | not yet compared | ❓ |
+| PCG appearances | `/admin/pcg-appearances` | same | built (owner, sprite and cutie mark columns), not compared side by side | 🟡 |
 | About, privacy | `/about`, `/about/privacy` | same | about: "What's after the @ sign in the footer", GitHub / Discord / Loading.io / Pony Life links | 🟡 Discord logo credit added 2026-10-06; the "@ sign in the footer" section differs on purpose (two repositories); Loading.io credit not needed |
 
 ## Global (every page)
 
 | Item | Status |
 |---|---|
-| Sidebar: useful links look, notifications ("Unread notifications", ✅ 2026-10-07: list with link and mark-read tick, unread count on the sidebar toggler, polled every minute instead of the old websocket), sign out / sign in buttons, "Color Guide" copy-hash widget on guide pages, voting widget | ❓ |
+| Sidebar: useful links look, notifications (list with link and mark-read tick, unread count on the sidebar toggler, pushed over the websocket since 2026-10-07 with polling as the fallback), sign out / sign in buttons, "Color Guide" copy-hash widget on guide pages, voting widget, Join Discord (hidden for server members and for those who hid it, 2026-10-10) | 🟡 behavior ported, look not re-compared |
 | Footer: old site shows "Running Winterchilla@commit created N ago | API Docs | Privacy Policy | Contact Us" | 🟡 |
 | Breadcrumbs, header navigation | ✅ (order matches, Events dropped on 2026-10-04) |
 | "Work in progress" banner (Celestia only) | ⛔ remove at cutover |
 | Responsive layout, mobile | ❓ |
-| Dialogs (look and behavior): the old site's dialog component | ❓ |
+| Dialogs (look and behavior): the old site's dialog component | 🟡 Celestia's `FormDialog` / `DialogProvider`, behavior covered by the browser tests, look not compared |
 
 ## Interactions the label diff cannot see (inventory of the old page scripts, 2026-10-05)
 
@@ -83,7 +83,7 @@ The label diff only shows what is on the page. These behaviors live in `Winterch
 - Tags area of the appearance page, staff (`manage.jsx` 1217): *Create new tag*; each tag, titled "Tag: name": *Edit tag*, *Delete tag*, *Create new tag*. ✅ "⋯" menu after each tag and next to "Edit tags" (`TagStaffMenus`)
 - Color groups of the appearance page and list items, staff/owner (`manage.jsx` 1322, 1394): menu on the whole list "Color groups": *Re-order color groups*, *Create new group*, *Apply template (if empty)*; on a group: *Edit color group*, *Delete color group*, *Re-order color groups*, *Create new group*. ✅ (all of these were already visible buttons on the appearance page)
 - Sprite (`manage.jsx` 1485): *Open image in new tab* (default once there is a sprite), *Copy image URL*, *Upload new sprite* (default without a sprite). ✅ "⋯" menu on the sprite of the appearance page (`SpriteWrap`, also *Remove sprite image*); the guide list's sprite links to the full size image in a new tab ✅
-- Admin logs, "view" switch button of a log entry (`log.js`): a click cycles the diff view (both / new / old), a right click cycles backwards: becomes a visible three way switch when the admin pages are compared. ❌
+- Admin logs, "view" switch button of a log entry (`log.js`): a click cycles the diff view (both / new / old), a right click cycles backwards: a visible three way switch. ✅ (in the logs page)
 - Picker: right click zooms out with the zoom tool. ✅ (`usePointerTools`)
 
 **Modifier clicks:** Shift+click on a color square shows its RGB values (✅ `ColorSquare`, also a visible dialog); Shift+click on a "Reserve" button, developers only, opens "Reserve as": ✅ since 2026-10-06 a visible "Reserve as…" button next to Reserve for developers (`PostReserveAsDialog`, Luna's `as` / `screwit` parameters); the time field of the old dialog is not offered; Shift+click on a blending calculator cell opens the RGB entry (✅ `RgbEntryDialog`); Alt+click in the picker (✅).
@@ -96,6 +96,17 @@ Every `$.API.*` call of the old page scripts (81 distinct) was compared with wha
 Image zoom (the old fluidbox on post screencaps, event entry previews and the request roulette): a plain click on the image shows the full size picture over the page (click or Escape closes it), modifier and middle clicks still open the link (`ImageZoomLink`).
 
 Post cards and admin (2026-10-07): the transparency grid behind post images, the old green deviation border and tint with the 40px approved badge (`/img/approved.svg`), and the PCG appearance list's owner name, cutie mark and sprite columns (Luna's `GET /admin/pcg-appearances` returns `owner`, `sprite`, `cutieMarks` now). Broken image detection for unfinished posts exists (a failed screencap calls `GET /posts/{id}/reload` once per post; seen in the browser and in production's access log); like on the old site only a 404 of the image marks a post broken, so an image the server can fetch but a visitor's browser cannot stays as it is.
+
+## Added on 2026-10-10 (this round of checks)
+
+- **Sprites:** the appearance page asks for the 600px file and shows it at 300px at most (Luna's `size=600` was never served, the query value is a string and was compared with an enum case); guide list sprites use the 300px file in a 150px box. Production returns `-2x` files for `size=600`.
+- **Inline tag editor** (`AppearanceTagEditor`): replaces the old dialog like the old site's `TagEditor`: removable chips, a field adding on Enter or comma (a duplicate flashes), suggestions drawn as tags with their use count or the synonym target, a plain text mode, Save / Discard.
+- **Synonym tags** are drawn smaller and faded (`synonymOf` is part of the slim tag now); staff see them when the preference `cg_hidesynon` is off.
+- **Private appearances:** the share token (`?token=`) opens the page, sprite, color groups, PNG / palette files and cutie mark downloads (Luna `AppearanceExportsController` and `Appearance::tokenMatches`); the owner and staff get the token from `GET /appearances/{id}` and the Share dialog puts it in the link and can generate a new one (`resetPrivKey`, also available in the Selective wipe dialog).
+- **Reservations:** the reserver pill and the takeover of overdue reservations, see the episode row above. Luna already took reservations over (`res_overtake` log entry).
+- **Sidebar:** Join Discord is hidden for users on the server (`discordServerMember` on `/users/me`) and for those with `p_hidediscord`.
+- **Tooltips** that only show text ignore the mouse (no more flicker when one overlaps its target); the sign out confirmation and the page jump tooltip stay clickable (`tooltip-interactive`).
+- **Local test data:** the contract seed points avatars and images at `/img/blank-pixel.png` (relative) instead of Winterchilla's test server address, so they load on whichever site shows them.
 
 ## Websocket notifications (built 2026-10-07)
 
