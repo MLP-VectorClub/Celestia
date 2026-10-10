@@ -88,7 +88,6 @@
       "mergePicked": "Tag #{id} selected. All uses of this tag move to it."
     },
     "staffMenu": {
-      "tagsMenu": "More tag actions",
       "tagMenu": "Actions for the tag {name}",
       "edit": "Edit tag",
       "delete": "Delete tag"

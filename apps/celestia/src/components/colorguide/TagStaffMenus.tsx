@@ -2,19 +2,20 @@ import { useQueryClient } from '@tanstack/react-query';
 import Axios from 'axios';
 import { useTranslations } from 'next-intl';
 import { FC, useState } from 'react';
-import { Alert } from 'reactstrap';
+import { Alert, Button } from 'reactstrap';
 
 import { SlimGuideTag, TagListItem } from '@mlp-vectorclub/api-types';
 import { TagFormDialog } from 'src/components/colorguide/TagAdmin';
 import { ActionMenu } from 'src/components/shared/ActionMenu';
+import InlineIcon from 'src/components/shared/InlineIcon';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { describeApiError, useAuth, useConfig } from 'src/hooks';
 import { TagService } from 'src/services/tags';
 import { UnifiedErrorResponse } from 'src/types';
 import { ENDPOINTS, httpResponseMapper } from 'src/utils';
 
-/** "Create new tag", in a "⋯" menu next to "Edit tags" (the old site had it in the right click menu of the tags) */
-export const TagsMenu: FC<{ appearanceId: number }> = ({ appearanceId }) => {
+/** "New tag" next to "Edit tags", staff only (the old site had it in the right click menu of the tags) */
+export const NewTagButton: FC<{ appearanceId: number }> = ({ appearanceId }) => {
   const t = useTranslations();
   const { isStaff } = useAuth();
   const { config } = useConfig();
@@ -23,7 +24,10 @@ export const TagsMenu: FC<{ appearanceId: number }> = ({ appearanceId }) => {
   if (!isStaff || !config) return null;
   return (
     <>
-      <ActionMenu title={t('colorGuide.tags.staffMenu.tagsMenu')} items={[{ key: 'create', label: t('colorGuide.tags.admin.new'), icon: 'plus', onClick: () => setCreating(true) }]} />
+      <Button color="darkblue" data-testid="new-tag-btn" onClick={() => setCreating(true)}>
+        <InlineIcon icon="plus" first />
+        {t('colorGuide.tags.admin.new')}
+      </Button>
       <TagFormDialog
         tag={null}
         page={1}

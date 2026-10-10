@@ -22,7 +22,7 @@ import AppearanceTags from 'src/components/colorguide/AppearanceTags';
 import { GuideLink } from 'src/components/colorguide/GuideLink';
 import { GuideNotFound } from 'src/components/colorguide/GuideNotFound';
 import { NutshellLabel } from 'src/components/colorguide/NutshellLabel';
-import { TagMenu, TagsMenu } from 'src/components/colorguide/TagStaffMenus';
+import { NewTagButton, TagMenu } from 'src/components/colorguide/TagStaffMenus';
 import { SwatchDialog } from 'src/components/colorguide/SwatchDialog';
 import { ShareAppearanceButton } from 'src/components/colorguide/ShareAppearanceButton';
 import SpriteImage from 'src/components/colorguide/SpriteImage';
@@ -156,7 +156,7 @@ export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppe
               {appearance.canEdit && (
                 <ButtonCollection leftAlign>
                   <EditTagsButton appearanceId={appearance.id} />
-                  <TagsMenu appearanceId={appearance.id} />
+                  <NewTagButton appearanceId={appearance.id} />
                 </ButtonCollection>
               )}
             </section>
