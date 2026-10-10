@@ -43,7 +43,7 @@ export const ENDPOINTS = {
   USERS_BY_USERNAME: (params: GetUsersDaUsernameRequest) => `/users/da/${encodeURI(params.username)}`,
   GUIDE_INDEX: `/color-guide`,
   GUIDE_MAJOR_CHANGES: (params: GetColorGuideMajorChangesRequest) => buildUrl(`/color-guide/major-changes`, params),
-  APPEARANCE: (params: GetAppearancesIdRequest) => buildUrl(`/appearances/${params.id}`),
+  APPEARANCE: (params: GetAppearancesIdRequest & { token?: string }) => buildUrl(`/appearances/${params.id}`, params.token ? { token: params.token } : undefined),
   APPEARANCES: (params: GetAppearancesRequest) => buildUrl(`/appearances`, params),
   APPEARANCES_FULL: (params: GetAppearancesFullRequest) => buildUrl(`/appearances/full`, params),
   APPEARANCE_SPRITE: (params: GetAppearancesIdSpriteRequest) => buildUrl(`/appearances/${params.id}/sprite`, params),

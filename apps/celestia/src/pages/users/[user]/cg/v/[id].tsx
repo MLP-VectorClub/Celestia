@@ -52,7 +52,7 @@ export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRMess
   let appearance: Optional<GetAppearancesIdResult>;
   try {
     user = await userFetcher({ id: userId })();
-    appearance = await appearanceFetcher({ id }, req)();
+    appearance = await appearanceFetcher({ id, token: typeof query.token === 'string' ? query.token : undefined }, req)();
   } catch (e) {
     handleDataFetchingError(ctx, e);
   }

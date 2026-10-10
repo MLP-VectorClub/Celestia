@@ -77,12 +77,13 @@ export const appearanceLocationFetcher = (params: AppearanceLocationFetcherParam
   return requestPromiseMapper(service.getAppearanceLocation(params));
 };
 
-export type AppearanceFetcherParams = NullableProps<GetAppearancesIdRequest, 'id'>;
+/** `token` is the secret of a private appearance's share link */
+export type AppearanceFetcherParams = NullableProps<GetAppearancesIdRequest, 'id'> & { token?: string };
 
 export const appearanceFetcher = (params: AppearanceFetcherParams, req?: IncomingMessage) => () => {
   if (typeof params.id !== 'number') return Promise.resolve(undefined);
 
   const service: ColorGuideService = req ? new ColorGuideService(req) : defaultServices.colorGuide;
 
-  return requestPromiseMapper(service.getAppearance(params as GetAppearancesIdRequest));
+  return requestPromiseMapper(service.getAppearance(params as GetAppearancesIdRequest & { token?: string }));
 };

@@ -24,6 +24,7 @@ import { DatabaseRole } from 'src/types/api-alias';
 import { TitleFactory } from 'src/types/title';
 import { handleDataFetchingError, notFound } from 'src/utils';
 import { titleSetter } from 'src/utils/core';
+import { ENDPOINTS } from 'src/utils/endpoints';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 import { mapRoleLabel } from 'src/utils/role-label';
 import { canonicalPathRedirect } from 'src/utils/url';
@@ -104,7 +105,7 @@ const EventPage: NextPage<PropTypes> = ({ id, initialEvent }) => {
           {t('events.details.entries', { count: event.entries.length })}
         </h2>
         {event.entries.length === 0 && <NoResultsAlert message={t('events.details.noEntries')} />}
-        <EventEntries entries={event.entries} isStaff={isStaff} />
+        <EventEntries entries={event.entries} isStaff={isStaff} eventKey={[ENDPOINTS.EVENT({ id })]} />
       </section>
       <Link href={PATHS.EVENTS}>{t('events.details.backToList')}</Link>
     </Content>

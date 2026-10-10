@@ -21,7 +21,7 @@ import { Service } from 'src/services/service-class';
 import { ENDPOINTS } from 'src/utils';
 
 export class ColorGuideService extends Service {
-  getAppearance = (data: GetAppearancesIdRequest) =>
+  getAppearance = (data: GetAppearancesIdRequest & { token?: string }) =>
     Axios.get<GetAppearancesIdResult>(ENDPOINTS.APPEARANCE(data), this.getRequestOptions());
 
   getAppearances = (data: GetAppearancesRequest) => Axios.get<GetAppearancesResult>(ENDPOINTS.APPEARANCES(data), this.getRequestOptions());

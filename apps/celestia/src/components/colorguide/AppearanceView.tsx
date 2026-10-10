@@ -1,6 +1,7 @@
 import { useTranslations } from 'next-intl';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { FC, Fragment, useMemo, useState } from 'react';
 import { Button } from 'reactstrap';
 
@@ -55,7 +56,10 @@ interface SeoData {
 
 export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppearance }) => {
   const t = useTranslations();
-  const { appearance, status } = useDetailedAppearance({ id }, initialAppearance || undefined);
+  const { query } = useRouter();
+  const token = typeof query.token === 'string' ? query.token : undefined;
+  const params = useMemo(() => ({ id, token }), [id, token]);
+  const { appearance, status } = useDetailedAppearance(params, initialAppearance || undefined);
   const [swatchOpen, setSwatchOpen] = useState(false);
   useColorCopyWidget();
 

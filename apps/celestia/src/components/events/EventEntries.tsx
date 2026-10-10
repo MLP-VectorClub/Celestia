@@ -4,17 +4,24 @@ import { FC } from 'react';
 
 import { GetEventsIdResult } from '@mlp-vectorclub/api-types';
 import styles from 'modules/PostList.module.scss';
+import { EventEntryActions } from 'src/components/events/EventEntryActions';
 import ExternalLink from 'src/components/shared/ExternalLink';
 import { ImageZoomLink } from 'src/components/shared/ImageZoomLink';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import TimeAgo from 'src/components/shared/TimeAgo';
 import UserLink from 'src/components/shared/UserLink';
 import { LazyImage } from 'src/components/show/PostImages';
+import { useAuth } from 'src/hooks';
 import { createFavMeUrl } from 'src/utils/url';
 
 /** The submissions of an event as one wrapping row of cards, like the old site's entry list */
-export const EventEntries: FC<{ entries: GetEventsIdResult['entries']; isStaff: boolean }> = ({ entries, isStaff }) => {
+export const EventEntries: FC<{ entries: GetEventsIdResult['entries']; isStaff: boolean; eventKey: string[] }> = ({
+  entries,
+  isStaff,
+  eventKey,
+}) => {
   const t = useTranslations();
+  const { user } = useAuth();
 
   return (
     <ul className={styles.list}>
@@ -51,6 +58,10 @@ export const EventEntries: FC<{ entries: GetEventsIdResult['entries']; isStaff: 
                 <InlineIcon icon="pencil-alt" first title={t('events.details.lastEdited')} />
                 <TimeAgo date={entry.updatedAt} />
               </div>
+            )}
+            {/* Like the old site: the author and staff get the buttons, the API refuses changes to an ended event for the author */}
+            {(isStaff || user?.id === entry.submittedBy.id) && (
+              <EventEntryActions entryId={entry.id} title={entry.title} eventKey={eventKey} />
             )}
           </li>
         );

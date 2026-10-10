@@ -166,7 +166,7 @@ interface DetailedAppearanceHookValue {
 export function useDetailedAppearance(params: AppearanceFetcherParams, initialData?: GetAppearancesIdResult): DetailedAppearanceHookValue {
   const fetcher = useCallback(() => appearanceFetcher(params)(), [params]);
   const { data, status, fetchStatus } = useQuery({
-    queryKey: [ENDPOINTS.APPEARANCE(params as GetAppearancesIdRequest)],
+    queryKey: [ENDPOINTS.APPEARANCE(params as GetAppearancesIdRequest & { token?: string })],
     queryFn: fetcher,
     enabled: Boolean(params.id),
     initialData,

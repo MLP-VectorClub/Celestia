@@ -37,5 +37,16 @@
     "submitted": "Submitted",
     "lastEdited": "Last edited",
     "specialRoleDiscord": "Discord Server Members"
+  },
+  "entry": {
+    "edit": "Edit",
+    "editTitle": "Edit entry",
+    "save": "Save",
+    "link": "Link to the submission",
+    "title": "Title",
+    "preview": "Preview image URL (optional)",
+    "withdraw": "Withdraw",
+    "withdrawTitle": "Withdraw entry",
+    "withdrawBody": "Are you sure you want to withdraw “{title}”?"
   }
 }
