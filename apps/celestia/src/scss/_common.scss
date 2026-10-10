@@ -137,3 +137,14 @@ time[id] {
     text-decoration: none;
   }
 }
+
+// Tooltips only show text, so the mouse passes through them: otherwise one that overlaps its target makes the pointer flicker between the two
+// and the tooltip keeps closing and reopening. Tooltips with buttons or inputs in them (page jump, sign out confirmation) get the
+// `tooltip-interactive` class on their wrapper and stay clickable.
+.tooltip {
+  pointer-events: none;
+}
+
+.tooltip-interactive .tooltip {
+  pointer-events: auto;
+}

@@ -103,7 +103,7 @@ const GotoPaginationItem: FC<GotoPaginationItemProps> = ({ defaultValue, totalPa
           isOpen={tooltipOpen}
           fade={false}
           delay={tooltipOpen ? 500 : undefined}
-          className="tooltip-go-to-page"
+          className="tooltip-go-to-page tooltip-interactive"
         >
           <div className="d-flex align-items-center">
             <span className="me-2">{t('common.pagination.page')}:</span>
