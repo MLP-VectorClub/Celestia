@@ -19,6 +19,15 @@
   user-select: none;
 }
 
+.wrap.compact {
+  display: block;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+
 .menuButton {
   position: absolute;
   top: 0.25rem;

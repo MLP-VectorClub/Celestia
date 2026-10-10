@@ -11,7 +11,7 @@ import AppearanceItemNotes from 'src/components/colorguide/AppearanceItemNotes';
 import AppearanceItemTags from 'src/components/colorguide/AppearanceItemTags';
 import { AppearanceMetaDialog } from 'src/components/colorguide/AppearanceMetaDialog';
 import { NutshellLabel } from 'src/components/colorguide/NutshellLabel';
-import SpriteImage from 'src/components/colorguide/SpriteImage';
+import { SpriteWrap } from 'src/components/colorguide/SpriteWrap';
 import { SwatchDialog } from 'src/components/colorguide/SwatchDialog';
 import { IconButton, IconLink } from 'src/components/shared/IconButton';
 import InlineIcon from 'src/components/shared/InlineIcon';
@@ -22,7 +22,6 @@ import { describeApiError, useApiMutation, useAuth } from 'src/hooks';
 import { PATHS } from 'src/paths';
 import { AppearanceEditService } from 'src/services/appearance-edit';
 import { Nullable } from 'src/types';
-import { getSpriteUrl } from 'src/utils/color-guide';
 
 export interface AppearanceItemProps {
   appearance: Appearance & { lastMajorChange?: Nullable<string>; private?: boolean };
@@ -64,16 +63,7 @@ const AppearanceItem: FC<AppearanceItemProps> = ({ appearance, pinned = false, g
           <Col xs="auto">
             <div className="pe-3" role="presentation">
               <div className={styles.spriteBox}>
-                {appearance.sprite ? (
-                  <a
-                    href={getSpriteUrl(appearance.id, appearance.sprite, 600)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title={t('colorGuide.edit.sprite.openInNewTab')}
-                  >
-                    <SpriteImage appearanceId={appearance.id} sprite={appearance.sprite} />
-                  </a>
-                ) : null}
+                <SpriteWrap appearanceId={appearance.id} sprite={appearance.sprite} compact editable={isStaff} />
               </div>
             </div>
           </Col>
