@@ -1,0 +1,110 @@
+@use '../vars' as *;
+
+// The old site's .tag-editor: a bordered box holding the tags as chips and the field that adds one
+.editor {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  gap: 0.25rem;
+  min-height: 90px;
+  padding: 0.35rem;
+  border: 1px solid grey;
+  background: #fff;
+  position: relative;
+}
+
+.chip {
+  display: inline-flex;
+}
+
+.remove {
+  padding: 0;
+  font-weight: bold;
+  line-height: 1;
+  cursor: pointer;
+  background: none;
+  border: 0;
+}
+
+.noticeMe {
+  position: relative;
+  z-index: 2;
+  animation: flash 1s ease-in-out;
+}
+
+@keyframes flash {
+  from,
+  to {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.5);
+  }
+}
+
+.inputWrap {
+  position: relative;
+  flex: 1 1 12rem;
+  min-width: 12rem;
+  max-width: 24rem;
+}
+
+.input {
+  font-weight: normal;
+}
+
+.textarea {
+  min-height: 90px;
+  width: 100%;
+  font-family: monospace;
+  resize: vertical;
+}
+
+// The suggestions are tags themselves, one per line, with how often each is used
+.suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 5;
+  min-width: 100%;
+  max-height: 20rem;
+  margin: 2px 0 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+  background: #fff;
+  border: 1px solid #bbb;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+
+  > li {
+    padding: 2px;
+
+    &.active {
+      background: rgba($primary, 0.15);
+    }
+  }
+}
+
+.suggestion {
+  display: block;
+  width: 100%;
+  padding: 0;
+  text-align: left;
+  white-space: nowrap;
+  background: none;
+  border: 0;
+  cursor: pointer;
+
+  > span {
+    display: block;
+  }
+}
+
+.uses {
+  margin-left: 0.4em;
+  padding: 1px 2px;
+  font-family: monospace;
+  font-size: 0.9em;
+  font-weight: normal;
+}

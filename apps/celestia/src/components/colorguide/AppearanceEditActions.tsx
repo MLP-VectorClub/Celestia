@@ -6,7 +6,6 @@ import { Alert, Button } from 'reactstrap';
 import { DetailedAppearance } from '@mlp-vectorclub/api-types';
 import { AppearanceMetaDialog } from 'src/components/colorguide/AppearanceMetaDialog';
 import { AppearanceRelationsDialog } from 'src/components/colorguide/AppearanceRelationsDialog';
-import { AppearanceTagsDialog } from 'src/components/colorguide/AppearanceTagsDialog';
 import { CutieMarkDialog } from 'src/components/colorguide/CutieMarkDialog';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
@@ -68,19 +67,15 @@ export const AppearanceHeaderActions: FC<{ appearance: DetailedAppearance }> = (
 };
 
 /** "Edit tags" under the tags, staff only */
-export const EditTagsButton: FC<{ appearanceId: number }> = ({ appearanceId }) => {
+export const EditTagsButton: FC<{ onClick: () => void }> = ({ onClick }) => {
   const t = useTranslations();
   const { isStaff } = useAuth();
-  const [open, setOpen] = useState(false);
   if (!isStaff) return null;
   return (
-    <>
-      <Button color="darkblue" id="edit-tags-btn" data-testid="edit-tags-btn" onClick={() => setOpen(true)}>
-        <InlineIcon icon="pencil-alt" first />
-        {t('colorGuide.edit.actions.tags')}
-      </Button>
-      <AppearanceTagsDialog appearanceId={appearanceId} isOpen={open} onClose={() => setOpen(false)} />
-    </>
+    <Button color="darkblue" id="edit-tags-btn" data-testid="edit-tags-btn" onClick={onClick}>
+      <InlineIcon icon="pencil-alt" first />
+      {t('colorGuide.edit.actions.tags')}
+    </Button>
   );
 };
 
@@ -92,7 +87,11 @@ export const EditRelationsButton: FC<{ appearanceId: number; kind: 'shows' | 're
   if (!isStaff) return null;
   return (
     <>
-      <Button color="darkblue" className={kind === 'shows' ? 'edit-show-relations' : 'edit-appearance-relations'} onClick={() => setOpen(true)}>
+      <Button
+        color="darkblue"
+        className={kind === 'shows' ? 'edit-show-relations' : 'edit-appearance-relations'}
+        onClick={() => setOpen(true)}
+      >
         <InlineIcon icon="pencil-alt" first />
         {t('colorGuide.edit.actions.editRelations')}
       </Button>

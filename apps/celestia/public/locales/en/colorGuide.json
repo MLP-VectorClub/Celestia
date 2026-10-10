@@ -145,10 +145,15 @@
       "selectiveWipe": "Selective wipe"
     },
     "tags": {
-      "title": "Edit tags",
-      "save": "Save tags",
+      "save": "Save",
       "label": "Tags",
-      "help": "Separate tags with commas. Prefix a tag with its type (for example “spec:unicorn”) to create it with that type."
+      "help": "Separate tags with commas. Prefix a tag with its type (for example “spec:unicorn”) to create it with that type.",
+      "plainEditor": "Plain text editor",
+      "interactiveEditor": "Interactive editor",
+      "discard": "Discard",
+      "placeholder": "Add a tag…",
+      "add": "Add a tag",
+      "remove": "Remove the tag {name}"
     },
     "sprite": {
       "title": "Upload sprite image",

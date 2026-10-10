@@ -12,11 +12,17 @@ import SignInButton from 'src/components/shared/SignInButton';
 import SignOutButton from 'src/components/shared/SignOutButton';
 import HappeningSoon from 'src/components/widgets/HappeningSoon';
 import { DISCORD_INVITE_LINK } from 'src/config';
-import { useAuth, useConnectionInfo, useSidebarWidgetSlot } from 'src/hooks';
+import { useAuth, useConnectionInfo, usePrefs, useSidebarWidgetSlot } from 'src/hooks';
+import { shouldOfferDiscordInvite } from 'src/utils/discord-invite';
 
 const Sidebar: FC = () => {
   const t = useTranslations();
-  const { signedIn } = useAuth();
+  const { signedIn, user } = useAuth();
+  const prefs = usePrefs(signedIn);
+  const offerDiscord = shouldOfferDiscordInvite(
+    { signedIn, discordServerMember: (user as { discordServerMember?: boolean }).discordServerMember },
+    prefs
+  );
   const { backendDown } = useConnectionInfo();
   const widget = useSidebarWidgetSlot();
 
@@ -41,10 +47,12 @@ const Sidebar: FC = () => {
           <section className={signedIn ? 'welcome' : 'signin'}>
             <SidebarUsefulLinks />
             <div className="mb-2">{signedIn ? <SignOutButton /> : <SignInButton />}</div>
-            <Button color="discord" size="sm" tag={ExternalLink} href={DISCORD_INVITE_LINK}>
-              <InlineIcon icon={['fab', 'discord']} first />
-              {t('common.sidebar.joinDiscord')}
-            </Button>
+            {offerDiscord && (
+              <Button color="discord" size="sm" tag={ExternalLink} href={DISCORD_INVITE_LINK}>
+                <InlineIcon icon={['fab', 'discord']} first />
+                {t('common.sidebar.joinDiscord')}
+              </Button>
+            )}
           </section>
           {widget}
           <HappeningSoon />
