@@ -42,3 +42,49 @@
     line-height: 2em;
   }
 }
+
+// The reserver of a post: the same pill, 40px tall, with a caption above the name
+.reserver {
+  display: inline-block;
+  margin-top: 5px;
+}
+
+.tall {
+  $avatar-size: 40px;
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  font-size: $avatar-size;
+  height: calc(1em + 2px);
+  line-height: 1em;
+
+  > .avatar {
+    flex: none;
+    width: 1em;
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 0.5rem 0 0.4rem;
+    font-size: 16px;
+    line-height: 1.15;
+    text-align: left;
+  }
+
+  .caption {
+    color: #666;
+    font-size: 11px;
+    font-style: italic;
+    font-weight: normal;
+  }
+
+  .name {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.15;
+  }
+}

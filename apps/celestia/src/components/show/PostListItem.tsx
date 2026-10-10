@@ -6,15 +6,14 @@ import { Button } from 'reactstrap';
 
 import { PostItem } from '@mlp-vectorclub/api-types';
 import styles from 'modules/PostList.module.scss';
-import AvatarWrap from 'src/components/shared/AvatarWrap';
 import ExternalLink from 'src/components/shared/ExternalLink';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import TimeAgo from 'src/components/shared/TimeAgo';
 import UserLink from 'src/components/shared/UserLink';
+import UserLinkWithAvatar from 'src/components/shared/UserLinkWithAvatar';
 import { PostActions } from 'src/components/show/PostActions';
 import { DeviationImage, ScreencapImage } from 'src/components/show/PostImages';
 import { useAuth } from 'src/hooks';
-import { VectorApp } from 'src/types/api-alias';
 import { permission } from 'src/utils';
 
 /** The link of a post's own address (`/s/1z`, the ID in base 36) */
@@ -137,19 +136,12 @@ export const PostListItem: FC<{ post: PostItem; viewOnly?: boolean; highlighted?
       )}
 
       {post.reservedBy && (
-        <span
-          className={styles.reserver}
+        <UserLinkWithAvatar
+          {...post.reservedBy}
+          caption={t('show.post.reservedBy')}
+          vectorApp={post.reservedBy.vectorApp}
           title={post.reservedBy.vectorApp ? t('show.post.vectorAppTitle', { app: post.reservedBy.vectorApp }) : undefined}
-        >
-          <AvatarWrap
-            avatarProvider={post.reservedBy.avatarProvider}
-            avatarUrl={post.reservedBy.avatarUrl}
-            vectorApp={post.reservedBy.vectorApp as VectorApp | null}
-            size={30}
-            className="me-1"
-          />
-          <UserLink id={post.reservedBy.id} name={post.reservedBy.name} />
-        </span>
+        />
       )}
 
       {post.overdue && (
