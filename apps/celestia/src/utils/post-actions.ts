@@ -13,9 +13,18 @@ export const getPostActions = (post: PostItem, user: { id: number | null; role: 
   const isPoster = signedIn && post.postedBy?.id === user.id;
   const finished = post.finishedAt !== null;
   const mine = isReserver || isStaff;
+  // Like the old site: members see a reservation that has gone overdue as free (they may take it over), unless it is theirs or they are staff
+  const overdueForMember = isMember && post.overdue;
+  const reserverHidden = Boolean(post.reservedBy) && overdueForMember && !isReserver && !isStaff;
 
   return {
-    reserve: isMember && post.kind === 'request' && !post.reservedBy && !post.broken,
+    reserve: isMember && post.kind === 'request' && (!post.reservedBy || reserverHidden) && !post.broken,
+    /** The reserver is not shown to this visitor, the reservation can be taken over instead */
+    reserverHidden,
+    /** The reservation is overdue and belongs to somebody else, whom the reserved line then names */
+    overdueReservedByOther: overdueForMember && Boolean(post.reservedBy) && !isReserver,
+    /** The "can be contested" note is for the people it concerns: the reserver and staff */
+    contestNote: overdueForMember && (isReserver || isStaff),
     unreserve: isMember && Boolean(post.reservedBy) && !finished && !post.approved && mine,
     finish: isMember && Boolean(post.reservedBy) && !finished && mine,
     unfinish: isMember && finished && !post.approved && mine,

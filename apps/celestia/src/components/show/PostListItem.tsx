@@ -15,6 +15,7 @@ import { PostActions } from 'src/components/show/PostActions';
 import { DeviationImage, ScreencapImage } from 'src/components/show/PostImages';
 import { useAuth } from 'src/hooks';
 import { permission } from 'src/utils';
+import { getPostActions } from 'src/utils/post-actions';
 
 /** The link of a post's own address (`/s/1z`, the ID in base 36) */
 const postAddress = (post: PostItem) => `/s/${post.id.toString(36)}`;
@@ -46,6 +47,7 @@ export const PostListItem: FC<{ post: PostItem; viewOnly?: boolean; highlighted?
   const isRequester = user.id !== null && post.postedBy?.id === user.id;
   const isReserver = user.id !== null && post.reservedBy?.id === user.id;
   const showRequester = isRequest && (isStaff || isRequester || isReserver);
+  const { reserverHidden, overdueReservedByOther, contestNote } = getPostActions(post, user);
 
   return (
     <li
@@ -76,9 +78,15 @@ export const PostListItem: FC<{ post: PostItem; viewOnly?: boolean; highlighted?
         )}
       </em>
 
-      {isRequest && post.reservedBy && post.reservedAt && (
+      {isRequest && post.reservedBy && post.reservedAt && !reserverHidden && (
         <em className={styles.infoLine}>
           {t('show.post.reserved')} <strong>{<TimeAgo date={post.reservedAt} />}</strong>
+          {overdueReservedByOther && (
+            <>
+              {' '}
+              {t('show.post.by')} <UserLink id={post.reservedBy.id} name={post.reservedBy.name} />
+            </>
+          )}
         </em>
       )}
 
@@ -135,7 +143,7 @@ export const PostListItem: FC<{ post: PostItem; viewOnly?: boolean; highlighted?
         </>
       )}
 
-      {post.reservedBy && (
+      {post.reservedBy && !reserverHidden && (
         <UserLinkWithAvatar
           {...post.reservedBy}
           caption={t('show.post.reservedBy')}
@@ -144,7 +152,7 @@ export const PostListItem: FC<{ post: PostItem; viewOnly?: boolean; highlighted?
         />
       )}
 
-      {post.overdue && (
+      {contestNote && (
         <strong className={classNames(styles.note, styles.contest)} title={t('show.post.contestHint')}>
           <InlineIcon icon="info-circle" first />
           {t('show.post.canBeContested')}
