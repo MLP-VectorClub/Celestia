@@ -27,7 +27,9 @@ const SpriteImage: FC<PropTypes> = ({ appearanceId, sprite, height = 150 }) => {
       src={getSpriteUrl(appearanceId, sprite, height > 300 ? 600 : 300)}
       width={height}
       height={height}
-      style={{ objectFit: 'contain' }}
+      // The list's box is a square the sprite is fitted into (the class sets its 150px). The big version on the page is shown at the size of
+      // the file, like the old site did, and only shrinks (keeping its proportions) when its column is narrower
+      style={height > 300 ? { height: 'auto', width: 'auto', maxWidth: '100%' } : { objectFit: 'contain', height, maxWidth: '100%' }}
       unoptimized
       alt={t('colorGuide.appearance.spriteAlt')}
     />
