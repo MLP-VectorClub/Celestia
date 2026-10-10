@@ -2,11 +2,13 @@ import { useTranslations } from 'next-intl';
 import { FC, ReactNode, useState } from 'react';
 import { Button, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
-import { API_PREFIX } from 'src/config';
+import { getAppearanceFileUrl } from 'src/utils/color-guide';
 
 interface PropTypes {
   appearanceId: number;
   name: string;
+  /** The share token of a private appearance */
+  token?: string;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -20,10 +22,10 @@ const Embed: FC<{ src: string }> = ({ src }) => (
 );
 
 /** The "Download swatch file" dialog of the old site: pick Inkscape or Adobe Illustrator and get that program's files and instructions */
-export const SwatchDialog: FC<PropTypes> = ({ appearanceId, name, isOpen, onClose }) => {
+export const SwatchDialog: FC<PropTypes> = ({ appearanceId, name, token, isOpen, onClose }) => {
   const t = useTranslations();
   const [program, setProgram] = useState<'' | 'inkscape' | 'ai'>('');
-  const palette = (format: string) => `${API_PREFIX}/appearances/${appearanceId}/palette?format=${format}`;
+  const palette = (format: string) => getAppearanceFileUrl(appearanceId, 'palette', { format }, token);
   const keys: ReactNode = isMac() ? (
     <>
       <kbd>fn</kbd>
@@ -64,7 +66,11 @@ export const SwatchDialog: FC<PropTypes> = ({ appearanceId, name, isOpen, onClos
               <li>
                 {t.rich('colorGuide.item.swatchDialog.illustratorStep1', {
                   script: (chunks) => (
-                    <a href="/dist/Import%20Swatches%20from%20JSON.jsx?v=1.5" download="Import Swatches from JSON.jsx" className="btn btn-sm btn-ui">
+                    <a
+                      href="/dist/Import%20Swatches%20from%20JSON.jsx?v=1.5"
+                      download="Import Swatches from JSON.jsx"
+                      className="btn btn-sm btn-ui"
+                    >
                       {chunks}
                     </a>
                   ),

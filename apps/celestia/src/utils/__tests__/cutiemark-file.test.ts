@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { sendCutieMarkFile } from 'src/utils/cutiemark-file';
 
-const makeCtx = (headers: Record<string, string> = {}) => {
+const makeCtx = (headers: Record<string, string> = {}, query: Record<string, string> = {}) => {
   const res = { statusCode: 200, headers: {} as Record<string, string>, body: undefined as unknown, ended: false } as {
     statusCode: number;
     headers: Record<string, string>;
@@ -21,7 +21,7 @@ const makeCtx = (headers: Record<string, string> = {}) => {
     res.body = body;
     res.ended = true;
   };
-  return { ctx: { req: { headers }, res } as never, res };
+  return { ctx: { req: { headers }, res, query } as never, res };
 };
 
 const respond = (status: number, init: { type?: string; disposition?: string; body?: string } = {}) =>
@@ -59,6 +59,17 @@ describe('sendCutieMarkFile', () => {
     expect(res.headers['Content-Type']).toBe('image/svg+xml');
     expect(res.headers['Content-Disposition']).toBe('attachment; filename="x.svg"');
     expect(Buffer.from(res.body as Buffer).toString()).toBe('<svg>ok</svg>');
+  });
+
+  it('passes the share token of a private appearance on, and nothing when there is none', async () => {
+    const fetchMock = vi.fn().mockImplementation(() => Promise.resolve(respond(200)));
+    vi.stubGlobal('fetch', fetchMock);
+
+    await sendCutieMarkFile(makeCtx({}, { token: 'a b&c' }).ctx, '42', 'image');
+    expect(fetchMock.mock.calls[0][0]).toMatch(/\/cutie-marks\/42\/image\?token=a%20b%26c$/);
+
+    await sendCutieMarkFile(makeCtx({}, { token: '' }).ctx, '42', 'image');
+    expect(fetchMock.mock.calls[1][0]).toMatch(/\/cutie-marks\/42\/image$/);
   });
 
   it('defaults to SVG and leaves the disposition off when the API sends none', async () => {

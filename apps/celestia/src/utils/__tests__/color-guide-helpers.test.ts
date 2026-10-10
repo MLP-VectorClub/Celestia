@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { SlimGuideTag } from '@mlp-vectorclub/api-types';
 import {
   CutieMarkColorMapping,
+  getAppearanceFileUrl,
   getAppearanceTitle,
   getColorMapping,
   getGuideLabel,
@@ -95,6 +96,28 @@ describe('getSpriteUrl', () => {
   it('asks for the size and busts the cache with the hash', () => {
     expect(getSpriteUrl(5, { hash: 'abc' })).toMatch(/\/appearances\/5\/sprite\?size=300&hash=abc$/);
     expect(getSpriteUrl(5, { hash: 'abc' }, 600)).toMatch(/size=600&hash=abc$/);
+  });
+
+  it('adds the share token of a private appearance only when there is one', () => {
+    expect(getSpriteUrl(5, { hash: 'abc' }, 600, 'secret')).toMatch(/\/appearances\/5\/sprite\?size=600&hash=abc&token=secret$/);
+    expect(getSpriteUrl(5, { hash: 'abc' }, 300, '')).not.toContain('token');
+    expect(getSpriteUrl(5, { hash: 'abc' }, 300, undefined)).not.toContain('token');
+  });
+});
+
+describe('getAppearanceFileUrl', () => {
+  it('builds the address of a palette or image with its options', () => {
+    expect(getAppearanceFileUrl(5, 'palette', { format: 'gpl' })).toMatch(/\/appearances\/5\/palette\?format=gpl$/);
+    expect(getAppearanceFileUrl(5, 'image', { type: 'palette', format: 'png' })).toMatch(
+      /\/appearances\/5\/image\?type=palette&format=png$/
+    );
+  });
+
+  it('carries the share token of a private appearance along', () => {
+    expect(getAppearanceFileUrl(5, 'palette', { format: 'json' }, 'secret')).toMatch(
+      /\/appearances\/5\/palette\?format=json&token=secret$/
+    );
+    expect(getAppearanceFileUrl(5, 'palette', { format: 'json' }, '')).not.toContain('token');
   });
 });
 

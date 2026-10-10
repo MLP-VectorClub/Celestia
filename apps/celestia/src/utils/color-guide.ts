@@ -200,8 +200,17 @@ export const yiq = (rgb: RgbColors): number => (rgb.red * 299 + rgb.green * 587 
 /**
  * The contract's `Sprite` only carries a hash; the image itself is `GET /appearances/{id}/sprite` (300 or 600 px, `hash` busts caches)
  */
-export const getSpriteUrl = (appearanceId: number, sprite: Pick<Sprite, 'hash'>, size: 300 | 600 = 300): string =>
-  `${API_PREFIX}${buildUrl(`/appearances/${appearanceId}/sprite`, { size, hash: sprite.hash })}`;
+export const getSpriteUrl = (appearanceId: number, sprite: Pick<Sprite, 'hash'>, size: 300 | 600 = 300, token?: string): string =>
+  // `token` is the share secret of a private appearance, without it only its owner and staff get the image
+  `${API_PREFIX}${buildUrl(`/appearances/${appearanceId}/sprite`, { size, hash: sprite.hash, ...(token ? { token } : {}) })}`;
+
+/** Where an appearance's palette or rendered image is served, `query` being what the endpoint takes (with the share token of a private appearance) */
+export const getAppearanceFileUrl = (
+  appearanceId: number,
+  file: 'palette' | 'image',
+  query: Record<string, string>,
+  token?: string
+): string => `${API_PREFIX}${buildUrl(`/appearances/${appearanceId}/${file}`, { ...query, ...(token ? { token } : {}) })}`;
 
 /** Character tags that the label does not already mention, to show as "AKA" */
 export const getNonObviousCharacterTags = (appearance: Pick<SlimAppearance, 'label' | 'tags'>): string[] => {

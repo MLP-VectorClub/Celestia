@@ -13,13 +13,15 @@ interface PropTypes {
   height?: number;
   /** Loads the 600px file (sharp on high density screens) instead of the 300px one, still shown at `height` at most */
   highRes?: boolean;
+  /** The share token of a private appearance */
+  token?: string;
 }
 
 /**
  * The contract does not send an aspect ratio. The list's small box fits the sprite into a square of `height`; the big version keeps the
  * file's proportions and is only clamped to `height` (and to its column, when that is narrower)
  */
-const SpriteImage: FC<PropTypes> = ({ appearanceId, sprite, height = 150, highRes = false }) => {
+const SpriteImage: FC<PropTypes> = ({ appearanceId, sprite, height = 150, highRes = false, token }) => {
   const t = useTranslations();
   if (!sprite) {
     return null;
@@ -28,7 +30,7 @@ const SpriteImage: FC<PropTypes> = ({ appearanceId, sprite, height = 150, highRe
   return (
     <Image
       className={styles.spriteImage}
-      src={getSpriteUrl(appearanceId, sprite, highRes ? 600 : 300)}
+      src={getSpriteUrl(appearanceId, sprite, highRes ? 600 : 300, token)}
       width={height}
       height={height}
       // The class sets the list's 150px height, which the big version has to override

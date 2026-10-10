@@ -33,14 +33,13 @@ import Content from 'src/components/shared/Content';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import StatusAlert from 'src/components/shared/StatusAlert';
-import { API_PREFIX } from 'src/config';
 import { APP_HOST } from 'src/config';
 import { useDetailedAppearance } from 'src/hooks';
 import { PATHS } from 'src/paths';
 import { Nullable } from 'src/types';
 import { assembleSeoUrl } from 'src/utils';
 import { formatShowHeading } from 'src/utils/show';
-import { getSpriteUrl } from 'src/utils/color-guide';
+import { getAppearanceFileUrl, getSpriteUrl } from 'src/utils/color-guide';
 
 interface AppearanceViewProps {
   /** The guide from the URL, personal guide appearances have none */
@@ -100,12 +99,12 @@ export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppe
         </Head>
       )}
       {appearance.canEdit ? (
-        <SpriteWrap appearanceId={appearance.id} sprite={appearance.sprite} />
+        <SpriteWrap appearanceId={appearance.id} sprite={appearance.sprite} token={token} />
       ) : (
         appearance.sprite && (
           <div className={styles.spriteImage}>
-            <a href={getSpriteUrl(appearance.id, appearance.sprite, 600)} target="_blank" rel="noopener" title={t('colorGuide.edit.sprite.openInNewTab')}>
-              <SpriteImage appearanceId={appearance.id} sprite={appearance.sprite} height={300} highRes />
+            <a href={getSpriteUrl(appearance.id, appearance.sprite, 600, token)} target="_blank" rel="noopener" title={t('colorGuide.edit.sprite.openInNewTab')}>
+              <SpriteImage appearanceId={appearance.id} sprite={appearance.sprite} height={300} highRes token={token} />
             </a>
           </div>
         )
@@ -128,7 +127,7 @@ export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppe
         <Button
           tag="a"
           color="guide-link"
-          href={`${API_PREFIX}/appearances/${appearance.id}/image?type=palette&format=png`}
+          href={getAppearanceFileUrl(appearance.id, 'image', { type: 'palette', format: 'png' }, token)}
           target="_blank"
           rel="noopener"
         >
@@ -142,7 +141,7 @@ export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppe
         {shortUrl && <ShareAppearanceButton shortUrl={shortUrl} />}
         <AppearanceHeaderActions appearance={appearance} />
       </ButtonCollection>
-      <SwatchDialog appearanceId={appearance.id} name={appearance.label} isOpen={swatchOpen} onClose={() => setSwatchOpen(false)} />
+      <SwatchDialog appearanceId={appearance.id} name={appearance.label} token={token} isOpen={swatchOpen} onClose={() => setSwatchOpen(false)} />
 
       <StatusAlert status={status} subject={t('colorGuide.appearance.subject')} />
 

@@ -19,7 +19,9 @@ export const sendCutieMarkFile = async (
   if (ctx.req.headers.authorization) headers.authorization = ctx.req.headers.authorization;
   let response: Response;
   try {
-    response = await fetch(`${API_HOST}/cutie-marks/${id}/${disposition}`, { headers });
+    // The share token of a private appearance may come along on the old addresses too
+    const token = typeof ctx.query.token === 'string' && ctx.query.token !== '' ? `?token=${encodeURIComponent(ctx.query.token)}` : '';
+    response = await fetch(`${API_HOST}/cutie-marks/${id}/${disposition}${token}`, { headers });
   } catch {
     ctx.res.writeHead(503).end();
     return { props: {} };

@@ -23,13 +23,15 @@ interface PropTypes {
   compact?: boolean;
   /** Whether the visitor may upload and remove the sprite; others only get the menu entries that read it. Defaults to true */
   editable?: boolean;
+  /** The share token of a private appearance */
+  token?: string;
 }
 
 /**
  * The sprite of an appearance for the people who may change it: an image (or an empty box when there is none) that takes a file straight away,
  * and a "⋯" menu with the other things to do (the old site had them in a right click menu)
  */
-export const SpriteWrap: FC<PropTypes> = ({ appearanceId, sprite, compact = false, editable = true }) => {
+export const SpriteWrap: FC<PropTypes> = ({ appearanceId, sprite, compact = false, editable = true, token }) => {
   const t = useTranslations();
   const { confirm } = useDialog();
   const input = useRef<HTMLInputElement>(null);
@@ -62,7 +64,7 @@ export const SpriteWrap: FC<PropTypes> = ({ appearanceId, sprite, compact = fals
       remove.mutate();
   };
 
-  const spriteUrl = sprite ? getSpriteUrl(appearanceId, sprite, 600) : null;
+  const spriteUrl = sprite ? getSpriteUrl(appearanceId, sprite, 600, token) : null;
   const menuItems: ActionMenuItem[] = [
     {
       key: 'open',
@@ -122,7 +124,7 @@ export const SpriteWrap: FC<PropTypes> = ({ appearanceId, sprite, compact = fals
         }}
       >
         {sprite ? (
-          <SpriteImage appearanceId={appearanceId} sprite={sprite} height={compact ? 150 : 300} highRes={!compact} />
+          <SpriteImage appearanceId={appearanceId} sprite={sprite} height={compact ? 150 : 300} highRes={!compact} token={token} />
         ) : (
           editable && !compact && <span className="text-muted">{t('colorGuide.edit.sprite.none')}</span>
         )}
