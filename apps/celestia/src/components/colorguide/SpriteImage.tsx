@@ -9,13 +9,17 @@ import { getSpriteUrl } from 'src/utils/color-guide';
 interface PropTypes {
   appearanceId: number;
   sprite: Sprite | null;
+  /** The size it is shown at, in CSS pixels */
   height?: number;
+  /** Loads the 600px file (sharp on high density screens) instead of the 300px one, still shown at `height` at most */
+  highRes?: boolean;
 }
 
 /**
- * The contract does not send an aspect ratio, so the sprite is fitted into a square of the requested size
+ * The contract does not send an aspect ratio. The list's small box fits the sprite into a square of `height`; the big version keeps the
+ * file's proportions and is only clamped to `height` (and to its column, when that is narrower)
  */
-const SpriteImage: FC<PropTypes> = ({ appearanceId, sprite, height = 150 }) => {
+const SpriteImage: FC<PropTypes> = ({ appearanceId, sprite, height = 150, highRes = false }) => {
   const t = useTranslations();
   if (!sprite) {
     return null;
@@ -24,12 +28,15 @@ const SpriteImage: FC<PropTypes> = ({ appearanceId, sprite, height = 150 }) => {
   return (
     <Image
       className={styles.spriteImage}
-      src={getSpriteUrl(appearanceId, sprite, height > 300 ? 600 : 300)}
+      src={getSpriteUrl(appearanceId, sprite, highRes ? 600 : 300)}
       width={height}
       height={height}
-      // The list's box is a square the sprite is fitted into (the class sets its 150px). The big version on the page is shown at the size of
-      // the file, like the old site did, and only shrinks (keeping its proportions) when its column is narrower
-      style={height > 300 ? { height: 'auto', width: 'auto', maxWidth: '100%' } : { objectFit: 'contain', height, maxWidth: '100%' }}
+      // The class sets the list's 150px height, which the big version has to override
+      style={
+        highRes
+          ? { height: 'auto', width: 'auto', maxWidth: `min(100%, ${height}px)`, maxHeight: height }
+          : { objectFit: 'contain', height, maxWidth: '100%' }
+      }
       unoptimized
       alt={t('colorGuide.appearance.spriteAlt')}
     />

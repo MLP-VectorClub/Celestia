@@ -122,7 +122,7 @@ export const SpriteWrap: FC<PropTypes> = ({ appearanceId, sprite, compact = fals
         }}
       >
         {sprite ? (
-          <SpriteImage appearanceId={appearanceId} sprite={sprite} height={compact ? 150 : 600} />
+          <SpriteImage appearanceId={appearanceId} sprite={sprite} height={compact ? 150 : 300} highRes={!compact} />
         ) : (
           editable && !compact && <span className="text-muted">{t('colorGuide.edit.sprite.none')}</span>
         )}

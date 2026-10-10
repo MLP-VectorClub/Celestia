@@ -38,12 +38,14 @@
   transition-timing-function: linear;
   @include tag-variant();
 
+  // Like the old site: a little smaller and faded, back to full strength under the pointer
   &.synonym {
+    font-size: 0.9em;
     font-weight: normal !important;
     letter-spacing: -0.8px;
 
     &:not(:hover):not(:focus) {
-      opacity: 0.6;
+      opacity: 0.8;
     }
   }
 
