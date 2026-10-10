@@ -6,15 +6,15 @@ import { Card, CardBody, Col, Row } from 'reactstrap';
 
 import { Appearance, GuideName } from '@mlp-vectorclub/api-types';
 import styles from 'modules/AppearanceItem.module.scss';
-import { AppearanceMetaDialog } from 'src/components/colorguide/AppearanceMetaDialog';
 import AppearanceItemColorGroups from 'src/components/colorguide/AppearanceItemColorGroups';
 import AppearanceItemNotes from 'src/components/colorguide/AppearanceItemNotes';
 import AppearanceItemTags from 'src/components/colorguide/AppearanceItemTags';
+import { AppearanceMetaDialog } from 'src/components/colorguide/AppearanceMetaDialog';
 import { NutshellLabel } from 'src/components/colorguide/NutshellLabel';
 import SpriteImage from 'src/components/colorguide/SpriteImage';
 import { SwatchDialog } from 'src/components/colorguide/SwatchDialog';
-import InlineIcon from 'src/components/shared/InlineIcon';
 import { IconButton, IconLink } from 'src/components/shared/IconButton';
+import InlineIcon from 'src/components/shared/InlineIcon';
 import TimeAgo from 'src/components/shared/TimeAgo';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { API_PREFIX } from 'src/config';
@@ -22,6 +22,7 @@ import { describeApiError, useApiMutation, useAuth } from 'src/hooks';
 import { PATHS } from 'src/paths';
 import { AppearanceEditService } from 'src/services/appearance-edit';
 import { Nullable } from 'src/types';
+import { getSpriteUrl } from 'src/utils/color-guide';
 
 export interface AppearanceItemProps {
   appearance: Appearance & { lastMajorChange?: Nullable<string>; private?: boolean };
@@ -43,20 +44,36 @@ const AppearanceItem: FC<AppearanceItemProps> = ({ appearance, pinned = false, g
 
   // Lists (guide pages, pinned appearances, searches) show the changed entry again
   const refresh = () =>
-    queryClient.invalidateQueries({ predicate: (query) => typeof query.queryKey[0] === 'string' && query.queryKey[0].startsWith('/appearances') });
+    queryClient.invalidateQueries({
+      predicate: (query) => typeof query.queryKey[0] === 'string' && query.queryKey[0].startsWith('/appearances'),
+    });
   const pin = useApiMutation(() => AppearanceEditService.pin(appearance.id), { onSuccess: () => void refresh() });
   const unpin = useApiMutation(() => AppearanceEditService.unpin(appearance.id), { onSuccess: () => void refresh() });
   const remove = useApiMutation(() => AppearanceEditService.remove(appearance.id), { onSuccess: () => void refresh() });
   const error = pin.error ?? unpin.error ?? remove.error;
 
   return (
-    <Card id={`p${appearance.id}`} className={`${styles.appearanceItem} mb-3`} role="region" aria-label={pinned ? 'Pinned Appearance' : 'Appearance'}>
+    <Card
+      id={`p${appearance.id}`}
+      className={`${styles.appearanceItem} mb-3`}
+      role="region"
+      aria-label={pinned ? 'Pinned Appearance' : 'Appearance'}
+    >
       <CardBody className="p-2">
         <Row noGutters>
           <Col xs="auto">
             <div className="pe-3" role="presentation">
               <div className={styles.spriteBox}>
-                <SpriteImage appearanceId={appearance.id} sprite={appearance.sprite} />
+                {appearance.sprite ? (
+                  <a
+                    href={getSpriteUrl(appearance.id, appearance.sprite, 600)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={t('colorGuide.edit.sprite.openInNewTab')}
+                  >
+                    <SpriteImage appearanceId={appearance.id} sprite={appearance.sprite} />
+                  </a>
+                ) : null}
               </div>
             </div>
           </Col>
@@ -81,7 +98,13 @@ const AppearanceItem: FC<AppearanceItemProps> = ({ appearance, pinned = false, g
                   <>
                     <IconButton icon="pencil-alt" color="darkblue" title={t('colorGuide.item.edit')} onClick={() => setEditOpen(true)} />
                     {!pinned && isOfficial && (
-                      <IconButton icon="thumbtack" color="darkblue" title={t('colorGuide.item.pin')} disabled={pin.isPending} onClick={() => pin.mutate()} />
+                      <IconButton
+                        icon="thumbtack"
+                        color="darkblue"
+                        title={t('colorGuide.item.pin')}
+                        disabled={pin.isPending}
+                        onClick={() => pin.mutate()}
+                      />
                     )}
                     {!pinned && (
                       <IconButton
@@ -104,7 +127,13 @@ const AppearanceItem: FC<AppearanceItemProps> = ({ appearance, pinned = false, g
                       />
                     )}
                     {pinned && isOfficial && (
-                      <IconButton icon="thumbtack" color="orange" title={t('colorGuide.item.unpin')} disabled={unpin.isPending} onClick={() => unpin.mutate()} />
+                      <IconButton
+                        icon="thumbtack"
+                        color="orange"
+                        title={t('colorGuide.item.unpin')}
+                        disabled={unpin.isPending}
+                        onClick={() => unpin.mutate()}
+                      />
                     )}
                   </>
                 )}
