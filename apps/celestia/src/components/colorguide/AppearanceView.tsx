@@ -142,7 +142,7 @@ export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppe
           <InlineIcon icon="paint-brush" first />
           {t('colorGuide.appearance.downloadSwatch')}
         </Button>
-        {shortUrl && <ShareAppearanceButton shortUrl={shortUrl} isPrivate={Boolean(appearance.token)} />}
+        {shortUrl && <ShareAppearanceButton shortUrl={shortUrl} isPrivate={Boolean(appearance.token)} appearanceId={appearance.id} />}
         <AppearanceHeaderActions appearance={appearance} />
       </ButtonCollection>
       <SwatchDialog appearanceId={appearance.id} name={appearance.label} token={token} isOpen={swatchOpen} onClose={() => setSwatchOpen(false)} />

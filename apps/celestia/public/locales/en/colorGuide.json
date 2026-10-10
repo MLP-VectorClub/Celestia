@@ -312,7 +312,11 @@
     "copy": "Copy",
     "social": "Social sharing",
     "email": "Email",
-    "privateHelp": "This appearance is private, but by using this link you can give anyone access to the colors."
+    "privateHelp": "This appearance is private, but by using this link you can give anyone access to the colors.",
+    "newLink": "Generate a new link",
+    "newLinkWarning": "The link above will stop working: whoever has it loses access to this appearance until you send them the new one.",
+    "newLinkConfirm": "Generate a new link",
+    "newLinkMade": "There is a new link, the old one no longer works."
   },
   "cutieMarkDisplay": {
     "heading": "{count, plural, one {Cutie mark} other {Cutie marks}}",
