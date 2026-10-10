@@ -40,6 +40,7 @@ import { Nullable } from 'src/types';
 import { assembleSeoUrl } from 'src/utils';
 import { formatShowHeading } from 'src/utils/show';
 import { getAppearanceFileUrl, getSpriteUrl } from 'src/utils/color-guide';
+import { appearanceShareUrl } from 'src/utils/share-url';
 
 interface AppearanceViewProps {
   /** The guide from the URL, personal guide appearances have none */
@@ -77,7 +78,10 @@ export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppe
         : null,
     [appearance]
   );
-  const shortUrl = useMemo(() => appearance && assembleSeoUrl(PATHS.SHORT_APPEARANCE(appearance)), [appearance]);
+  const shortUrl = useMemo(
+    () => appearance && appearanceShareUrl(assembleSeoUrl(PATHS.SHORT_APPEARANCE(appearance)), appearance.token),
+    [appearance]
+  );
 
   if (!appearance) {
     return <GuideNotFound heading={t('colorGuide.notFound.unknownAppearance')} noun={t('colorGuide.notFound.nouns.appearance')} />;
@@ -138,7 +142,7 @@ export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppe
           <InlineIcon icon="paint-brush" first />
           {t('colorGuide.appearance.downloadSwatch')}
         </Button>
-        {shortUrl && <ShareAppearanceButton shortUrl={shortUrl} />}
+        {shortUrl && <ShareAppearanceButton shortUrl={shortUrl} isPrivate={Boolean(appearance.token)} />}
         <AppearanceHeaderActions appearance={appearance} />
       </ButtonCollection>
       <SwatchDialog appearanceId={appearance.id} name={appearance.label} token={token} isOpen={swatchOpen} onClose={() => setSwatchOpen(false)} />

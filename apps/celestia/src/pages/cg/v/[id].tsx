@@ -16,6 +16,7 @@ import { wrapper } from 'src/store';
 import { SSRMessages } from 'src/types';
 import { handleDataFetchingError, notFound } from 'src/utils';
 import { typedServerSideTranslations } from 'src/utils/i18n';
+import { appearanceShareUrl } from 'src/utils/share-url';
 
 interface PropTypes {
   id: number;
@@ -61,11 +62,13 @@ export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRMess
     return { notFound: true };
   }
   const id = Number.parseInt(query.id, 10);
+  // A private appearance's share link is the short one with its token, which has to survive the redirect
+  const token = typeof query.token === 'string' && query.token !== '' ? query.token : undefined;
 
   // The locate endpoint does not say which personal guide an appearance belongs to, the full appearance does
   let appearanceData: GetAppearancesIdResult | undefined;
   try {
-    appearanceData = await appearanceFetcher({ id }, req)();
+    appearanceData = await appearanceFetcher({ id, token }, req)();
   } catch (e) {
     handleDataFetchingError(ctx, e);
   }
@@ -73,7 +76,7 @@ export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRMess
   if (appearanceData) {
     return {
       redirect: {
-        destination: PATHS.APPEARANCE(appearanceData),
+        destination: appearanceShareUrl(PATHS.APPEARANCE(appearanceData), token),
         statusCode: StatusCodes.TEMPORARY_REDIRECT,
       },
     };

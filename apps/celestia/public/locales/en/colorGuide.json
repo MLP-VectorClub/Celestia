@@ -311,7 +311,8 @@
     "help": "You can use the link below to share this appearance with the world.",
     "copy": "Copy",
     "social": "Social sharing",
-    "email": "Email"
+    "email": "Email",
+    "privateHelp": "This appearance is private, but by using this link you can give anyone access to the colors."
   },
   "cutieMarkDisplay": {
     "heading": "{count, plural, one {Cutie mark} other {Cutie marks}}",

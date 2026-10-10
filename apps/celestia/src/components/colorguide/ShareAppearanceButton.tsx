@@ -9,9 +9,11 @@ import { useCopyToClipboard } from 'src/hooks/copy';
 
 interface PropTypes {
   shortUrl?: string;
+  /** The link carries the token that opens a private appearance for whoever has it */
+  isPrivate?: boolean;
 }
 
-export const ShareAppearanceButton: FC<PropTypes> = ({ shortUrl }) => {
+export const ShareAppearanceButton: FC<PropTypes> = ({ shortUrl, isPrivate = false }) => {
   const t = useTranslations();
   const [shareOpen, setShareOpen] = useState(false);
   const [shareVisible, setShareVisible] = useState(false);
@@ -59,7 +61,7 @@ export const ShareAppearanceButton: FC<PropTypes> = ({ shortUrl }) => {
           {t('colorGuide.share.title')}
         </ModalHeader>
         <ModalBody>
-          <p>{t('colorGuide.share.help')}</p>
+          <p>{isPrivate ? t('colorGuide.share.privateHelp') : t('colorGuide.share.help')}</p>
           <FormGroup>
             <InputGroup className="flex-nowrap">
               <span className={`input-group-text flex-grow-1 ${styles.appearanceLinkInput}`} ref={urlInputRef}>
