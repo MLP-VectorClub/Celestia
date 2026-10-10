@@ -101,7 +101,7 @@ describe('getPostActions editing', () => {
       const actions = overdue(member);
       expect(actions.reserve).toBe(true);
       expect(actions.reserverHidden).toBe(true);
-      expect(actions.contestNote).toBe(false);
+      expect(actions.contestNote).toBe(true);
     });
 
     it('keeps the reserver visible to staff, names them in the reserved line and shows them the contest note, without a reserve button', () => {

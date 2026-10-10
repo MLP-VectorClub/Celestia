@@ -23,8 +23,8 @@ export const getPostActions = (post: PostItem, user: { id: number | null; role: 
     reserverHidden,
     /** The reservation is overdue and belongs to somebody else, whom the reserved line then names */
     overdueReservedByOther: overdueForMember && Boolean(post.reservedBy) && !isReserver,
-    /** The "can be contested" note is for the people it concerns: the reserver and staff */
-    contestNote: overdueForMember && (isReserver || isStaff),
+    /** The "can be contested" note is for everybody who may reserve (the old site only showed it to the reserver and staff, but it is the members who can act on it) */
+    contestNote: overdueForMember,
     unreserve: isMember && Boolean(post.reservedBy) && !finished && !post.approved && mine,
     finish: isMember && Boolean(post.reservedBy) && !finished && mine,
     unfinish: isMember && finished && !post.approved && mine,
