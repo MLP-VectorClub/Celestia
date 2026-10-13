@@ -17,7 +17,7 @@ import { PATHS } from 'src/paths';
 import { useAppDispatch, wrapper } from 'src/store';
 import { Nullable, Optional, SSRMessages } from 'src/types';
 import { TitleFactory } from 'src/types/title';
-import { forbidden, handleDataFetchingError, notFound } from 'src/utils';
+import { forbidden, handleDataFetchingError, notFound, permission } from 'src/utils';
 import { titleSetter } from 'src/utils/core';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 import { parseUserIdParam } from 'src/utils/profile';
@@ -45,7 +45,13 @@ const AccountPage: NextPage<PropTypes> = ({ userId, user }) => {
   const titleData = useMemo(() => titleFactory({ user }), [user]);
   useTitleSetter(dispatch, titleData);
 
-  const heading = <StandardHeading heading={t('users.account.heading')} lead={t('users.account.lead')} />;
+  const own = authUser.id === userId;
+  const heading = (
+    <StandardHeading
+      heading={t('users.account.heading')}
+      lead={own ? t('users.account.lead') : t('users.account.leadOther', { name: user?.name ?? '' })}
+    />
+  );
 
   if (!signedIn) {
     return (
@@ -58,7 +64,8 @@ const AccountPage: NextPage<PropTypes> = ({ userId, user }) => {
     );
   }
 
-  if (authUser.id !== userId) {
+  // Anybody's own settings, and staff may look after anybody's
+  if (!own && !isStaff) {
     return (
       <Content>
         {heading}
@@ -73,7 +80,7 @@ const AccountPage: NextPage<PropTypes> = ({ userId, user }) => {
     <Content>
       {heading}
       <div id="account">
-        <SessionsSection />
+        <SessionsSection userId={userId} own={own} />
         {isStaff && profile && (
           <section id="security">
             <h2>
@@ -82,24 +89,26 @@ const AccountPage: NextPage<PropTypes> = ({ userId, user }) => {
               </span>
               {t('users.account.security')}
             </h2>
-            <EmailChangeForm profile={profile} sameUser />
-            <PasswordForm passwordSet={Boolean(profile.account?.passwordSet)} />
+            <EmailChangeForm profile={profile} sameUser={own} />
+            {own && <PasswordForm passwordSet={Boolean(profile.account?.passwordSet)} />}
           </section>
         )}
-        {profile && <DiscordSection profile={profile} sameUser />}
-        <section>
-          <h2>
-            <span title={t('users.profile.visibleTo.staff')} className="me-1">
-              <InlineIcon icon="lock" size="sm" />
-            </span>
-            {t('users.account.sections.deviantart')}
-          </h2>
-          <p>{t('users.account.deviantartText')}</p>
-          <Button tag="a" color="guide-link" href="https://www.deviantart.com/account/auth" target="_blank" rel="noopener noreferrer">
-            <InlineIcon icon="arrow-right" first />
-            {t('users.account.deviantartButton')}
-          </Button>
-        </section>
+        {profile && <DiscordSection profile={profile} sameUser={own} />}
+        {own && (
+          <section>
+            <h2>
+              <span title={t('users.profile.visibleTo.staff')} className="me-1">
+                <InlineIcon icon="lock" size="sm" />
+              </span>
+              {t('users.account.sections.deviantart')}
+            </h2>
+            <p>{t('users.account.deviantartText')}</p>
+            <Button tag="a" color="guide-link" href="https://www.deviantart.com/account/auth" target="_blank" rel="noopener noreferrer">
+              <InlineIcon icon="arrow-right" first />
+              {t('users.account.deviantartButton')}
+            </Button>
+          </section>
+        )}
       </div>
     </Content>
   );
@@ -112,8 +121,9 @@ export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRMess
   if (userId === null) {
     return notFound(ctx);
   }
-  // Everybody's own settings and nobody else's: the server already knows who is asking
-  if (store.getState().auth.initialUser?.id !== userId) return forbidden(ctx);
+  // Everybody's own settings, staff may open anybody's: the server already knows who is asking
+  const asking = store.getState().auth.initialUser;
+  if (asking?.id !== userId && !(asking && permission(asking.role, 'staff'))) return forbidden(ctx);
 
   let user: Optional<GetUsersIdResult>;
   try {

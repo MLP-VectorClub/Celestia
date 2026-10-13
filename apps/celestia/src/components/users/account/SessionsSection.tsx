@@ -12,16 +12,25 @@ import { useAppDispatch } from 'src/store';
 import { signOutThunk } from 'src/store/thunks';
 import { ENDPOINTS } from 'src/utils';
 
-const SESSIONS_KEY = '/users/sessions';
-
-/** The browsers the visitor is signed in on, each with a button to end that session, and one to end all of them */
-export const SessionsSection: FC = () => {
+/**
+ * The browsers a user is signed in on, each with a button to end that session, and one to end all of them. Staff see the sessions of the user whose
+ * account page they have open; the visitor's own account keeps using the endpoints of the signed in user
+ */
+export const SessionsSection: FC<{ userId: number; own: boolean }> = ({ userId, own }) => {
   const t = useTranslations();
   const { confirm } = useDialog();
   const dispatch = useAppDispatch();
-  const sessions = useQuery({ queryKey: [SESSIONS_KEY], queryFn: () => AccountService.getSessions().then((r) => r.data.sessions) });
-  const remove = useApiMutation((id: string) => AccountService.deleteSession(id), { invalidate: [[SESSIONS_KEY]] });
-  const everywhere = useApiMutation(() => AccountService.signOutEverywhere(), { invalidate: [[ENDPOINTS.USERS_ME], [SESSIONS_KEY]] });
+  const sessionsKey = own ? '/users/sessions' : `/users/${userId}/sessions`;
+  const sessions = useQuery({
+    queryKey: [sessionsKey],
+    queryFn: () => (own ? AccountService.getSessions() : AccountService.getSessionsOf(userId)).then((r) => r.data.sessions),
+  });
+  const remove = useApiMutation((id: string) => (own ? AccountService.deleteSession(id) : AccountService.deleteSessionOf(userId, id)), {
+    invalidate: [[sessionsKey]],
+  });
+  const everywhere = useApiMutation(() => (own ? AccountService.signOutEverywhere() : AccountService.deleteSessionsOf(userId)), {
+    invalidate: [[ENDPOINTS.USERS_ME], [sessionsKey]],
+  });
   const list = sessions.data ?? [];
   const error = remove.error ?? everywhere.error;
 
@@ -35,7 +44,7 @@ export const SessionsSection: FC = () => {
       </h2>
       {list.length > 0 ? (
         <>
-          <p>{t('users.account.sessionsIntro')}</p>
+          <p>{own ? t('users.account.sessionsIntro') : t('users.account.sessionsIntroOther')}</p>
           <ul className="session-list list-unstyled d-flex flex-wrap gap-2">
             {list.map((s) => (
               <li key={s.id} id={`session-${s.id}`} className="border rounded p-2 text-center" style={{ minWidth: 220 }}>

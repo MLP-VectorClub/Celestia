@@ -195,7 +195,8 @@
       "current": "Current E-mail Address",
       "verified": "Verified",
       "notVerified": "Not verified yet",
-      "noAddress": "No address has been set yet"
+      "noAddress": "No address has been set yet",
+      "hidden": "The address is only shown to the user and to developers"
     },
     "deviantartLinked": "Signed in with DeviantArt as <link>{name}</link>.",
     "sessionsIntro": "Below is a list of all the browsers you're currently signed into.",
@@ -258,7 +259,9 @@
     "passwordIntro1": "A password will allow you to log in without using a DeviantArt account in the next version of our site.",
     "passwordIntro2": "Only a hashed version of your password is stored in our database, so even if our systems are compromised your password will not be leaked in plain text.",
     "userAgent": "UA",
-    "userAgentTitle": "User agent"
+    "userAgentTitle": "User agent",
+    "leadOther": "Change settings related to {name}'s account",
+    "sessionsIntroOther": "Below is a list of all the browsers this user is currently signed into."
   },
   "staffTools": {
     "amountPlaceholder": "Amount (negative takes points)",

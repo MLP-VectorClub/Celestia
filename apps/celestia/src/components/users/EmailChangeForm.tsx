@@ -5,8 +5,9 @@ import { Alert, Button, FormGroup, FormText, Input, Label } from 'reactstrap';
 import { UserProfile } from '@mlp-vectorclub/api-types';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import TimeAgo from 'src/components/shared/TimeAgo';
-import { describeApiError, fieldErrors, useApiMutation } from 'src/hooks';
+import { describeApiError, fieldErrors, useApiMutation, useAuth } from 'src/hooks';
 import { AccountService } from 'src/services/account';
+import { permission } from 'src/utils';
 
 const MIN_LENGTH = 3;
 const MAX_LENGTH = 128;
@@ -18,7 +19,11 @@ const MAX_LENGTH = 128;
 export const EmailChangeForm: FC<{ profile: UserProfile; sameUser: boolean }> = ({ profile, sameUser }) => {
   const t = useTranslations();
   const userId = profile.user.id;
+  const { user: visitor } = useAuth();
   const current = profile.account?.email ?? null;
+  // Other people's addresses are for developers only, everybody else is told whether there is one
+  const addressHidden = !current && Boolean(profile.account?.emailSet) && !sameUser && !permission(visitor, 'developer');
+  const hasAddress = Boolean(current) || addressHidden;
   const verifiedAt = profile.account?.emailVerifiedAt ?? null;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -35,7 +40,7 @@ export const EmailChangeForm: FC<{ profile: UserProfile; sameUser: boolean }> = 
 
   return (
     <>
-      <h3>{t(current ? 'users.account.changeEmail' : 'users.account.setEmail')}</h3>
+      <h3>{t(hasAddress ? 'users.account.changeEmail' : 'users.account.setEmail')}</h3>
       {sameUser && (
         <>
           <p>{t('users.account.emailIntro1')}</p>
@@ -62,7 +67,14 @@ export const EmailChangeForm: FC<{ profile: UserProfile; sameUser: boolean }> = 
               ) : (
                 <FormText tag="div" className="text-warning">
                   {t('users.account.email.notVerified')}{' '}
-                  <Button type="button" color="guide-link" size="sm" id="resend-verification" disabled={resend.isPending} onClick={() => resend.mutate()}>
+                  <Button
+                    type="button"
+                    color="guide-link"
+                    size="sm"
+                    id="resend-verification"
+                    disabled={resend.isPending}
+                    onClick={() => resend.mutate()}
+                  >
                     <InlineIcon icon="sync" first />
                     {t('users.account.email.resend')}
                   </Button>
@@ -72,7 +84,7 @@ export const EmailChangeForm: FC<{ profile: UserProfile; sameUser: boolean }> = 
           ) : (
             <FormText tag="div" className="text-primary">
               <InlineIcon icon="info-circle" first />
-              {t('users.account.email.noAddress')}
+              {addressHidden ? t('users.account.email.hidden') : t('users.account.email.noAddress')}
             </FormText>
           )}
         </FormGroup>

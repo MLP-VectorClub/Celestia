@@ -20,6 +20,14 @@ export class AccountService {
 
   static markNotificationRead = (id: number) => Axios.post<void>(`/notifications/${id}/read`);
 
+  /** The sessions of somebody else, for staff (the own ones come from `getSessions`) */
+  static getSessionsOf = (userId: number) => Axios.get<{ sessions: BrowserSession[] }>(`/users/${userId}/sessions`);
+
+  static deleteSessionOf = (userId: number, sessionId: string) => Axios.delete<void>(`/users/${userId}/sessions/${sessionId}`);
+
+  /** Ends every session and access token of a user */
+  static deleteSessionsOf = (userId: number) => Axios.delete<void>(`/users/${userId}/sessions`);
+
   static signOutEverywhere = () => Axios.post<void>('/users/signout', new URLSearchParams({ everywhere: '1' }));
 
   static syncDiscord = (userId: number) => Axios.post<void>(`/users/${userId}/discord/sync`);
