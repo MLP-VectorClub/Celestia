@@ -6,7 +6,9 @@ import { Alert, Button } from 'reactstrap';
 import Content from 'src/components/shared/Content';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import StandardHeading from 'src/components/shared/StandardHeading';
+import { useTitleSetter } from 'src/hooks';
 import { useRateLimitLock } from 'src/hooks/rate-limit';
+import { useAppDispatch } from 'src/store';
 import { UnifiedErrorResponseTypes } from 'src/types';
 import { FetchFailure } from 'src/utils/fetch-failure';
 
@@ -18,6 +20,13 @@ export const FetchFailureView: FC<{ failure: FetchFailure }> = ({ failure }) => 
   const t = useTranslations();
   const { replace, asPath } = useRouter();
   const [retrying, setRetrying] = useState(false);
+  const dispatch = useAppDispatch();
+  // The status is in the title, like the old site's "403 - MLP Vector Club"
+  const title = String(failure.status);
+  useTitleSetter(
+    dispatch,
+    useMemo(() => ({ title, breadcrumbs: [{ label: 'Error' }, { label: title, active: true }] }), [title])
+  );
   const rateLimited = failure.status === 429;
   const locked = useRateLimitLock(
     useMemo(

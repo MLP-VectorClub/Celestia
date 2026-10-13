@@ -27,7 +27,7 @@
     "events": "Events",
     "about": "About",
     "admin": "Admin",
-    "404": "Not Found",
+    "404": "404",
     "latestEpisode": "Latest Episode",
     "privacyPolicy": "Privacy Policy",
     "users": "Users",
@@ -58,7 +58,7 @@
     },
     "tryAgain": "Try again",
     "forbidden": {
-      "heading": "Access denied",
+      "heading": "403 Unauthorized",
       "message": "You are not allowed to see this page."
     }
   },

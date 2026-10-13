@@ -10,6 +10,8 @@ import styles from 'modules/FullGuideAppearanceList.module.scss';
 import { AppearancePreview } from 'src/components/colorguide/AppearancePreview';
 import { NutshellLabel } from 'src/components/colorguide/NutshellLabel';
 import Abbr from 'src/components/shared/Abbr';
+import InlineIcon from 'src/components/shared/InlineIcon';
+import TimeAgo from 'src/components/shared/TimeAgo';
 import { useNutshellMode } from 'src/hooks/nutshell';
 import { PATHS } from 'src/paths';
 import { getNonObviousCharacterTags, getSpriteUrl } from 'src/utils/color-guide';
@@ -58,6 +60,11 @@ const FullGuideAppearanceList: FC<{ appearances: SlimAppearance[] }> = ({ appear
                     {` ${aka.join(', ')}`}
                   </small>
                 )}
+                {/* When the appearance was added, like the old list's clock line */}
+                <small className={classNames('mt-1 d-block', styles.added)}>
+                  <InlineIcon icon="clock" first />
+                  <TimeAgo date={a.createdAt} tooltip={false} />
+                </small>
               </CardBody>
             </Card>
           </Link>

@@ -32,7 +32,6 @@ const SECTIONS: Array<{ id: 'cg' | 'ep' | 'personal' | 'limits'; fields: Field[]
     fields: [
       { key: 'cg_defaultguide', kind: 'guide' },
       { key: 'cg_itemsperpage', kind: 'number' },
-      { key: 'cg_hidesynon', kind: 'checkbox', staffOnly: true },
       { key: 'cg_hideclrinfo', kind: 'checkbox' },
       { key: 'cg_fulllstprev', kind: 'checkbox' },
       { key: 'cg_nutshell', kind: 'checkbox' },
