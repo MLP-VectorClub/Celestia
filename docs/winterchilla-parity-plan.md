@@ -29,7 +29,7 @@ tests), 30.8 % of lines. Luna: 289 tests.
 - Staff "Add new appearance" in another user's personal guide: Luna's `POST /appearances` creates in the caller's own guide, so this needs an API change (the old API had no owner parameter either).
 - Tag autocomplete only suggests tags that are in use (the API's behavior); tags nobody uses yet have to be typed in full.
 - Cutie mark file details differ in cosmetic ways (download file name, `width="100%"` on the SVG).
-- Not compared side by side yet: `/show`, `/users`, personal guide and point history pages, `/admin/pcg-appearances`, narrow / mobile layouts.
+- Not compared side by side yet: narrow / mobile layouts, the episode page with real request and reservation lists, the dense lists of production-sized data. The pages compared on 2026-10-13 are in `ui-parity-plan.md`.
 - Not verified on production in a browser: signed in websocket notifications, the live `/admin/wsdiag` page, the updating page and the deploy banner on a real deploy (whether Cloudflare
   replaces the 503 body is unknown), and the changes of 2026-10-10 (tag editor, reserver pill, takeover, Discord button, sprite sizes, private share links).
 - Tests: the DeviantArt and Discord sign-in flows have no automated browser test against Celestia (`scripts/check-oauth-popup.mjs` covers the popup); a Discord server member cannot be
