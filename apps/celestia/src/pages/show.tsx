@@ -46,7 +46,7 @@ const EPISODE_TABLE_COLUMNS: ShowEntriesTableProps['columns'] = [
   {
     header: '№',
     only: 'mobile',
-    tdClassName: styles.identifier,
+    tdClassName: styles.mobileIdentifier,
     renderContent: EpisodeNumberColumn,
   },
   {

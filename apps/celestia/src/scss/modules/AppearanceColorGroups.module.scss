@@ -6,6 +6,13 @@
   .colorGroupCard {
     height: 100%;
   }
+
+  // Stacked on a phone, so the cards need some space between them
+  @media (max-width: 575.98px) {
+    > * {
+      margin-bottom: 0.75rem;
+    }
+  }
 }
 
 // An appearance without color groups says so, in a dashed box like the old site's

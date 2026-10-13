@@ -30,7 +30,9 @@ const ACCOUNTS = process.env.SEED ? { user: 9001, member: 9003, assistant: 9002,
 const roles = (process.argv[4] || 'guest,user,member,assistant,staff,admin,developer').split(',');
 for (const role of roles) {
   for (const [site, base] of Object.entries(sites)) {
-    const ctx = await b.newContext({ viewport: { width: 1280, height: 900 }, bypassCSP: true });
+    // VIEWPORT=390x844 captures at a phone size (the full page, up to 6000px)
+    const [vw, vh] = (process.env.VIEWPORT || '1280x900').split('x').map(Number);
+    const ctx = await b.newContext({ viewport: { width: vw, height: vh }, bypassCSP: true, ...(vw < 600 ? { isMobile: true, hasTouch: true, deviceScaleFactor: 2 } : {}) });
     const p = await ctx.newPage();
     for (const name of only) {
       const key = `${name}-${role}-${site}`;
@@ -40,7 +42,7 @@ for (const role of roles) {
         await p.goto(base + pages[name], { waitUntil: 'networkidle', timeout: 45000 }).catch(() => {});
         await p.waitForTimeout(1200);
         const height = await p.evaluate(() => document.documentElement.scrollHeight);
-        await p.screenshot({ path: `${out}/${key}.png`, fullPage: true, clip: { x: 0, y: 0, width: 1280, height: Math.min(height, 4000) } });
+        await p.screenshot({ path: `${out}/${key}.png`, fullPage: true, clip: { x: 0, y: 0, width: vw, height: Math.min(height, vw < 600 ? 6000 : 4000) } });
         inventory[key] = await p.evaluate(() => {
           const scope = document.querySelector('#content, #main, main') || document.body;
           const vis = (e) => !!(e.offsetWidth || e.offsetHeight || e.getClientRects().length);

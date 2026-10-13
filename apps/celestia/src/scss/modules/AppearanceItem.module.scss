@@ -37,3 +37,21 @@
   margin-bottom: 0.15rem;
   font-size: 0.8rem;
 }
+
+// Below the small breakpoint the entry is stacked and centered: name, then its buttons on a line of their own, then notes and tags
+@media (max-width: 575.98px) {
+  .appearanceItem {
+    text-align: center;
+  }
+
+  .header {
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.25rem 0;
+  }
+
+  .buttons {
+    justify-content: center;
+    width: 100%;
+  }
+}

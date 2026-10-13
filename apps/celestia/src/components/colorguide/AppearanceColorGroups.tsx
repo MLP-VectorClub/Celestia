@@ -86,7 +86,7 @@ export const AppearanceColorGroups: FC<PropTypes> = ({ colorGroups, appearanceId
       {groups.length === 0 && <div className={styles.noColorGroups}>{t('colorGuide.appearance.noColorGroups')}</div>}
       <Row className={styles.colorGroupCardRow}>
         {groups.map((cg) => (
-          <Col key={cg.id}>
+          <Col key={cg.id} xs={12} sm>
             <Card className={styles.colorGroupCard} role="region" aria-label={`Color Group: ${cg.label}`}>
               <CardBody className="p-2">
                 <h3 className="text-center">{cg.label}</h3>

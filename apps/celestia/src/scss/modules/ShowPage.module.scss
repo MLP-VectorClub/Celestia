@@ -25,6 +25,15 @@
   vertical-align: middle !important;
 }
 
+.mobileIdentifier {
+  text-align: center;
+  // On a phone the old site's episode id is a bold table header, not one of the big numbers of the wide table
+  font-size: 1rem;
+  font-weight: bold;
+  color: #000;
+  vertical-align: middle !important;
+}
+
 .generationImage {
   width: 50px;
   max-width: 100%;

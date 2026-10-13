@@ -62,14 +62,15 @@ const AppearanceItem: FC<AppearanceItemProps> = ({ appearance, pinned = false, g
     >
       <CardBody className="p-2">
         <Row noGutters>
-          <Col xs="auto">
-            <div className="pe-3" role="presentation">
+          {/* On a phone the entry is stacked like on the old site: the sprite centered on top, everything else under it at the full width */}
+          <Col xs={12} sm="auto">
+            <div className="d-flex justify-content-center justify-content-sm-start pe-sm-3 mb-2 mb-sm-0" role="presentation">
               <div className={styles.spriteBox}>
                 <SpriteWrap appearanceId={appearance.id} sprite={appearance.sprite} compact editable={canManage} />
               </div>
             </div>
           </Col>
-          <Col>
+          <Col xs={12} sm>
             <div className={styles.header}>
               {appearance.private && <InlineIcon icon="lock" first className="text-orange" title={t('colorGuide.item.private')} />}
               {pinned && <InlineIcon icon="thumbtack" first className={styles.pinIcon} title={t('colorGuide.item.pinned')} />}
