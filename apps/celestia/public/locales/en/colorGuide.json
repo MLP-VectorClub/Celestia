@@ -284,7 +284,8 @@
     "spriteAlt": "Sprite image",
     "subject": "appearance",
     "downloadGpl": "GIMP palette",
-    "relatedHeading": "Related appearances"
+    "relatedHeading": "Related appearances",
+    "noColorGroups": "There are no color groups for this appearance"
   },
   "shortLink": {
     "looking": "Looking for appearance…",
@@ -377,7 +378,7 @@
     "demand": "We add characters based on demand, please <contact>let us know</contact> if you'd like us to make a guide for a character.",
     "oldGuides": "Alternatively, use the old color guides: <pony>Pony</pony> / <eqg>EQG</eqg>",
     "movedLinks": "Can't find links that were here previously? Some links were moved to the <list>guide list</list>.",
-    "addNew": "Add new {kind, select, character {Character} other {Pony}}",
+    "addNew": "Add new {kind, select, character {Character} appearance {appearance} other {Pony}}",
     "fullList": "Full List",
     "tags": "Tags",
     "entriesSubject": "color guide entries",

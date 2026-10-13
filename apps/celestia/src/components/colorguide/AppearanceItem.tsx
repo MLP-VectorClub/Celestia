@@ -32,7 +32,7 @@ export interface AppearanceItemProps {
 /** An entry of a guide's list: sprite, name with its buttons, notes, tags and the color groups */
 const AppearanceItem: FC<AppearanceItemProps> = ({ appearance, pinned = false, guide }) => {
   const t = useTranslations();
-  const { isStaff } = useAuth();
+  const { isStaff, user } = useAuth();
   const { confirm } = useDialog();
   const queryClient = useQueryClient();
   const [swatchOpen, setSwatchOpen] = useState(false);
@@ -40,6 +40,8 @@ const AppearanceItem: FC<AppearanceItemProps> = ({ appearance, pinned = false, g
 
   const appearanceLink = useMemo(() => PATHS.APPEARANCE({ ...appearance, guide: appearance.guide ?? guide ?? null }), [appearance, guide]);
   const isOfficial = appearance.ownerId === null || appearance.ownerId === undefined;
+  // Like the old site: whoever may manage the entry gets its buttons, which includes the owner of a personal guide appearance
+  const canManage = isStaff || (!isOfficial && user.id !== null && appearance.ownerId === user.id);
 
   // Lists (guide pages, pinned appearances, searches) show the changed entry again
   const refresh = () =>
@@ -63,7 +65,7 @@ const AppearanceItem: FC<AppearanceItemProps> = ({ appearance, pinned = false, g
           <Col xs="auto">
             <div className="pe-3" role="presentation">
               <div className={styles.spriteBox}>
-                <SpriteWrap appearanceId={appearance.id} sprite={appearance.sprite} compact editable={isStaff} />
+                <SpriteWrap appearanceId={appearance.id} sprite={appearance.sprite} compact editable={canManage} />
               </div>
             </div>
           </Col>
@@ -84,10 +86,10 @@ const AppearanceItem: FC<AppearanceItemProps> = ({ appearance, pinned = false, g
                   rel="noopener noreferrer"
                 />
                 <IconButton icon="paint-brush" color="teal" title={t('colorGuide.item.swatch')} onClick={() => setSwatchOpen(true)} />
-                {isStaff && (
+                {canManage && (
                   <>
                     <IconButton icon="pencil-alt" color="darkblue" title={t('colorGuide.item.edit')} onClick={() => setEditOpen(true)} />
-                    {!pinned && isOfficial && (
+                    {!pinned && isOfficial && isStaff && (
                       <IconButton
                         icon="thumbtack"
                         color="darkblue"
@@ -116,7 +118,7 @@ const AppearanceItem: FC<AppearanceItemProps> = ({ appearance, pinned = false, g
                         }}
                       />
                     )}
-                    {pinned && isOfficial && (
+                    {pinned && isOfficial && isStaff && (
                       <IconButton
                         icon="thumbtack"
                         color="orange"
@@ -142,7 +144,7 @@ const AppearanceItem: FC<AppearanceItemProps> = ({ appearance, pinned = false, g
         </Row>
       </CardBody>
       <SwatchDialog appearanceId={appearance.id} name={appearance.label} isOpen={swatchOpen} onClose={() => setSwatchOpen(false)} />
-      {isStaff && <AppearanceMetaDialog appearance={appearance} isOpen={editOpen} onClose={() => setEditOpen(false)} />}
+      {canManage && <AppearanceMetaDialog appearance={appearance} isOpen={editOpen} onClose={() => setEditOpen(false)} />}
     </Card>
   );
 };

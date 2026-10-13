@@ -39,3 +39,12 @@
     margin-right: 0.2rem;
   }
 }
+
+// An entry that has no color groups says so, in a dashed box like the old site's
+.noColorGroups {
+  display: inline-block;
+  padding: 0.1rem 0.35rem;
+  font-style: italic;
+  color: #555;
+  border: 1px dashed #888;
+}

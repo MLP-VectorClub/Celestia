@@ -1,10 +1,9 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { FC, RefObject, useRef, useState } from 'react';
-import { UncontrolledTooltip } from 'reactstrap';
+import { FC, useState } from 'react';
 
 import { ShowListItem } from '@mlp-vectorclub/api-types';
-import InlineIcon from 'src/components/shared/InlineIcon';
+import { IconButton } from 'src/components/shared/IconButton';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { ShowFormDialog } from 'src/components/show/ShowFormDialog';
 import { showFetcher } from 'src/fetchers';
@@ -19,8 +18,6 @@ export const ShowRowActions: FC<{ entry: Pick<ShowListItem, 'id' | 'type' | 'tit
   const t = useTranslations();
   const { confirm } = useDialog();
   const queryClient = useQueryClient();
-  const editButtonRef = useRef<HTMLButtonElement>(null) as RefObject<HTMLButtonElement>;
-  const deleteButtonRef = useRef<HTMLButtonElement>(null) as RefObject<HTMLButtonElement>;
   const [editing, setEditing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const typeName = t(`show.index.typeNames.${entry.type}`);
@@ -47,31 +44,21 @@ export const ShowRowActions: FC<{ entry: Pick<ShowListItem, 'id' | 'type' | 'tit
 
   return (
     <span className="ms-2">
-      <button
-        type="button"
-        className="edit-show btn btn-link p-2 text-info faded"
-        ref={editButtonRef}
+      <IconButton
+        icon="pencil-alt"
+        color="blue"
+        className="edit-show"
+        title={t('show.index.edit', { typeName })}
         onClick={() => setEditing(true)}
-        aria-label={t('show.index.edit', { typeName })}
-      >
-        <InlineIcon icon="pencil-alt" />
-      </button>
-      <UncontrolledTooltip target={editButtonRef} fade={false} placement="top">
-        {t('show.index.edit', { typeName })}
-      </UncontrolledTooltip>
-      <button
-        type="button"
-        className="delete-show btn btn-link p-2 text-danger faded"
-        ref={deleteButtonRef}
-        onClick={() => void askToDelete()}
+      />
+      <IconButton
+        icon="times"
+        color="red"
+        className="delete-show ms-1"
+        title={t('show.index.delete', { typeName })}
         disabled={remove.isPending}
-        aria-label={t('show.index.delete', { typeName })}
-      >
-        <InlineIcon icon="times" />
-      </button>
-      <UncontrolledTooltip target={deleteButtonRef} fade={false} placement="top">
-        {t('show.index.delete', { typeName })}
-      </UncontrolledTooltip>
+        onClick={() => void askToDelete()}
+      />
       {error && <span className="text-danger ms-2">{error}</span>}
       {editing && full.data && (
         <ShowFormDialog

@@ -11,13 +11,22 @@ const pages = {
   episode: '/episode/latest', show: '/show', movie: '/movie/1', events: '/events', event: '/event/1',
   users: '/users', profile: '/users/136', pcgprofile: '/users/332', pendprofile: '/users/105', awaitprofile: '/users/120', pcg: '/users/332/cg', pcghist: '/users/332/cg/point-history',
   about: '/about', privacy: '/about/privacy', admin: '/admin', logs: '/admin/logs', usefullinks: '/admin/usefullinks', notices: '/admin/notices',
-  account: '/users/136/account',
+  account: '/users/136/account', pcgadmin: '/admin/pcg-appearances',
 };
+// SEED=1: compare on the contract seed (what Luna's contract server and Winterchilla's `scripts/serve-seeded-api.sh 8768 <db>` both hold, no personal data)
+// instead of the production copy, with the seed's ids and accounts
+if (process.env.SEED) {
+  Object.assign(pages, {
+    appearance: '/cg/pony/v/1', episode: '/episode/1', movie: '/movie/' + (process.env.SEED_MOVIE || '2'), event: '/event/1', profile: '/users/9001', pcgprofile: '/users/9001',
+    pendprofile: '/users/9001', awaitprofile: '/users/9001', pcg: '/users/9001/cg', pcghist: '/users/9001/cg/point-history', account: '/users/9001/account',
+    private: '/users/9001/cg/v/4?token=0f0e0d0c-0b0a-4000-8000-00000000f004',
+  });
+}
 const only = process.argv[3] ? process.argv[3].split(',') : Object.keys(pages);
 const b = await chromium.launch();
 const inventory = {};
 // One account of the production copy for every role (guest is not signed in). Assistant, staff and admin share a permission level
-const ACCOUNTS = { user: 2, member: 3, assistant: 132, staff: 133, admin: 136, developer: 1 };
+const ACCOUNTS = process.env.SEED ? { user: 9001, member: 9003, assistant: 9002, staff: 9002, admin: 9002, developer: 9007 } : { user: 2, member: 3, assistant: 132, staff: 133, admin: 136, developer: 1 };
 const roles = (process.argv[4] || 'guest,user,member,assistant,staff,admin,developer').split(',');
 for (const role of roles) {
   for (const [site, base] of Object.entries(sites)) {

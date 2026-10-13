@@ -16,7 +16,9 @@
       "heading": "Movies, Shorts & Specials",
       "addNoun": "Show Entry"
     },
-    "airDateFormat": "EEEE, do MMMM yyyy, H:mm:ss"
+    "airDateFormat": "EEEE, do MMMM yyyy, H:mm:ss",
+    "onHomepage": "Currently visible on the homepage",
+    "notAired": "{typeName} didn't air yet, voting disabled"
   },
   "entry": {
     "notFound": "Show entry not found",

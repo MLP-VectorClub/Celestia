@@ -14,12 +14,14 @@
 
   td {
     vertical-align: middle;
+    // Like the old site's table: softened black for the cells
+    color: rgba(0, 0, 0, 0.7);
   }
 }
 
 .identifier {
   text-align: center;
-  font-size: 1.7rem;
+  font-size: 1.9rem;
   vertical-align: middle !important;
 }
 

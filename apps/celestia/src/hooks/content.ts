@@ -34,6 +34,7 @@ import {
   eventFetcher,
   eventFinishedImageFetcher,
   eventsFetcher,
+  latestShowFetcher,
   personalGuideFetcher,
   pointHistoryFetcher,
   postDeviationFetcher,
@@ -195,7 +196,9 @@ function useSubmissionQuery<T>(queryKey: string, queryFn: () => Promise<T>, enab
     retry: false,
     staleTime: 10 * 60 * 1000,
     refetchInterval: (query) =>
-      isPending(query.state.data) && query.state.dataUpdateCount < MAX_PENDING_CHECKS ? Math.max(3, query.state.data.retryAfter) * 1000 : false,
+      isPending(query.state.data) && query.state.dataUpdateCount < MAX_PENDING_CHECKS
+        ? Math.max(3, query.state.data.retryAfter) * 1000
+        : false,
   });
   const waiting = isPending(data);
   const gaveUp = waiting && (client.getQueryState([queryKey])?.dataUpdateCount ?? 0) >= MAX_PENDING_CHECKS;
@@ -223,6 +226,21 @@ export function useReservationInfo(initialData?: GetShowReservationInfoResult) {
 
 /** The DeviantArt submission of a finished post, only looked up once `enabled` (the post is in view). A failed lookup is not retried */
 export function usePostDeviation(params: { id: number }, enabled: boolean) {
-  const { data, status } = useSubmissionQuery<GetPostsIdDeviationResult>(ENDPOINTS.POST_DEVIATION(params), postDeviationFetcher(params), enabled);
+  const { data, status } = useSubmissionQuery<GetPostsIdDeviationResult>(
+    ENDPOINTS.POST_DEVIATION(params),
+    postDeviationFetcher(params),
+    enabled
+  );
   return { deviation: data, status };
+}
+
+/** The entry shown on the homepage (the latest episode that aired), `undefined` while loading or when there is none */
+export function useLatestShowId(): number | undefined {
+  const { data } = useQuery({
+    queryKey: [ENDPOINTS.SHOW_LATEST],
+    queryFn: () => latestShowFetcher()().catch(() => null),
+    staleTime: 60 * 1000,
+    retry: false,
+  });
+  return data?.id;
 }

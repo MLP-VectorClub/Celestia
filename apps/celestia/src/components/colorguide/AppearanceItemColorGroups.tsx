@@ -26,7 +26,9 @@ const AppearanceItemColorGroups: FC<PropTypes> = ({ colorGroups, appearanceLabel
         </div>
       ))}
     </div>
-  ) : null;
+  ) : (
+    <div className={styles.noColorGroups}>{t('colorGuide.appearance.noColorGroups')}</div>
+  );
 };
 
 export default AppearanceItemColorGroups;

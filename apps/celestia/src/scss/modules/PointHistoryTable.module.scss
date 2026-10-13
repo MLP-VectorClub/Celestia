@@ -1,0 +1,41 @@
+// The old site's #history-entries: a centered table inside a black frame, rows colored by whether points were gained or spent
+.table {
+  margin: 10px auto;
+  border-collapse: collapse;
+  text-align: center;
+
+  th,
+  td {
+    padding: 5px 10px;
+  }
+
+  tbody {
+    border: 2px solid black;
+  }
+}
+
+.gain {
+  color: #008000;
+  background: #dfd;
+}
+
+.loss {
+  color: #c00;
+  background: #fdd;
+}
+
+.raw {
+  margin: 0;
+  font-size: 14px;
+  text-align: left;
+}
+
+.preview {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin-right: 0.4em;
+  vertical-align: text-top;
+  border: 1px solid black;
+  box-sizing: border-box;
+}

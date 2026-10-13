@@ -29,7 +29,7 @@
     "noPersonalGuide": "No appearances yet",
     "private": "Private",
     "awaitingApproval": "Finished posts awaiting approval",
-    "pointHistory": "Point History",
+    "pointHistory": "Point history",
     "devLabelNote": "Shown with the site's developer label",
     "visitDa": "Visit DeviantArt profile",
     "changeRoleTitle": "Change {name}'s role",
@@ -124,7 +124,7 @@
     "loadingSubject": "personal guide",
     "private": "Private appearance",
     "breadcrumb": "Personal Color Guide",
-    "pointHistory": "Point History",
+    "pointHistory": "Point history",
     "canManage": "You can add and edit appearances in this guide"
   },
   "pointHistory": {
@@ -139,7 +139,15 @@
     "headingOwn": "Your Point History",
     "itemsPerPage": "Displaying {count} items/page",
     "profilePage": "Profile page",
-    "recalculate": "Recalculate"
+    "recalculate": "Recalculate",
+    "details": "Details",
+    "free": "This one's on the house",
+    "post": "Post #{id}",
+    "appearance": "Appearance",
+    "deleted": "Deleted",
+    "aStaffMember": "a staff member",
+    "unknownUser": "an unknown user",
+    "by": "By <who></who>"
   },
   "account": {
     "heading": "Account Settings",

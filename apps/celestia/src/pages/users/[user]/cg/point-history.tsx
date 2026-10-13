@@ -1,9 +1,9 @@
 import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
-import Link from 'next/link';
-import { Button, Table } from 'reactstrap';
+import { Button } from 'reactstrap';
 
 import { GetUsersIdPersonalGuidePointHistoryResult, GetUsersIdResult } from '@mlp-vectorclub/api-types';
 import ButtonCollection from 'src/components/shared/ButtonCollection';
@@ -13,7 +13,7 @@ import NoResultsAlert from 'src/components/shared/NoResultsAlert';
 import Pagination from 'src/components/shared/Pagination';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import StatusAlert from 'src/components/shared/StatusAlert';
-import TimeAgo from 'src/components/shared/TimeAgo';
+import { PointHistoryTable } from 'src/components/users/PointHistoryTable';
 import { RecalculateHistoryButton } from 'src/components/users/RecalculateHistoryButton';
 import { pointHistoryFetcher, userFetcher } from 'src/fetchers';
 import { useAuth, usePointHistory, useTitleSetter } from 'src/hooks';
@@ -43,13 +43,6 @@ const titleFactory: TitleFactory<Pick<PropTypes, 'user' | 'userId'>> = ({ user, 
     { label: ['users.pointHistory.breadcrumb'], active: true },
   ],
 });
-
-/** What the API logged with an entry that is worth showing: the comment of a manual grant, the name of the appearance */
-const detail = (data: unknown): string | null => {
-  const { comment, label } = (data ?? {}) as { comment?: unknown; label?: unknown };
-  const text = typeof comment === 'string' && comment !== '' ? comment : typeof label === 'string' && label !== '' ? label : null;
-  return text;
-};
 
 const PointHistoryPage: NextPage<PropTypes> = ({ userId, page, user, initialData }) => {
   const t = useTranslations();
@@ -81,29 +74,7 @@ const PointHistoryPage: NextPage<PropTypes> = ({ userId, page, user, initialData
       {data && data.entries.length > 0 && (
         <>
           <Pagination {...data.pagination} tooltipPos="bottom" />
-          <Table responsive>
-            <thead>
-              <tr>
-                <th>{t('users.pointHistory.when')}</th>
-                <th>{t('users.pointHistory.amount')}</th>
-                <th>{t('users.pointHistory.reason')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.entries.map((entry) => (
-                <tr key={entry.id}>
-                  <td>
-                    <TimeAgo date={entry.createdAt} />
-                  </td>
-                  <td>{entry.amount > 0 ? `+${entry.amount}` : entry.amount}</td>
-                  <td>
-                    {entry.reason}
-                    {detail(entry.data) && <span className="text-muted"> ({detail(entry.data)})</span>}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
+          <PointHistoryTable entries={data.entries} ownerId={userId} />
           <Pagination {...data.pagination} tooltipPos="top" listClassName="mb-0" />
         </>
       )}
@@ -132,7 +103,7 @@ export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRMess
   titleSetter(store, titleFactory({ user: user || null, userId }));
   return {
     props: {
-      ...(await typedServerSideTranslations(locale, ['users'])),
+      ...(await typedServerSideTranslations(locale, ['users', 'colorGuide'])),
       userId,
       page,
       user: user || null,
