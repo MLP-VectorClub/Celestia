@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { debounce } from 'lodash';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import {
@@ -27,6 +28,7 @@ import { Tooltipped } from 'src/components/shared/Tooltipped';
 import { useGuideAutocomplete } from 'src/hooks';
 import { PATHS } from 'src/paths';
 import { Nullable, Status } from 'src/types';
+import { getSpriteUrl } from 'src/utils/color-guide';
 
 interface PropTypes {
   initialQuery: string;
@@ -286,7 +288,20 @@ const SearchBar: FC<PropTypes> = ({ initialQuery, guide }) => {
                           aria-label={r.label}
                           id={acOptionId(i)}
                         >
-                          <AppearancePreview data={r.previewData} className={styles.acResultPreview} />
+                          {/* The sprite when the appearance has one, like the old site's suggestions, else the squares of its colors */}
+                          {r.sprite ? (
+                            <Image
+                              src={getSpriteUrl(r.id, r.sprite)}
+                              width={32}
+                              height={32}
+                              unoptimized
+                              className={styles.acResultSprite}
+                              alt=""
+                              data-testid="ac-result-sprite"
+                            />
+                          ) : (
+                            <AppearancePreview data={r.previewData} className={styles.acResultPreview} />
+                          )}
                           <span className={`${styles.acResultLabel} ms-2`}>
                             <NutshellLabel appearance={r} />
                           </span>
