@@ -2,17 +2,13 @@
   "apps": [
     {
       "name": "Celestia",
-      "script": "node_modules/next/dist/bin/next",
-      "args": "start",
+      "script": "start.js",
       "exec_mode": "cluster",
       "instances": 2,
       "log_date_format": "YYYY-MM-DD HH:mm:ss Z",
       "out_file": "logs/pm2-out.log",
       "error_file": "logs/pm2-error.log",
-      "merge_logs": true,
-      "env": {
-        "PORT": "6900"
-      }
+      "merge_logs": true
     }
   ]
 }
