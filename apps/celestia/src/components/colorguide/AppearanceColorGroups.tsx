@@ -38,7 +38,6 @@ export const AppearanceColorGroups: FC<PropTypes> = ({ colorGroups, appearanceId
   const template = useApiMutation(() => ColorGroupService.applyTemplate(appearanceId!), { invalidate });
 
   const groups = colorGroups ?? [];
-  if (groups.length === 0 && !editable) return null;
 
   const error = remove.error ?? template.error;
   return (
@@ -84,6 +83,7 @@ export const AppearanceColorGroups: FC<PropTypes> = ({ colorGroups, appearanceId
           {describeApiError(error)}
         </Alert>
       )}
+      {groups.length === 0 && <div className={styles.noColorGroups}>{t('colorGuide.appearance.noColorGroups')}</div>}
       <Row className={styles.colorGroupCardRow}>
         {groups.map((cg) => (
           <Col key={cg.id}>
@@ -92,7 +92,12 @@ export const AppearanceColorGroups: FC<PropTypes> = ({ colorGroups, appearanceId
                 <h3 className="text-center">{cg.label}</h3>
                 {editable && (
                   <ButtonCollection>
-                    <Button size="sm" color="darkblue" onClick={() => setEditing({ kind: 'edit', id: cg.id })} data-testid="edit-colorgroup-btn">
+                    <Button
+                      size="sm"
+                      color="darkblue"
+                      onClick={() => setEditing({ kind: 'edit', id: cg.id })}
+                      data-testid="edit-colorgroup-btn"
+                    >
                       <InlineIcon icon="pencil-alt" first />
                       {t('colorGuide.edit.common.edit')}
                     </Button>
@@ -121,7 +126,12 @@ export const AppearanceColorGroups: FC<PropTypes> = ({ colorGroups, appearanceId
                 )}
                 <ul className="m-0 p-0">
                   {cg.colors.map((c) => (
-                    <ColorListItem key={c.id} color={c} hideColorInfo={Boolean(prefs?.cg_hideclrinfo)} path={[appearanceLabel, cg.label].filter(Boolean) as string[]} />
+                    <ColorListItem
+                      key={c.id}
+                      color={c}
+                      hideColorInfo={Boolean(prefs?.cg_hideclrinfo)}
+                      path={[appearanceLabel, cg.label].filter(Boolean) as string[]}
+                    />
                   ))}
                 </ul>
               </CardBody>

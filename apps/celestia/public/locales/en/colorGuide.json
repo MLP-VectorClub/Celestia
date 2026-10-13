@@ -285,7 +285,13 @@
     "subject": "appearance",
     "downloadGpl": "GIMP palette",
     "relatedHeading": "Related appearances",
-    "noColorGroups": "There are no color groups for this appearance"
+    "noColorGroups": "There are no color groups for this appearance",
+    "majorChanges": "List of major changes",
+    "changedBy": "by",
+    "noTags": "This appearance has no tags",
+    "noRelatedShows": "This appearance has no relations to any show entries.",
+    "noRelatedAppearances": "This appearance has no relations to any other appearances.",
+    "privateNotice": "This appearance is currently private (its colors are only visible to {who, select, official {staff members} owner {you and staff members} other {its owner and staff members}})"
   },
   "shortLink": {
     "looking": "Looking for appearance…",
@@ -329,7 +335,8 @@
     "viewSource": "View source on DeviantArt",
     "svg": "SVG",
     "source": "Source",
-    "by": "By"
+    "by": "By",
+    "downloadSource": "Download the original file as uploaded (staff only)"
   },
   "spriteGenerator": {
     "about": "About this tool",

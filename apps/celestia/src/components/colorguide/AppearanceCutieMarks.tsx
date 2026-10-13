@@ -10,19 +10,22 @@ import ButtonCollection from 'src/components/shared/ButtonCollection';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { ResponsiveContainer } from 'src/components/shared/ResponsiveContainer';
 import UserLinkWithAvatar from 'src/components/shared/UserLinkWithAvatar';
+import { API_PREFIX } from 'src/config';
 import { useAuth } from 'src/hooks';
 import { createFavMeUrl, permission } from 'src/utils';
 
 interface PropTypes {
+  appearanceId: number;
   label: string;
   cutieMarks?: CutieMark[];
   colorGroups: Appearance['colorGroups'];
 }
 
-export const AppearanceCutieMarks: FC<PropTypes> = ({ label, cutieMarks, colorGroups }) => {
+export const AppearanceCutieMarks: FC<PropTypes> = ({ appearanceId, label, cutieMarks, colorGroups }) => {
   const t = useTranslations();
   const { user } = useAuth();
   const isDeveloper = user.role && permission(user.role, 'developer');
+  const isStaff = user.role && permission(user.role, 'staff');
 
   if (!cutieMarks || cutieMarks.length === 0) return null;
 
@@ -71,6 +74,20 @@ export const AppearanceCutieMarks: FC<PropTypes> = ({ label, cutieMarks, colorGr
                     <InlineIcon icon="download" first />
                     {t('colorGuide.cutieMarkDisplay.svg')}
                   </Button>
+                  {isStaff && (
+                    // The file as it was uploaded, before it was cleaned up and recolored with the guide's colors
+                    <Button
+                      tag="a"
+                      size="sm"
+                      color="orange"
+                      href={`${API_PREFIX}/appearances/${appearanceId}/cutie-marks/${cm.id}/download?source=1`}
+                      title={t('colorGuide.cutieMarkDisplay.downloadSource')}
+                      aria-label={t('colorGuide.cutieMarkDisplay.downloadSource')}
+                      data-testid={`cm-source-${cm.id}`}
+                    >
+                      <InlineIcon icon="download" />
+                    </Button>
+                  )}
                   {cm.favMe && (
                     <Button
                       tag="a"
