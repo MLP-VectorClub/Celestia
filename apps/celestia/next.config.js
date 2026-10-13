@@ -113,7 +113,10 @@ module.exports = {
         acc.push(config);
       }
       return acc;
-    }, []);
+    }, [
+      // Tools on other sites read these files (the color guide export, its schema, the Illustrator swatch import script), like they did from the previous site
+      { source: '/dist/:path*', headers: [{ key: 'Access-Control-Allow-Origin', value: '*' }] },
+    ]);
   },
   async redirects() {
     return [

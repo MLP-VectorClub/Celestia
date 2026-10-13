@@ -37,4 +37,6 @@ npm-debug.log*
 **/.env.local
 **/.env
 **/dist
+# ...except what the site serves at /dist (the color guide export schema and the swatch import script, linked from the guide pages)
+!apps/celestia/public/dist
 **/*.tsbuildinfo

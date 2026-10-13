@@ -117,3 +117,6 @@ Goal: the two UIs look the same. Compare the same page of both sites side by sid
 - Winterchilla: nothing open. The vote operations vanished from the spec at 7a7983c6 and were restored at 425a7123 (types verified against that commit). Use a worktree with its own
   copy of `vendor` when generating the spec: a symlinked `vendor` autoloads the shared tree's classes.
 - Luna: 121/127 operations built (the six event-entry operations are skipped on purpose). Nothing open from Celestia; Winterchilla spec fixes through d7c56f37 are applied.
+
+## Files served at /dist (independent of Winterchilla)
+`public/dist` holds `mlpvc-colorguide-schema.json` and `Import Swatches from JSON.jsx` (tracked despite the root `**/dist` ignore, linked from the guide index and the swatch dialog, CORS `*` from `next.config.js` `headers()`). `/dist/mlpvc-colorguide.json` is a rewrite to Luna's `GET /color-guide/export`, which builds the file live (Winterchilla generated it by cron) and is tested against the schema in Luna (`AdminTest::testExportFollowsTheSchemaOtherToolsRead`, schema copy in `tests/fixtures`). Keep the two schema copies equal. nginx on the production host that serves Celestia needs no `/dist` block of its own.
