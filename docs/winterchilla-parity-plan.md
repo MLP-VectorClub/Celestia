@@ -102,7 +102,7 @@ NEXT_PUBLIC_CDN_DOMAIN=127.0.0.1 NEXT_PUBLIC_API_PREFIX=/api pnpm exec next dev 
 
 Sign in as a seeded user by visiting `http://127.0.0.1:8766/test-login/9001` (user), `9002` (admin) or `9003`; the `access` cookie is host-wide, so Celestia on
 `127.0.0.1:3100` forwards it. Responses can also be checked against `api.json` (an Ajv script over the GET endpoints found that the API disagrees with the spec in a few
-places, see the Winterchilla handoff). Elasticsearch-backed pages (guide search, autocomplete) answer 503 without ES.
+places, see the Winterchilla handoff). OpenSearch-backed pages (guide search, autocomplete) answer 503 without ES.
 
 ### Phase 2 status (2026-10-01)
 
@@ -154,7 +154,7 @@ Legend: ✅ built and checked against the old behavior · 🟡 built, differs in
 
 | Winterchilla route | Celestia | Notes |
 |---|---|---|
-| `/admin` | ✅ | index, developer Elasticsearch status, recent posts |
+| `/admin` | ✅ | index, developer OpenSearch status, recent posts |
 | `/admin/logs/{page}` (+ `/logs`) | ✅ | filters, entry details with the both / new / old switch |
 | `/admin/usefullinks`, `/admin/notices` | ✅ | |
 | `/admin/pcg-appearances/{page}` | 🟡 | built, not compared side by side |

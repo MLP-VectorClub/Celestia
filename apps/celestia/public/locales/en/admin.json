@@ -117,7 +117,7 @@
     "wsdiag": "WS"
   },
   "index": {
-    "elasticStatus": "Elasticsearch status",
+    "elasticStatus": "OpenSearch status",
     "serverDown": "Server is down.",
     "indices": "Indices",
     "nodes": "Nodes",
