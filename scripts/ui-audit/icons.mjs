@@ -5,11 +5,12 @@ import { createRequire } from 'node:module';
 const { chromium } = createRequire(import.meta.url)('../../apps/celestia/node_modules/playwright');
 const sites = { wc: 'http://127.0.0.1:8768', ce: 'http://localhost:3000' };
 const pages = {
+  voted: '/episode/3', recent: '/episode/1',
   guide: '/cg/pony', full: '/cg/pony/full', changes: '/cg/pony/changes', tags: '/cg/pony/tags', appearance: '/cg/pony/v/1', blending: '/cg/blending', picker: '/cg/picker',
   episode: '/episode/1', show: '/show', movie: '/movie/2', events: '/events', event: '/event/1', users: '/users', profile: '/users/9001', pcg: '/users/9001/cg',
   pcghist: '/users/9001/cg/point-history', account: '/users/9001/account', admin: '/admin', logs: '/admin/logs', usefullinks: '/admin/usefullinks', notices: '/admin/notices', pcgadmin: '/admin/pcg-appearances',
 };
-const ACCOUNTS = { user: 9001, member: 9003, staff: 9002, developer: 9007 };
+const ACCOUNTS = { user: 9001, member: 9008, assistant: 9009, staff: 9002, developer: 9007 };
 const only = process.argv[2] ? process.argv[2].split(',') : Object.keys(pages);
 const roles = (process.argv[3] || 'member,staff').split(',');
 const b = await chromium.launch();

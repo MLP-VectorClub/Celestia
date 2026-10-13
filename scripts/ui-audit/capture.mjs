@@ -26,7 +26,7 @@ const only = process.argv[3] ? process.argv[3].split(',') : Object.keys(pages);
 const b = await chromium.launch();
 const inventory = {};
 // One account of the production copy for every role (guest is not signed in). Assistant, staff and admin share a permission level
-const ACCOUNTS = process.env.SEED ? { user: 9001, member: 9003, assistant: 9002, staff: 9002, admin: 9002, developer: 9007 } : { user: 2, member: 3, assistant: 132, staff: 133, admin: 136, developer: 1 };
+const ACCOUNTS = process.env.SEED ? { user: 9001, member: 9008, assistant: 9009, staff: 9002, admin: 9002, developer: 9007 } : { user: 2, member: 3, assistant: 132, staff: 133, admin: 136, developer: 1 };
 const roles = (process.argv[4] || 'guest,user,member,assistant,staff,admin,developer').split(',');
 for (const role of roles) {
   for (const [site, base] of Object.entries(sites)) {

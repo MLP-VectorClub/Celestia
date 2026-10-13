@@ -169,6 +169,7 @@ export const ShowEntryPage: FC<ShowEntryPageProps> = ({
                 }
               }}
             >
+              <InlineIcon icon="trash" first />
               {t('show.admin.delete')}
             </Button>
             {remove.error && <p className="text-danger w-100 text-center mb-0">{describeApiError(remove.error)}</p>}
