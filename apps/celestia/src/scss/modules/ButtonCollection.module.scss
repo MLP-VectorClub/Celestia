@@ -1,3 +1,5 @@
+@use '../bootstrap-defaults' as bs;
+
 .buttonCollection {
   &:not(:last-child) {
     margin-bottom: 1rem;
@@ -5,5 +7,14 @@
 
   > :not(:last-child) {
     margin-right: 0.5rem;
+  }
+
+  // One size for the buttons of a row, like on the old site: a small button (size="sm") next to regular ones looked like a mistake, and rows of
+  // only small ones differed from rows of regular ones on the same page. Rows inside of cards and dialogs opt out with `compact`
+  &:not(.compact) > :global(.btn) {
+    padding: bs.$btn-padding-y bs.$btn-padding-x;
+    font-size: bs.$btn-font-size;
+    line-height: bs.$btn-line-height;
+    border-radius: bs.$btn-border-radius;
   }
 }

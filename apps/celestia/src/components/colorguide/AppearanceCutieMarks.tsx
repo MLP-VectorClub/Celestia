@@ -62,7 +62,7 @@ export const AppearanceCutieMarks: FC<PropTypes> = ({ appearanceId, label, cutie
                     </div>
                   </div>
                 </div>
-                <ButtonCollection className="mt-3">
+                <ButtonCollection compact className="mt-3">
                   <Button
                     tag="a"
                     size="sm"

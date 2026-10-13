@@ -7,6 +7,7 @@ import { getQueryClient } from 'src/store/queryClient';
 import { rootReducer } from 'src/store/rootReducer';
 import { authActions } from 'src/store/slices/authSlice';
 import { WithAppThunkExtra } from 'src/store/thunkTypes';
+import { titleSetter } from 'src/utils/core';
 import { takeFetchFailure } from 'src/utils/fetch-failure';
 import { typedServerSideTranslations } from 'src/utils/i18n';
 import { setResponseStatus } from 'src/utils/initial-prop-helpers';
@@ -49,6 +50,11 @@ export const wrapper: typeof baseWrapper = {
       const failure = ctx.res ? takeFetchFailure(ctx.res) : undefined;
       if (!failure || 'redirect' in result) return result;
       setResponseStatus(ctx, failure.status);
+      // The status is in the title of the page that is sent, like the old site's "403 - MLP Vector Club" (`FetchFailureView` keeps it after hydration)
+      titleSetter(store, {
+        title: String(failure.status),
+        breadcrumbs: [{ label: 'Error' }, { label: String(failure.status), active: true }],
+      });
       if (failure.status === 429 && failure.retryAfter) ctx.res.setHeader('Retry-After', String(failure.retryAfter));
       const props = 'props' in result ? await result.props : {};
       const messages =

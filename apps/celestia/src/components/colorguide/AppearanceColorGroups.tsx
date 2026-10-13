@@ -91,7 +91,7 @@ export const AppearanceColorGroups: FC<PropTypes> = ({ colorGroups, appearanceId
               <CardBody className="p-2">
                 <h3 className="text-center">{cg.label}</h3>
                 {editable && (
-                  <ButtonCollection>
+                  <ButtonCollection compact>
                     <Button
                       size="sm"
                       color="darkblue"
