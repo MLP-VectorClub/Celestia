@@ -2,6 +2,7 @@ import { useTranslations } from 'next-intl';
 import { FC, useState } from 'react';
 import { Button, FormGroup, FormText, Input, Label } from 'reactstrap';
 
+import InlineIcon from 'src/components/shared/InlineIcon';
 import { FormDialog } from 'src/components/shared/dialogs/FormDialog';
 import { describeApiError, useApiMutation, useConfig } from 'src/hooks';
 import { AppearanceEditService } from 'src/services/appearance-edit';
@@ -60,6 +61,7 @@ export const SpriteDialog: FC<PropTypes> = ({ appearanceId, hasSprite, isOpen, o
       </FormGroup>
       {hasSprite && (
         <Button type="button" color="danger" outline size="sm" onClick={() => remove.mutate()} disabled={remove.isPending}>
+          <InlineIcon icon="times" first />
           {t('colorGuide.edit.sprite.remove')}
         </Button>
       )}

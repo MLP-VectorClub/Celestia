@@ -14,6 +14,7 @@ import {
 import styles from 'modules/ShowEntry.module.scss';
 import { AppearanceLink } from 'src/components/colorguide/AppearanceLink';
 import Content from 'src/components/shared/Content';
+import InlineIcon from 'src/components/shared/InlineIcon';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import StatusAlert from 'src/components/shared/StatusAlert';
 import TimeAgo from 'src/components/shared/TimeAgo';
@@ -143,9 +144,11 @@ export const ShowEntryPage: FC<ShowEntryPageProps> = ({
           <RibbonHeading color="darkblue">{t('show.entry.adminHeading')}</RibbonHeading>
           <div className="d-flex flex-wrap gap-2 justify-content-center mb-3">
             <Button color="primary" id="edit-show" onClick={() => setEditing(true)}>
+              <InlineIcon icon="pencil-alt" first />
               {t('show.entry.metadata')}
             </Button>
             <Button color="primary" id="cg-relations" onClick={() => setRelating(true)}>
+              <InlineIcon icon="pencil-alt" first />
               {t('show.entry.guideRelations')}
             </Button>
             <ShowAppearancesDialog showId={id} isOpen={relating} onClose={() => setRelating(false)} />

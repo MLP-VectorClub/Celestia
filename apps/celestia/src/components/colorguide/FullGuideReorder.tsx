@@ -70,6 +70,7 @@ export const FullGuideReorder: FC<PropTypes> = ({ guide, appearances, groups, on
           {t('colorGuide.edit.reorder.save')}
         </Button>
         <Button color="ui" size="sm" disabled={save.isPending} onClick={onDone}>
+          <InlineIcon icon="times" first />
           {t('colorGuide.edit.common.cancel')}
         </Button>
       </div>

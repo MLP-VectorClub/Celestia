@@ -2,6 +2,7 @@ import { useTranslations } from 'next-intl';
 import { FC, RefObject } from 'react';
 import { Button } from 'reactstrap';
 
+import InlineIcon from 'src/components/shared/InlineIcon';
 import { downloadBlob, filterFreeFileName } from 'src/utils/image-file';
 
 interface PropTypes {
@@ -33,6 +34,7 @@ export const SaveFilterFreeButton: FC<PropTypes> = ({ imageRef, overlayRef, incl
         target.toBlob((blob) => blob && downloadBlob(blob, filterFreeFileName(fileName, filterType)), 'image/png');
       }}
     >
+      <InlineIcon icon="download" first />
       {t('tools.reverse.save')}
     </Button>
   );

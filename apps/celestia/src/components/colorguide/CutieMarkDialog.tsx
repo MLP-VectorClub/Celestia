@@ -2,6 +2,7 @@ import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
 import { Alert, Button, Card, CardBody, FormGroup, Input, Label } from 'reactstrap';
 
+import InlineIcon from 'src/components/shared/InlineIcon';
 import { FormDialog } from 'src/components/shared/dialogs/FormDialog';
 import { describeApiError, fieldErrors, useApiMutation } from 'src/hooks';
 import { AppearanceEditService } from 'src/services/appearance-edit';
@@ -136,6 +137,7 @@ export const CutieMarkDialog: FC<PropTypes> = ({ appearanceId, isOpen, onClose }
                   outline
                   onClick={() => setRows((all) => all.filter((r) => r.key !== row.key))}
                 >
+                  <InlineIcon icon="trash" first />
                   {t('colorGuide.edit.cutieMarks.remove')}
                 </Button>
               </div>
@@ -233,6 +235,7 @@ export const CutieMarkDialog: FC<PropTypes> = ({ appearanceId, isOpen, onClose }
         disabled={rows.length >= MAX_CUTIE_MARKS || !loaded}
         onClick={() => setRows((all) => [...all, blankRow()])}
       >
+        <InlineIcon icon="plus" first />
         {t('colorGuide.edit.cutieMarks.add')}
       </Button>
       {loaded && rows.length === 0 && <p className="text-muted mt-2 mb-0">{t('colorGuide.edit.cutieMarks.empty')}</p>}

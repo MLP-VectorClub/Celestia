@@ -1,10 +1,11 @@
+import Axios from 'axios';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { FC, useState } from 'react';
 import { Alert, Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import Axios from 'axios';
 
 import { PostItem, ShowListItem } from '@mlp-vectorclub/api-types';
+import postStyles from 'modules/PostList.module.scss';
 import { ImageZoomLink } from 'src/components/shared/ImageZoomLink';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import TimeAgo from 'src/components/shared/TimeAgo';
@@ -15,7 +16,6 @@ import { UnifiedErrorResponse } from 'src/types';
 import { httpResponseMapper } from 'src/utils';
 import { permission } from 'src/utils/permission';
 import { formatShowId } from 'src/utils/show';
-import postStyles from 'modules/PostList.module.scss';
 
 type Suggestion = PostItem & { show: ShowListItem };
 
@@ -35,7 +35,9 @@ export const RequestRouletteDialog: FC<{ isOpen: boolean; onClose: () => void }>
     setError(null);
     setImageFailed(false);
     try {
-      const { data } = await Axios.get<{ post: Suggestion }>('/posts/requests/suggestion', { params: loaded.length ? { alreadyLoaded: loaded.join(',') } : {} });
+      const { data } = await Axios.get<{ post: Suggestion }>('/posts/requests/suggestion', {
+        params: loaded.length ? { alreadyLoaded: loaded.join(',') } : {},
+      });
       setLoaded((ids) => [...ids, data.post.id]);
       setSuggestion(data.post);
     } catch (e) {
@@ -87,18 +89,28 @@ export const RequestRouletteDialog: FC<{ isOpen: boolean; onClose: () => void }>
                   {formatShowId(suggestion.show)}
                 </Link>
               </em>
-              {suggestion.type && <em className={postStyles.infoLine}>{t('users.roulette.category', { category: t(`show.post.sections.${suggestion.type}`) })}</em>}
+              {suggestion.type && (
+                <em className={postStyles.infoLine}>
+                  {t('users.roulette.category', { category: t(`show.post.sections.${suggestion.type}`) })}
+                </em>
+              )}
               {permission(user, 'member') ? (
                 reserve.isSuccess ? (
                   <strong className="text-success">{t('users.roulette.reserved')}</strong>
                 ) : (
-                  <Button color="primary" className="reserve-request" disabled={reserve.isPending} onClick={() => reserve.mutate(suggestion.id)}>
+                  <Button
+                    color="primary"
+                    className="reserve-request"
+                    disabled={reserve.isPending}
+                    onClick={() => reserve.mutate(suggestion.id)}
+                  >
                     <InlineIcon icon="plus" first />
                     {t('users.roulette.reserve')}
                   </Button>
                 )
               ) : (
                 <Button tag={Link} href={`/s/${suggestion.id.toString(36)}`} color="blue">
+                  <InlineIcon icon="arrow-right" first />
                   {t('users.roulette.viewOnPage')}
                 </Button>
               )}

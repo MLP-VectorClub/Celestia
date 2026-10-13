@@ -3,6 +3,7 @@ import { FC } from 'react';
 import { Button } from 'reactstrap';
 
 import styles from 'modules/BlendingReverse.module.scss';
+import InlineIcon from 'src/components/shared/InlineIcon';
 import { KnownPair } from 'src/components/tools/blending-reverse/useKnownColorPairs';
 import { ColorField } from 'src/components/tools/shared/ColorField';
 
@@ -24,7 +25,7 @@ export const KnownColorPairs: FC<PropTypes> = ({ pairs, onChange, onAdd, onRemov
           <th>{t('tools.reverse.filtered')}</th>
           <td>
             <Button color="success" size="sm" onClick={onAdd} aria-label={t('tools.reverse.addPair')}>
-              +
+              <InlineIcon icon="plus" />
             </Button>
           </td>
         </tr>
@@ -56,7 +57,7 @@ export const KnownColorPairs: FC<PropTypes> = ({ pairs, onChange, onAdd, onRemov
                 onClick={() => onRemove(pair.id)}
                 aria-label={t('tools.reverse.removePair', { n: i + 1 })}
               >
-                −
+                <InlineIcon icon="minus" />
               </Button>
             </td>
           </tr>

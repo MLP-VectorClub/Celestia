@@ -2,6 +2,7 @@ import { useTranslations } from 'next-intl';
 import { FC, useRef } from 'react';
 import { Button, FormGroup, Input, Label } from 'reactstrap';
 
+import InlineIcon from 'src/components/shared/InlineIcon';
 import { ColorField } from 'src/components/tools/shared/ColorField';
 
 export type TargetType = 'image' | 'color';
@@ -45,6 +46,7 @@ export const ReverseTarget: FC<PropTypes> = ({ type, onTypeChange, color, onColo
       ) : (
         <div>
           <Button color="primary" size="sm" onClick={() => fileInput.current?.click()}>
+            <InlineIcon icon="upload" first />
             {t('tools.reverse.browse')}
           </Button>
           {fileName && <span className="ms-2">{fileName}</span>}

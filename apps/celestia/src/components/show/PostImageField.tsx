@@ -4,6 +4,7 @@ import { FC } from 'react';
 import { Button, FormGroup, Input, InputGroup, Label } from 'reactstrap';
 
 import { PostPostsCheckImageResult } from '@mlp-vectorclub/api-types';
+import InlineIcon from 'src/components/shared/InlineIcon';
 import { describeApiError, useApiMutation } from 'src/hooks';
 import { PostService } from 'src/services/posts';
 
@@ -48,6 +49,7 @@ export const PostImageField: FC<PropTypes> = ({ id, label, value, onChange, erro
           required
         />
         <Button type="button" outline onClick={() => check.mutate(trimmed)} disabled={!trimmed || check.isPending}>
+          <InlineIcon icon="sync" first />
           {t('show.post.image.check')}
         </Button>
       </InputGroup>
