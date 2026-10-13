@@ -10,7 +10,9 @@ const typeCheckedRules = tseslint.configs.recommended
 
 export default [
   {
-    ignores: ['node_modules', '.next', 'out', 'dist', 'coverage'],
+    // .next* covers every Next build directory: the audit and e2e tooling and the deploy build into .next-e2e, .next-ui-*, .next-new, ...
+    // public/dist holds files that are served as downloads as they are (the Illustrator swatch import script), not app code
+    ignores: ['node_modules', '.next*', 'out', 'dist', 'coverage', 'public/dist'],
   },
   ...nextConfig,
   {
