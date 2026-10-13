@@ -1,4 +1,4 @@
-import { formatDistanceToNow, isValid } from 'date-fns';
+import { isValid } from 'date-fns';
 import { FC, TimeHTMLAttributes, useEffect, useMemo, useState } from 'react';
 import { UncontrolledTooltip } from 'reactstrap';
 import { UncontrolledTooltipProps } from 'reactstrap';
@@ -7,6 +7,7 @@ import { distinctUntilChanged, map, tap } from 'rxjs/operators';
 
 import TooltipContent from 'src/components/shared/TooltipContent';
 import { formatLongDate } from 'src/utils';
+import { relativeTime } from 'src/utils/relative-time';
 
 interface PropTypes extends Omit<TimeHTMLAttributes<unknown>, 'datetime'> {
   date: Date | string;
@@ -31,12 +32,8 @@ const TimeAgo: FC<PropTypes> = ({ date: inputDate, tooltip = true, tooltipPlacem
   useEffect(() => {
     const sub = timer(0, 10e3)
       .pipe(
-        map(() =>
-          formatDistanceToNow(date, {
-            includeSeconds: true,
-            addSuffix: true,
-          })
-        ),
+        // The wording of the old site (moment.js), not date-fns' "about 5 years ago"
+        map(() => relativeTime(date)),
         distinctUntilChanged(),
         tap((value) => setText(value))
       )
