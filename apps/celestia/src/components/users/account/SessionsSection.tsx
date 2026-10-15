@@ -11,6 +11,7 @@ import { AccountService } from 'src/services/account';
 import { useAppDispatch } from 'src/store';
 import { signOutThunk } from 'src/store/thunks';
 import { ENDPOINTS } from 'src/utils';
+import { getBrowserIcon } from 'src/utils/browser-icon';
 
 /**
  * The browsers a user is signed in on, each with a button to end that session, and one to end all of them. Staff see the sessions of the user whose
@@ -48,6 +49,21 @@ export const SessionsSection: FC<{ userId: number; own: boolean }> = ({ userId, 
           <ul className="session-list list-unstyled d-flex flex-wrap gap-2">
             {list.map((s) => (
               <li key={s.id} id={`session-${s.id}`} className="border rounded p-2 text-center" style={{ minWidth: 220 }}>
+                {getBrowserIcon(s.device) && (
+                  <span
+                    role="img"
+                    aria-hidden="true"
+                    className="browser-icon d-block mx-auto mb-2"
+                    style={{
+                      height: 96,
+                      width: '100%',
+                      backgroundImage: `url(${getBrowserIcon(s.device)})`,
+                      backgroundRepeat: 'no-repeat',
+                      backgroundPosition: 'center',
+                      backgroundSize: 'contain',
+                    }}
+                  />
+                )}
                 <span className="browser d-block fw-bold">{s.device}</span>
                 <div className="my-1">
                   {s.current ? (
