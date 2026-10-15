@@ -2,8 +2,6 @@ import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
-import Content from 'src/components/shared/Content';
-import StandardHeading from 'src/components/shared/StandardHeading';
 import { PickerTool } from 'src/components/tools/picker/PickerTool';
 import { useTitleSetter } from 'src/hooks';
 import { PATHS } from 'src/paths';
@@ -31,10 +29,12 @@ const PickerPage: NextPage = () => {
   useTitleSetter(dispatch, titleData);
 
   return (
-    <Content>
-      <StandardHeading heading={t('colorGuide.picker.title')} lead={t('colorGuide.picker.lead')} />
+    <>
+      {/* The tool fills the page like the old site's, the heading stays for screen readers and search engines */}
+      <h1 className="visually-hidden">{t('colorGuide.picker.title')}</h1>
+      <p className="visually-hidden">{t('colorGuide.picker.lead')}</p>
       <PickerTool />
-    </Content>
+    </>
   );
 };
 

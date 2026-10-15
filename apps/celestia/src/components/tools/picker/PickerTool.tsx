@@ -5,20 +5,23 @@ import { Alert } from 'reactstrap';
 import styles from 'modules/Picker.module.scss';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { AboutDialog } from 'src/components/tools/picker/AboutDialog';
+import { AreaColorDialog } from 'src/components/tools/picker/AreaColorDialog';
 import { AreaEditDialog } from 'src/components/tools/picker/AreaEditDialog';
 import { AreaLayer, AreaPreview } from 'src/components/tools/picker/AreaLayer';
 import { AreaList } from 'src/components/tools/picker/AreaList';
+import { AverageColorPanel } from 'src/components/tools/picker/AverageColorPanel';
 import { CanvasStage } from 'src/components/tools/picker/CanvasStage';
 import { DropZone } from 'src/components/tools/picker/DropZone';
 import { EmptyState } from 'src/components/tools/picker/EmptyState';
 import { LevelsDialog } from 'src/components/tools/picker/LevelsDialog';
 import { MenuBar } from 'src/components/tools/picker/MenuBar';
 import { ResizeHandle } from 'src/components/tools/picker/ResizeHandle';
+import { StagePanels } from 'src/components/tools/picker/StagePanels';
 import { StatusBar } from 'src/components/tools/picker/StatusBar';
 import { TabBar } from 'src/components/tools/picker/TabBar';
-import { Toolbar } from 'src/components/tools/picker/Toolbar';
 import { useAreaColors } from 'src/components/tools/picker/useAreaColors';
 import { useFileIntake } from 'src/components/tools/picker/useFileIntake';
+import { useFillViewport } from 'src/components/tools/picker/useFillViewport';
 import { useHints } from 'src/components/tools/picker/useHints';
 import { useHoverInfo } from 'src/components/tools/picker/useHoverInfo';
 import { useImageStore } from 'src/components/tools/picker/useImageStore';
@@ -29,6 +32,7 @@ import { usePointerTools } from 'src/components/tools/picker/usePointerTools';
 import { useViewSize } from 'src/components/tools/picker/useViewSize';
 import { useViewportActions } from 'src/components/tools/picker/useViewportActions';
 import { useWheelNavigation } from 'src/components/tools/picker/useWheelNavigation';
+import { overallAverage } from 'src/utils/picker/area-colors';
 import { PickingArea, clampAreaSize } from 'src/utils/picker/areas';
 import { isFullRange } from 'src/utils/picker/levels';
 import { TabState, getActiveTab, initialPickerState, pickerReducer } from 'src/utils/picker/reducer';
@@ -44,6 +48,8 @@ export const PickerTool: FC = () => {
   const intake = useFileIntake({ dispatch, store, pickingSize: settings.pickingAreaSize });
   const active = getActiveTab(state);
 
+  const [zone, setZone] = useState<HTMLDivElement | null>(null);
+  useFillViewport(zone);
   const [stage, setStage] = useState<HTMLDivElement | null>(null);
   const viewSize = useViewSize(stage);
   const view = useViewportActions(active, viewSize, dispatch);
@@ -53,9 +59,14 @@ export const PickerTool: FC = () => {
   const [liveWidth, setLiveWidth] = useState<number | null>(null);
   const [editing, setEditing] = useState<{ tab: TabState; area: PickingArea } | null>(null);
   const [levelsOpen, setLevelsOpen] = useState(false);
+  const [colorTabId, setColorTabId] = useState<number | null>(null);
   const [aboutOpen, setAboutOpen] = useState(false);
   const { hint, handlers: hintHandlers } = useHints();
   const areaColors = useAreaColors(state.tabs, store);
+  const withAreas = state.tabs.filter((tab) => tab.areas.length > 0);
+  const areaCount = withAreas.reduce((sum, tab) => sum + tab.areas.length, 0);
+  const average = overallAverage(withAreas.flatMap((tab) => tab.areas.map((area) => areaColors.get(area.id) ?? null)));
+  const colorTab = state.tabs.find((tab) => tab.id === colorTabId);
 
   const place = (point: { x: number; y: number }, round: boolean) => {
     const position = active && view.viewport ? pixelAt(view.viewport, active, point) : null;
@@ -125,7 +136,7 @@ export const PickerTool: FC = () => {
   const pickerWidth = liveWidth ?? settings.pickerWidth;
 
   return (
-    <DropZone onFiles={(files) => void intake.openFiles(files)} {...hintHandlers}>
+    <DropZone ref={setZone} onFiles={(files) => void intake.openFiles(files)} {...hintHandlers}>
       <input
         ref={intake.inputRef}
         type="file"
@@ -141,6 +152,7 @@ export const PickerTool: FC = () => {
       <MenuBar
         onOpen={intake.browse}
         onOpenClipboard={() => void intake.pasteFromClipboard()}
+        onLevels={active ? () => setLevelsOpen(true) : null}
         onClearSettings={() => void clearSettings()}
         onAbout={() => setAboutOpen(true)}
       />
@@ -149,6 +161,10 @@ export const PickerTool: FC = () => {
         activeId={state.activeId}
         onActivate={(id) => dispatch({ type: 'activateTab', id })}
         onClose={(tab) => void closeTab(tab)}
+        onEditAreaColor={(tab) => {
+          dispatch({ type: 'activateTab', id: tab.id });
+          setColorTabId(tab.id);
+        }}
       />
       {intake.errors.length > 0 && (
         <Alert color="danger" toggle={intake.dismissErrors} fade={false} className="m-2">
@@ -157,21 +173,6 @@ export const PickerTool: FC = () => {
           ))}
         </Alert>
       )}
-      <Toolbar
-        tool={state.tool}
-        onToolChange={(tool) => dispatch({ type: 'setTool', tool })}
-        zoom={view.viewport?.zoom ?? null}
-        fit={view.fit}
-        original={view.original}
-        zoomStep={view.zoomStep}
-        zoomTo={view.zoomTo}
-        pickingSize={active?.pickingSize ?? null}
-        onPickingSizeChange={setPickingSize}
-        areaColor={active?.areaColor ?? null}
-        onAreaColorChange={(color) => dispatch({ type: 'setAreaColor', color })}
-        levelsActive={Boolean(active) && !isFullRange(active!.levels)}
-        onLevels={active ? () => setLevelsOpen(true) : null}
-      />
       <div className={styles.body}>
         <div className={styles.stage} style={{ flexBasis: `${pickerWidth}%` }}>
           {active ? (
@@ -197,6 +198,28 @@ export const PickerTool: FC = () => {
           ) : (
             <EmptyState onOpen={intake.browse} busy={intake.busy} />
           )}
+          <StagePanels
+            tool={state.tool}
+            onToolChange={(tool) => dispatch({ type: 'setTool', tool })}
+            zoom={view.viewport?.zoom ?? null}
+            fit={view.fit}
+            original={view.original}
+            zoomStep={view.zoomStep}
+            zoomTo={view.zoomTo}
+            pickingSize={active?.pickingSize ?? null}
+            onPickingSizeChange={setPickingSize}
+            levelsActive={Boolean(active) && !isFullRange(active!.levels)}
+            onLevels={active ? () => setLevelsOpen(true) : null}
+            statusPanel={
+              <AverageColorPanel
+                areaCount={areaCount}
+                imageCount={withAreas.length}
+                average={average}
+                copyHash={settings.copyHash}
+                onCopyHashChange={(copyHash) => updateSettings({ copyHash })}
+              />
+            }
+          />
         </div>
         <ResizeHandle
           onResize={setLiveWidth}
@@ -209,8 +232,6 @@ export const PickerTool: FC = () => {
           tabs={state.tabs}
           activeId={state.activeId}
           colors={areaColors}
-          copyHash={settings.copyHash}
-          onCopyHashChange={(copyHash) => updateSettings({ copyHash })}
           onActivateTab={(id) => dispatch({ type: 'activateTab', id })}
           onSelect={(tab, area, additive) => {
             dispatch({ type: 'activateTab', id: tab.id });
@@ -229,6 +250,11 @@ export const PickerTool: FC = () => {
         levels={levelsOpen ? (active?.levels ?? null) : null}
         onClose={() => setLevelsOpen(false)}
         onSubmit={(levels) => dispatch({ type: 'setLevels', levels })}
+      />
+      <AreaColorDialog
+        color={colorTab?.areaColor ?? null}
+        onClose={() => setColorTabId(null)}
+        onChange={(color) => dispatch({ type: 'setAreaColor', color })}
       />
       <AboutDialog isOpen={aboutOpen} onClose={() => setAboutOpen(false)} />
       <AreaEditDialog

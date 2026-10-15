@@ -3,9 +3,8 @@ import { useTranslations } from 'next-intl';
 import { FC } from 'react';
 
 import styles from 'modules/PickerAreaList.module.scss';
+import InlineIcon from 'src/components/shared/InlineIcon';
 import { AreaListItem } from 'src/components/tools/picker/AreaListItem';
-import { AverageColorPanel } from 'src/components/tools/picker/AverageColorPanel';
-import { overallAverage } from 'src/utils/picker/area-colors';
 import { PickingArea } from 'src/utils/picker/areas';
 import { Pixel } from 'src/utils/picker/pixels';
 import { TabState } from 'src/utils/picker/reducer';
@@ -15,8 +14,6 @@ interface PropTypes {
   activeId: number | null;
   /** Average color of each area by id */
   colors: Map<number, Pixel | null>;
-  copyHash: boolean;
-  onCopyHashChange: (copyHash: boolean) => void;
   onActivateTab: (id: number) => void;
   onSelect: (tab: TabState, area: PickingArea, additive: boolean) => void;
   onEdit: (tab: TabState, area: PickingArea) => void;
@@ -25,59 +22,14 @@ interface PropTypes {
   onDelete: () => void;
 }
 
-/** Every open image with its picking areas, a summary of the picking and the overall average color */
-export const AreaList: FC<PropTypes> = ({
-  tabs,
-  activeId,
-  colors,
-  copyHash,
-  onCopyHashChange,
-  onActivateTab,
-  onSelect,
-  onEdit,
-  onSelectAll,
-  onDelete,
-}) => {
+/** Every open image with its picking areas and the buttons working on the selection */
+export const AreaList: FC<PropTypes> = ({ tabs, activeId, colors, onActivateTab, onSelect, onEdit, onSelectAll, onDelete }) => {
   const t = useTranslations();
   const active = tabs.find((tab) => tab.id === activeId);
-  const withAreas = tabs.filter((tab) => tab.areas.length > 0);
-  const areaCount = withAreas.reduce((sum, tab) => sum + tab.areas.length, 0);
-  const average = overallAverage(withAreas.flatMap((tab) => tab.areas.map((area) => colors.get(area.id) ?? null)));
 
   return (
     <aside className={styles.list} aria-label={t('picker.list.label')}>
-      <div className={styles.header}>
-        <span className={styles.title}>{t('picker.list.title')}</span>
-        <div className={styles.actions}>
-          <button
-            type="button"
-            className={styles.smallButton}
-            disabled={!active?.areas.length}
-            data-hint={t('picker.list.selectAllHint')}
-            onClick={() => onSelectAll(true)}
-          >
-            {t('picker.list.selectAll')}
-          </button>
-          <button
-            type="button"
-            className={styles.smallButton}
-            disabled={!active?.selected.length}
-            data-hint={t('picker.list.deselectHint')}
-            onClick={() => onSelectAll(false)}
-          >
-            {t('picker.list.deselect')}
-          </button>
-          <button
-            type="button"
-            className={styles.smallButton}
-            disabled={!active?.selected.length}
-            data-hint={t('picker.list.deleteHint')}
-            onClick={onDelete}
-          >
-            {t('picker.list.delete')}
-          </button>
-        </div>
-      </div>
+      <span className={styles.title}>{t('picker.list.title')}</span>
       <div className={styles.tabs}>
         {tabs.length === 0 && <p className={styles.empty}>{t('picker.list.noImages')}</p>}
         {tabs.map((tab) => (
@@ -105,13 +57,38 @@ export const AreaList: FC<PropTypes> = ({
           </section>
         ))}
       </div>
-      <AverageColorPanel
-        areaCount={areaCount}
-        imageCount={withAreas.length}
-        average={average}
-        copyHash={copyHash}
-        onCopyHashChange={onCopyHashChange}
-      />
+      <div className={styles.actions}>
+        <button
+          type="button"
+          className={styles.actionButton}
+          disabled={!active?.selected.length}
+          aria-label={t('picker.list.delete')}
+          data-hint={t('picker.list.deleteHint')}
+          onClick={onDelete}
+        >
+          <InlineIcon icon="trash" />
+        </button>
+        <button
+          type="button"
+          className={styles.actionButton}
+          disabled={!active?.selected.length}
+          aria-label={t('picker.list.deselect')}
+          data-hint={t('picker.list.deselectHint')}
+          onClick={() => onSelectAll(false)}
+        >
+          <InlineIcon icon="times" />
+        </button>
+        <button
+          type="button"
+          className={styles.actionButton}
+          disabled={!active?.areas.length}
+          aria-label={t('picker.list.selectAll')}
+          data-hint={t('picker.list.selectAllHint')}
+          onClick={() => onSelectAll(true)}
+        >
+          <InlineIcon icon="check-circle" />
+        </button>
+      </div>
     </aside>
   );
 };

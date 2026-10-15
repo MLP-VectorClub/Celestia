@@ -1,7 +1,8 @@
 import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
 
-import styles from 'modules/PickerToolbar.module.scss';
+import styles from 'modules/PickerPanels.module.scss';
+import InlineIcon from 'src/components/shared/InlineIcon';
 import { MAX_AREA_SIZE, MIN_AREA_SIZE, clampAreaSize } from 'src/utils/picker/areas';
 
 interface PropTypes {
@@ -23,41 +24,43 @@ export const SizeControls: FC<PropTypes> = ({ size, onChange }) => {
   };
 
   return (
-    <div className={styles.group} role="group" aria-label={t('picker.size.controls')}>
+    <div className={styles.sizeRow} role="group" aria-label={t('picker.size.controls')}>
       <button
         type="button"
-        className={styles.button}
+        className={styles.iconButton}
         disabled={size === null || size <= MIN_AREA_SIZE}
         aria-label={t('picker.size.decrease')}
         data-hint={t('picker.size.decreaseHint')}
         onClick={(e) => size !== null && onChange(clampAreaSize(size - (e.ctrlKey || e.metaKey ? 1 : 5)))}
       >
-        −
+        <InlineIcon icon="minus-circle" />
       </button>
-      <input
-        className={styles.sizeInput}
-        aria-label={t('picker.size.label')}
-        data-hint={t('picker.size.hint')}
-        inputMode="numeric"
-        disabled={size === null}
-        value={draft}
-        onChange={(e) => setDraft(e.target.value.replace(/[^\d]/g, ''))}
-        onBlur={commit}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') commit();
-          if (e.key === 'Escape') setDraft(shown);
-        }}
-      />
-      <span className={styles.unit}>{t('picker.size.unit')}</span>
+      <span className={styles.sizeField}>
+        <input
+          className={styles.sizeInput}
+          aria-label={t('picker.size.label')}
+          data-hint={t('picker.size.hint')}
+          inputMode="numeric"
+          disabled={size === null}
+          value={draft}
+          onChange={(e) => setDraft(e.target.value.replace(/[^\d]/g, ''))}
+          onBlur={commit}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') commit();
+            if (e.key === 'Escape') setDraft(shown);
+          }}
+        />
+        <span className={styles.unit}>{t('picker.size.unit')}</span>
+      </span>
       <button
         type="button"
-        className={styles.button}
+        className={styles.iconButton}
         disabled={size === null || size >= MAX_AREA_SIZE}
         aria-label={t('picker.size.increase')}
         data-hint={t('picker.size.increaseHint')}
         onClick={(e) => size !== null && onChange(clampAreaSize(size + (e.ctrlKey || e.metaKey ? 1 : 5)))}
       >
-        +
+        <InlineIcon icon="plus-circle" />
       </button>
     </div>
   );

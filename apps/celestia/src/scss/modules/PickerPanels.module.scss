@@ -1,0 +1,213 @@
+// The two panels floating over the picking surface (tools and zoom at the top left, picking settings and status at the bottom left)
+.panel {
+  position: absolute;
+  z-index: 4;
+  padding: 0 5px 5px;
+  text-align: center;
+  background-color: var(--picker-panel-bg);
+  color: var(--picker-ui-color);
+  border: 1px solid var(--picker-ui-border);
+  cursor: default;
+}
+
+.topLeft {
+  top: 0;
+  left: 0;
+  box-sizing: content-box;
+  width: 75px;
+  border-top: 0;
+  border-left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.bottomLeft {
+  bottom: 0;
+  left: 0;
+  min-width: 145px;
+  border-bottom: 0;
+  border-left: 0;
+}
+
+.section {
+  position: relative;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: center;
+  padding-top: 18px;
+
+  & + & {
+    margin-top: 4px;
+    padding-bottom: 0;
+    border-top: 1px solid var(--picker-ui-border);
+    padding-top: 22px;
+
+    .label {
+      top: 10px;
+    }
+  }
+}
+
+.topLeft .section {
+  margin-left: -4px;
+  width: calc(100% + 4px);
+  gap: 0;
+
+  > * {
+    margin: 4px 0 0 4px;
+  }
+}
+
+.label {
+  position: absolute;
+  top: 6px;
+  left: 0;
+  width: 100%;
+  font-size: 9px;
+  line-height: 1;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  font-size: 19px;
+  background: transparent;
+  color: inherit;
+  border: 1px solid transparent;
+  border-radius: 2px;
+
+  &:hover:not(:disabled) {
+    border-color: gray;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  &:active:not(:disabled),
+  &.selected {
+    background: rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0 0 2px black;
+  }
+
+  &.selected {
+    border-color: var(--picker-ui-border);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+  }
+}
+
+.zoomInput,
+.sizeInput {
+  min-width: 0;
+  padding: 0;
+  text-align: center;
+  background: transparent;
+  color: inherit;
+  border: 1px solid transparent;
+  border-radius: 2px;
+
+  &:focus {
+    background-color: var(--picker-ui-color);
+    color: var(--picker-ui-bg);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+  }
+}
+
+.zoomInput {
+  flex: 0 0 100%;
+  max-width: 100%;
+  font-size: 1rem;
+}
+
+.sizeRow {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.sizeField {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: baseline;
+  justify-content: center;
+  margin: 0 8px;
+}
+
+.sizeInput {
+  width: 2.2em;
+  font-size: 1rem;
+  text-align: right;
+}
+
+.unit {
+  font-size: 1rem;
+}
+
+.counters {
+  display: block;
+  padding: 3px 5px;
+  white-space: nowrap;
+}
+
+.average {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 5px;
+  font-family: var(--bs-font-monospace, monospace);
+  font-size: 1.15rem;
+  line-height: 1em;
+  white-space: nowrap;
+}
+
+.averageColor {
+  padding: 1px 2px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  user-select: all;
+}
+
+.smallButton {
+  margin-left: 5px;
+  padding: 4px 6px;
+  background: transparent;
+  color: inherit;
+  border: 1px solid transparent;
+  border-radius: 2px;
+
+  &:hover {
+    border-color: var(--picker-ui-border);
+  }
+
+  &:active {
+    background-color: rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0 0 2px black;
+  }
+
+  &[aria-pressed='false'] {
+    color: rgba(255, 255, 255, 0.3);
+  }
+}
+
+.rgb {
+  font-family: var(--bs-font-monospace, monospace);
+  font-size: 0.8rem;
+}
+
+.copyStatus {
+  font-size: 0.8rem;
+}

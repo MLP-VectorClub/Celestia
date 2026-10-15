@@ -24,7 +24,7 @@ pure logic in `src/utils/picker/` (unit tested), one component per UI part in `s
 
 1. **Route `/picker`, inline** (not an iframe at `/cg/picker/frame`), next to `/blending`. The iframe only isolated the old site's global scripts.
 2. **No `canvas.hdr.js`.** Levels become a plain 256-entry lookup table applied with `putImageData`, which is cheap, so the "enable levels dialog /
-   reload" toggle goes away and Levels is just a button in the toolbar (stage 5).
+   reload" toggle goes away and Levels is just a button in the tools panel and an item of the Tools menu (stage 5).
 3. **Pointer Events** instead of separate mouse and touch handlers, so touch works for panning and picking from the start.
 4. **SHA-256 (`crypto.subtle`)** instead of MD5 for the duplicate check, no extra library. **No noUiSlider:** range inputs.
 5. State lives in one reducer (`pickerReducer`) so the tab/area logic is testable without a DOM. Only the settings are persisted.
@@ -44,7 +44,7 @@ src/utils/picker/
 src/components/tools/picker/
   PickerTool.tsx            composition only
   usePickerSettings.ts, useFileIntake.ts (open/paste/drop), usePickerShortcuts.ts, usePointerTools.ts
-  MenuBar.tsx, TabBar.tsx (+Tab.tsx), Toolbar.tsx (+ToolButtons, ZoomControls, SizeControls)
+  MenuBar.tsx, TabBar.tsx (+Tab.tsx), StagePanels.tsx (+ToolButtons, ZoomControls, SizeControls, AverageColorPanel)
   CanvasStage.tsx           the three canvases, drawing hooks only
   AreaList.tsx (+AreaListItem.tsx, AreaEditDialog.tsx), AverageColorPanel.tsx
   StatusBar.tsx (+HintContext), LevelsDialog.tsx, AboutDialog.tsx
@@ -76,7 +76,7 @@ Clipboard reading through the menu needs a permission prompt and is untested; Ct
 `CanvasStage` draws the image on one canvas sized to the stage (sharp pixels when magnified, smoothed when reduced). Hooks: `useViewSize` (callback-ref
 based, the stage only exists once an image is open), `useViewportActions` (fit on first show, zoom steps, zoom to a value, pan), `usePointerTools`
 (hand drag, zoom clicks, Alt/right click out), `useWheelNavigation` (Alt/Ctrl/Cmd+wheel zooms at the pointer, plain wheel pans), `useSpaceHeld`,
-`useHoverInfo` (pixel and color under the pointer via the lazy `ImageStore` pixel cache). `Toolbar` (`ToolButtons`, `ZoomControls`), `StatusBar`.
+`useHoverInfo` (pixel and color under the pointer via the lazy `ImageStore` pixel cache). `StagePanels` (`ToolButtons`, `ZoomControls`, `SizeControls`), `StatusBar`.
 Shortcuts: H/I/Z, Ctrl/Cmd+0 fit, Ctrl/Cmd+1 100%. Eleven browser tests cover fit/100%, zoom steps and typed values, tool and zoom shortcuts, the
 reading under the pointer (exact pixel and color), per-tab zoom and the zoom tool. Not covered by tests: dragging with the hand tool, wheel
 navigation and touch (the code paths exist). The eyedropper tool is selectable but only places areas from stage 4.
@@ -95,7 +95,7 @@ The browser tests share `localStorage` with the app's settings, so they clear it
 
 ## Stage 5 status: done, except strings
 
-- **Levels:** `LevelsDialog` (low/high range inputs, reset) and a toolbar button (highlighted when active). Applied per image as a lookup table through
+- **Levels:** `LevelsDialog` (low/high range inputs, reset) and a sliders button in the tools panel (highlighted when active). Applied per image as a lookup table through
   `ImageStore.getLevelled` (cached per image and range); only the picture changes, hover readings and area averages keep using the original pixels
   (browser-tested). No enable/reload toggle and no HDR library.
 - **Hints:** any element with `data-hint` explains itself in the status bar while hovered or focused (`useHints`), replacing the native tooltips.
@@ -131,3 +131,15 @@ The browser tests share `localStorage` with the app's settings, so they clear it
 - Large images (screencaps are 1920×1080 and up): redraw only what changed, keep `getImageData` out of pointer-move handlers (cache the pixels
   per tab).
 - The original strips hover hints into `data-info`; they become a small context so any component can set the status bar text.
+
+## Layout like the old site's (2026-10-15)
+
+The first version used a horizontal toolbar of text buttons and put everything in a card under the page heading. The old picker is a Photoshop-like
+window, and now the new one is laid out the same way:
+- The picker fills the page down to the footer (`useFillViewport`; the heading is visually hidden), near-black editor, dark chrome from CSS variables on `.dropZone`.
+- Menu bar (File, Tools, About, compact, light dropdowns, Tools also has "Adjust levels…") above the tab bar; each tab has a swatch with the color of
+  its picking areas (click: `AreaColorDialog`, which replaced the "Area color" toolbar button), the name and ×.
+- Two panels float over the picking surface (`StagePanels`): top left "Picking" (hand, eyedropper, zoom, levels) and "Zooming" (zoom in/out, fit, 100%, the
+  zoom field); bottom left "Picking tool settings" (− size +) and "Picking status" (counts, average color with copy and `#` buttons, RGB).
+- The area list on the right has only the list and an icon bar (delete, deselect, select all); the status bar shows the hint, the pixel and its color as
+  `#RRGGBB @ opacity`. The checkerboard sits behind the image only. Tests that hover the stage must stay clear of the panels (top and bottom left).

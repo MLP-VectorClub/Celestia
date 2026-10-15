@@ -39,6 +39,18 @@ export const CanvasStage: FC<PropTypes> = ({ containerRef, source, imageSize, na
 
   return (
     <div ref={containerRef} className={styles.canvasStage} style={{ cursor }} role="img" aria-label={name} {...rest}>
+      {viewport && (
+        <div
+          className={styles.imageBackdrop}
+          style={{
+            left: viewport.offsetX,
+            top: viewport.offsetY,
+            width: imageSize.width * viewport.zoom,
+            height: imageSize.height * viewport.zoom,
+          }}
+          aria-hidden
+        />
+      )}
       <canvas ref={canvas} className={styles.stageCanvas} aria-hidden />
       {children}
     </div>

@@ -103,12 +103,12 @@ describe('PickerTool viewport', () => {
 
     // the 100×50 image is centered at 100%: 25 px left of the middle is red, 25 px right is blue
     await userEvent.hover(stage, { position: { x: rect.width / 2 - 25, y: rect.height / 2 } });
-    await expect.poll(() => statusText(screen)).toMatch(/25,\d+#ff0000 100%/);
+    await expect.poll(() => statusText(screen)).toMatch(/25,\d+#ff0000 @ 100%/);
     await userEvent.hover(stage, { position: { x: rect.width / 2 + 25, y: rect.height / 2 } });
-    await expect.poll(() => statusText(screen)).toMatch(/75,\d+#0000ff 100%/);
+    await expect.poll(() => statusText(screen)).toMatch(/75,\d+#0000ff @ 100%/);
 
     // outside the image there is no reading
-    await userEvent.hover(stage, { position: { x: 5, y: 5 } });
+    await userEvent.hover(stage, { position: { x: rect.width - 5, y: 5 } });
     await expect.poll(() => statusText(screen)).not.toMatch(/#[0-9a-f]{6}/);
   });
 

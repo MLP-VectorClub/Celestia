@@ -6,7 +6,8 @@
     "openClipboard": "Open from clipboard…",
     "tools": "Tools",
     "clearSettings": "Clear settings",
-    "about": "About"
+    "about": "About",
+    "levels": "Adjust levels…"
   },
   "empty": {
     "text": "Use the File menu, paste an image or drop image files here to start picking colors.",
@@ -135,5 +136,11 @@
       "name": "Zoom",
       "hint": "Zoom tool (Z): click to zoom in, Alt+click or right click to zoom out"
     }
+  },
+  "panels": {
+    "picking": "Picking",
+    "zooming": "Zooming",
+    "settings": "Picking tool settings",
+    "status": "Picking status"
   }
 }

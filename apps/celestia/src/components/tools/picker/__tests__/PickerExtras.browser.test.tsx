@@ -62,7 +62,7 @@ describe('levels', () => {
     const stage = screen.getByRole('img', { name: 'gray.png' });
     const rect = stage.element().getBoundingClientRect();
     await userEvent.hover(stage, { position: { x: rect.width / 2, y: rect.height / 2 } });
-    await expect.poll(() => statusText(screen)).toMatch(/#646464 100%/);
+    await expect.poll(() => statusText(screen)).toMatch(/#646464 @ 100%/);
   });
 
   it('keeps picking area averages on the original pixels', async () => {

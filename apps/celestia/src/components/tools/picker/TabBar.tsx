@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl';
 import { FC } from 'react';
 
 import styles from 'modules/PickerTabBar.module.scss';
+import { toCssColor } from 'src/utils/picker/pixels';
 import { TabState } from 'src/utils/picker/reducer';
 
 interface PropTypes {
@@ -10,6 +11,8 @@ interface PropTypes {
   activeId: number | null;
   onActivate: (id: number) => void;
   onClose: (tab: TabState) => void;
+  /** Called with the tab whose swatch was clicked, to change the color of its picking areas */
+  onEditAreaColor: (tab: TabState) => void;
 }
 
 const splitName = (name: string): [string, string] => {
@@ -17,8 +20,8 @@ const splitName = (name: string): [string, string] => {
   return dot > 0 ? [name.slice(0, dot), name.slice(dot)] : [name, ''];
 };
 
-/** One tab per opened image, scrolls sideways when there are many */
-export const TabBar: FC<PropTypes> = ({ tabs, activeId, onActivate, onClose }) => {
+/** One tab per opened image with the color of its picking areas as a swatch, scrolls sideways when there are many */
+export const TabBar: FC<PropTypes> = ({ tabs, activeId, onActivate, onClose, onEditAreaColor }) => {
   const t = useTranslations();
   return (
     <div className={styles.tabBar} role="tablist" aria-label={t('picker.tabs.label')}>
@@ -26,6 +29,15 @@ export const TabBar: FC<PropTypes> = ({ tabs, activeId, onActivate, onClose }) =
         const [base, extension] = splitName(tab.name);
         return (
           <div key={tab.id} className={classNames(styles.tab, { [styles.active]: tab.id === activeId })}>
+            <button
+              type="button"
+              className={styles.swatch}
+              aria-label={t('picker.areaColor.button')}
+              data-hint={t('picker.areaColor.hint')}
+              onClick={() => onEditAreaColor(tab)}
+            >
+              <span style={{ backgroundColor: toCssColor(tab.areaColor) }} />
+            </button>
             <button
               type="button"
               role="tab"

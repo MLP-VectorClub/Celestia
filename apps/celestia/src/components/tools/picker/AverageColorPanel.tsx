@@ -1,7 +1,8 @@
 import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
 
-import styles from 'modules/PickerAreaList.module.scss';
+import styles from 'modules/PickerPanels.module.scss';
+import InlineIcon from 'src/components/shared/InlineIcon';
 import { isLight, rgbToHex } from 'src/utils/color';
 import { Pixel, formatRgb, toCssColor } from 'src/utils/picker/pixels';
 
@@ -35,8 +36,8 @@ export const AverageColorPanel: FC<PropTypes> = ({ areaCount, imageCount, averag
   };
 
   return (
-    <div className={styles.status}>
-      <div className={styles.counters}>{t('picker.average.counters', { areas: areaCount, images: imageCount })}</div>
+    <div>
+      <span className={styles.counters}>{t('picker.average.counters', { areas: areaCount, images: imageCount })}</span>
       {average && (
         <>
           <div className={styles.average}>
@@ -46,17 +47,24 @@ export const AverageColorPanel: FC<PropTypes> = ({ areaCount, imageCount, averag
             >
               {hex}
             </span>
-            <button type="button" className={styles.smallButton} onClick={() => void copy()} data-hint={t('picker.average.copyHint')}>
-              {t('picker.average.copy')}
+            <button
+              type="button"
+              className={styles.smallButton}
+              aria-label={t('picker.average.copy')}
+              onClick={() => void copy()}
+              data-hint={t('picker.average.copyHint')}
+            >
+              <InlineIcon icon="clipboard" />
             </button>
             <button
               type="button"
               className={styles.smallButton}
+              aria-label={copyHash ? '#' : t('picker.average.noHash')}
               aria-pressed={copyHash}
               onClick={() => onCopyHashChange(!copyHash)}
               data-hint={t('picker.average.hashHint')}
             >
-              {copyHash ? '#' : t('picker.average.noHash')}
+              <InlineIcon icon="hashtag" />
             </button>
           </div>
           <div className={styles.rgb}>{formatRgb(average)}</div>

@@ -1,10 +1,10 @@
 import classNames from 'classnames';
-import { DragEvent, FC, HTMLAttributes, useState } from 'react';
+import { ComponentProps, DragEvent, FC, useState } from 'react';
 
 import styles from 'modules/Picker.module.scss';
 
 /** Wraps the picker and accepts image files dropped anywhere on it */
-export const DropZone: FC<HTMLAttributes<HTMLDivElement> & { onFiles: (files: File[]) => void }> = ({ onFiles, children, ...rest }) => {
+export const DropZone: FC<ComponentProps<'div'> & { onFiles: (files: File[]) => void }> = ({ onFiles, children, ...rest }) => {
   const [over, setOver] = useState(false);
   const hasFiles = (e: DragEvent) => e.dataTransfer.types.includes('Files');
 

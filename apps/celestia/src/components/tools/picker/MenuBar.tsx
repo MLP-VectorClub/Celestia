@@ -7,6 +7,8 @@ import styles from 'modules/PickerMenuBar.module.scss';
 interface PropTypes {
   onOpen: () => void;
   onOpenClipboard: () => void;
+  /** `null` without an image */
+  onLevels: (() => void) | null;
   onClearSettings: () => void;
   onAbout: () => void;
 }
@@ -15,7 +17,7 @@ const isMac = typeof navigator !== 'undefined' && /(mac|iphone|ipad)/i.test(navi
 const mod = isMac ? '⌘' : 'Ctrl+';
 
 /** File and Tools menus of the picker */
-export const MenuBar: FC<PropTypes> = ({ onOpen, onOpenClipboard, onClearSettings, onAbout }) => {
+export const MenuBar: FC<PropTypes> = ({ onOpen, onOpenClipboard, onLevels, onClearSettings, onAbout }) => {
   const t = useTranslations();
   return (
     <nav className={styles.menuBar} aria-label={t('picker.menu.label')}>
@@ -39,6 +41,9 @@ export const MenuBar: FC<PropTypes> = ({ onOpen, onOpenClipboard, onClearSetting
           {t('picker.menu.tools')}
         </DropdownToggle>
         <DropdownMenu>
+          <DropdownItem disabled={onLevels === null} onClick={() => onLevels?.()}>
+            {t('picker.menu.levels')}
+          </DropdownItem>
           <DropdownItem onClick={onClearSettings}>{t('picker.menu.clearSettings')}</DropdownItem>
         </DropdownMenu>
       </UncontrolledDropdown>

@@ -40,8 +40,12 @@ export const AreaListItem: FC<PropTypes> = ({ index, area, color, selected, onSe
         >
           {color ? formatColor(color) : t('picker.list.outside')}
         </span>
-        <span className={styles.size}>
-          {area.shape === 'round' ? '●' : '■'} {area.size}px
+        <span className={classNames(styles.size, { [styles.round]: area.shape === 'round' })}>
+          <span>
+            {/* The shape is drawn by the box's corners, the glyph tells it to screen readers */}
+            <span className="visually-hidden">{area.shape === 'round' ? '●' : '■'} </span>
+            {area.size}px
+          </span>
         </span>
       </button>
     </li>
