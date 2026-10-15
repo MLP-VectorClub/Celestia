@@ -2,6 +2,7 @@ import { useTranslations } from 'next-intl';
 import { FC, useState } from 'react';
 import { FormGroup, Input, Label } from 'reactstrap';
 
+import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { FormDialog } from 'src/components/shared/dialogs/FormDialog';
 import { PostImageField } from 'src/components/show/PostImageField';
 import { describeApiError, fieldErrors, useApiMutation } from 'src/hooks';
@@ -13,10 +14,13 @@ interface PropTypes {
   kind: CreatePostBody['kind'];
   isOpen: boolean;
   onClose: () => void;
+  /** Opens the form again, for "Make another" */
+  onMakeAnother?: () => void;
 }
 
-export const PostCreateDialog: FC<PropTypes> = ({ showId, kind, isOpen, onClose }) => {
+export const PostCreateDialog: FC<PropTypes> = ({ showId, kind, isOpen, onClose, onMakeAnother }) => {
   const t = useTranslations();
+  const { confirm } = useDialog();
   const [imageUrl, setImageUrl] = useState('');
   const [label, setLabel] = useState('');
   const [type, setType] = useState<NonNullable<CreatePostBody['type']>>('chr');
@@ -32,10 +36,20 @@ export const PostCreateDialog: FC<PropTypes> = ({ showId, kind, isOpen, onClose 
       }),
     {
       invalidate: [[ENDPOINTS.POSTS({ showId, kind })]],
-      onSuccess: () => {
+      onSuccess: (post) => {
         setImageUrl('');
         setLabel('');
         onClose();
+        // Like the old site: offer a jump to the new post or a fresh form
+        void confirm({
+          title: t(kind === 'request' ? 'show.post.create.postedRequest' : 'show.post.create.postedReservation'),
+          body: t('show.post.create.postedBody'),
+          confirmLabel: t('show.post.create.view'),
+          cancelLabel: t('show.post.create.makeAnother'),
+        }).then((view) => {
+          if (view) window.location.hash = `post-${post.id}`;
+          else onMakeAnother?.();
+        });
       },
     }
   );

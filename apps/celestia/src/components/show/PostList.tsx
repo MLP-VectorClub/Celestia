@@ -62,7 +62,15 @@ export const PostList: FC<PropTypes> = ({ showId, kind, initialData }) => {
       >
         {t(isRequest ? 'show.post.makeRequest' : 'show.post.makeReservation')}
       </Button>
-      {signedIn && <PostCreateDialog showId={showId} kind={kind} isOpen={creating} onClose={() => setCreating(false)} />}
+      {signedIn && (
+        <PostCreateDialog
+          showId={showId}
+          kind={kind}
+          isOpen={creating}
+          onClose={() => setCreating(false)}
+          onMakeAnother={() => setCreating(true)}
+        />
+      )}
     </>
   );
 

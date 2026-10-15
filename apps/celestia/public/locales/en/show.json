@@ -96,7 +96,12 @@
       "titleRequest": "Add a request",
       "titleReservation": "Add a reservation",
       "submitRequest": "Submit request",
-      "submitReservation": "Add reservation"
+      "submitReservation": "Add reservation",
+      "postedRequest": "Request posted",
+      "postedReservation": "Reservation posted",
+      "postedBody": "Would you like to view it or make another?",
+      "view": "View",
+      "makeAnother": "Make another"
     },
     "finish": {
       "submit": "Finish",
