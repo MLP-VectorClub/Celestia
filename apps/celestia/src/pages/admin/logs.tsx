@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { GetAdminLogsResult } from '@went.tf/mlp-vectorclub-api-types';
 import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -11,11 +12,11 @@ import InlineIcon from 'src/components/shared/InlineIcon';
 import Pagination from 'src/components/shared/Pagination';
 import TimeAgo from 'src/components/shared/TimeAgo';
 import { Tooltipped } from 'src/components/shared/Tooltipped';
-import { PATHS } from 'src/paths';
 import { useAuth } from 'src/hooks';
+import { PATHS } from 'src/paths';
 import { AdminService } from 'src/services/admin';
 import { formatLongDate } from 'src/utils';
-import { createAdminGetServerSideProps } from 'src/utils/admin-page';
+import { createAdminGetServerSideProps, fetchForAdminPage } from 'src/utils/admin-page';
 import { validatePageParam } from 'src/utils/validate-page-param';
 
 const PAGE_SIZE = 40;
@@ -65,7 +66,8 @@ export const splitLogData = (data: Record<string, unknown>): { rows: Row[]; pair
   return { rows, pairs };
 };
 
-const show = (value: unknown): string => (value === null || value === undefined || value === '' ? '—' : typeof value === 'object' ? JSON.stringify(value) : String(value));
+const show = (value: unknown): string =>
+  value === null || value === undefined || value === '' ? '—' : typeof value === 'object' ? JSON.stringify(value) : String(value);
 
 const VIEW_STATES = [
   { color: 'darkblue', key: 'diff', ins: true, del: true },
@@ -102,8 +104,8 @@ const LogDetails: FC<{ id: number }> = ({ id }) => {
           </Button>
           {pairs.map((pair) => (
             <div key={pair.label}>
-              <strong>{pair.label}:</strong>{' '}
-              {state.del && <del className="text-danger">{show(pair.old)}</del>} {state.ins && <ins className="text-success">{show(pair.new)}</ins>}
+              <strong>{pair.label}:</strong> {state.del && <del className="text-danger">{show(pair.old)}</del>}{' '}
+              {state.ins && <ins className="text-success">{show(pair.new)}</ins>}
             </div>
           ))}
         </div>
@@ -112,7 +114,15 @@ const LogDetails: FC<{ id: number }> = ({ id }) => {
   );
 };
 
-const LogsPage: NextPage = () => {
+type PropTypes = {
+  /** The first page of the list for the filters in the address (`key`), null when the server could not fetch it */
+  initialLogs: { key: string; data: GetAdminLogsResult } | null;
+};
+
+/** Identifies a list of logs, so the server's copy is only used for the page and filters it was fetched for */
+const logsKey = (page: number, type: string, by: string) => JSON.stringify([page, type, by]);
+
+const LogsPage: NextPage<PropTypes> = ({ initialLogs }) => {
   const t = useTranslations();
   const { query, replace } = useRouter();
   const { isStaff } = useAuth();
@@ -129,8 +139,10 @@ const LogsPage: NextPage = () => {
 
   const logs = useQuery({
     queryKey: ['/admin/logs', page, type, by],
-    queryFn: () => AdminService.logs({ page, size: PAGE_SIZE, ...(type ? { type } : {}), ...(by ? { by } : {}) } as never).then((r) => r.data),
+    queryFn: () =>
+      AdminService.logs({ page, size: PAGE_SIZE, ...(type ? { type } : {}), ...(by ? { by } : {}) } as never).then((r) => r.data),
     enabled: isStaff,
+    initialData: initialLogs?.key === logsKey(page, type, by) ? initialLogs.data : undefined,
   });
   const entryTypes = (logs.data as { entryTypes?: Record<string, string> } | undefined)?.entryTypes ?? {};
   const filter = (next: { type?: string; by?: string }) => {
@@ -155,7 +167,14 @@ const LogsPage: NextPage = () => {
         }}
       >
         <strong>{t('admin.logs.show')}</strong>
-        <Input type="select" name="type" aria-label={t('admin.logs.entryType')} style={{ width: 'auto' }} value={typeInput} onChange={(e) => setTypeInput(e.target.value)}>
+        <Input
+          type="select"
+          name="type"
+          aria-label={t('admin.logs.entryType')}
+          style={{ width: 'auto' }}
+          value={typeInput}
+          onChange={(e) => setTypeInput(e.target.value)}
+        >
           <option value="">{t('admin.logs.all')}</option>
           <optgroup label={t('admin.logs.specificType')}>
             {Object.entries(entryTypes).map(([value, label]) => (
@@ -166,7 +185,16 @@ const LogsPage: NextPage = () => {
           </optgroup>
         </Input>
         <strong>{t('admin.logs.entriesFrom')}</strong>
-        <Input name="by" aria-label={t('admin.logs.initiator')} list="from_values" placeholder={t('admin.logs.byPlaceholder')} maxLength={45} style={{ width: '14rem' }} value={byInput} onChange={(e) => setByInput(e.target.value)} />
+        <Input
+          name="by"
+          aria-label={t('admin.logs.initiator')}
+          list="from_values"
+          placeholder={t('admin.logs.byPlaceholder')}
+          maxLength={45}
+          style={{ width: '14rem' }}
+          value={byInput}
+          onChange={(e) => setByInput(e.target.value)}
+        />
         <datalist id="from_values">
           <option>Web server</option>
           <option>you</option>
@@ -240,7 +268,12 @@ const LogsPage: NextPage = () => {
                       <>
                         <Tooltipped title={t('admin.logs.visitProfile')}>
                           {(ref) => (
-                            <Link href={PATHS.USER(entry.initiator!.id)} ref={ref} aria-label={t('admin.logs.visitProfile')} className="me-1">
+                            <Link
+                              href={PATHS.USER(entry.initiator!.id)}
+                              ref={ref}
+                              aria-label={t('admin.logs.visitProfile')}
+                              className="me-1"
+                            >
                               <InlineIcon icon="user" size="sm" />
                             </Link>
                           )}
@@ -273,7 +306,13 @@ const LogsPage: NextPage = () => {
                   </td>
                   <td className="entry-type">
                     {entry.hasDetails ? (
-                      <Button color="ui" size="sm" className="expand-section" onClick={() => setOpen(open === entry.id ? null : entry.id)} aria-expanded={open === entry.id}>
+                      <Button
+                        color="ui"
+                        size="sm"
+                        className="expand-section"
+                        onClick={() => setOpen(open === entry.id ? null : entry.id)}
+                        aria-expanded={open === entry.id}
+                      >
                         <InlineIcon icon={open === entry.id ? 'minus' : 'plus'} first />
                         {entry.typeLabel}
                       </Button>
@@ -293,6 +332,13 @@ const LogsPage: NextPage = () => {
   );
 };
 
-export const getServerSideProps = createAdminGetServerSideProps('logs');
+export const getServerSideProps = createAdminGetServerSideProps('logs', 'staff', async (ctx): Promise<PropTypes> => {
+  const page = validatePageParam(ctx.query.page);
+  const type = typeof ctx.query.type === 'string' ? ctx.query.type : '';
+  const by = typeof ctx.query.by === 'string' ? ctx.query.by : '';
+  const params = new URLSearchParams({ page: String(page), size: String(PAGE_SIZE), ...(type ? { type } : {}), ...(by ? { by } : {}) });
+  const data = await fetchForAdminPage<GetAdminLogsResult>(ctx, `/admin/logs?${params.toString()}`);
+  return { initialLogs: data && { key: logsKey(page, type, by), data } };
+});
 
 export default LogsPage;

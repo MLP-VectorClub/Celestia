@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { GetAdminPostsRecentResult, GetAdminSearchStatusResult } from '@went.tf/mlp-vectorclub-api-types';
 import Axios from 'axios';
 import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
@@ -6,7 +7,6 @@ import Link from 'next/link';
 import { FC } from 'react';
 import { Button } from 'reactstrap';
 
-import { GetAdminPostsRecentResult, GetAdminSearchStatusResult } from '@went.tf/mlp-vectorclub-api-types';
 import postStyles from 'modules/PostList.module.scss';
 import { ADMIN_SECTIONS, AdminPage, DEVELOPER_SECTIONS } from 'src/components/admin/AdminPage';
 import ButtonCollection from 'src/components/shared/ButtonCollection';
@@ -14,17 +14,18 @@ import InlineIcon from 'src/components/shared/InlineIcon';
 import { PostListItem } from 'src/components/show/PostListItem';
 import { API_HOST } from 'src/config';
 import { useAuth } from 'src/hooks';
-import { createAdminGetServerSideProps } from 'src/utils/admin-page';
+import { createAdminGetServerSideProps, fetchForAdminPage } from 'src/utils/admin-page';
 import { permission } from 'src/utils/permission';
 
 /** Luna's Laravel Horizon dashboard (queues), which only lets developers in; it lives on the API's own address, outside the API prefix */
 const HORIZON_URL = `${API_HOST.replace(/^http:\/\/(?!localhost|127\.)/, 'https://')}/horizon`;
 
-const SearchStatus: FC = () => {
+const SearchStatus: FC<{ initialData: GetAdminSearchStatusResult | null }> = ({ initialData }) => {
   const t = useTranslations();
   const status = useQuery({
     queryKey: ['/admin/search-status'],
     queryFn: () => Axios.get<GetAdminSearchStatusResult>('/admin/search-status').then((r) => r.data),
+    initialData: initialData ?? undefined,
   });
   return (
     <section className="elastic-status">
@@ -57,13 +58,20 @@ const SearchStatus: FC = () => {
   );
 };
 
-const AdminIndexPage: NextPage = () => {
+type PropTypes = {
+  /** What the server fetched with the visitor's session, null when it failed (or the visitor is not a developer, for the search status) */
+  initialRecent: GetAdminPostsRecentResult | null;
+  initialSearchStatus: GetAdminSearchStatusResult | null;
+};
+
+const AdminIndexPage: NextPage<PropTypes> = ({ initialRecent, initialSearchStatus }) => {
   const t = useTranslations();
   const { user, isStaff } = useAuth();
   const recent = useQuery({
     queryKey: ['/admin/posts/recent'],
     queryFn: () => Axios.get<GetAdminPostsRecentResult>('/admin/posts/recent').then((r) => r.data.posts),
     enabled: isStaff,
+    initialData: initialRecent?.posts,
   });
 
   return (
@@ -89,7 +97,7 @@ const AdminIndexPage: NextPage = () => {
           </Button>
         )}
       </ButtonCollection>
-      {permission(user, 'developer') && <SearchStatus />}
+      {permission(user, 'developer') && <SearchStatus initialData={initialSearchStatus} />}
       <section className="recent-posts">
         <h2>
           <InlineIcon icon="bell" first size="xs" />
@@ -107,6 +115,12 @@ const AdminIndexPage: NextPage = () => {
   );
 };
 
-export const getServerSideProps = createAdminGetServerSideProps('index');
+export const getServerSideProps = createAdminGetServerSideProps('index', 'staff', async (ctx, user): Promise<PropTypes> => {
+  const [initialRecent, initialSearchStatus] = await Promise.all([
+    fetchForAdminPage<GetAdminPostsRecentResult>(ctx, '/admin/posts/recent'),
+    permission(user, 'developer') ? fetchForAdminPage<GetAdminSearchStatusResult>(ctx, '/admin/search-status') : Promise.resolve(null),
+  ]);
+  return { initialRecent, initialSearchStatus };
+});
 
 export default AdminIndexPage;

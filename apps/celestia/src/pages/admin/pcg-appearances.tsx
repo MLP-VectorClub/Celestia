@@ -13,12 +13,17 @@ import TimeAgo from 'src/components/shared/TimeAgo';
 import UserLink from 'src/components/shared/UserLink';
 import { useAuth } from 'src/hooks';
 import { PATHS } from 'src/paths';
-import { AdminService } from 'src/services/admin';
-import { createAdminGetServerSideProps } from 'src/utils/admin-page';
+import { AdminService, PcgAppearancesResult } from 'src/services/admin';
+import { createAdminGetServerSideProps, fetchForAdminPage } from 'src/utils/admin-page';
 import { validatePageParam } from 'src/utils/validate-page-param';
 
 /** Every personal guide appearance of every user, newest first, for staff */
-const PcgAppearancesPage: NextPage = () => {
+type PropTypes = {
+  /** The list as the server fetched it for `page`, null when that failed */
+  initialList: { page: number; data: PcgAppearancesResult } | null;
+};
+
+const PcgAppearancesPage: NextPage<PropTypes> = ({ initialList }) => {
   const t = useTranslations();
   const { query } = useRouter();
   const { isStaff } = useAuth();
@@ -27,6 +32,7 @@ const PcgAppearancesPage: NextPage = () => {
     queryKey: ['/admin/pcg-appearances', page],
     queryFn: () => AdminService.pcgAppearances({ page }).then((r) => r.data),
     enabled: isStaff,
+    initialData: initialList?.page === page ? initialList.data : undefined,
   });
 
   return (
@@ -52,40 +58,44 @@ const PcgAppearancesPage: NextPage = () => {
               {list.data.appearances.map((a) => {
                 const ownerId = a.owner?.id ?? a.ownerId ?? 0;
                 return (
-                <tr key={a.id}>
-                  <td>{a.id}</td>
-                  <td>
-                    <Link href={PATHS.PCG_APPEARANCE(ownerId, a)}>{a.label}</Link>
-                    {a.private && <small className="text-muted ms-2">{t('admin.pcg.private')}</small>}
-                  </td>
-                  <td>
-                    {a.owner ? <UserLink id={a.owner.id} name={a.owner.name} /> : <Link href={PATHS.USER_PCG(ownerId)}>#{a.ownerId}</Link>}
-                  </td>
-                  <td>
-                    <TimeAgo date={a.createdAt} />
-                  </td>
-                  <td className="cutiemarks">
-                    {a.cutieMarks.length === 0 ? (
-                      <InlineIcon icon="times" />
-                    ) : (
-                      a.cutieMarks.map((cm) => (
-                        <Link key={cm.id} href={PATHS.PCG_APPEARANCE(ownerId, a)} className="me-1">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={cm.viewUrl} alt={t('admin.pcg.cutieMarks')} height={40} />
+                  <tr key={a.id}>
+                    <td>{a.id}</td>
+                    <td>
+                      <Link href={PATHS.PCG_APPEARANCE(ownerId, a)}>{a.label}</Link>
+                      {a.private && <small className="text-muted ms-2">{t('admin.pcg.private')}</small>}
+                    </td>
+                    <td>
+                      {a.owner ? (
+                        <UserLink id={a.owner.id} name={a.owner.name} />
+                      ) : (
+                        <Link href={PATHS.USER_PCG(ownerId)}>#{a.ownerId}</Link>
+                      )}
+                    </td>
+                    <td>
+                      <TimeAgo date={a.createdAt} />
+                    </td>
+                    <td className="cutiemarks">
+                      {a.cutieMarks.length === 0 ? (
+                        <InlineIcon icon="times" />
+                      ) : (
+                        a.cutieMarks.map((cm) => (
+                          <Link key={cm.id} href={PATHS.PCG_APPEARANCE(ownerId, a)} className="me-1">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src={cm.viewUrl} alt={t('admin.pcg.cutieMarks')} height={40} />
+                          </Link>
+                        ))
+                      )}
+                    </td>
+                    <td className="sprite">
+                      {a.sprite ? (
+                        <Link href={PATHS.PCG_APPEARANCE(ownerId, a)}>
+                          <SpriteImage appearanceId={a.id} sprite={a.sprite} height={60} />
                         </Link>
-                      ))
-                    )}
-                  </td>
-                  <td className="sprite">
-                    {a.sprite ? (
-                      <Link href={PATHS.PCG_APPEARANCE(ownerId, a)}>
-                        <SpriteImage appearanceId={a.id} sprite={a.sprite} height={60} />
-                      </Link>
-                    ) : (
-                      <InlineIcon icon="times" />
-                    )}
-                  </td>
-                </tr>
+                      ) : (
+                        <InlineIcon icon="times" />
+                      )}
+                    </td>
+                  </tr>
                 );
               })}
             </tbody>
@@ -97,6 +107,10 @@ const PcgAppearancesPage: NextPage = () => {
   );
 };
 
-export const getServerSideProps = createAdminGetServerSideProps('pcgAppearances');
+export const getServerSideProps = createAdminGetServerSideProps('pcgAppearances', 'staff', async (ctx): Promise<PropTypes> => {
+  const page = validatePageParam(ctx.query.page);
+  const data = await fetchForAdminPage<PcgAppearancesResult>(ctx, `/admin/pcg-appearances?page=${page}`);
+  return { initialList: data && { page, data } };
+});
 
 export default PcgAppearancesPage;

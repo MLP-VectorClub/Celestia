@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
+import { GetUsefulLinksResult, SidebarUsefulLink } from '@went.tf/mlp-vectorclub-api-types';
 import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { Button, FormGroup, Input, Label } from 'reactstrap';
 
-import { SidebarUsefulLink } from '@went.tf/mlp-vectorclub-api-types';
 import { AdminPage } from 'src/components/admin/AdminPage';
 import { IconButton } from 'src/components/shared/IconButton';
 import InlineIcon from 'src/components/shared/InlineIcon';
@@ -12,7 +12,7 @@ import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { FormDialog } from 'src/components/shared/dialogs/FormDialog';
 import { describeApiError, fieldErrors, useApiMutation, useAuth, useConfig } from 'src/hooks';
 import { AdminService } from 'src/services/admin';
-import { createAdminGetServerSideProps } from 'src/utils/admin-page';
+import { createAdminGetServerSideProps, fetchForAdminPage } from 'src/utils/admin-page';
 
 const KEY = ['/useful-links'];
 
@@ -145,8 +145,20 @@ const ReorderDialog = ({ links, isOpen, onClose }: { links: SidebarUsefulLink[];
       <ol className="list-unstyled">
         {order.map((l, i) => (
           <li key={l.id} className="d-flex align-items-center gap-2 mb-1">
-            <IconButton icon="arrow-up" color="darkblue" title={t('admin.links.moveUp', { label: l.label })} disabled={i === 0} onClick={() => move(i, -1)} />
-            <IconButton icon="arrow-down" color="darkblue" title={t('admin.links.moveDown', { label: l.label })} disabled={i === order.length - 1} onClick={() => move(i, 1)} />
+            <IconButton
+              icon="arrow-up"
+              color="darkblue"
+              title={t('admin.links.moveUp', { label: l.label })}
+              disabled={i === 0}
+              onClick={() => move(i, -1)}
+            />
+            <IconButton
+              icon="arrow-down"
+              color="darkblue"
+              title={t('admin.links.moveDown', { label: l.label })}
+              disabled={i === order.length - 1}
+              onClick={() => move(i, 1)}
+            />
             <span>{l.label}</span>
           </li>
         ))}
@@ -155,12 +167,22 @@ const ReorderDialog = ({ links, isOpen, onClose }: { links: SidebarUsefulLink[];
   );
 };
 
-const UsefulLinksPage: NextPage = () => {
+type PropTypes = {
+  /** The list as the server fetched it, null when that failed */
+  initialLinks: GetUsefulLinksResult | null;
+};
+
+const UsefulLinksPage: NextPage<PropTypes> = ({ initialLinks }) => {
   const t = useTranslations();
   const { isStaff } = useAuth();
   const { config } = useConfig();
   const { confirm } = useDialog();
-  const links = useQuery({ queryKey: KEY, queryFn: () => AdminService.usefulLinks().then((r) => r.data), enabled: isStaff });
+  const links = useQuery({
+    queryKey: KEY,
+    queryFn: () => AdminService.usefulLinks().then((r) => r.data),
+    enabled: isStaff,
+    initialData: initialLinks ?? undefined,
+  });
   const [editing, setEditing] = useState<SidebarUsefulLink | null | undefined>(undefined);
   const [reordering, setReordering] = useState(false);
   const remove = useApiMutation((id: number) => AdminService.deleteUsefulLink(id), { invalidate: [KEY] });
@@ -233,6 +255,8 @@ const UsefulLinksPage: NextPage = () => {
   );
 };
 
-export const getServerSideProps = createAdminGetServerSideProps('usefulLinks');
+export const getServerSideProps = createAdminGetServerSideProps('usefulLinks', 'staff', async (ctx): Promise<PropTypes> => ({
+  initialLinks: await fetchForAdminPage<GetUsefulLinksResult>(ctx, '/useful-links'),
+}));
 
 export default UsefulLinksPage;

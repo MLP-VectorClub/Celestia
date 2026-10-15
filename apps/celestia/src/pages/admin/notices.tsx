@@ -15,8 +15,7 @@ import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { FormDialog } from 'src/components/shared/dialogs/FormDialog';
 import { describeApiError, fieldErrors, useApiMutation, useAuth } from 'src/hooks';
 import { AdminService } from 'src/services/admin';
-import { ResourceService } from 'src/services/resource';
-import { createAdminGetServerSideProps } from 'src/utils/admin-page';
+import { createAdminGetServerSideProps, fetchForAdminPage } from 'src/utils/admin-page';
 import { renderNoticeHtml } from 'src/utils/notice-html';
 import { validatePageParam } from 'src/utils/validate-page-param';
 
@@ -229,15 +228,10 @@ const NoticesPage: NextPage<PropTypes> = ({ initialNotices }) => {
   );
 };
 
-export const getServerSideProps = createAdminGetServerSideProps('notices', 'staff', async ({ req, query }): Promise<PropTypes> => {
-  const page = validatePageParam(query.page);
-  try {
-    const { data } = await new ResourceService(req).get<GetNoticesResult>(`/notices?page=${page}`);
-    return { initialNotices: { page, data } };
-  } catch {
-    // The page falls back to asking from the browser
-    return { initialNotices: null };
-  }
+export const getServerSideProps = createAdminGetServerSideProps('notices', 'staff', async (ctx): Promise<PropTypes> => {
+  const page = validatePageParam(ctx.query.page);
+  const data = await fetchForAdminPage<GetNoticesResult>(ctx, `/notices?page=${page}`);
+  return { initialNotices: data && { page, data } };
 });
 
 export default NoticesPage;
