@@ -1,5 +1,3 @@
-import Axios from 'axios';
-
 import {
   DeletePostsIdFinishResult,
   DeletePostsIdReservationResult,
@@ -13,6 +11,7 @@ import {
   PostShowIdVoteResult,
   PutPostsIdFinishRequest,
 } from '@went.tf/mlp-vectorclub-api-types';
+import Axios from 'axios';
 
 export type CreatePostBody = PostPostsRequest;
 

@@ -30,6 +30,16 @@ describe('honeypot proxy', () => {
     expect(luna.mock.calls[0][1].headers).toMatchObject({ cookie: 'luna_session=flagged-a', referer: 'https://front.test' });
   });
 
+  it("asks in the visitor's name, so the session does not end up listing the server as the user agent", async () => {
+    luna.mockResolvedValue(new Response(null, { status: 204 }));
+    await honeypot.proxy(
+      new NextRequest('https://front.test/cg', {
+        headers: { cookie: 'luna_session=named', 'user-agent': 'Firefox/157.0', 'x-forwarded-for': '203.0.113.5, 10.0.0.1' },
+      })
+    );
+    expect(luna.mock.calls[0][1].headers).toMatchObject({ 'user-agent': 'Firefox/157.0', 'x-forwarded-for': '203.0.113.5' });
+  });
+
   it('lets a session in good standing through, and does not ask again right away', async () => {
     luna.mockResolvedValue(new Response(null, { status: 204 }));
     expect(await honeypot.proxy(request('luna_session=fine'))).toBeNull();

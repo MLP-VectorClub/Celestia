@@ -16,8 +16,14 @@ const ASK_TIMEOUT_MS = 1500;
 const MAX_ENTRIES = 5000;
 
 export interface SessionChecker {
-  /** Whether the session was flagged by a honeypot, `false` for a visitor without a session cookie and while Luna cannot be reached */
-  isBlocked: (cookies: { get: (name: string) => { value: string } | undefined }) => Promise<boolean>;
+  /**
+   * Whether the session was flagged by a honeypot, `false` for a visitor without a session cookie and while Luna cannot be reached. Luna keeps the
+   * user agent and address of the last request on the session (the list of sessions in the account), so the question is asked in the visitor's name
+   */
+  isBlocked: (
+    cookies: { get: (name: string) => { value: string } | undefined },
+    visitor?: { userAgent?: string; address?: string }
+  ) => Promise<boolean>;
   /** Remembers that a session was flagged, for when the answer is already known */
   markBlocked: (session: string) => void;
   /** Forgets every answer */
@@ -45,7 +51,7 @@ export const createSessionChecker = ({ apiHost, sessionCookie, appHost }: Sessio
   return {
     clear: () => answers.clear(),
     markBlocked: (session) => remember(session, true, BLOCKED_TTL_MS),
-    isBlocked: async (cookies) => {
+    isBlocked: async (cookies, visitor) => {
       const session = cookies.get(sessionCookie)?.value;
       if (!session) return false;
 
@@ -54,7 +60,13 @@ export const createSessionChecker = ({ apiHost, sessionCookie, appHost }: Sessio
 
       try {
         const response = await fetch(`${apiHost}/internal/session-status`, {
-          headers: { cookie: `${sessionCookie}=${session}`, accept: 'application/json', ...(appHost ? { referer: appHost } : {}) },
+          headers: {
+            cookie: `${sessionCookie}=${session}`,
+            accept: 'application/json',
+            ...(appHost ? { referer: appHost } : {}),
+            ...(visitor?.userAgent ? { 'user-agent': visitor.userAgent } : {}),
+            ...(visitor?.address ? { 'x-forwarded-for': visitor.address } : {}),
+          },
           cache: 'no-store',
           redirect: 'manual',
           signal: AbortSignal.timeout(ASK_TIMEOUT_MS),

@@ -1,5 +1,3 @@
-import Axios from 'axios';
-
 import {
   GetUserPrefsMeRequest,
   GetUserPrefsMeResult,
@@ -11,6 +9,8 @@ import {
   GetUsersResult,
   PostUsersSignoutResult,
 } from '@went.tf/mlp-vectorclub-api-types';
+import Axios from 'axios';
+
 import { Service } from 'src/services/service-class';
 import { GetUsersTokensResult, PostUsersResult, PostUsersSigninResult } from 'src/types/auth';
 import {

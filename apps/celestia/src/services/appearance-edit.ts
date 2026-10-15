@@ -1,5 +1,3 @@
-import Axios from 'axios';
-
 import {
   DeleteAppearancesIdContentsRequest,
   DeleteAppearancesIdPinResult,
@@ -17,6 +15,7 @@ import {
   PutAppearancesIdRequest,
   PutAppearancesIdResult,
 } from '@went.tf/mlp-vectorclub-api-types';
+import Axios from 'axios';
 
 export class AppearanceEditService {
   static create = (data: PostAppearancesRequest) => Axios.post<PostAppearancesResult>('/appearances', data);
@@ -31,7 +30,8 @@ export class AppearanceEditService {
   static remove = (id: number) => Axios.delete<void>(`/appearances/${id}`);
 
   /** Selectively clears parts of an appearance, what to clear goes in the body */
-  static clear = (id: number, data: Omit<DeleteAppearancesIdContentsRequest, 'id'>) => Axios.delete<void>(`/appearances/${id}/contents`, { data });
+  static clear = (id: number, data: Omit<DeleteAppearancesIdContentsRequest, 'id'>) =>
+    Axios.delete<void>(`/appearances/${id}/contents`, { data });
 
   static pin = (id: number) => Axios.post<PostAppearancesIdPinResult>(`/appearances/${id}/pin`);
 

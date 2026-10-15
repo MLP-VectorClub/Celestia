@@ -1,5 +1,3 @@
-import Axios from 'axios';
-
 import {
   GetAppearancesIdColorGroupsOrderResult,
   GetColorGroupsIdResult,
@@ -7,6 +5,7 @@ import {
   PostColorGroupsRequest,
   PutColorGroupsIdRequest,
 } from '@went.tf/mlp-vectorclub-api-types';
+import Axios from 'axios';
 
 /** Responses of the write endpoints carry rendered HTML next to the ID, only the ID is used, the lists are refetched */
 export type ColorGroupBody = Pick<PostColorGroupsRequest, 'label' | 'colors' | 'major' | 'reason'>;

@@ -76,7 +76,14 @@ export const createHoneypotProxy = ({ apiHost, appHost, sessionCookie, honeypots
   return async (request: NextRequest): Promise<NextResponse | null> => {
     const trap = honeypots.match(request.nextUrl.pathname);
     if (trap) return springTrap(request, trap);
-    if (await sessions.isBlocked(request.cookies)) return refusal();
+    if (
+      await sessions.isBlocked(request.cookies, {
+        userAgent: request.headers.get('user-agent') ?? undefined,
+        address: visitorAddress(request.headers),
+      })
+    ) {
+      return refusal();
+    }
     return null;
   };
 };

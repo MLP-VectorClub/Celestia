@@ -1,6 +1,6 @@
+import { GetAboutConnectionResult, GetAboutMembersResult } from '@went.tf/mlp-vectorclub-api-types';
 import Axios from 'axios';
 
-import { GetAboutConnectionResult, GetAboutMembersResult } from '@went.tf/mlp-vectorclub-api-types';
 import { Service } from 'src/services/service-class';
 import { ENDPOINTS } from 'src/utils';
 

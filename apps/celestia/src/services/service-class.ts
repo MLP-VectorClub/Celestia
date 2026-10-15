@@ -25,7 +25,9 @@ export class Service {
       const address = visitorAddress(this.request.headers);
       return {
         headers: {
-          ...pick(this.request.headers, ['authorization', 'cookie']),
+          // The API keeps the user agent and address of the visitor on their session (the list of sessions in their account), so a request made for them
+          // has to carry theirs, not axios's
+          ...pick(this.request.headers, ['authorization', 'cookie', 'user-agent']),
           // The API only accepts a session cookie from requests that come from the front end (Sanctum checks Referer, then Origin), and these do, whatever
           // site the visitor came from
           referer: APP_HOST,

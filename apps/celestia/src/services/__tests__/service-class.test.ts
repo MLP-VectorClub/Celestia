@@ -37,6 +37,12 @@ describe('requests made for a visitor', () => {
     expect(headers).not.toHaveProperty('accept');
   });
 
+  it("carry the visitor's user agent, so the session they are on does not end up listing the server's", async () => {
+    expect(await headersOf({ cookie: 'a=b', 'user-agent': 'Mozilla/5.0 (X11; Linux) Firefox/157.0' })).toMatchObject({
+      'user-agent': 'Mozilla/5.0 (X11; Linux) Firefox/157.0',
+    });
+  });
+
   it('send no address when the request has none', async () => {
     expect(await headersOf({ cookie: 'a=b' })).not.toHaveProperty('x-forwarded-for');
   });

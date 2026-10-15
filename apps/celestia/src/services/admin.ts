@@ -1,5 +1,3 @@
-import Axios from 'axios';
-
 import {
   GetAdminLogsIdResult,
   GetAdminLogsRequest,
@@ -10,6 +8,7 @@ import {
   GetUsefulLinksResult,
   PostNoticesRequest,
 } from '@went.tf/mlp-vectorclub-api-types';
+import Axios from 'axios';
 
 export type SiteSettingKey = 'reservation_rules' | 'about_reservations' | 'dev_role_label';
 export type PcgAppearancesResult = GetAdminPcgAppearancesResult;

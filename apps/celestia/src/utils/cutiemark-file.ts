@@ -1,6 +1,7 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 
 import { API_HOST } from 'src/config';
+import { visitorAddress } from 'src/services/service-class';
 import { notFound } from 'src/utils/initial-prop-helpers';
 
 /**
@@ -17,6 +18,10 @@ export const sendCutieMarkFile = async (
   const headers: Record<string, string> = {};
   if (ctx.req.headers.cookie) headers.cookie = ctx.req.headers.cookie;
   if (ctx.req.headers.authorization) headers.authorization = ctx.req.headers.authorization;
+  // Whose session the request is on, as the API records it
+  if (ctx.req.headers['user-agent']) headers['user-agent'] = ctx.req.headers['user-agent'];
+  const address = visitorAddress(ctx.req.headers);
+  if (address) headers['x-forwarded-for'] = address;
   let response: Response;
   try {
     // The share token of a private appearance may come along on the old addresses too

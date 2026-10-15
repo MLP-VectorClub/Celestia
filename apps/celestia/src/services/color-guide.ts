@@ -1,5 +1,3 @@
-import Axios from 'axios';
-
 import {
   GetAppearancesAutocompleteRequest,
   GetAppearancesAutocompleteResult,
@@ -17,6 +15,8 @@ import {
   GetColorGuideMajorChangesResult,
   GetColorGuideResult,
 } from '@went.tf/mlp-vectorclub-api-types';
+import Axios from 'axios';
+
 import { Service } from 'src/services/service-class';
 import { ENDPOINTS } from 'src/utils';
 

@@ -1,6 +1,6 @@
+import { BrowserSession, GetNotificationsResult, PostUsersMeSocketTokenResult } from '@went.tf/mlp-vectorclub-api-types';
 import Axios from 'axios';
 
-import { BrowserSession, GetNotificationsResult, PostUsersMeSocketTokenResult } from '@went.tf/mlp-vectorclub-api-types';
 import { UserPrefs } from 'src/types/api-alias';
 
 /**
