@@ -1,9 +1,15 @@
 import { NextRequest } from 'next/server';
+import { createHash } from 'node:crypto';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { createHoneypot } from './index';
 
-const honeypot = createHoneypot({ globs: ['/.env', '/wp-admin/**'], apiHost: 'https://luna.test', appHost: 'https://front.test' });
+const honeypot = createHoneypot({
+  traps: [{ glob: '/.env', decoy: 'env' }, { glob: '/wp-login.php', decoy: 'wordpress-login' }, '/wp-admin/**'],
+  siteName: 'Test Site',
+  apiHost: 'https://luna.test',
+  appHost: 'https://front.test',
+});
 const request = (cookie?: string, url = 'https://front.test/cg/pony') => new NextRequest(url, { headers: cookie ? { cookie } : {} });
 
 describe('honeypot proxy', () => {
@@ -57,10 +63,10 @@ describe('honeypot proxy', () => {
   it('springs a trap: Luna flags the session, its session cookie goes back to the visitor, and the next request is known without asking', async () => {
     luna.mockResolvedValue(new Response('Forbidden', { status: 403, headers: { 'set-cookie': 'luna_session=started; Path=/; HttpOnly' } }));
     const headers = { 'x-forwarded-for': '203.0.113.9, 10.0.0.1', 'user-agent': 'scanner/1.0' };
-    const response = await honeypot.proxy(new NextRequest('https://front.test/.env', { headers }));
+    const response = await honeypot.proxy(new NextRequest('https://front.test/wp-admin/install.php', { headers }));
     expect(response?.status).toBe(403);
     expect(response?.headers.getSetCookie()).toEqual(['luna_session=started; Path=/; HttpOnly']);
-    expect(luna.mock.calls[0][0]).toBe('https://luna.test/honeypot/.env');
+    expect(luna.mock.calls[0][0]).toBe('https://luna.test/honeypot/wp-admin-any');
     expect(luna.mock.calls[0][1].headers).toMatchObject({ 'x-forwarded-for': '203.0.113.9', 'user-agent': 'scanner/1.0' });
 
     luna.mockClear();
@@ -71,5 +77,47 @@ describe('honeypot proxy', () => {
   it('refuses a trap even while Luna cannot be reached', async () => {
     luna.mockRejectedValue(new Error('down'));
     expect((await honeypot.proxy(new NextRequest('https://front.test/wp-admin/setup-config.php')))?.status).toBe(403);
+  });
+
+  describe('decoys', () => {
+    beforeEach(() =>
+      luna.mockResolvedValue(new Response('Forbidden', { status: 403, headers: { 'set-cookie': 'luna_session=decoyed; Path=/' } }))
+    );
+
+    it('answers a trap that names one with a real-looking 200 that anybody may cache, and still flags the session', async () => {
+      const response = await honeypot.proxy(new NextRequest('https://front.test/.env'));
+      expect(response?.status).toBe(200);
+      expect(response?.headers.get('content-type')).toMatch(/^text\/plain/);
+      expect(response?.headers.get('cache-control')).toMatch(/^public, max-age=\d+, s-maxage=\d+/);
+      expect(response?.headers.getSetCookie()).toEqual(['luna_session=decoyed; Path=/']);
+      expect(luna.mock.calls[0][0]).toBe('https://luna.test/honeypot/.env');
+      const text = (await response?.text()) ?? '';
+      expect(text).toMatch(/^APP_NAME="Test Site"$/m);
+      expect(text).toMatch(/^APP_KEY=base64:[A-Za-z0-9+/]{43}=$/m);
+      expect(text).toMatch(/^AWS_ACCESS_KEY_ID=AKIA[A-Z2-7]{16}$/m);
+      expect(text).toMatch(/^DB_PASSWORD=[A-Za-z0-9]{22}$/m);
+    });
+
+    it('gives the same secrets to everybody who asks until the server restarts', async () => {
+      const first = await (await honeypot.proxy(new NextRequest('https://front.test/.env')))?.text();
+      const second = await (await honeypot.proxy(new NextRequest('https://front.test/.env')))?.text();
+      expect(first).toBe(second);
+    });
+
+    it('serves a login page that works without the server, with its own CSP, a comic font and a classless stylesheet', async () => {
+      const response = await honeypot.proxy(new NextRequest('https://front.test/wp-login.php'));
+      expect(response?.status).toBe(200);
+      expect(response?.headers.get('cache-control')).toMatch(/^public, /);
+      const html = (await response?.text()) ?? '';
+      expect(html).toContain('fonts.googleapis.com/css2?family=Comic+Neue');
+      expect(html).toMatch(/cdn\.jsdelivr\.net\/npm\/water\.css@2\.1\.1\//);
+      expect(html).toContain('name="log"');
+      expect(html).toContain('name="pwd"');
+      // The script that stops the form from posting is the only one the CSP lets run
+      const script = html.match(/<script>([\s\S]*)<\/script>/)?.[1] ?? '';
+      expect(script).toContain("addEventListener('submit'");
+      const hash = createHash('sha256').update(script).digest('base64');
+      expect(response?.headers.get('content-security-policy')).toContain(`script-src 'sha256-${hash}'`);
+    });
   });
 });

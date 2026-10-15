@@ -36,29 +36,40 @@ const globToName = (glob: string): string =>
     .toLowerCase()
     .slice(0, 40) || 'trap';
 
+/** A trap: the path glob and, optionally, which decoy answers whoever asks for it (see `decoys/`) instead of the plain refusal */
+export interface TrapSpec {
+  glob: string;
+  decoy?: string;
+}
+
+export interface TrapMatch {
+  /** What Luna logs the hit as */
+  name: string;
+  decoy?: string;
+}
+
 export interface CompiledHoneypots {
-  /** The name of the trap a path belongs to, `null` for any other path */
-  match: (pathname: string) => string | null;
+  /** The trap a path belongs to, `null` for any other path */
+  match: (pathname: string) => TrapMatch | null;
   /** The `Disallow:` lines of robots.txt */
   robotsLines: string[];
 }
 
 /**
- * Turns the globs into a single regular expression, once: the alternatives are named groups, so one test finds out both whether the path is a trap
+ * Turns the traps into a single regular expression, once: the alternatives are named groups, so one test finds out both whether the path is a trap
  * and which one
  */
-export const compileHoneypots = (globs: readonly string[]): CompiledHoneypots => {
-  const names = globs.map(globToName);
-  const regex = new RegExp(`^(?:${globs.map((glob, i) => `(?<t${i}>${globToRegexSource(glob)})`).join('|')})$`, 'i');
+export const compileHoneypots = (traps: readonly (string | TrapSpec)[]): CompiledHoneypots => {
+  const specs: TrapSpec[] = traps.map((trap) => (typeof trap === 'string' ? { glob: trap } : trap));
+  const matches: TrapMatch[] = specs.map(({ glob, decoy }) => ({ name: globToName(glob), ...(decoy ? { decoy } : {}) }));
+  const regex = new RegExp(`^(?:${specs.map(({ glob }, i) => `(?<t${i}>${globToRegexSource(glob)})`).join('|')})$`, 'i');
   return {
     match: (pathname) => {
       const groups = regex.exec(pathname)?.groups;
       if (!groups) return null;
-      const index = globs.findIndex((_, i) => groups[`t${i}`] !== undefined);
-      return index === -1 ? null : names[index];
+      const index = specs.findIndex((_, i) => groups[`t${i}`] !== undefined);
+      return index === -1 ? null : matches[index];
     },
-    robotsLines: globs.map((glob) => `Disallow: ${globToRobots(glob)}`),
+    robotsLines: specs.map(({ glob }) => `Disallow: ${globToRobots(glob)}`),
   };
 };
-
-export const honeypots = compileHoneypots(HONEYPOT_GLOBS);

@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+import { decoyHeaders } from './decoys';
+import type { Decoy } from './decoys';
 import type { CompiledHoneypots } from './patterns';
 import type { SessionChecker } from './session-block';
 
@@ -10,6 +12,8 @@ export interface HoneypotProxyOptions {
   sessionCookie: string;
   honeypots: CompiledHoneypots;
   sessions: SessionChecker;
+  /** What answers the traps that name a decoy (anything else, or a name nobody built, gets the plain refusal) */
+  decoys?: Record<string, Decoy>;
 }
 
 const ASK_TIMEOUT_MS = 1500;
@@ -25,18 +29,20 @@ const visitorAddress = (headers: Headers) =>
  * The routing step of the honeypots, for the app's `proxy.ts`: answers with the refusal for a trap and for a visitor whose session touched one,
  * `null` for everybody else
  */
-export const createHoneypotProxy = ({ apiHost, appHost, sessionCookie, honeypots, sessions }: HoneypotProxyOptions) => {
+export const createHoneypotProxy = ({ apiHost, appHost, sessionCookie, honeypots, sessions, decoys = {} }: HoneypotProxyOptions) => {
   /**
    * A trap was asked for: Luna flags the session (keeping it in the session row of its database, and starting one for a visitor who has none), and
    * the session cookie it answers with goes back to the visitor, so the next request is known. Luna not answering changes nothing for the visitor,
    * who gets the refusal either way
    */
-  const springTrap = async (request: NextRequest, trap: string): Promise<NextResponse> => {
-    const response = refusal();
+  const springTrap = async (request: NextRequest, trap: { name: string; decoy?: string }): Promise<NextResponse> => {
+    const decoy = trap.decoy ? decoys[trap.decoy] : undefined;
+    // The visitor is flagged either way, a decoy only gives them something to read first
+    const response = decoy ? new NextResponse(decoy.body, { status: 200, headers: decoyHeaders(decoy) }) : refusal();
     const address = visitorAddress(request.headers);
     const session = request.cookies.get(sessionCookie)?.value;
     try {
-      const luna = await fetch(`${apiHost}/honeypot/${trap}`, {
+      const luna = await fetch(`${apiHost}/honeypot/${trap.name}`, {
         headers: {
           ...(appHost ? { referer: appHost } : {}),
           'user-agent': request.headers.get('user-agent') ?? '',

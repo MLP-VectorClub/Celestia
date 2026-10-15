@@ -27,12 +27,12 @@ describe('compileHoneypots', () => {
 
   it('understands * (one folder level), ** (anything) and /**/ (also no folder at all)', () => {
     const compiled = compileHoneypots(['/**/.git/**', '/*.php', '/a/**/b']);
-    expect(compiled.match('/.git/config')).toBe('any-.git-any');
-    expect(compiled.match('/x/y/.git/HEAD')).toBe('any-.git-any');
-    expect(compiled.match('/shell.php')).toBe('any.php');
+    expect(compiled.match('/.git/config')?.name).toBe('any-.git-any');
+    expect(compiled.match('/x/y/.git/HEAD')?.name).toBe('any-.git-any');
+    expect(compiled.match('/shell.php')?.name).toBe('any.php');
     expect(compiled.match('/dir/shell.php')).toBeNull();
-    expect(compiled.match('/a/b')).toBe('a-any-b');
-    expect(compiled.match('/a/x/y/b')).toBe('a-any-b');
+    expect(compiled.match('/a/b')?.name).toBe('a-any-b');
+    expect(compiled.match('/a/x/y/b')?.name).toBe('a-any-b');
     expect(compiled.robotsLines).toEqual(['Disallow: /*/.git/*', 'Disallow: /*.php', 'Disallow: /a/*/b']);
   });
 
@@ -44,7 +44,13 @@ describe('compileHoneypots', () => {
 
   it('names traps the way Luna accepts them (1 to 40 of a-z 0-9 . _ -)', () => {
     const path = `/${'a'.repeat(80)}`;
-    expect(compileHoneypots([path]).match(path)).toMatch(/^[a-z0-9._-]{1,40}$/);
-    expect(compileHoneypots(['/.env']).match('/.env')).toBe('.env');
+    expect(compileHoneypots([path]).match(path)?.name).toMatch(/^[a-z0-9._-]{1,40}$/);
+    expect(compileHoneypots(['/.env']).match('/.env')?.name).toBe('.env');
+  });
+
+  it('hands on the decoy a trap names, the first trap that matches deciding', () => {
+    const compiled = compileHoneypots([{ glob: '/wp-admin', decoy: 'wordpress-login' }, '/wp-admin/**']);
+    expect(compiled.match('/wp-admin')).toEqual({ name: 'wp-admin', decoy: 'wordpress-login' });
+    expect(compiled.match('/wp-admin/x')).toEqual({ name: 'wp-admin-any' });
   });
 });
