@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 
-import { renderNoticeHtml } from 'src/utils/notice-html';
+import { renderNoticeHtml, substituteNoticePath } from 'src/utils/notice-html';
 
 const renderHtml = (html: string) => render(<div data-testid="out">{renderNoticeHtml(html)}</div>);
 const inner = async (html: string) => {
@@ -57,5 +57,13 @@ describe('renderNoticeHtml', () => {
 
   it('shows markup in text as text', async () => {
     expect(await inner('&lt;script&gt;alert(1)&lt;/script&gt;')).toBe('&lt;script&gt;alert(1)&lt;/script&gt;');
+  });
+
+  it('puts the address of the page where a notice has {path}, so a link leads to the same page of the other site', async () => {
+    const html = substituteNoticePath('<a href="https://old.example.com{path}">{path}</a>', '/cg/pony?x=1&y="2"');
+    const screen = await renderHtml(html);
+    const link = screen.getByRole('link');
+    await expect.element(link).toHaveAttribute('href', 'https://old.example.com/cg/pony?x=1&y="2"');
+    await expect.element(link).toHaveTextContent('/cg/pony?x=1&y="2"');
   });
 });

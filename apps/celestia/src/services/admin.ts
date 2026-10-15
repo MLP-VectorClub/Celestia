@@ -2,9 +2,9 @@ import Axios from 'axios';
 
 import {
   GetAdminLogsIdResult,
-  GetAdminPcgAppearancesResult,
   GetAdminLogsRequest,
   GetAdminLogsResult,
+  GetAdminPcgAppearancesResult,
   GetNoticesRequest,
   GetNoticesResult,
   GetUsefulLinksResult,
@@ -13,7 +13,9 @@ import {
 
 export type SiteSettingKey = 'reservation_rules' | 'about_reservations' | 'dev_role_label';
 export type PcgAppearancesResult = GetAdminPcgAppearancesResult;
-export type NoticeBody = PostNoticesRequest;
+/** What a notice has since the cutover notices were added; the generated types take it over once they are pinned to a Luna that sends it */
+export type NoticeSchedule = { showAfter?: string | null; site?: 'all' | 'celestia' | 'winterchilla' };
+export type NoticeBody = PostNoticesRequest & NoticeSchedule;
 export type UsefulLinkBody = { label: string; url: string; title?: string; minRole: string };
 
 /** Staff-only site administration */

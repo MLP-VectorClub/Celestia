@@ -10,7 +10,6 @@ export const APP_NAME = 'MLP Vector Club';
 export const APP_DESCRIPTION = 'Handling requests, reservations & the Color Guide since 2015';
 export const APP_HOST = process.env.NEXT_PUBLIC_FRONTEND_HOST as string;
 export const API_HOST = process.env.NEXT_PUBLIC_BACKEND_HOST as string;
-export const OLD_SITE_HOST = 'https://mlpvector.club';
 
 export const GITHUB_URL = 'https://github.com/MLP-VectorClub/Celestia';
 export const PROJECT_NAME = GITHUB_URL.split('/').pop();

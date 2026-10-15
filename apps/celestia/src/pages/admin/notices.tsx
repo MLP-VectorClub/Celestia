@@ -14,12 +14,15 @@ import TimeAgo from 'src/components/shared/TimeAgo';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { FormDialog } from 'src/components/shared/dialogs/FormDialog';
 import { describeApiError, fieldErrors, useApiMutation, useAuth } from 'src/hooks';
-import { AdminService } from 'src/services/admin';
+import { AdminService, NoticeSchedule } from 'src/services/admin';
 import { createAdminGetServerSideProps } from 'src/utils/admin-page';
 import { renderNoticeHtml } from 'src/utils/notice-html';
 import { validatePageParam } from 'src/utils/validate-page-param';
 
 const NOTICE_TYPES = ['info', 'success', 'fail', 'warn', 'caution'] as const;
+const NOTICE_SITES = ['all', 'celestia', 'winterchilla'] as const;
+
+type NoticeRow = Notice & NoticeSchedule;
 
 const toLocalInput = (iso: string) => {
   const d = new Date(iso);
@@ -29,7 +32,7 @@ const toLocalInput = (iso: string) => {
 
 interface DialogProps {
   /** `null` creates a notice */
-  notice: Notice | null;
+  notice: NoticeRow | null;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -37,18 +40,28 @@ interface DialogProps {
 const NoticeDialog = ({ notice, isOpen, onClose }: DialogProps) => {
   const t = useTranslations();
   const [message, setMessage] = useState('');
+  const [showAfter, setShowAfter] = useState('');
   const [hideAfter, setHideAfter] = useState('');
+  const [site, setSite] = useState<(typeof NOTICE_SITES)[number]>('all');
   const [type, setType] = useState<(typeof NOTICE_TYPES)[number]>('info');
   useEffect(() => {
     if (!isOpen) return;
     setMessage(notice?.messageHtml ?? '');
+    setShowAfter(notice?.showAfter ? toLocalInput(notice.showAfter) : '');
     setHideAfter(notice ? toLocalInput(notice.hideAfter) : '');
+    setSite(notice?.site ?? 'all');
     setType(notice?.type ?? 'info');
   }, [isOpen, notice]);
 
   const save = useApiMutation(
     () => {
-      const body = { messageHtml: message.trim(), hideAfter: hideAfter ? new Date(hideAfter).toISOString() : '', type };
+      const body = {
+        messageHtml: message.trim(),
+        showAfter: showAfter ? new Date(showAfter).toISOString() : null,
+        hideAfter: hideAfter ? new Date(hideAfter).toISOString() : '',
+        site,
+        type,
+      };
       return notice ? AdminService.updateNotice(notice.id, body) : AdminService.createNotice(body);
     },
     { invalidate: [['/notices']], onSuccess: onClose }
@@ -81,6 +94,7 @@ const NoticeDialog = ({ notice, isOpen, onClose }: DialogProps) => {
           invalid={Boolean(errors.messageHtml)}
         />
         {err('messageHtml')}
+        <FormText>{t('admin.notices.messageHelp')}</FormText>
       </FormGroup>
       <FormGroup>
         <Label for="notice-type">{t('admin.notices.type')}</Label>
@@ -92,6 +106,29 @@ const NoticeDialog = ({ notice, isOpen, onClose }: DialogProps) => {
           ))}
         </Input>
         {err('type')}
+      </FormGroup>
+      <FormGroup>
+        <Label for="notice-site">{t('admin.notices.site')}</Label>
+        <Input id="notice-site" type="select" value={site} onChange={(e) => setSite(e.target.value as typeof site)}>
+          {NOTICE_SITES.map((noticeSite) => (
+            <option key={noticeSite} value={noticeSite}>
+              {t(`admin.notices.sites.${noticeSite}`)}
+            </option>
+          ))}
+        </Input>
+        {err('site')}
+      </FormGroup>
+      <FormGroup>
+        <Label for="notice-show">{t('admin.notices.showFrom')}</Label>
+        <Input
+          id="notice-show"
+          type="datetime-local"
+          value={showAfter}
+          onChange={(e) => setShowAfter(e.target.value)}
+          invalid={Boolean(errors.showAfter)}
+        />
+        {err('showAfter')}
+        <FormText>{t('admin.notices.fromHelp')}</FormText>
       </FormGroup>
       <FormGroup>
         <Label for="notice-hide">{t('admin.notices.showUntil')}</Label>
@@ -115,7 +152,7 @@ const NoticesPage: NextPage = () => {
   const { isStaff } = useAuth();
   const { confirm } = useDialog();
   const page = validatePageParam(query.page);
-  const [editing, setEditing] = useState<Notice | null | undefined>(undefined);
+  const [editing, setEditing] = useState<NoticeRow | null | undefined>(undefined);
   const notices = useQuery({
     queryKey: ['/notices', page],
     queryFn: () => AdminService.notices({ page }).then((r) => r.data),
@@ -141,9 +178,15 @@ const NoticesPage: NextPage = () => {
         <>
           <Pagination {...notices.data.pagination} tooltipPos="bottom" />
           <ul id="notice-list">
-            {notices.data.notices.map((n) => (
+            {(notices.data.notices as NoticeRow[]).map((n) => (
               <li key={n.id} id={`notice-${n.id}`}>
-                {renderNoticeHtml(n.messageHtml)} – {t('admin.notices.hidden')} <TimeAgo date={n.hideAfter} />{' '}
+                {renderNoticeHtml(n.messageHtml)} –{' '}
+                {n.showAfter && (
+                  <>
+                    {t('admin.notices.scheduled')} <TimeAgo date={n.showAfter} />,{' '}
+                  </>
+                )}
+                {t('admin.notices.hidden')} <TimeAgo date={n.hideAfter} /> ({t(`admin.notices.sites.${n.site ?? 'all'}`)}){' '}
                 <IconButton
                   icon="trash"
                   color="red"
@@ -162,7 +205,13 @@ const NoticesPage: NextPage = () => {
                       remove.mutate(n.id);
                   }}
                 />
-                <IconButton icon="pencil-alt" color="blue" title={t('admin.notices.edit')} className="edit-notice" onClick={() => setEditing(n)} />
+                <IconButton
+                  icon="pencil-alt"
+                  color="blue"
+                  title={t('admin.notices.edit')}
+                  className="edit-notice"
+                  onClick={() => setEditing(n)}
+                />
               </li>
             ))}
           </ul>

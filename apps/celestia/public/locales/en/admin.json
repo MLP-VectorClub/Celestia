@@ -56,8 +56,18 @@
   "loading": "Loading…",
   "notices": {
     "type": "Type",
+    "showFrom": "Show from",
+    "fromHelp": "Optional, in your local time zone. Until then nobody sees the notice; leave empty to show it right away.",
+    "site": "Site",
+    "sites": {
+      "all": "Both sites",
+      "celestia": "This site only",
+      "winterchilla": "The previous site only"
+    },
+    "scheduled": "Starts",
     "showUntil": "Show until",
     "untilHelp": "In your local time zone, must be in the future.",
+    "messageHelp": "Links are kept. Write {path} where the address of the page being viewed belongs, e.g. https://old.mlpvector.club{path}.",
     "new": "New notice",
     "loadFailed": "Could not load the notices.",
     "shownUntil": "Shown until",

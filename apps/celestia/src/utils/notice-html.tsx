@@ -33,3 +33,12 @@ export const renderNoticeHtml = (html: string): ReactNode => {
   const doc = new DOMParser().parseFromString(html, 'text/html');
   return Array.from(doc.body.childNodes).map((child, i) => convert(child, String(i)));
 };
+
+const escapeHtml = (text: string) =>
+  text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+
+/**
+ * Notices can point at the page being viewed on the other site: `{path}` stands for the address of this page without the host
+ * (`<a href="https://old.example.com{path}">`)
+ */
+export const substituteNoticePath = (html: string, path: string): string => html.split('{path}').join(escapeHtml(path));
