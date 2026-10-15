@@ -2,6 +2,7 @@ import type { Secrets } from './secrets';
 
 /** Where the line about the visitor's mother is filled in */
 export const VISITORS_MOM = '%%VISITORS_MOM%%';
+export const VISITORS_MOM_LBS = '%%VISITORS_MOM_LBS%%';
 
 /**
  * A `.env` somebody should not have left in the web root. Over the top on purpose: far more services than any one site uses (most of them nothing
@@ -194,5 +195,6 @@ NETFLIX_PASSWORD=${s.password(10)}
 MY_CATS_NAME=Fluffernutter
 # whoever is reading this, personally:
 VISITOR_MOMS_WEIGHT_KG=${VISITORS_MOM}
+VISITOR_MOMS_WEIGHT_LBS=${VISITORS_MOM_LBS}
 `;
 };

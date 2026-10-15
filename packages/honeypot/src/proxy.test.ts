@@ -5,7 +5,13 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createHoneypot } from './index';
 
 const honeypot = createHoneypot({
-  traps: [{ glob: '/.env', decoy: 'env' }, { glob: '/wp-login.php', decoy: 'wordpress-login' }, '/wp-admin/**'],
+  traps: [
+    { glob: '/.env', decoy: 'env' },
+    { glob: '/wp-login.php', decoy: 'wordpress-login' },
+    { glob: '/adminer', decoy: 'adminer-login' },
+    { glob: '/phpmyadmin/**', decoy: 'phpmyadmin-login' },
+    '/wp-admin/**',
+  ],
   siteName: 'Test Site',
   apiHost: 'https://luna.test',
   appHost: 'https://front.test',
@@ -145,9 +151,9 @@ describe('honeypot proxy', () => {
       const top = text.split('\n').slice(0, 4).join('\n');
       expect(top).toContain('Report it the way https://front.test/.well-known/security.txt says.');
       expect(text).not.toMatch(/Hello, scanner|random number generator/);
-      expect(text.trimEnd().split('\n').pop()).toMatch(/^VISITOR_MOMS_WEIGHT_KG=/);
-      // Nothing is empty and nothing has an unfilled template left in it
-      expect(text).not.toMatch(/\$\{|undefined|NaN|\[object/);
+      expect(text.trimEnd().split('\n').pop()).toMatch(/^VISITOR_MOMS_WEIGHT_LBS=/);
+      // Nothing is empty and nothing has an unfilled template left in it (the values are random, so a stray "NaN" inside one is not a failure)
+      expect(text).not.toMatch(/\$\{|\[object Object\]|^[A-Z][A-Z0-9_]*=(undefined|NaN|null)$/m);
       keys.forEach((line) => expect(line.split('=')[1]?.trim()).not.toBe(''));
     });
 
@@ -168,9 +174,16 @@ describe('honeypot proxy', () => {
       expect(Number(weight(a1))).toBeGreaterThan(120);
       expect(Number(weight(a1))).toBeLessThan(290);
       expect(weight(a1)).toBe(weight(a2));
+      // The same weight in pounds, to the decimal
+      const pounds = (text: string) => text.match(/^VISITOR_MOMS_WEIGHT_LBS=(\d+\.\d)$/m)?.[1];
+      expect(pounds(a1)).toBeDefined();
+      expect(Number(pounds(a1))).toBeCloseTo(Number(weight(a1)) * 2.2046226218, 0);
+      expect(pounds(a1)).toBe(pounds(a2));
+      expect(pounds(a1)).not.toBe(pounds(b));
       expect(a1).toBe(a2);
       // Everything else is the same file for everybody
-      expect(a1.replace(/^VISITOR_MOMS_WEIGHT_KG=.*$/m, '')).toBe(b.replace(/^VISITOR_MOMS_WEIGHT_KG=.*$/m, ''));
+      const withoutWeights = (text: string) => text.replace(/^VISITOR_MOMS_WEIGHT_(KG|LBS)=.*$/gm, '');
+      expect(withoutWeights(a1)).toBe(withoutWeights(b));
     });
 
     it('keeps the .env, which is different for every visitor, out of shared caches', async () => {
@@ -182,6 +195,94 @@ describe('honeypot proxy', () => {
       const first = await (await honeypot.proxy(new NextRequest('https://front.test/.env')))?.text();
       const second = await (await honeypot.proxy(new NextRequest('https://front.test/.env')))?.text();
       expect(first).toBe(second);
+    });
+
+    it.each(['lostpassword', 'lostyourpassword', 'retrievepassword'])(
+      'switches wp-login.php?action=%s to a forgot password page that only says the reset link is on its way',
+      async (action) => {
+        const response = await honeypot.proxy(new NextRequest(`https://front.test/wp-login.php?action=${action}`));
+        expect(response?.status).toBe(200);
+        const html = (await response?.text()) ?? '';
+        expect(html).toContain('name="lostpasswordform"');
+        expect(html).toContain('name="user_login"');
+        expect(html).not.toContain('name="pwd"');
+        expect(html).toContain('Check your email for the confirmation link, then visit the login page.');
+        // It works like the login form: the script stops the post, and it is the one script the page's CSP allows
+        const script = html.match(/<script>([\s\S]*)<\/script>/)?.[1] ?? '';
+        expect(script).toContain("addEventListener('submit'");
+        expect(script).toContain('e.preventDefault()');
+        const hash = createHash('sha256').update(script).digest('base64');
+        expect(response?.headers.get('content-security-policy')).toContain(`script-src 'sha256-${hash}'`);
+        expect(response?.headers.get('cache-control')).toMatch(/^public, /);
+      }
+    );
+
+    it('leaves wp-login.php with another or no action as the login form, and links the login form to the forgot password page', async () => {
+      for (const url of [
+        'https://front.test/wp-login.php',
+        'https://front.test/wp-login.php?action=register',
+        'https://front.test/wp-login.php?action=',
+      ]) {
+        const html = (await (await honeypot.proxy(new NextRequest(url)))?.text()) ?? '';
+        expect(html).toContain('name="loginform"');
+        expect(html).toContain('href="/wp-login.php?action=lostpassword"');
+      }
+    });
+
+    it.each([
+      [
+        '/wp-login.php',
+        [
+          'name="log"',
+          'name="pwd"',
+          'name="rememberme"',
+          'name="wp-submit"',
+          'name="redirect_to"',
+          'name="testcookie"',
+          'action="/wp-login.php"',
+          'id="loginform"',
+        ],
+      ],
+      [
+        '/adminer',
+        [
+          'name="auth[driver]"',
+          'name="auth[server]"',
+          'name="auth[username]"',
+          'name="auth[password]"',
+          'name="auth[db]"',
+          'name="auth[permanent]"',
+          'name="token"',
+          'Adminer',
+        ],
+      ],
+      [
+        '/phpmyadmin/',
+        [
+          'name="pma_username"',
+          'name="pma_password"',
+          'name="server"',
+          'name="set_session"',
+          'name="route"',
+          'name="token"',
+          'action="/phpmyadmin/index.php?route=/"',
+          'phpMyAdmin',
+        ],
+      ],
+    ])('gives %s the form targets and field names of the real thing, and a script that stops the post', async (path, expected) => {
+      const response = await honeypot.proxy(new NextRequest(`https://front.test${path}`));
+      expect(response?.status).toBe(200);
+      const html = (await response?.text()) ?? '';
+      expected.forEach((part) => expect(html).toContain(part));
+      expect(html).toContain('e.preventDefault()');
+    });
+
+    it('keeps the login forms apart: Adminer and phpMyAdmin are not WordPress, and the other way around', async () => {
+      const get = async (path: string) => (await (await honeypot.proxy(new NextRequest(`https://front.test${path}`)))?.text()) ?? '';
+      const [wordpress, adminer, phpmyadmin] = [await get('/wp-login.php'), await get('/adminer'), await get('/phpmyadmin/index.php')];
+      expect(wordpress).not.toMatch(/auth\[|pma_/);
+      expect(adminer).not.toMatch(/name="pwd"|pma_/);
+      expect(phpmyadmin).not.toMatch(/name="pwd"|auth\[/);
     });
 
     it('sets the session cookie of a page that answers (a login page), the way a real one would', async () => {

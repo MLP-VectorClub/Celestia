@@ -17,9 +17,9 @@ export const HONEYPOT_TRAPS: TrapSpec[] = [
   { glob: '/admin.php' },
   { glob: '/adminer', decoy: 'adminer-login' },
   { glob: '/adminer.php', decoy: 'adminer-login' },
-  { glob: '/phpmyadmin', decoy: 'adminer-login' },
-  { glob: '/phpmyadmin/**' },
-  { glob: '/pma', decoy: 'adminer-login' },
+  { glob: '/phpmyadmin', decoy: 'phpmyadmin-login' },
+  { glob: '/phpmyadmin/**', decoy: 'phpmyadmin-login' },
+  { glob: '/pma', decoy: 'phpmyadmin-login' },
 ];
 
 /** Set up once when the server starts: the globs are compiled into a single regular expression and the decoys built here */

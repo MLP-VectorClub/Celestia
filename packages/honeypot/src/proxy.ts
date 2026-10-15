@@ -36,7 +36,8 @@ export const createHoneypotProxy = ({ apiHost, appHost, sessionCookie, honeypots
    * who gets the refusal either way
    */
   const springTrap = async (request: NextRequest, trap: { name: string; decoy?: string }): Promise<NextResponse> => {
-    const decoy = trap.decoy ? decoys[trap.decoy] : undefined;
+    const named = trap.decoy ? decoys[trap.decoy] : undefined;
+    const decoy = named?.select?.(request.nextUrl.searchParams) ?? named;
     const address = visitorAddress(request.headers);
     // The visitor is flagged either way, a decoy only gives them something to read first
     const response = decoy

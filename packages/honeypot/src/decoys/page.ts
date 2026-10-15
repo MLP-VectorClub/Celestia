@@ -30,7 +30,20 @@ export interface HtmlPage {
   script?: string;
 }
 
-export const htmlPage = ({ title, body, css = '', script }: { title: string; body: string; css?: string; script?: string }): HtmlPage => ({
+export const htmlPage = ({
+  title,
+  body,
+  css = '',
+  script,
+  bodyClass,
+}: {
+  title: string;
+  body: string;
+  css?: string;
+  script?: string;
+  /** What the real page puts on `<body>` */
+  bodyClass?: string;
+}): HtmlPage => ({
   script,
   html: `<!doctype html>
 <html lang="en">
@@ -43,9 +56,9 @@ export const htmlPage = ({ title, body, css = '', script }: { title: string; bod
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="${FONT_STYLESHEET}">
 <link rel="stylesheet" href="${CSS_LIBRARY}">
-<style>body,input,button,select,textarea{font-family:'Comic Neue','Comic Sans MS','Comic Sans',cursive}main{max-width:26rem;margin:4rem auto}${css}</style>
+<style>body,input,button,select,textarea{font-family:'Comic Neue','Comic Sans MS','Comic Sans',cursive}${css}</style>
 </head>
-<body>
+<body${bodyClass ? ` class="${bodyClass}"` : ''}>
 ${body}
 ${script ? `<script>${script}</script>\n` : ''}</body>
 </html>

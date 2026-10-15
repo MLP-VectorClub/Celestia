@@ -1,11 +1,12 @@
 import { adminerLogin } from './adminer';
-import { VISITORS_MOM, envFile } from './env';
+import { VISITORS_MOM, VISITORS_MOM_LBS, envFile } from './env';
 import { gitConfig } from './git';
 import { momsWeightOf } from './moms';
 import { decoyCsp } from './page';
 import type { HtmlPage } from './page';
+import { phpmyadminLogin } from './phpmyadmin';
 import { randomSecrets } from './secrets';
-import { wordpressLogin } from './wordpress';
+import { LOST_PASSWORD_ACTIONS, wordpressLogin, wordpressLostPassword } from './wordpress';
 
 export interface Decoy {
   body: string;
@@ -14,6 +15,8 @@ export interface Decoy {
   csp?: string;
   /** Fills in what depends on who asks (the body is a template then), and keeps the answer out of shared caches */
   render?: (visitor: { address?: string }) => string;
+  /** Picks another decoy for the same path from the query of the request (the address is part of what shared caches key on) */
+  select?: (search: URLSearchParams) => Decoy | undefined;
   /** Replaces the default `Cache-Control` of the decoys */
   cacheControl?: string;
   /**
@@ -24,7 +27,7 @@ export interface Decoy {
 }
 
 /** The names a trap can give as its `decoy` */
-export type DecoyName = 'env' | 'wordpress-login' | 'adminer-login' | 'git-config';
+export type DecoyName = 'env' | 'wordpress-login' | 'adminer-login' | 'phpmyadmin-login' | 'git-config';
 
 /**
  * Builds every decoy, once (so the secrets in them are generated when the server starts and stay the same for as long as it runs: a scanner that
@@ -34,21 +37,29 @@ const htmlDecoy = ({ html, script }: HtmlPage): Decoy => ({ body: html, contentT
 
 export const createDecoys = (siteName: string, securityTxtUrl: string): Record<DecoyName, Decoy> => {
   const secrets = randomSecrets();
-  const momsWeightKg = momsWeightOf(secrets.hex(16));
+  const momsWeight = momsWeightOf(secrets.hex(16));
+  const fillIn = (template: string, weight: { kg: string; lbs: string }) =>
+    template.replace(VISITORS_MOM, weight.kg).replace(VISITORS_MOM_LBS, weight.lbs);
   // Generated once, so the secrets stay the same for every visitor: only the line about their mother changes
   const envTemplate = envFile(secrets, siteName, securityTxtUrl);
+  const lostPassword = htmlDecoy(wordpressLostPassword(siteName));
   return {
     env: {
-      body: envTemplate.replace(VISITORS_MOM, momsWeightKg()),
+      body: fillIn(envTemplate, momsWeight()),
       contentType: 'text/plain; charset=utf-8',
       cookies: false,
-      render: ({ address }) => envTemplate.replace(VISITORS_MOM, momsWeightKg(address)),
+      render: ({ address }) => fillIn(envTemplate, momsWeight(address)),
       // It has a line that is different for every visitor, so only their own browser may keep it
       cacheControl: 'private, max-age=86400',
     },
     'git-config': { body: gitConfig(secrets, siteName), contentType: 'text/plain; charset=utf-8', cookies: false },
-    'wordpress-login': htmlDecoy(wordpressLogin(siteName)),
-    'adminer-login': htmlDecoy(adminerLogin()),
+    'wordpress-login': {
+      ...htmlDecoy(wordpressLogin(siteName)),
+      select: (search) => (LOST_PASSWORD_ACTIONS.includes(search.get('action') ?? '') ? lostPassword : undefined),
+    },
+    // The hidden tokens of the forms are random and never checked by anything
+    'adminer-login': htmlDecoy(adminerLogin(secrets.hex(16))),
+    'phpmyadmin-login': htmlDecoy(phpmyadminLogin({ token: secrets.hex(16), session: secrets.hex(16) })),
   };
 };
 
