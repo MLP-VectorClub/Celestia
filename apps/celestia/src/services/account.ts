@@ -32,6 +32,9 @@ export class AccountService {
 
   static syncDiscord = (userId: number) => Axios.post<void>(`/users/${userId}/discord/sync`);
 
+  /** Binds the Discord account behind an OAuth `code` to the signed in user (`GET /users/oauth/signin/discord` is the redirect that leads to it) */
+  static linkDiscord = (userId: number, code: string) => Axios.post<void>(`/users/${userId}/discord`, { code });
+
   static unlinkDiscord = (userId: number) => Axios.delete<void>(`/users/${userId}/discord`);
 
   /**

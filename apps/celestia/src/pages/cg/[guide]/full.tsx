@@ -6,6 +6,7 @@ import { Button, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdow
 
 import { GetAppearancesFullResult, GuideName } from '@mlp-vectorclub/api-types';
 import { useColorCopyWidget } from 'src/components/colorguide/ColorCopyWidget';
+import { DeveloperResources } from 'src/components/colorguide/DeveloperResources';
 import FullGuideGroups from 'src/components/colorguide/FullGuideGroups';
 import { FullGuideReorder } from 'src/components/colorguide/FullGuideReorder';
 import { GuideNotFound } from 'src/components/colorguide/GuideNotFound';
@@ -107,6 +108,7 @@ const FullGuidePage: NextPage<PropTypes> = ({ guide, sort, initialData }) => {
           </UncontrolledDropdown>
         }
       />
+      <DeveloperResources />
       <ButtonCollection>
         <ReturnToGuideButton guide={guide} />
         {isStaff && (

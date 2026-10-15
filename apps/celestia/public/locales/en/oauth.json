@@ -12,5 +12,8 @@
   },
   "signedIn": "You're signed in",
   "closeHint": "You can close this window now.",
-  "continueToProfile": "Continue to your profile"
+  "continueToProfile": "Continue to your profile",
+  "linking": "Linking your Discord account",
+  "linked": "Your Discord account is linked",
+  "linkFailed": "The Discord account could not be linked"
 }

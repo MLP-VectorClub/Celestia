@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { FC } from 'react';
+import { FC, MouseEvent } from 'react';
 import { Alert, Button } from 'reactstrap';
 
 import { UserProfile } from '@mlp-vectorclub/api-types';
@@ -8,9 +8,11 @@ import ExternalLink from 'src/components/shared/ExternalLink';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import TimeAgo from 'src/components/shared/TimeAgo';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
+import { API_PREFIX } from 'src/config';
 import { describeApiError, useApiMutation, useConfig } from 'src/hooks';
 import { AccountService } from 'src/services/account';
-import { ENDPOINTS } from 'src/utils';
+import { ENDPOINTS, popupOpenCenter } from 'src/utils';
+import { listenForOAuthResult, noteDiscordLinkIntent } from 'src/utils/oauth-popup';
 
 /** What the old site's "Discord account" section says and offers: the linked account, syncing it and unlinking it */
 export const DiscordSection: FC<{ profile: UserProfile; sameUser: boolean }> = ({ profile, sameUser }) => {
@@ -23,6 +25,18 @@ export const DiscordSection: FC<{ profile: UserProfile; sameUser: boolean }> = (
   const refresh = () => void queryClient.invalidateQueries({ queryKey: [ENDPOINTS.USER_PROFILE({ id: userId })] });
   const sync = useApiMutation(() => AccountService.syncDiscord(userId), { onSuccess: refresh });
   const unlink = useApiMutation(() => AccountService.unlinkDiscord(userId), { onSuccess: refresh });
+  const startLinking = (e: MouseEvent) => {
+    e.preventDefault();
+    noteDiscordLinkIntent(userId);
+    popupOpenCenter(
+      API_PREFIX + ENDPOINTS.USERS_OAUTH_SIGNIN_PROVIDER({ provider: 'discord' }),
+      t('users.account.discordLinkTitle'),
+      screen.availWidth * 0.75,
+      screen.availHeight * 0.75
+    );
+    // The popup reports back over a BroadcastChannel once the account is linked
+    listenForOAuthResult(refresh);
+  };
   const who = sameUser ? 'own' : 'other';
   const error = sync.error ?? unlink.error;
 
@@ -32,7 +46,14 @@ export const DiscordSection: FC<{ profile: UserProfile; sameUser: boolean }> = (
       className="unlink"
       disabled={unlink.isPending}
       onClick={async () => {
-        if (await confirm({ title: t('users.account.discordUnlink'), body: t(`users.account.discordUnlinkBody.${who}`), color: 'danger', confirmLabel: t('users.account.discordUnlink') })) {
+        if (
+          await confirm({
+            title: t('users.account.discordUnlink'),
+            body: t(`users.account.discordUnlinkBody.${who}`),
+            color: 'danger',
+            confirmLabel: t('users.account.discordUnlink'),
+          })
+        ) {
           unlink.mutate();
         }
       }}
@@ -52,11 +73,15 @@ export const DiscordSection: FC<{ profile: UserProfile; sameUser: boolean }> = (
       </h2>
       {discord && (
         <p>
-          {t.rich(discord.linked ? `users.account.discordLinked.${who}` : `users.account.discordBound.${who}`, { tag: () => <strong>{discord.tag}</strong> })}{' '}
+          {t.rich(discord.linked ? `users.account.discordLinked.${who}` : `users.account.discordBound.${who}`, {
+            tag: () => <strong>{discord.tag}</strong>,
+          })}{' '}
           {discord.linked &&
             (discord.serverMember
               ? t(`users.account.discordJoined.${who}`)
-              : t.rich(`users.account.discordNotJoined.${who}`, { server: (c) => <ExternalLink href={config?.discordInviteLink ?? 'https://discord.mlpvector.club'}>{c}</ExternalLink> }))}
+              : t.rich(`users.account.discordNotJoined.${who}`, {
+                  server: (c) => <ExternalLink href={config?.discordInviteLink ?? 'https://discord.mlpvector.club'}>{c}</ExternalLink>,
+                }))}
           {!discord.linked && ` ${t('users.account.discordManual')}`}
         </p>
       )}
@@ -65,8 +90,14 @@ export const DiscordSection: FC<{ profile: UserProfile; sameUser: boolean }> = (
           <p id="discord-sync-info">
             {t.rich(`users.account.discordSyncInfo.${who}`, { strong: (c) => <strong>{c}</strong> })}
             <br />
-            {t(`users.account.discordLastUpdated.${who}`)} {discord.lastSynced ? <TimeAgo date={discord.lastSynced} /> : t('users.account.never')}.
-            {!discord.canSync && <span className="wait-message"> {t('users.account.discordWait', { minutes: Math.round((discord.syncCooldown ?? 300) / 60) })}</span>}
+            {t(`users.account.discordLastUpdated.${who}`)}{' '}
+            {discord.lastSynced ? <TimeAgo date={discord.lastSynced} /> : t('users.account.never')}.
+            {!discord.canSync && (
+              <span className="wait-message">
+                {' '}
+                {t('users.account.discordWait', { minutes: Math.round((discord.syncCooldown ?? 300) / 60) })}
+              </span>
+            )}
           </p>
           <div className="d-flex flex-wrap justify-content-center gap-1">
             <Button color="success" className="sync" disabled={sync.isPending || !discord.canSync} onClick={() => sync.mutate()}>
@@ -79,8 +110,22 @@ export const DiscordSection: FC<{ profile: UserProfile; sameUser: boolean }> = (
       )}
       {(!discord || !discord.linked) && (
         <>
-          <p>{sameUser ? t('users.account.discordLinkHint') : discord ? t('users.account.discordUnlinkHint') : t('users.account.discordNotLinkedYet')}</p>
-          <div className="d-flex flex-wrap justify-content-center gap-1">{discord && !discord.linked && unlinkButton}</div>
+          <p>
+            {sameUser
+              ? t('users.account.discordLinkHint')
+              : discord
+                ? t('users.account.discordUnlinkHint')
+                : t('users.account.discordNotLinkedYet')}
+          </p>
+          <div className="d-flex flex-wrap justify-content-center gap-1">
+            {sameUser && (
+              <Button color="guide-link" className="link-account" onClick={startLinking}>
+                <InlineIcon icon="link" first />
+                {t('users.account.linkAccount')}
+              </Button>
+            )}
+            {discord && !discord.linked && unlinkButton}
+          </div>
         </>
       )}
       {error && (

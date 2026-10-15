@@ -12,7 +12,7 @@ import Center from 'src/components/shared/Center';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import LoadingRing from 'src/components/shared/LoadingRing';
 import StandardHeading from 'src/components/shared/StandardHeading';
-import { useLayout, useOAuth, useTitleSetter } from 'src/hooks';
+import { describeApiError, useDiscordLink, useLayout, useOAuth, useTitleSetter } from 'src/hooks';
 import { PATHS } from 'src/paths';
 import { useAppDispatch, wrapper } from 'src/store';
 import { OAuthErrorTypes, SSRMessages, Status, Translatable, UnifiedErrorResponseTypes } from 'src/types';
@@ -39,10 +39,13 @@ const OAuthPage: NextPage = () => {
   const { query } = useRouter();
   const [closeHint, setCloseHint] = useState(false);
   const { status, error, user } = useOAuth(query);
+  const link = useDiscordLink(query);
+  const linkBusy = link.state === 'checking' || link.state === 'linking';
   const queryClient = useQueryClient();
 
   const success = status === Status.SUCCESS;
-  const authorized = user.name !== null;
+  // While a Discord link is being made, or after it failed, the popup is not reporting anything to the page that opened it
+  const authorized = user.name !== null && !linkBusy && link.state !== 'failed';
   const provider = getOAuthProvider(query.provider);
 
   useEffect(() => {
@@ -74,6 +77,26 @@ const OAuthPage: NextPage = () => {
 
   const header = t('oauth.authTitle', { provider });
 
+  if (link.state === 'checking' || link.state === 'linking') {
+    return (
+      <Center color="primary" header={header} className="text-center">
+        <LoadingRing color="primary" style={{ width: '200px' }} />
+        <h3 className="mt-3 mb-0">{t('oauth.linking')}…</h3>
+      </Center>
+    );
+  }
+  if (link.state === 'failed') {
+    return (
+      <Center color="danger" header={header} className="text-center">
+        <StandardHeading heading={t('oauth.linkFailed')} lead={link.error ? describeApiError(link.error) : t('oauth.unknownError')} />
+        <Button color="danger" onClick={() => window.close()} className="mt-3">
+          <InlineIcon first icon="times" />
+          {t('oauth.close')}
+        </Button>
+      </Center>
+    );
+  }
+
   if (query.code) {
     if (status === Status.FAILURE) {
       query.error = OAuthErrorTypes.ServerError;
@@ -87,7 +110,7 @@ const OAuthPage: NextPage = () => {
         <Center color={color} header={header} className="text-center">
           {!authorized ? <LoadingRing color={color} style={{ width: '200px' }} /> : <FontAwesomeIcon icon="check-circle" size="10x" />}
           {message && <h3 className="mt-3 mb-0">{message}</h3>}
-          {authorized && <h3 className="mt-3 mb-0">{t('oauth.signedIn')}</h3>}
+          {authorized && <h3 className="mt-3 mb-0">{link.state === 'linked' ? t('oauth.linked') : t('oauth.signedIn')}</h3>}
           {authorized && closeHint && (
             <>
               <p className="mt-3 mb-2">{t('oauth.closeHint')}</p>

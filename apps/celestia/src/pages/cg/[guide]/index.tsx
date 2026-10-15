@@ -6,9 +6,10 @@ import { useDispatch } from 'react-redux';
 import { Button } from 'reactstrap';
 
 import { GetAppearancesPinnedResult, GetAppearancesResult, GuideName } from '@mlp-vectorclub/api-types';
-import { useColorCopyWidget } from 'src/components/colorguide/ColorCopyWidget';
 import { AppearanceCreateButton } from 'src/components/colorguide/AppearanceCreateButton';
 import AppearanceItem from 'src/components/colorguide/AppearanceItem';
+import { useColorCopyWidget } from 'src/components/colorguide/ColorCopyWidget';
+import { DeveloperResources } from 'src/components/colorguide/DeveloperResources';
 import { GuideNotFound } from 'src/components/colorguide/GuideNotFound';
 import MajorChangesButton from 'src/components/colorguide/MajorChangesButton';
 import PinnedAppearances from 'src/components/colorguide/PinnedAppearances';
@@ -81,6 +82,7 @@ const ColorGuidePage: NextPage<PropTypes> = ({ guide, page, q, initialData }) =>
   return (
     <Content>
       <StandardHeading heading={heading} lead={lead} />
+      <DeveloperResources />
       <p className="text-center">
         {t.rich('colorGuide.guide.demand', { contact: (chunks) => <ContactLink>{chunks}</ContactLink> })}
         <br />

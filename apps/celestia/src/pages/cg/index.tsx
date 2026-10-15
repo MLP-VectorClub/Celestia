@@ -3,18 +3,18 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import pluralize from 'pluralize';
 import { useMemo } from 'react';
-import { Alert, Badge, Button, Card, CardBody, UncontrolledTooltip } from 'reactstrap';
+import { Alert, Button, Card, CardBody } from 'reactstrap';
 
 import { GetColorGuideResult, GuideName } from '@mlp-vectorclub/api-types';
 import styles from 'modules/GuideIndexPage.module.scss';
 import { DeveloperGuideButtons } from 'src/components/colorguide/DeveloperGuideButtons';
+import { DeveloperResources } from 'src/components/colorguide/DeveloperResources';
 import ButtonCollection from 'src/components/shared/ButtonCollection';
 import Content from 'src/components/shared/Content';
-import ExternalLink from 'src/components/shared/ExternalLink';
 import { GuideIcon } from 'src/components/shared/GuideIcon';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import StandardHeading from 'src/components/shared/StandardHeading';
-import { API_DOCS_URL, GUIDE_NAMES } from 'src/config';
+import { GUIDE_NAMES } from 'src/config';
 import { guideIndexFetcher } from 'src/fetchers';
 import { useAuth, useGuideIndex, useTitleSetter } from 'src/hooks';
 import { PATHS } from 'src/paths';
@@ -39,7 +39,6 @@ const GuideIndexPage: NextPage<PropTypes> = ({ initialData }) => {
   const dispatch = useAppDispatch();
   const data = useGuideIndex(initialData);
   const { signedIn, user } = useAuth();
-  const wipMeaning = 'wip-meaning';
 
   const titleData = useMemo(titleFactory, []);
   useTitleSetter(dispatch, titleData);
@@ -47,18 +46,7 @@ const GuideIndexPage: NextPage<PropTypes> = ({ initialData }) => {
   return (
     <Content>
       <StandardHeading heading={t('colorGuide.index.heading')} lead={t('colorGuide.index.lead')} />
-      <p className="text-center">
-        {t.rich('colorGuide.index.devResources', {
-          export: (chunks) => <ExternalLink href="/dist/mlpvc-colorguide.json">{chunks}</ExternalLink>,
-          api: (chunks) => <ExternalLink href={API_DOCS_URL}>{chunks}</ExternalLink>,
-        })}{' '}
-        <Badge tag="abbr" color="danger" id={wipMeaning}>
-          {t('colorGuide.index.wip')}
-        </Badge>
-        <UncontrolledTooltip target={wipMeaning} fade={false}>
-          {t('colorGuide.index.wipMeaning')}
-        </UncontrolledTooltip>
-      </p>
+      <DeveloperResources />
 
       <ButtonCollection>
         <Button tag={Link} href={PATHS.BLENDING} color="guide-link" size="sm">
