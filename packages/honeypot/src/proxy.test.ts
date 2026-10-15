@@ -145,7 +145,7 @@ describe('honeypot proxy', () => {
       const top = text.split('\n').slice(0, 4).join('\n');
       expect(top).toContain('Report it the way https://front.test/.well-known/security.txt says.');
       expect(text).not.toMatch(/Hello, scanner|random number generator/);
-      expect(text.trimEnd().split('\n').pop()).toMatch(/^SECRET_RECIPE_URL=/);
+      expect(text.trimEnd().split('\n').pop()).toMatch(/^VISITOR_MOMS_WEIGHT_KG=/);
       // Nothing is empty and nothing has an unfilled template left in it
       expect(text).not.toMatch(/\$\{|undefined|NaN|\[object/);
       keys.forEach((line) => expect(line.split('=')[1]?.trim()).not.toBe(''));

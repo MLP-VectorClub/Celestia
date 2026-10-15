@@ -194,7 +194,5 @@ NETFLIX_PASSWORD=${s.password(10)}
 MY_CATS_NAME=Fluffernutter
 # whoever is reading this, personally:
 VISITOR_MOMS_WEIGHT_KG=${VISITORS_MOM}
-MOTHERS_MAIDEN_NAME=${s.password(8)}
-SECRET_RECIPE_URL=https://example.com/oops-this-is-not-a-real-recipe
 `;
 };
