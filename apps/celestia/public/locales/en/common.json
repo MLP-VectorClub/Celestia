@@ -160,5 +160,6 @@
   "sessionEnded": {
     "title": "Session refresh issue",
     "body": "We couldn't refresh your DeviantArt session automatically, so you have been signed out. Please sign in with DeviantArt to continue."
-  }
+  },
+  "readOnlyNotice": "This site is read-only right now: you can look around, but nothing can be changed or submitted until editing is turned back on."
 }

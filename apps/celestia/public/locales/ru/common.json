@@ -116,5 +116,6 @@
     "go": "Go",
     "itemsPerPage": "Displaying {count, plural, one {# item/page} other {# items/page}}"
   },
-  "tmdbDisclaimer": "This product uses the TMDb API but is not endorsed or certified by TMDb."
+  "tmdbDisclaimer": "This product uses the TMDb API but is not endorsed or certified by TMDb.",
+  "readOnlyNotice": "This site is read-only right now: you can look around, but nothing can be changed or submitted until editing is turned back on."
 }
