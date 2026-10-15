@@ -1,15 +1,16 @@
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
-import { FC, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, Button } from 'reactstrap';
 
 import Content from 'src/components/shared/Content';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import StandardHeading from 'src/components/shared/StandardHeading';
-import { useTitleSetter } from 'src/hooks';
+import { useAuth, useTitleSetter } from 'src/hooks';
 import { useRateLimitLock } from 'src/hooks/rate-limit';
 import { useAppDispatch } from 'src/store';
-import { UnifiedErrorResponseTypes } from 'src/types';
+import { authActions } from 'src/store/slices';
+import { AuthModalSide, UnifiedErrorResponseTypes } from 'src/types';
 import { FetchFailure } from 'src/utils/fetch-failure';
 
 /**
@@ -42,10 +43,24 @@ export const FetchFailureView: FC<{ failure: FetchFailure }> = ({ failure }) => 
   };
 
   const forbidden = failure.status === 403;
+  // A 403 for somebody who is not signed in is mostly "sign in first": ask them to, and once they have, run the page's data fetching again (the page was
+  // refused on the server for a visitor it did not know, it would stay refused otherwise)
+  const { signedIn } = useAuth();
+  const askToSignIn = forbidden && !signedIn;
+  const wasSignedIn = useRef(signedIn);
+  useEffect(() => {
+    if (askToSignIn) dispatch(authActions.openAuthModal(AuthModalSide.SIGN_IN));
+    // Only the moment of asking: not again every time the dialog is closed
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  useEffect(() => {
+    if (signedIn && !wasSignedIn.current && forbidden) void replace(asPath);
+    wasSignedIn.current = signedIn;
+  }, [asPath, forbidden, replace, signedIn]);
   const kind = rateLimited ? 'rateLimited' : forbidden ? 'forbidden' : failure.status === 503 ? 'unavailable' : 'serverError';
   return (
     <Content>
-      <StandardHeading heading={t(`common.error.${kind}.heading`)} lead={t('common.error.withStatus', { statusCode: failure.status })} />
+      <StandardHeading heading={t(`common.error.${kind}.heading`)} />
       <Alert color={rateLimited ? 'warning' : 'danger'} fade={false} className="text-center" role="alert">
         {rateLimited
           ? failure.retryAfter
@@ -53,6 +68,14 @@ export const FetchFailureView: FC<{ failure: FetchFailure }> = ({ failure }) => 
             : t('common.error.rateLimited.retryLater')
           : t(`common.error.${kind}.message`)}
       </Alert>
+      {askToSignIn && (
+        <p className="text-center">
+          <Button color="primary" onClick={() => dispatch(authActions.openAuthModal(AuthModalSide.SIGN_IN))}>
+            <InlineIcon icon="sign-in-alt" first />
+            {t('common.error.forbidden.signIn')}
+          </Button>
+        </p>
+      )}
       {!forbidden && (
         <p className="text-center">
           <Button color="ui" onClick={retry} disabled={locked || retrying}>

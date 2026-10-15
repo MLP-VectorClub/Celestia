@@ -1,4 +1,3 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useQueryClient } from '@tanstack/react-query';
 import { map } from 'lodash';
 import { useTranslations } from 'next-intl';
@@ -124,11 +123,6 @@ const SingInForm: FC = () => {
         <a href="#" onClick={() => dispatch(authActions.openAuthModal(AuthModalSide.REGISTER))}>
           {t('common.auth.noAccountYet')}
         </a>
-      </p>
-
-      <p className="text-center text-info">
-        <FontAwesomeIcon icon="info" className="me-2" />
-        {t('common.auth.accountBenefits')}
       </p>
 
       <FormGroup row>

@@ -8,9 +8,11 @@ export interface StandardHeadingProps {
 const StandardHeading: FC<StandardHeadingProps> = ({ heading, lead }) => (
   <>
     <h1 className="page-heading">{heading}</h1>
-    <div className="lead page-lead" role="heading" aria-level={1}>
-      {lead}
-    </div>
+    {lead !== undefined && lead !== null && lead !== false && (
+      <div className="lead page-lead" role="heading" aria-level={1}>
+        {lead}
+      </div>
+    )}
   </>
 );
 export default StandardHeading;

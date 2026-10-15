@@ -38,7 +38,6 @@
     "home": "Home"
   },
   "error": {
-    "withStatus": "Error {statusCode}!",
     "withoutStatus": "Unknown Error!",
     "404": {
       "heading": "404 Not Found",
@@ -60,7 +59,8 @@
     "tryAgain": "Try again",
     "forbidden": {
       "heading": "403 Unauthorized",
-      "message": "You are not allowed to see this page."
+      "message": "You are not allowed to see this page. If you have an account that is, sign in and you will be taken there.",
+      "signIn": "Sign in"
     }
   },
   "sidebar": {
@@ -108,7 +108,6 @@
     "signUpTitle": "Create an account",
     "noAccountYet": "No account yet? Create one here!",
     "alreadyHaveAccount": "Already have an account? Sign in here!",
-    "accountBenefits": "An account allows you to customize the site's behavior, with many more features yet to come.",
     "name": "Display Name",
     "nameHelp": "Only English letters, digits, dashes and underscores. Must be between {min} and {max} characters. Can be changed later.",
     "email": "E-Mail Address",
