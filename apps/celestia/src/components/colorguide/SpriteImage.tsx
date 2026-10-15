@@ -27,21 +27,29 @@ const SpriteImage: FC<PropTypes> = ({ appearanceId, sprite, height = 150, highRe
     return null;
   }
 
+  // As on the old site, the sprite is a link to the image itself for everybody, not only for those who can change it
   return (
-    <Image
-      className={styles.spriteImage}
-      src={getSpriteUrl(appearanceId, sprite, highRes ? 600 : 300, token)}
-      width={height}
-      height={height}
-      // The class sets the list's 150px height, which the big version has to override
-      style={
-        highRes
-          ? { height: 'auto', width: 'auto', maxWidth: `min(100%, ${height}px)`, maxHeight: height }
-          : { objectFit: 'contain', height, maxWidth: '100%' }
-      }
-      unoptimized
-      alt={t('colorGuide.appearance.spriteAlt')}
-    />
+    <a
+      href={getSpriteUrl(appearanceId, sprite, 600, token)}
+      target="_blank"
+      rel="noopener noreferrer"
+      title={t('colorGuide.edit.sprite.openInNewTab')}
+    >
+      <Image
+        className={styles.spriteImage}
+        src={getSpriteUrl(appearanceId, sprite, highRes ? 600 : 300, token)}
+        width={height}
+        height={height}
+        // The class sets the list's 150px height, which the big version has to override
+        style={
+          highRes
+            ? { height: 'auto', width: 'auto', maxWidth: `min(100%, ${height}px)`, maxHeight: height }
+            : { objectFit: 'contain', height, maxWidth: '100%' }
+        }
+        unoptimized
+        alt={t('colorGuide.appearance.spriteAlt')}
+      />
+    </a>
   );
 };
 
