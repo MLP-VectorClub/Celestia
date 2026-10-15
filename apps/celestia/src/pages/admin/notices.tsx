@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { Button, FormGroup, FormText, Input, Label } from 'reactstrap';
 
-import { Notice } from '@mlp-vectorclub/api-types';
+import { Notice } from '@went.tf/mlp-vectorclub-api-types';
 import { AdminPage } from 'src/components/admin/AdminPage';
 import { IconButton } from 'src/components/shared/IconButton';
 import InlineIcon from 'src/components/shared/InlineIcon';

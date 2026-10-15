@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { FC, useMemo, useState } from 'react';
 import { Card, CardBody, Col, Row } from 'reactstrap';
 
-import { Appearance, GuideName } from '@mlp-vectorclub/api-types';
+import { Appearance, GuideName } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/AppearanceItem.module.scss';
 import AppearanceItemColorGroups from 'src/components/colorguide/AppearanceItemColorGroups';
 import AppearanceItemNotes from 'src/components/colorguide/AppearanceItemNotes';

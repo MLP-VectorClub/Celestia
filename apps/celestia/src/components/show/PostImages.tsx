@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { useTranslations } from 'next-intl';
 import { FC, useRef, useState } from 'react';
 
-import { PostItem } from '@mlp-vectorclub/api-types';
+import { PostItem } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/PostList.module.scss';
 import { ImageZoomLink } from 'src/components/shared/ImageZoomLink';
 import LoadingRing from 'src/components/shared/LoadingRing';

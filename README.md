@@ -13,7 +13,6 @@ packages/apps:
 
 ### Packages
 
-- [api-types](packages/api-types): TypeScript type definition and OpeanAPI schema file package for the website's backend API
 - [config](packages/config): `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
 - [tsconfig](packages/tsconfig): Collection of `tsconfig.json`s used throughout the monorepo
 

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { GetAppearancesPinnedResult, GuideName } from '@mlp-vectorclub/api-types';
+import { GetAppearancesPinnedResult, GuideName } from '@went.tf/mlp-vectorclub-api-types';
 import AppearanceItem from 'src/components/colorguide/AppearanceItem';
 import { usePinnedAppearances } from 'src/hooks';
 import { Nullable } from 'src/types';

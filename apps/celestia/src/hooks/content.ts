@@ -27,7 +27,7 @@ import {
   GetUsersIdPersonalGuidePointHistoryResult,
   GetUsersIdProfileRequest,
   GetUsersIdProfileResult,
-} from '@mlp-vectorclub/api-types';
+} from '@went.tf/mlp-vectorclub-api-types';
 import {
   configFetcher,
   contributionsFetcher,

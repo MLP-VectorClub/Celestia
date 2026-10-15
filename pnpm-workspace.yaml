@@ -11,3 +11,6 @@ allowBuilds:
   unrs-resolver: true
 
 minimumReleaseAge: 20160
+minimumReleaseAgeExclude:
+  # Published by Luna's own workflow (with provenance), so there is nothing to wait out
+  - '@went.tf/mlp-vectorclub-api-types'

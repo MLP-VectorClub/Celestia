@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { useTranslations } from 'next-intl';
 import { FC, KeyboardEvent, MouseEvent, RefObject, useEffect, useRef, useState } from 'react';
 
-import { Color } from '@mlp-vectorclub/api-types';
+import { Color } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/ColorSquare.module.scss';
 import { RgbValuesDialog } from 'src/components/colorguide/RgbValuesDialog';
 import { useColorCopySettings } from 'src/hooks/color-copy';

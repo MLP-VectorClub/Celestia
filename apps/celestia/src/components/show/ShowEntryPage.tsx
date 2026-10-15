@@ -10,7 +10,7 @@ import {
   GetShowIdResult,
   GetShowIdVoteResult,
   GetShowReservationInfoResult,
-} from '@mlp-vectorclub/api-types';
+} from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/ShowEntry.module.scss';
 import { AppearanceLink } from 'src/components/colorguide/AppearanceLink';
 import Content from 'src/components/shared/Content';

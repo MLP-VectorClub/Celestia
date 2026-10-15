@@ -1,6 +1,6 @@
 import { FC, useId, useMemo } from 'react';
 
-import { Appearance, CutieMark } from '@mlp-vectorclub/api-types';
+import { Appearance, CutieMark } from '@went.tf/mlp-vectorclub-api-types';
 import { CutieMarkFacing } from 'src/types/api-alias';
 import { CutieMarkColorMapping, getColorMapping } from 'src/utils';
 

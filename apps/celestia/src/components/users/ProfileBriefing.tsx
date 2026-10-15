@@ -2,7 +2,7 @@ import { useTranslations } from 'next-intl';
 import { FC, useState } from 'react';
 import { Button } from 'reactstrap';
 
-import { UserProfile } from '@mlp-vectorclub/api-types';
+import { UserProfile } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/ProfilePage.module.scss';
 import AvatarWrap from 'src/components/shared/AvatarWrap';
 import InlineIcon from 'src/components/shared/InlineIcon';

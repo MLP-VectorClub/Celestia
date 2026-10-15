@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { Button, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 
-import { GetAppearancesFullResult, GuideName } from '@mlp-vectorclub/api-types';
+import { GetAppearancesFullResult, GuideName } from '@went.tf/mlp-vectorclub-api-types';
 import { useColorCopyWidget } from 'src/components/colorguide/ColorCopyWidget';
 import { DeveloperResources } from 'src/components/colorguide/DeveloperResources';
 import FullGuideGroups from 'src/components/colorguide/FullGuideGroups';

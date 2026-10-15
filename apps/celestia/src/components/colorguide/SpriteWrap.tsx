@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { FC, useRef, useState } from 'react';
 import { Alert } from 'reactstrap';
 
-import { Sprite } from '@mlp-vectorclub/api-types';
+import { Sprite } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/SpriteWrap.module.scss';
 import { SpriteDialog } from 'src/components/colorguide/SpriteDialog';
 import SpriteImage from 'src/components/colorguide/SpriteImage';

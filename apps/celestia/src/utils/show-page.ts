@@ -8,7 +8,7 @@ import {
   GetShowIdVoteResult,
   GetShowReservationInfoResult,
   ShowListItem,
-} from '@mlp-vectorclub/api-types';
+} from '@went.tf/mlp-vectorclub-api-types';
 import { ShowEntryPageProps, showTitleFactory } from 'src/components/show/ShowEntryPage';
 import {
   latestShowFetcher,

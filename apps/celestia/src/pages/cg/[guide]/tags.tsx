@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useMemo } from 'react';
 import { Button } from 'reactstrap';
 
-import { GetConfigResult, GetTagsResult, GuideName } from '@mlp-vectorclub/api-types';
+import { GetConfigResult, GetTagsResult, GuideName } from '@went.tf/mlp-vectorclub-api-types';
 import tableStyles from 'modules/TagsTable.module.scss';
 import { GuideNotFound } from 'src/components/colorguide/GuideNotFound';
 import { NewTagButton, RefreshAllButton, TagRowActions, TagUses } from 'src/components/colorguide/TagAdmin';

@@ -16,7 +16,7 @@ import {
   PutAppearancesIdCutieMarksRequest,
   PutAppearancesIdRequest,
   PutAppearancesIdResult,
-} from '@mlp-vectorclub/api-types';
+} from '@went.tf/mlp-vectorclub-api-types';
 
 export class AppearanceEditService {
   static create = (data: PostAppearancesRequest) => Axios.post<PostAppearancesResult>('/appearances', data);

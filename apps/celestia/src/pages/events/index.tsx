@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 import { Table } from 'reactstrap';
 
-import { GetEventsResult } from '@mlp-vectorclub/api-types';
+import { GetEventsResult } from '@went.tf/mlp-vectorclub-api-types';
 import Content from 'src/components/shared/Content';
 import NoResultsAlert from 'src/components/shared/NoResultsAlert';
 import Pagination from 'src/components/shared/Pagination';

@@ -1,6 +1,6 @@
 import { padStart } from 'lodash';
 
-import { Appearance, GuideName, PreviewAppearance, SlimAppearance, SlimGuideTag, Sprite } from '@mlp-vectorclub/api-types';
+import { Appearance, GuideName, PreviewAppearance, SlimAppearance, SlimGuideTag, Sprite } from '@went.tf/mlp-vectorclub-api-types';
 import { API_PREFIX } from 'src/config';
 import { colorGuide } from 'src/strings';
 import { Nullable, Numeric, Optional } from 'src/types';

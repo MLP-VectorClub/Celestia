@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import { FC, useEffect, useRef, useState } from 'react';
 import { Button } from 'reactstrap';
 
-import { GetShowIdResult, GetShowIdVoteResult } from '@mlp-vectorclub/api-types';
+import { GetShowIdResult, GetShowIdVoteResult } from '@went.tf/mlp-vectorclub-api-types';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { MuffinRating } from 'src/components/shared/MuffinRating';
 import TimeAgo from 'src/components/shared/TimeAgo';

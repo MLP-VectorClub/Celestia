@@ -19,7 +19,7 @@ import {
 } from 'react';
 import { Button, Col, Form, Input, InputGroup, ListGroupItem, Row, UncontrolledTooltip } from 'reactstrap';
 
-import { GuideName } from '@mlp-vectorclub/api-types';
+import { GuideName } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/SearchBar.module.scss';
 import { AppearancePreview } from 'src/components/colorguide/AppearancePreview';
 import { NutshellLabel } from 'src/components/colorguide/NutshellLabel';

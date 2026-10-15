@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice, isAction } from '@reduxjs/toolkit';
 import { HYDRATE } from 'next-redux-wrapper';
 
-import { User } from '@mlp-vectorclub/api-types';
+import { User } from '@went.tf/mlp-vectorclub-api-types';
 import { registerThunk, signInThunk, signOutThunk } from 'src/store/thunks';
 import { AuthModalSide, FailsafeUser, Nullable, Status, UnifiedErrorResponse } from 'src/types';
 

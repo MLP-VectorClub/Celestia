@@ -1,4 +1,4 @@
-import type { ShowListItem } from '@mlp-vectorclub/api-types';
+import type { ShowListItem } from '@went.tf/mlp-vectorclub-api-types';
 
 export const PAGE_SIZE = 8;
 

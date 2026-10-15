@@ -10,7 +10,7 @@ import {
   GetUsersMeResult,
   GetUsersResult,
   PostUsersSignoutResult,
-} from '@mlp-vectorclub/api-types';
+} from '@went.tf/mlp-vectorclub-api-types';
 import { Service } from 'src/services/service-class';
 import { GetUsersTokensResult, PostUsersResult, PostUsersSigninResult } from 'src/types/auth';
 import {

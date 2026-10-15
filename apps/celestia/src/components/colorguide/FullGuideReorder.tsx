@@ -2,7 +2,7 @@ import { useTranslations } from 'next-intl';
 import { FC, useMemo, useState } from 'react';
 import { Alert, Button, Card, CardBody } from 'reactstrap';
 
-import { GetAppearancesFullResult, GuideName } from '@mlp-vectorclub/api-types';
+import { GetAppearancesFullResult, GuideName } from '@went.tf/mlp-vectorclub-api-types';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { describeApiError, useApiMutation } from 'src/hooks';
 import { AppearanceEditService } from 'src/services/appearance-edit';

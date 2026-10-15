@@ -12,7 +12,7 @@ import {
   PostPostsResult,
   PostShowIdVoteResult,
   PutPostsIdFinishRequest,
-} from '@mlp-vectorclub/api-types';
+} from '@went.tf/mlp-vectorclub-api-types';
 
 export type CreatePostBody = PostPostsRequest;
 

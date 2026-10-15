@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { FC } from 'react';
 import { Button } from 'reactstrap';
 
-import { GuideName } from '@mlp-vectorclub/api-types';
+import { GuideName } from '@went.tf/mlp-vectorclub-api-types';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { PATHS } from 'src/paths';
 

@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { FC, Fragment, useMemo, useState } from 'react';
 import { Alert, Button } from 'reactstrap';
 
-import { DetailedAppearance, GuideName } from '@mlp-vectorclub/api-types';
+import { DetailedAppearance, GuideName } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/AppearancePage.module.scss';
 import { AppearanceColorGroups } from 'src/components/colorguide/AppearanceColorGroups';
 import { AppearanceCutieMarks } from 'src/components/colorguide/AppearanceCutieMarks';

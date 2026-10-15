@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
 import { Button, FormGroup, FormText, Input, Label } from 'reactstrap';
 
-import { GuideName } from '@mlp-vectorclub/api-types';
+import { GuideName } from '@went.tf/mlp-vectorclub-api-types';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { FormDialog } from 'src/components/shared/dialogs/FormDialog';

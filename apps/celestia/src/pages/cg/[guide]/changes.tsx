@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { Table } from 'reactstrap';
 
-import { GetColorGuideMajorChangesResult, GuideName } from '@mlp-vectorclub/api-types';
+import { GetColorGuideMajorChangesResult, GuideName } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/GuideChangesPage.module.scss';
 import { AppearanceLink } from 'src/components/colorguide/AppearanceLink';
 import { GuideNotFound } from 'src/components/colorguide/GuideNotFound';

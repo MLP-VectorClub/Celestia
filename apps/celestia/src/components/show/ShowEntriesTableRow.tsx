@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { FC } from 'react';
 
-import { ShowListItem } from '@mlp-vectorclub/api-types';
+import { ShowListItem } from '@went.tf/mlp-vectorclub-api-types';
 import { ShowTableColumnDefinition } from 'src/types/show';
 
 export const ShowListItemRow: FC<{

@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
 import { Button, FormGroup, Input, Label } from 'reactstrap';
 
-import { GetShowReservationInfoResult } from '@mlp-vectorclub/api-types';
+import { GetShowReservationInfoResult } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/ShowEntry.module.scss';
 import { FormDialog } from 'src/components/shared/dialogs/FormDialog';
 import InlineIcon from 'src/components/shared/InlineIcon';

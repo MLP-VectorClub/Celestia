@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { FC, useMemo } from 'react';
 
-import { SlimAppearance } from '@mlp-vectorclub/api-types';
+import { SlimAppearance } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/AppearancePage.module.scss';
 import { AppearanceNotesText } from 'src/components/colorguide/AppearanceNotesText';
 import InlineIcon from 'src/components/shared/InlineIcon';

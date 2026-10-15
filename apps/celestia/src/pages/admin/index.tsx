@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { FC } from 'react';
 import { Button } from 'reactstrap';
 
-import { GetAdminPostsRecentResult, GetAdminSearchStatusResult } from '@mlp-vectorclub/api-types';
+import { GetAdminPostsRecentResult, GetAdminSearchStatusResult } from '@went.tf/mlp-vectorclub-api-types';
 import postStyles from 'modules/PostList.module.scss';
 import { ADMIN_SECTIONS, AdminPage, DEVELOPER_SECTIONS } from 'src/components/admin/AdminPage';
 import ButtonCollection from 'src/components/shared/ButtonCollection';

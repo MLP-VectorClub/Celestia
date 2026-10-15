@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
-import { GetUsersIdContributionsTypeResult, GetUsersIdResult } from '@mlp-vectorclub/api-types';
+import { GetUsersIdContributionsTypeResult, GetUsersIdResult } from '@went.tf/mlp-vectorclub-api-types';
 import { AppearanceLink } from 'src/components/colorguide/AppearanceLink';
 import Content from 'src/components/shared/Content';
 import ExternalLink from 'src/components/shared/ExternalLink';

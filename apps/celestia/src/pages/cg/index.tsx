@@ -5,7 +5,7 @@ import pluralize from 'pluralize';
 import { useMemo } from 'react';
 import { Alert, Button, Card, CardBody } from 'reactstrap';
 
-import { GetColorGuideResult, GuideName } from '@mlp-vectorclub/api-types';
+import { GetColorGuideResult, GuideName } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/GuideIndexPage.module.scss';
 import { DeveloperGuideButtons } from 'src/components/colorguide/DeveloperGuideButtons';
 import { DeveloperResources } from 'src/components/colorguide/DeveloperResources';

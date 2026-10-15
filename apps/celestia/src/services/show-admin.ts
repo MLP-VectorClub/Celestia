@@ -1,6 +1,6 @@
 import Axios from 'axios';
 
-import { GetShowPrefillResult, PostShowRequest, PostShowResult, PutShowIdRequest } from '@mlp-vectorclub/api-types';
+import { GetShowPrefillResult, PostShowRequest, PostShowResult, PutShowIdRequest } from '@went.tf/mlp-vectorclub-api-types';
 
 export type ShowBody = PostShowRequest;
 

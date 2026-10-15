@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { FC } from 'react';
 
-import { GuideName } from '@mlp-vectorclub/api-types';
+import { GuideName } from '@went.tf/mlp-vectorclub-api-types';
 import { PATHS } from 'src/paths';
 import { getGuideLabel, getGuideTitle } from 'src/utils';
 

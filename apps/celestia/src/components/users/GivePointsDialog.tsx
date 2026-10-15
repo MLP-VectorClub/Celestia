@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import { FC, useState } from 'react';
 import { FormGroup, FormText, Input, Label } from 'reactstrap';
 
-import { UserProfile } from '@mlp-vectorclub/api-types';
+import { UserProfile } from '@went.tf/mlp-vectorclub-api-types';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { FormDialog } from 'src/components/shared/dialogs/FormDialog';
 import { describeApiError, fieldErrors, useApiMutation } from 'src/hooks';

@@ -21,8 +21,7 @@ Things about the production server that aren't obvious from the code. It's deplo
   points `api.mlpvector.club` (and the other `*.mlpvector.club` names) at `127.0.0.1`, so these
   requests go to the local nginx and never leave the machine. That nginx serves a Cloudflare Origin CA
   certificate, which only Cloudflare trusts, so `https://api.mlpvector.club` fails from the server with
-  `UNABLE_TO_VERIFY_LEAF_SIGNATURE`. Keep `NEXT_PUBLIC_BACKEND_HOST` (`apps/celestia/.env`) and
-  `API_JSON_PATH` (`packages/api-types/.env`) on `http://`.
+  `UNABLE_TO_VERIFY_LEAF_SIGNATURE`. Keep `NEXT_PUBLIC_BACKEND_HOST` (`apps/celestia/.env`) on `http://`.
 - **`NEXT_PUBLIC_FRONTEND_HOST` must be the public `https://` URL.** Canonical links, `og:` tags and
   share links are built from it.
 - **`.env.local` overrides `.env`.** Keep production settings in `.env` only, so a leftover line in

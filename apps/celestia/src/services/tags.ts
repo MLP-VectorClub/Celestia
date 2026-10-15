@@ -1,6 +1,6 @@
 import Axios from 'axios';
 
-import { GetTagsAutocompleteResult, PostTagsRequest, PutTagsIdRequest, PutTagsIdSynonymRequest } from '@mlp-vectorclub/api-types';
+import { GetTagsAutocompleteResult, PostTagsRequest, PutTagsIdRequest, PutTagsIdSynonymRequest } from '@went.tf/mlp-vectorclub-api-types';
 
 export type TagBody = Pick<PostTagsRequest, 'name' | 'type' | 'title'>;
 

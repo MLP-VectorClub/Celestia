@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { FC, useEffect, useRef } from 'react';
 import { Button } from 'reactstrap';
 
-import { PostItem } from '@mlp-vectorclub/api-types';
+import { PostItem } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/PostList.module.scss';
 import ExternalLink from 'src/components/shared/ExternalLink';
 import InlineIcon from 'src/components/shared/InlineIcon';

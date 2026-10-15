@@ -1,7 +1,7 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
-import { GetShowRequest, GetShowResult } from '@mlp-vectorclub/api-types';
+import { GetShowRequest, GetShowResult } from '@went.tf/mlp-vectorclub-api-types';
 import { showListFetcher } from 'src/fetchers/show';
 import { ENDPOINTS } from 'src/utils';
 

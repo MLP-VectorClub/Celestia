@@ -8,7 +8,7 @@ import {
   GetAppearancesPinnedRequest,
   GetAppearancesRequest,
   GetColorGuideMajorChangesRequest,
-} from '@mlp-vectorclub/api-types';
+} from '@went.tf/mlp-vectorclub-api-types';
 import { ColorGuideService, defaultServices } from 'src/services';
 import { NullableProps } from 'src/types';
 import { requestPromiseMapper } from 'src/utils';

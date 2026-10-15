@@ -5,7 +5,7 @@ import Link from 'next/link';
 import pluralize from 'pluralize';
 import { useMemo } from 'react';
 
-import { GetEventsIdResult } from '@mlp-vectorclub/api-types';
+import { GetEventsIdResult } from '@went.tf/mlp-vectorclub-api-types';
 import { EventEntries } from 'src/components/events/EventEntries';
 import { EventFinishedImage } from 'src/components/events/EventFinishedImage';
 import Content from 'src/components/shared/Content';

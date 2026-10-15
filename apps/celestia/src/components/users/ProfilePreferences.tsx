@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { FC, useEffect, useState } from 'react';
 import { Button, Input } from 'reactstrap';
 
-import { UserProfile } from '@mlp-vectorclub/api-types';
+import { UserProfile } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/ProfilePage.module.scss';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { describeApiError, useApiMutation, useAuth, useUserPrefs } from 'src/hooks';

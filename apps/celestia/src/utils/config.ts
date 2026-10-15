@@ -1,4 +1,4 @@
-import { GetConfigResult } from '@mlp-vectorclub/api-types';
+import { GetConfigResult } from '@went.tf/mlp-vectorclub-api-types';
 
 export type ConfigPatterns = Record<keyof GetConfigResult['patterns'], RegExp>;
 

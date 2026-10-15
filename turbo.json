@@ -11,7 +11,6 @@
         ".env*"
       ],
       "env": [
-        "API_JSON_PATH",
         "BUILD_GIT_INFO"
       ],
       "outputs": [

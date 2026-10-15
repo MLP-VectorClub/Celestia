@@ -2,7 +2,7 @@ import { useTranslations } from 'next-intl';
 import { FC, useState } from 'react';
 import { Alert, Button, Card, CardBody, Col, Row } from 'reactstrap';
 
-import { ColorGroup } from '@mlp-vectorclub/api-types';
+import { ColorGroup } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/AppearanceColorGroups.module.scss';
 import { ColorGroupDialog } from 'src/components/colorguide/ColorGroupDialog';
 import { ColorGroupOrderDialog } from 'src/components/colorguide/ColorGroupOrderDialog';

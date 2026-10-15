@@ -9,7 +9,7 @@ import {
   SlimGuideTag,
   User,
   UserRole,
-} from '@mlp-vectorclub/api-types';
+} from '@went.tf/mlp-vectorclub-api-types';
 import { Nullable } from 'src/types/common';
 
 export type MappedAboutConnectionResult = GetAboutConnectionResult & {
@@ -28,7 +28,7 @@ export type FavMe = string;
 export type TagType = NonNullable<SlimGuideTag['type']>;
 export type CutieMarkFacing = CutieMark['facing'];
 export type VectorApp = string;
-export type { UserPrefs } from '@mlp-vectorclub/api-types';
+export type { UserPrefs } from '@went.tf/mlp-vectorclub-api-types';
 export type CurrentUser = GetUsersMeResult['user'];
 export type ShowEntry = GetShowIdResult['show'];
 export type FullGuideSortField = NonNullable<GetAppearancesFullRequest['sort']>;

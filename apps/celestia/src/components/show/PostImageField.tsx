@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { FC } from 'react';
 import { Button, FormGroup, Input, InputGroup, Label } from 'reactstrap';
 
-import { PostPostsCheckImageResult } from '@mlp-vectorclub/api-types';
+import { PostPostsCheckImageResult } from '@went.tf/mlp-vectorclub-api-types';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { describeApiError, useApiMutation } from 'src/hooks';
 import { PostService } from 'src/services/posts';

@@ -1,4 +1,4 @@
-import { GetShowRequest } from '@mlp-vectorclub/api-types';
+import { GetShowRequest } from '@went.tf/mlp-vectorclub-api-types';
 import { ShowService } from 'src/services';
 import { requestPromiseMapper } from 'src/utils';
 

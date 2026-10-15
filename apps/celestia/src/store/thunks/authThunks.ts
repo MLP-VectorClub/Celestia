@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { QueryClient } from '@tanstack/react-query';
 
-import { User } from '@mlp-vectorclub/api-types';
+import { User } from '@went.tf/mlp-vectorclub-api-types';
 import { currentUserFetcher } from 'src/fetchers/auth';
 import { UserService } from 'src/services';
 import { WithAppThunkExtra } from 'src/store/thunkTypes';

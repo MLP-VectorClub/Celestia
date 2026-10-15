@@ -2,7 +2,7 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { FC } from 'react';
 
-import { Sprite } from '@mlp-vectorclub/api-types';
+import { Sprite } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/SpriteColumn.module.scss';
 import { getSpriteUrl } from 'src/utils/color-guide';
 

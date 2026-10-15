@@ -9,7 +9,7 @@ import {
   GetNoticesResult,
   GetUsefulLinksResult,
   PostNoticesRequest,
-} from '@mlp-vectorclub/api-types';
+} from '@went.tf/mlp-vectorclub-api-types';
 
 export type SiteSettingKey = 'reservation_rules' | 'about_reservations' | 'dev_role_label';
 export type PcgAppearancesResult = GetAdminPcgAppearancesResult;

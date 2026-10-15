@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { Button, FormGroup, Input, Label } from 'reactstrap';
 
-import { SidebarUsefulLink } from '@mlp-vectorclub/api-types';
+import { SidebarUsefulLink } from '@went.tf/mlp-vectorclub-api-types';
 import { AdminPage } from 'src/components/admin/AdminPage';
 import { IconButton } from 'src/components/shared/IconButton';
 import InlineIcon from 'src/components/shared/InlineIcon';

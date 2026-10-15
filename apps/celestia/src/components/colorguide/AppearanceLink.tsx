@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { FC } from 'react';
 
-import { PreviewAppearance } from '@mlp-vectorclub/api-types';
+import { PreviewAppearance } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/AppearanceLink.module.scss';
 import { AppearancePreview } from 'src/components/colorguide/AppearancePreview';
 import { NutshellLabel } from 'src/components/colorguide/NutshellLabel';

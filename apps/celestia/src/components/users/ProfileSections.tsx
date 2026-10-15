@@ -5,7 +5,7 @@ import pluralize from 'pluralize';
 import { FC, ReactNode, useState } from 'react';
 import { Alert, Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
-import { PostItem, ShowListItem, UserProfile } from '@mlp-vectorclub/api-types';
+import { PostItem, ShowListItem, UserProfile } from '@went.tf/mlp-vectorclub-api-types';
 import postStyles from 'modules/PostList.module.scss';
 import styles from 'modules/ProfilePage.module.scss';
 import { AppearanceLink } from 'src/components/colorguide/AppearanceLink';

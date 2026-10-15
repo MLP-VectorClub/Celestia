@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import pluralize from 'pluralize';
 import { FC, useMemo } from 'react';
 
-import { GetAboutMembersResult } from '@mlp-vectorclub/api-types';
+import { GetAboutMembersResult } from '@went.tf/mlp-vectorclub-api-types';
 import StatusAlert from 'src/components/shared/StatusAlert';
 import GroupedUserList from 'src/components/users/GroupedUserList';
 import StaffMembersList from 'src/components/users/StaffMembersList';

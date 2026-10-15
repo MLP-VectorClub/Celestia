@@ -1,4 +1,4 @@
-import { GuideName } from '@mlp-vectorclub/api-types';
+import { GuideName } from '@went.tf/mlp-vectorclub-api-types';
 import { PATHS } from 'src/paths';
 import { PublicUser, UserPrefs } from 'src/types/api-alias';
 import { ProfileLinkOptions } from 'src/utils/profile';

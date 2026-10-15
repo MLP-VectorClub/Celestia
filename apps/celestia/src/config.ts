@@ -1,7 +1,7 @@
 import Axios from 'axios';
 import { range } from 'lodash';
 
-import { GuideName } from '@mlp-vectorclub/api-types';
+import { GuideName } from '@went.tf/mlp-vectorclub-api-types';
 
 export type AppI18nNamespaces =
   'about' | 'admin' | 'colorGuide' | 'common' | 'connection' | 'events' | 'oauth' | 'picker' | 'privacyPolicy' | 'show' | 'tools' | 'users';

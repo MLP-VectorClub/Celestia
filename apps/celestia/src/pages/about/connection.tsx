@@ -4,7 +4,7 @@ import Head from 'next/head';
 import { useCallback, useMemo } from 'react';
 import { Button } from 'reactstrap';
 
-import { GetAboutConnectionResult } from '@mlp-vectorclub/api-types';
+import { GetAboutConnectionResult } from '@went.tf/mlp-vectorclub-api-types';
 import Abbr from 'src/components/shared/Abbr';
 import Content from 'src/components/shared/Content';
 import InlineIcon from 'src/components/shared/InlineIcon';

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { FC } from 'react';
 import { Button } from 'reactstrap';
 
-import { GetShowIdAdjacentResult, ShowListItem } from '@mlp-vectorclub/api-types';
+import { GetShowIdAdjacentResult, ShowListItem } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/ShowEntry.module.scss';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { useShowAdjacent } from 'src/hooks';

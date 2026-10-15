@@ -17,7 +17,7 @@ import {
   GetColorGuideMajorChangesRequest,
   GetColorGuideMajorChangesResult,
   GetColorGuideResult,
-} from '@mlp-vectorclub/api-types';
+} from '@went.tf/mlp-vectorclub-api-types';
 import {
   AppearanceFetcherParams,
   AppearanceLocationFetcherParams,

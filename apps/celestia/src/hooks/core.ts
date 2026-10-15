@@ -3,7 +3,7 @@ import Axios from 'axios';
 import { useTranslations } from 'next-intl';
 import { useCallback, useEffect } from 'react';
 
-import { GetNoticesCurrentResult } from '@mlp-vectorclub/api-types';
+import { GetNoticesCurrentResult } from '@went.tf/mlp-vectorclub-api-types';
 import { csrfFetcher, usefulLinksFetcher } from 'src/fetchers';
 import { AppDispatch } from 'src/store';
 import { CoreSliceMirroredState } from 'src/store/slices';

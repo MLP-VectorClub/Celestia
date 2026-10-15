@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { Col, Row } from 'reactstrap';
 
-import { GetShowResult } from '@mlp-vectorclub/api-types';
+import { GetShowResult } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/ShowPage.module.scss';
 import ButtonCollection from 'src/components/shared/ButtonCollection';
 import Content from 'src/components/shared/Content';

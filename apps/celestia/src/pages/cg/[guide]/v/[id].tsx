@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import { NextPage } from 'next';
 import { useMemo } from 'react';
 
-import { DetailedAppearance, GetAppearancesIdResult, GuideName } from '@mlp-vectorclub/api-types';
+import { DetailedAppearance, GetAppearancesIdResult, GuideName } from '@went.tf/mlp-vectorclub-api-types';
 import { AppearanceView } from 'src/components/colorguide/AppearanceView';
 import { appearanceFetcher } from 'src/fetchers';
 import { useTitleSetter } from 'src/hooks';

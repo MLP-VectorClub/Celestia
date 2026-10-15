@@ -1,7 +1,7 @@
 import { ImageProps } from 'next/image';
 import { FC } from 'react';
 
-import { GuideName } from '@mlp-vectorclub/api-types';
+import { GuideName } from '@went.tf/mlp-vectorclub-api-types';
 import { EquestriaGirlsLogo } from 'src/components/logos/EquestriaGirlsLogo';
 import { FriendshipIsMagicLogo } from 'src/components/logos/FriendshipIsMagicLogo';
 

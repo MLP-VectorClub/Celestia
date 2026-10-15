@@ -30,7 +30,7 @@ import {
   GetUsersIdPersonalGuidePointHistoryResult,
   GetUsersIdProfileRequest,
   GetUsersIdProfileResult,
-} from '@mlp-vectorclub/api-types';
+} from '@went.tf/mlp-vectorclub-api-types';
 import { ResourceService } from 'src/services/resource';
 import { ENDPOINTS, requestPromiseMapper } from 'src/utils';
 

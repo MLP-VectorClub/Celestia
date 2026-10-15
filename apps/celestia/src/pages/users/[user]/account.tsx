@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { Alert, Button } from 'reactstrap';
 
-import { GetUsersIdResult } from '@mlp-vectorclub/api-types';
+import { GetUsersIdResult } from '@went.tf/mlp-vectorclub-api-types';
 import Content from 'src/components/shared/Content';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import StandardHeading from 'src/components/shared/StandardHeading';

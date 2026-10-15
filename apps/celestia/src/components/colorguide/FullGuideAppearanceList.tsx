@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { FC, JSX } from 'react';
 import { Card, CardBody } from 'reactstrap';
 
-import { SlimAppearance } from '@mlp-vectorclub/api-types';
+import { SlimAppearance } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/FullGuideAppearanceList.module.scss';
 import { AppearancePreview } from 'src/components/colorguide/AppearancePreview';
 import { NutshellLabel } from 'src/components/colorguide/NutshellLabel';

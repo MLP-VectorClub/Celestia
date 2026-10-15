@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { ShowListItem } from '@mlp-vectorclub/api-types';
+import { ShowListItem } from '@went.tf/mlp-vectorclub-api-types';
 
 export interface ShowTableColumnDefinition {
   header: string;

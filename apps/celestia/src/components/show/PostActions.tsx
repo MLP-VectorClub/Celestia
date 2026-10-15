@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import { FC, useState } from 'react';
 import { Alert, Button } from 'reactstrap';
 
-import { PostItem } from '@mlp-vectorclub/api-types';
+import { PostItem } from '@went.tf/mlp-vectorclub-api-types';
 import { IconButton } from 'src/components/shared/IconButton';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';

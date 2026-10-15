@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
 import { FormGroup, FormText, Input, Label } from 'reactstrap';
 
-import { UserProfile } from '@mlp-vectorclub/api-types';
+import { UserProfile } from '@went.tf/mlp-vectorclub-api-types';
 import { FormDialog } from 'src/components/shared/dialogs/FormDialog';
 import { describeApiError, useApiMutation } from 'src/hooks';
 import { UserAdminService } from 'src/services/user-admin';

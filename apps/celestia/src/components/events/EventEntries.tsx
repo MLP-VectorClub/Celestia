@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { useTranslations } from 'next-intl';
 import { FC } from 'react';
 
-import { GetEventsIdResult } from '@mlp-vectorclub/api-types';
+import { GetEventsIdResult } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/PostList.module.scss';
 import { EventEntryActions } from 'src/components/events/EventEntryActions';
 import ExternalLink from 'src/components/shared/ExternalLink';

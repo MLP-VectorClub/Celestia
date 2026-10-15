@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { useTranslations } from 'next-intl';
 import { FC, useMemo } from 'react';
 
-import { Appearance } from '@mlp-vectorclub/api-types';
+import { Appearance } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/AppearanceNotes.module.scss';
 import { AppearanceNotesText } from 'src/components/colorguide/AppearanceNotesText';
 import { processAppearanceNotes } from 'src/utils/html-parsers/appearance-notes-parser';

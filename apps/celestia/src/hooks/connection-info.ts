@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { GetAboutConnectionResult } from '@mlp-vectorclub/api-types';
+import { GetAboutConnectionResult } from '@went.tf/mlp-vectorclub-api-types';
 import { IS_CLIENT_SIDE } from 'src/config';
 import { connectionFetcher } from 'src/fetchers';
 import { MappedAboutConnectionResult, Optional, UnifiedErrorResponse, UnifiedErrorResponseTypes } from 'src/types';

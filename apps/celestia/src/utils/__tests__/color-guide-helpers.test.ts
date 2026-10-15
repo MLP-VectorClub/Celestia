@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { SlimGuideTag } from '@mlp-vectorclub/api-types';
+import { SlimGuideTag } from '@went.tf/mlp-vectorclub-api-types';
 import {
   CutieMarkColorMapping,
   getAppearanceFileUrl,

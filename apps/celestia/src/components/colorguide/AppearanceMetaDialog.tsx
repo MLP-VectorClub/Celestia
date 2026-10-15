@@ -2,7 +2,7 @@ import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
 import { Button, FormGroup, Input, Label } from 'reactstrap';
 
-import { DetailedAppearance } from '@mlp-vectorclub/api-types';
+import { DetailedAppearance } from '@went.tf/mlp-vectorclub-api-types';
 import { AppearanceWipeDialog } from 'src/components/colorguide/AppearanceWipeDialog';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { FormDialog } from 'src/components/shared/dialogs/FormDialog';

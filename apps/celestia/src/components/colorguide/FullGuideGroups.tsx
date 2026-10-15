@@ -1,7 +1,7 @@
 import { keyBy } from 'lodash';
 import { FC, useMemo } from 'react';
 
-import { GetAppearancesFullResult, SlimAppearance } from '@mlp-vectorclub/api-types';
+import { GetAppearancesFullResult, SlimAppearance } from '@went.tf/mlp-vectorclub-api-types';
 import FullGuideAppearanceList from 'src/components/colorguide/FullGuideAppearanceList';
 
 const FullGuideGroups: FC<GetAppearancesFullResult> = ({ appearances, groups }) => {

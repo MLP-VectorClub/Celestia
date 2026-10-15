@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { FC, memo } from 'react';
 
-import { AvatarProvider } from '@mlp-vectorclub/api-types';
+import { AvatarProvider } from '@went.tf/mlp-vectorclub-api-types';
 import { GUEST_AVATAR } from 'src/config';
 import { Nullable } from 'src/types';
 import { VectorApp } from 'src/types/api-alias';

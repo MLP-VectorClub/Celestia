@@ -1,6 +1,6 @@
 import Axios from 'axios';
 
-import { GetUsersIdPersonalGuidePointsResult, PutUsersIdRoleRequest, PutUsersIdRoleResult } from '@mlp-vectorclub/api-types';
+import { GetUsersIdPersonalGuidePointsResult, PutUsersIdRoleRequest, PutUsersIdRoleResult } from '@went.tf/mlp-vectorclub-api-types';
 
 /** Staff tools of the profile page. The API answers 200 `{alreadyIn: true}` for an unchanged role and 204 otherwise */
 export class UserAdminService {

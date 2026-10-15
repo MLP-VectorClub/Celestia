@@ -6,7 +6,7 @@ import {
   PostAppearancesIdTemplateResult,
   PostColorGroupsRequest,
   PutColorGroupsIdRequest,
-} from '@mlp-vectorclub/api-types';
+} from '@went.tf/mlp-vectorclub-api-types';
 
 /** Responses of the write endpoints carry rendered HTML next to the ID, only the ID is used, the lists are refetched */
 export type ColorGroupBody = Pick<PostColorGroupsRequest, 'label' | 'colors' | 'major' | 'reason'>;

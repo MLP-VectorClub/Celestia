@@ -21,7 +21,7 @@ import {
   GetUsersIdPersonalGuidePointHistoryRequest,
   GetUsersIdProfileRequest,
   GetUsersIdRequest,
-} from '@mlp-vectorclub/api-types';
+} from '@went.tf/mlp-vectorclub-api-types';
 import { GetUsersOauthSigninProviderRequest } from 'src/types/auth';
 import { buildUrl } from 'src/utils/url';
 

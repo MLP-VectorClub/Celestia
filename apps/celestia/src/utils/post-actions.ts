@@ -1,4 +1,4 @@
-import { PostItem } from '@mlp-vectorclub/api-types';
+import { PostItem } from '@went.tf/mlp-vectorclub-api-types';
 import { permission } from 'src/utils/permission';
 
 /**
