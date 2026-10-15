@@ -32,5 +32,7 @@ export const honeypot = createHoneypot({
   seed: process.env.HONEYPOT_SEED || process.env.NEXT_PUBLIC_BUILD_ID || undefined,
   apiHost: API_HOST,
   appHost: APP_HOST,
-  sessionCookie: process.env.LUNA_SESSION_COOKIE || undefined,
+  // Luna's `config('session.cookie')`: production's is the one named after the app, the contract server for local tests says `luna_session`
+  // (set LUNA_SESSION_COOKIE there). With the wrong name no session is ever found, and nobody who touches a trap stays blocked
+  sessionCookie: process.env.LUNA_SESSION_COOKIE || 'mlp_vector_club_session',
 });
