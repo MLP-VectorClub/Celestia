@@ -1,9 +1,9 @@
+import { GetUsersIdResult } from '@went.tf/mlp-vectorclub-api-types';
 import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Alert, Button } from 'reactstrap';
 
-import { GetUsersIdResult } from '@went.tf/mlp-vectorclub-api-types';
 import Content from 'src/components/shared/Content';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import StandardHeading from 'src/components/shared/StandardHeading';
@@ -46,6 +46,12 @@ const AccountPage: NextPage<PropTypes> = ({ userId, user }) => {
   useTitleSetter(dispatch, titleData);
 
   const own = authUser.id === userId;
+
+  // Links to a section (`/.well-known/change-password` goes to #security) land before the profile has loaded, which is what the section waits for
+  const hasProfile = Boolean(profile);
+  useEffect(() => {
+    if (hasProfile && window.location.hash) document.getElementById(window.location.hash.slice(1))?.scrollIntoView();
+  }, [hasProfile]);
   const heading = (
     <StandardHeading
       heading={t('users.account.heading')}

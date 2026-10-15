@@ -125,6 +125,8 @@ module.exports = {
   async redirects() {
     return [
       ...vercelConfig.redirects,
+      // The standard address for a site's password change page, like on the previous site
+      { source: '/.well-known/change-password', destination: '/users/account', permanent: false },
       // URLs of the previous site
       { source: '/blending', destination: '/cg/blending', permanent: true },
       { source: '/blending-reverse', destination: '/cg/blending-reverse', permanent: true },
@@ -172,6 +174,9 @@ module.exports = {
       ),
       // robots.txt is built from the same patterns as the honeypots (src/honeypot), so it cannot go out of date
       { source: '/robots.txt', destination: '/api/robots' },
+      // The security policy (RFC 9116), built from the same traps as robots.txt
+      { source: '/.well-known/security.txt', destination: '/api/security' },
+      { source: '/security.txt', destination: '/api/security' },
       // URLs of the previous site that are served by pages or by the API
       { source: '/cg/picker/frame', destination: '/cg/picker' },
       // Post links from before the 2020 migration (the page's folder keeps its dynamic segments clear of the short links')

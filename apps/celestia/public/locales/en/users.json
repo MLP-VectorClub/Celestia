@@ -155,6 +155,8 @@
     "breadcrumb": "Account",
     "notYours": "You can only change the settings of your own account",
     "signInRequired": "Sign in to see your settings",
+    "signInContinue": "Sign in to change your account settings, you will be taken straight to them.",
+    "signIn": "Sign in",
     "saved": "Saved",
     "loadingSubject": "settings",
     "sections": {

@@ -1,3 +1,4 @@
+import { GetColorGuideResult, GuideName } from '@went.tf/mlp-vectorclub-api-types';
 import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -5,7 +6,6 @@ import pluralize from 'pluralize';
 import { useMemo } from 'react';
 import { Alert, Button, Card, CardBody } from 'reactstrap';
 
-import { GetColorGuideResult, GuideName } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/GuideIndexPage.module.scss';
 import { DeveloperGuideButtons } from 'src/components/colorguide/DeveloperGuideButtons';
 import { DeveloperResources } from 'src/components/colorguide/DeveloperResources';
@@ -68,7 +68,8 @@ const GuideIndexPage: NextPage<PropTypes> = ({ initialData }) => {
         <Alert color="info" className="text-center">
           <InlineIcon icon="info-circle" first />
           {t.rich('colorGuide.index.defaultGuideNotice', {
-            settings: (chunks) => <Link href={PATHS.USER_ACCOUNT(user.id)}>{chunks}</Link>,
+            // The preferences (the default guide among them) are on the profile page, the account page has the sessions and the password
+            settings: (chunks) => <Link href={`${PATHS.USER_LONG(user)}#settings`}>{chunks}</Link>,
           })}
         </Alert>
       )}
