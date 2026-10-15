@@ -43,7 +43,7 @@ export const ShowRowActions: FC<{ entry: Pick<ShowListItem, 'id' | 'type' | 'tit
   };
 
   return (
-    <span className="ms-2">
+    <span className="ms-2 d-inline-flex flex-wrap align-items-center gap-1">
       <IconButton
         icon="pencil-alt"
         color="blue"
@@ -54,12 +54,12 @@ export const ShowRowActions: FC<{ entry: Pick<ShowListItem, 'id' | 'type' | 'tit
       <IconButton
         icon="times"
         color="red"
-        className="delete-show ms-1"
+        className="delete-show"
         title={t('show.index.delete', { typeName })}
         disabled={remove.isPending}
         onClick={() => void askToDelete()}
       />
-      {error && <span className="text-danger ms-2">{error}</span>}
+      {error && <span className="text-danger">{error}</span>}
       {editing && full.data && (
         <ShowFormDialog
           category={entry.type === 'episode' ? 'episode' : 'other'}

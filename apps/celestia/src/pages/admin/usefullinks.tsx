@@ -219,8 +219,8 @@ const UsefulLinksPage: NextPage<PropTypes> = ({ initialLinks }) => {
                 <InlineIcon icon="eye" first />
                 {t('admin.links.andAbove', { role: roleLabel(l.minRole) })}
               </div>
-              <div className="mb-1">
-                <Button size="sm" color="blue" className="edit-link me-2" onClick={() => setEditing(l)}>
+              <div className="d-flex flex-wrap gap-2 mb-1">
+                <Button size="sm" color="blue" className="edit-link" onClick={() => setEditing(l)}>
                   <InlineIcon icon="pencil-alt" first />
                   {t('admin.links.edit')}
                 </Button>

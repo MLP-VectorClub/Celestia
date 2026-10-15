@@ -102,8 +102,8 @@ export const EventEntryActions: FC<{ entryId: number; title: string; eventKey: s
   const remove = useApiMutation(() => EventEntriesService.remove(entryId), { invalidate: [eventKey] });
 
   return (
-    <div className="mt-2">
-      <Button size="sm" color="blue" className="edit-entry me-2" title={t('events.entry.edit')} onClick={() => setEditing(true)}>
+    <div className="d-flex flex-wrap gap-2 mt-2">
+      <Button size="sm" color="blue" className="edit-entry" title={t('events.entry.edit')} onClick={() => setEditing(true)}>
         <InlineIcon icon="pencil-alt" title={t('events.entry.edit')} />
       </Button>
       <Button
@@ -126,7 +126,7 @@ export const EventEntryActions: FC<{ entryId: number; title: string; eventKey: s
       >
         <InlineIcon icon="trash" title={t('events.entry.withdraw')} />
       </Button>
-      {remove.error && <div className="text-danger small mt-1">{describeApiError(remove.error)}</div>}
+      {remove.error && <div className="text-danger small w-100">{describeApiError(remove.error)}</div>}
       <EditDialog entryId={entryId} eventKey={eventKey} isOpen={editing} onClose={() => setEditing(false)} />
     </div>
   );
