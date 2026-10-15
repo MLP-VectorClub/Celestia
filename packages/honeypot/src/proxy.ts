@@ -68,8 +68,9 @@ export const createHoneypotProxy = ({ apiHost, appHost, sessionCookie, honeypots
       cookies.forEach((cookie) => response.headers.append('set-cookie', cookie));
       // The session of the visitor is the one the answer started, or the one they sent
       const started = cookies.map((cookie) => cookie.match(new RegExp(`^${sessionCookie}=([^;]*)`))?.[1]).find(Boolean);
-      const flagged = started ? decodeURIComponent(started) : session;
-      if (flagged) sessions.markBlocked(flagged);
+      // Both: the cookie the answer hands back replaces the one the visitor sent, which is what their next request carries
+      if (started) sessions.markBlocked(decodeURIComponent(started));
+      if (session) sessions.markBlocked(session);
     } catch {
       /* nothing to flag the session with */
     }

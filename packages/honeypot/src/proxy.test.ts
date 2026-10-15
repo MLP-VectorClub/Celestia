@@ -112,18 +112,21 @@ describe('honeypot proxy', () => {
       expect(text).toMatch(/^DB_PASSWORD=[A-Za-z0-9]{22}$/m);
     });
 
-    it('sets no cookie when a file answers, and has nothing to flag for a visitor without a session', async () => {
+    it('flags a visitor without a session who asks for a file too: Luna starts the session and its cookie goes back with the file', async () => {
       const response = await honeypot.proxy(new NextRequest('https://front.test/.env'));
       expect(response?.status).toBe(200);
-      expect(response?.headers.getSetCookie()).toEqual([]);
-      expect(response?.headers.get('set-cookie')).toBeNull();
+      expect(response?.headers.getSetCookie()).toEqual(['luna_session=decoyed; Path=/']);
+      expect(luna.mock.calls[0][0]).toBe('https://luna.test/honeypot/.env');
+      luna.mockClear();
+      expect((await honeypot.proxy(new NextRequest('https://front.test/', { headers: { cookie: 'luna_session=decoyed' } })))?.status).toBe(
+        403
+      );
       expect(luna).not.toHaveBeenCalled();
     });
 
-    it('flags the session a visitor asking for a file already has, without handing a cookie back', async () => {
+    it('flags the session a visitor asking for a file already has', async () => {
       const response = await honeypot.proxy(new NextRequest('https://front.test/.env', { headers: { cookie: 'luna_session=theirs' } }));
       expect(response?.status).toBe(200);
-      expect(response?.headers.getSetCookie()).toEqual([]);
       expect(luna.mock.calls[0][0]).toBe('https://luna.test/honeypot/.env');
       luna.mockClear();
       expect((await honeypot.proxy(new NextRequest('https://front.test/', { headers: { cookie: 'luna_session=theirs' } })))?.status).toBe(

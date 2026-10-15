@@ -20,8 +20,9 @@ export interface Decoy {
   /** Replaces the default `Cache-Control` of the decoys */
   cacheControl?: string;
   /**
-   * Whether answering may set cookies (the default). A file that is just lying around does not: setting one would give the trap away, so a visitor
-   * without a session is not given one (and Luna is not asked to start one), and one with a session is flagged without getting any cookie back
+   * Whether answering may set cookies (the default). Turn it off for a file that should look like a plain one: a visitor without a session is then not
+   * given one (so nothing is flagged for them, Luna is not even asked), and one with a session is flagged without getting any cookie back. No decoy does
+   * at the moment: a trap that flags nobody who has no session was not worth looking like a file
    */
   cookies?: boolean;
 }
@@ -47,12 +48,11 @@ export const createDecoys = (siteName: string, securityTxtUrl: string, seed?: st
     env: {
       body: fillIn(envTemplate, momsWeight()),
       contentType: 'text/plain; charset=utf-8',
-      cookies: false,
       render: ({ address }) => fillIn(envTemplate, momsWeight(address)),
       // It has a line that is different for every visitor, so only their own browser may keep it
       cacheControl: 'private, max-age=0',
     },
-    'git-config': { body: gitConfig(secrets, siteName), contentType: 'text/plain; charset=utf-8', cookies: false },
+    'git-config': { body: gitConfig(secrets, siteName), contentType: 'text/plain; charset=utf-8' },
     'wordpress-login': {
       ...htmlDecoy(wordpressLogin(siteName)),
       select: (search) => (LOST_PASSWORD_ACTIONS.includes(search.get('action') ?? '') ? lostPassword : undefined),
