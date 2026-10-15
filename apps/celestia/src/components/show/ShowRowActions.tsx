@@ -3,6 +3,7 @@ import { ShowListItem } from '@went.tf/mlp-vectorclub-api-types';
 import { useTranslations } from 'next-intl';
 import { FC, useState } from 'react';
 
+import ButtonRow from 'src/components/shared/ButtonRow';
 import { IconButton } from 'src/components/shared/IconButton';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { ShowFormDialog } from 'src/components/show/ShowFormDialog';
@@ -43,7 +44,7 @@ export const ShowRowActions: FC<{ entry: Pick<ShowListItem, 'id' | 'type' | 'tit
   };
 
   return (
-    <span className="ms-2">
+    <ButtonRow as="span" inline gap={1} className="ms-2 align-items-center">
       <IconButton
         icon="pencil-alt"
         color="blue"
@@ -54,12 +55,12 @@ export const ShowRowActions: FC<{ entry: Pick<ShowListItem, 'id' | 'type' | 'tit
       <IconButton
         icon="times"
         color="red"
-        className="delete-show ms-1"
+        className="delete-show"
         title={t('show.index.delete', { typeName })}
         disabled={remove.isPending}
         onClick={() => void askToDelete()}
       />
-      {error && <span className="text-danger ms-2">{error}</span>}
+      {error && <span className="text-danger">{error}</span>}
       {editing && full.data && (
         <ShowFormDialog
           category={entry.type === 'episode' ? 'episode' : 'other'}
@@ -72,6 +73,6 @@ export const ShowRowActions: FC<{ entry: Pick<ShowListItem, 'id' | 'type' | 'tit
           }}
         />
       )}
-    </span>
+    </ButtonRow>
   );
 };

@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { Button, FormGroup, Input, Label } from 'reactstrap';
 
 import { AdminPage } from 'src/components/admin/AdminPage';
+import ButtonRow from 'src/components/shared/ButtonRow';
 import { IconButton } from 'src/components/shared/IconButton';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
@@ -219,8 +220,8 @@ const UsefulLinksPage: NextPage<PropTypes> = ({ initialLinks }) => {
                 <InlineIcon icon="eye" first />
                 {t('admin.links.andAbove', { role: roleLabel(l.minRole) })}
               </div>
-              <div className="mb-1">
-                <Button size="sm" color="blue" className="edit-link me-2" onClick={() => setEditing(l)}>
+              <ButtonRow className="mb-1">
+                <Button size="sm" color="blue" className="edit-link" onClick={() => setEditing(l)}>
                   <InlineIcon icon="pencil-alt" first />
                   {t('admin.links.edit')}
                 </Button>
@@ -244,7 +245,7 @@ const UsefulLinksPage: NextPage<PropTypes> = ({ initialLinks }) => {
                   <InlineIcon icon="trash" first />
                   {t('admin.links.delete')}
                 </Button>
-              </div>
+              </ButtonRow>
             </li>
           ))}
         </ol>
