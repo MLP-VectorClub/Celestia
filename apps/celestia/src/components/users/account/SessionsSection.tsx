@@ -6,12 +6,13 @@ import { Alert, Button } from 'reactstrap';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import TimeAgo from 'src/components/shared/TimeAgo';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
-import { describeApiError, useApiMutation } from 'src/hooks';
+import { describeApiError, useApiMutation, useAuth } from 'src/hooks';
 import { AccountService } from 'src/services/account';
 import { useAppDispatch } from 'src/store';
 import { signOutThunk } from 'src/store/thunks';
 import { ENDPOINTS } from 'src/utils';
 import { getBrowserIcon } from 'src/utils/browser-icon';
+import { httpResponseMapper } from 'src/utils/common';
 
 /**
  * The browsers a user is signed in on, each with a button to end that session, and one to end all of them. Staff see the sessions of the user whose
@@ -22,9 +23,14 @@ export const SessionsSection: FC<{ userId: number; own: boolean }> = ({ userId, 
   const { confirm } = useDialog();
   const dispatch = useAppDispatch();
   const sessionsKey = own ? '/users/sessions' : `/users/${userId}/sessions`;
+  const { signedIn } = useAuth();
   const sessions = useQuery({
     queryKey: [sessionsKey],
     queryFn: () => (own ? AccountService.getSessions() : AccountService.getSessionsOf(userId)).then((r) => r.data.sessions),
+    // Not before the visitor is signed in: a list asked for a moment too early (with the cookie that signing in replaces) says "none" as well as an
+    // empty one does, and nothing asks again
+    enabled: signedIn,
+    refetchOnMount: 'always',
   });
   const remove = useApiMutation((id: string) => (own ? AccountService.deleteSession(id) : AccountService.deleteSessionOf(userId, id)), {
     invalidate: [[sessionsKey]],
@@ -152,8 +158,16 @@ export const SessionsSection: FC<{ userId: number; own: boolean }> = ({ userId, 
             </Button>
           </p>
         </>
+      ) : sessions.isError ? (
+        <Alert color="danger" fade={false} role="alert">
+          {describeApiError(httpResponseMapper(sessions.error))}{' '}
+          <Button color="link" size="sm" className="p-0 align-baseline" onClick={() => void sessions.refetch()}>
+            {t('common.error.tryAgain')}
+          </Button>
+        </Alert>
       ) : (
-        <p>{sessions.isLoading ? t('users.staffTools.loading') : t('users.account.noSessions')}</p>
+        // Only a list that has arrived and is empty means there is no session: until then (or when it could not be asked for) it is not known
+        <p>{sessions.isSuccess ? t('users.account.noSessions') : t('users.staffTools.loading')}</p>
       )}
       {error && (
         <Alert color="danger" fade={false} role="alert">
