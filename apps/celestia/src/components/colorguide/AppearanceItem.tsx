@@ -1,10 +1,10 @@
 import { useQueryClient } from '@tanstack/react-query';
+import { Appearance, GuideName } from '@went.tf/mlp-vectorclub-api-types';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { FC, useMemo, useState } from 'react';
 import { Card, CardBody, Col, Row } from 'reactstrap';
 
-import { Appearance, GuideName } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/AppearanceItem.module.scss';
 import AppearanceItemColorGroups from 'src/components/colorguide/AppearanceItemColorGroups';
 import AppearanceItemNotes from 'src/components/colorguide/AppearanceItemNotes';
@@ -63,13 +63,16 @@ const AppearanceItem: FC<AppearanceItemProps> = ({ appearance, pinned = false, g
       <CardBody className="p-2">
         <Row noGutters>
           {/* On a phone the entry is stacked like on the old site: the sprite centered on top, everything else under it at the full width */}
-          <Col xs={12} sm="auto">
-            <div className="d-flex justify-content-center justify-content-sm-start pe-sm-3 mb-2 mb-sm-0" role="presentation">
-              <div className={styles.spriteBox}>
-                <SpriteWrap appearanceId={appearance.id} sprite={appearance.sprite} compact editable={canManage} />
+          {/* Like the old site, visitors who cannot add a sprite get no box (and no space) for an entry that has none */}
+          {(appearance.sprite || canManage) && (
+            <Col xs={12} sm="auto">
+              <div className="d-flex justify-content-center justify-content-sm-start pe-sm-3 mb-2 mb-sm-0" role="presentation">
+                <div className={styles.spriteBox}>
+                  <SpriteWrap appearanceId={appearance.id} sprite={appearance.sprite} compact editable={canManage} />
+                </div>
               </div>
-            </div>
-          </Col>
+            </Col>
+          )}
           <Col xs={12} sm>
             <div className={styles.header}>
               {appearance.private && <InlineIcon icon="lock" first className="text-orange" title={t('colorGuide.item.private')} />}
