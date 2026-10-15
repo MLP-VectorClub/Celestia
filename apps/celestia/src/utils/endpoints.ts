@@ -43,7 +43,8 @@ export const ENDPOINTS = {
   USERS_BY_USERNAME: (params: GetUsersDaUsernameRequest) => `/users/da/${encodeURI(params.username)}`,
   GUIDE_INDEX: `/color-guide`,
   GUIDE_MAJOR_CHANGES: (params: GetColorGuideMajorChangesRequest) => buildUrl(`/color-guide/major-changes`, params),
-  APPEARANCE: (params: GetAppearancesIdRequest & { token?: string }) => buildUrl(`/appearances/${params.id}`, params.token ? { token: params.token } : undefined),
+  APPEARANCE: (params: GetAppearancesIdRequest & { token?: string }) =>
+    buildUrl(`/appearances/${params.id}`, params.token ? { token: params.token } : undefined),
   APPEARANCES: (params: GetAppearancesRequest) => buildUrl(`/appearances`, params),
   APPEARANCES_FULL: (params: GetAppearancesFullRequest) => buildUrl(`/appearances/full`, params),
   APPEARANCE_SPRITE: (params: GetAppearancesIdSpriteRequest) => buildUrl(`/appearances/${params.id}/sprite`, params),
@@ -68,6 +69,7 @@ export const ENDPOINTS = {
   SHOW_RESERVATION_INFO: `/show/reservation-info`,
   POSTS: (params: GetPostsRequest) => buildUrl(`/posts`, params),
   POST_LOCATION: ({ id }: { id: number }) => `/posts/${id}/location`,
+  POST_LEGACY_ID: (params: { kind: 'request' | 'reservation'; oldId: number }) => `/posts/legacy/${params.kind}/${params.oldId}`,
   POST_DEVIATION: ({ id }: { id: number }) => `/posts/${id}/deviation`,
   EVENTS: (params?: GetEventsRequest) => buildUrl(`/events`, params),
   EVENT: ({ id }: GetEventsIdRequest) => `/events/${id}`,

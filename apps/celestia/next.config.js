@@ -73,50 +73,53 @@ module.exports = {
     quietDeps: true,
   },
   async headers() {
-    return vercelConfig.headers.reduce((acc, originalEntry) => {
-      // Browsers may connect to the websocket server that pushes notifications (https for the first requests, wss/ws after the upgrade)
-      const withWebsocketHost = (header) =>
-        WS_ORIGINS && /content-security-policy/i.test(header.key)
-          ? { ...header, value: header.value.replace(/connect-src ([^;]+)(;|$)/, `connect-src $1 ${WS_ORIGINS}$2`) }
-          : header;
-      const entry = { ...originalEntry, headers: originalEntry.headers.map(withWebsocketHost) };
-      // Allow all scripts in development mode
-      const config = devMode
-        ? {
-            ...entry,
-            headers: entry.headers.map((headerConfig) => {
-              if (/content-security-policy/i.test(headerConfig.key)) {
-                const value = headerConfig.value
-                  .replace(/script-src [^;]+(;|$)/, `script-src * 'unsafe-inline' 'unsafe-hashes' 'unsafe-eval'$1`)
-                  .replace(/((?:img|default)-src [^;]+)(;|$)/g, `$1 ${NEXT_PUBLIC_CDN_DOMAIN}$2`);
-                return {
-                  ...headerConfig,
-                  value,
-                };
-              }
+    return vercelConfig.headers.reduce(
+      (acc, originalEntry) => {
+        // Browsers may connect to the websocket server that pushes notifications (https for the first requests, wss/ws after the upgrade)
+        const withWebsocketHost = (header) =>
+          WS_ORIGINS && /content-security-policy/i.test(header.key)
+            ? { ...header, value: header.value.replace(/connect-src ([^;]+)(;|$)/, `connect-src $1 ${WS_ORIGINS}$2`) }
+            : header;
+        const entry = { ...originalEntry, headers: originalEntry.headers.map(withWebsocketHost) };
+        // Allow all scripts in development mode
+        const config = devMode
+          ? {
+              ...entry,
+              headers: entry.headers.map((headerConfig) => {
+                if (/content-security-policy/i.test(headerConfig.key)) {
+                  const value = headerConfig.value
+                    .replace(/script-src [^;]+(;|$)/, `script-src * 'unsafe-inline' 'unsafe-hashes' 'unsafe-eval'$1`)
+                    .replace(/((?:img|default)-src [^;]+)(;|$)/g, `$1 ${NEXT_PUBLIC_CDN_DOMAIN}$2`);
+                  return {
+                    ...headerConfig,
+                    value,
+                  };
+                }
 
-              return headerConfig;
-            }),
-          }
-        : entry;
+                return headerConfig;
+              }),
+            }
+          : entry;
 
-      if (config.source === '/(.*)') {
-        acc.push({
-          ...config,
-          source: '/:path*',
-        });
-        acc.push({
-          ...config,
-          source: '/',
-        });
-      } else {
-        acc.push(config);
-      }
-      return acc;
-    }, [
-      // Tools on other sites read these files (the color guide export, its schema, the Illustrator swatch import script), like they did from the previous site
-      { source: '/dist/:path*', headers: [{ key: 'Access-Control-Allow-Origin', value: '*' }] },
-    ]);
+        if (config.source === '/(.*)') {
+          acc.push({
+            ...config,
+            source: '/:path*',
+          });
+          acc.push({
+            ...config,
+            source: '/',
+          });
+        } else {
+          acc.push(config);
+        }
+        return acc;
+      },
+      [
+        // Tools on other sites read these files (the color guide export, its schema, the Illustrator swatch import script), like they did from the previous site
+        { source: '/dist/:path*', headers: [{ key: 'Access-Control-Allow-Origin', value: '*' }] },
+      ]
+    );
   },
   async redirects() {
     return [
@@ -125,6 +128,8 @@ module.exports = {
       { source: '/blending', destination: '/cg/blending', permanent: true },
       { source: '/blending-reverse', destination: '/cg/blending-reverse', permanent: true },
       { source: '/picker', destination: '/cg/picker', permanent: true },
+      // The old site took these spellings of the color guide's address too (`/colorguide` is covered by the shared redirects)
+      { source: '/:alias(cguide|colorg|colourg|colourguide)/:path*', destination: '/cg/:path*', permanent: true },
       { source: '/users/:user/cg/slot-history', destination: '/users/:user/cg/point-history', permanent: false },
       { source: '/cg/preferred', destination: '/cg', permanent: false },
       { source: '/admin/useful-links', destination: '/admin/usefullinks', permanent: true },
@@ -166,6 +171,8 @@ module.exports = {
       ),
       // URLs of the previous site that are served by pages or by the API
       { source: '/cg/picker/frame', destination: '/cg/picker' },
+      // Post links from before the 2020 migration (the page's folder keeps its dynamic segments clear of the short links')
+      { source: '/s/:thing(req|res)/:id(\\d+)', destination: '/s/legacy/:thing/:id' },
       { source: '/@:name/:rest(.+)', destination: '/u/:name?rest=:rest' },
       { source: '/@:name', destination: '/u/:name' },
       // The public color guide export of the old site (other tools read it from this address)
@@ -173,9 +180,18 @@ module.exports = {
       // The export files of an appearance, which the API serves from its palette and image routes
       { source: '/users/:user(\\d+)/cg/v/:id(\\d+).json', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/palette?format=json` },
       { source: '/users/:user(\\d+)/cg/v/:id(\\d+).gpl', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/palette?format=gpl` },
-      { source: '/users/:user(\\d+)/cg/v/:id(\\d+).png', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/image?type=palette&format=png` },
-      { source: '/users/:user(\\d+)/cg/v/:id(\\d+)p.svg', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/image?type=preview&format=svg` },
-      { source: '/users/:user(\\d+)/cg/v/:id(\\d+)f.svg', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/image?type=facing&format=svg` },
+      {
+        source: '/users/:user(\\d+)/cg/v/:id(\\d+).png',
+        destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/image?type=palette&format=png`,
+      },
+      {
+        source: '/users/:user(\\d+)/cg/v/:id(\\d+)p.svg',
+        destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/image?type=preview&format=svg`,
+      },
+      {
+        source: '/users/:user(\\d+)/cg/v/:id(\\d+)f.svg',
+        destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/image?type=facing&format=svg`,
+      },
       { source: '/cg/:guide/v/:id(\\d+).json', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/palette?format=json` },
       { source: '/cg/v/:id(\\d+).gpl', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/palette?format=gpl` },
       { source: '/cg/v/:id(\\d+).png', destination: `${NEXT_PUBLIC_BACKEND_HOST}/appearances/:id/image?type=palette&format=png` },

@@ -111,5 +111,9 @@ export interface PostLocation {
   castle?: { name?: string; showId?: number; postId?: number; url?: string };
 }
 
+/** The current ID of a post linked by the number it had before the 2020 migration */
+export const legacyPostIdFetcher = (params: { kind: 'request' | 'reservation'; oldId: number }, req?: IncomingMessage) => () =>
+  fetchResource<{ id: number }>(ENDPOINTS.POST_LEGACY_ID(params), req);
+
 export const postLocationFetcher = (params: { id: number }, req?: IncomingMessage) => () =>
   fetchResource<PostLocation>(ENDPOINTS.POST_LOCATION(params), req);
