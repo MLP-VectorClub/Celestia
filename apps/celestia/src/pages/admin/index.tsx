@@ -16,9 +16,10 @@ import { API_HOST } from 'src/config';
 import { useAuth } from 'src/hooks';
 import { createAdminGetServerSideProps, fetchForAdminPage } from 'src/utils/admin-page';
 import { permission } from 'src/utils/permission';
+import { toPublicUrl } from 'src/utils/public-url';
 
 /** Luna's Laravel Horizon dashboard (queues), which only lets developers in; it lives on the API's own address, outside the API prefix */
-const HORIZON_URL = `${API_HOST.replace(/^http:\/\/(?!localhost|127\.)/, 'https://')}/horizon`;
+const HORIZON_URL = `${toPublicUrl(API_HOST)}/horizon`;
 
 const SearchStatus: FC<{ initialData: GetAdminSearchStatusResult | null }> = ({ initialData }) => {
   const t = useTranslations();

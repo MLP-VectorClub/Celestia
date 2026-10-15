@@ -1,7 +1,8 @@
+import { GuideName } from '@went.tf/mlp-vectorclub-api-types';
 import Axios from 'axios';
 import { range } from 'lodash';
 
-import { GuideName } from '@went.tf/mlp-vectorclub-api-types';
+import { toPublicUrl } from 'src/utils/public-url';
 
 export type AppI18nNamespaces =
   'about' | 'admin' | 'colorGuide' | 'common' | 'connection' | 'events' | 'oauth' | 'picker' | 'privacyPolicy' | 'show' | 'tools' | 'users';
@@ -25,7 +26,8 @@ export const DEV_EMAIL = 'mail@went.tf';
 
 export const DEV_ENV = process.env.NODE_ENV !== 'production';
 export const IS_CLIENT_SIDE = typeof window !== 'undefined';
-export const API_DOCS_URL = API_HOST as string;
+/** The API's own address for people to open: https even where the server-side requests use http (see `toPublicUrl`) */
+export const API_DOCS_URL = toPublicUrl(API_HOST) as string;
 
 /**
  * Global prefix for all api calls, no trailing slash
