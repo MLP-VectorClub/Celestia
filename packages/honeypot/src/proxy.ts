@@ -37,9 +37,11 @@ export const createHoneypotProxy = ({ apiHost, appHost, sessionCookie, honeypots
    */
   const springTrap = async (request: NextRequest, trap: { name: string; decoy?: string }): Promise<NextResponse> => {
     const decoy = trap.decoy ? decoys[trap.decoy] : undefined;
-    // The visitor is flagged either way, a decoy only gives them something to read first
-    const response = decoy ? new NextResponse(decoy.body, { status: 200, headers: decoyHeaders(decoy) }) : refusal();
     const address = visitorAddress(request.headers);
+    // The visitor is flagged either way, a decoy only gives them something to read first
+    const response = decoy
+      ? new NextResponse(decoy.render?.({ address }) ?? decoy.body, { status: 200, headers: decoyHeaders(decoy) })
+      : refusal();
     const session = request.cookies.get(sessionCookie)?.value;
     // Files do not set cookies: nothing to flag a visitor with when they have no session, and nothing to hand back when they do
     const quiet = decoy?.cookies === false;

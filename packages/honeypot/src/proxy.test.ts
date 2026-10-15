@@ -94,11 +94,11 @@ describe('honeypot proxy', () => {
       luna.mockResolvedValue(new Response('Forbidden', { status: 403, headers: { 'set-cookie': 'luna_session=decoyed; Path=/' } }))
     );
 
-    it('answers a trap that names one with a real-looking 200 that anybody may cache', async () => {
+    it('answers a trap that names one with a real-looking 200', async () => {
       const response = await honeypot.proxy(new NextRequest('https://front.test/.env', { headers: { cookie: 'luna_session=known' } }));
       expect(response?.status).toBe(200);
       expect(response?.headers.get('content-type')).toMatch(/^text\/plain/);
-      expect(response?.headers.get('cache-control')).toMatch(/^public, max-age=\d+, s-maxage=\d+/);
+      expect(response?.headers.get('cache-control')).toMatch(/^private, max-age=\d+/);
       const text = (await response?.text()) ?? '';
       expect(text).toMatch(/^APP_NAME="Test Site"$/m);
       expect(text).toMatch(/^APP_KEY=base64:[A-Za-z0-9+/]{43}=$/m);
@@ -145,6 +145,33 @@ describe('honeypot proxy', () => {
       // Nothing is empty and nothing has an unfilled template left in it
       expect(text).not.toMatch(/\$\{|undefined|NaN|\[object/);
       keys.forEach((line) => expect(line.split('=')[1]?.trim()).not.toBe(''));
+    });
+
+    it("has wallets, fake certificates and keys, and a line about the visitor's mother that is the same for the same visitor and differs between visitors", async () => {
+      const ask = async (address: string) =>
+        (await (await honeypot.proxy(new NextRequest('https://front.test/.env', { headers: { 'x-forwarded-for': address } })))?.text()) ??
+        '';
+      const [a1, a2, b] = [await ask('203.0.113.1'), await ask('203.0.113.1'), await ask('198.51.100.7')];
+
+      expect(a1).toMatch(/^ETHEREUM_WALLET_ADDRESS=0x[0-9a-f]{40}$/m);
+      expect(a1).toMatch(/^ETHEREUM_PRIVATE_KEY=0x[0-9a-f]{64}$/m);
+      expect(a1).toMatch(/^ETHEREUM_MNEMONIC="(\w+ ){23}\w+"$/m);
+      for (const label of ['PRIVATE KEY', 'CERTIFICATE', 'OPENSSH PRIVATE KEY']) {
+        expect(a1).toMatch(new RegExp(`-----BEGIN ${label}-----\\n[A-Za-z0-9+/\\n]{200,}\\n-----END ${label}-----`));
+      }
+      const weight = (text: string) => text.match(/^VISITOR_MOMS_WEIGHT_KG=(\d+\.\d)$/m)?.[1];
+      expect(weight(a1)).toBeDefined();
+      expect(Number(weight(a1))).toBeGreaterThanOrEqual(38);
+      expect(Number(weight(a1))).toBeLessThan(143);
+      expect(weight(a1)).toBe(weight(a2));
+      expect(a1).toBe(a2);
+      // Everything else is the same file for everybody
+      expect(a1.replace(/^VISITOR_MOMS_WEIGHT_KG=.*$/m, '')).toBe(b.replace(/^VISITOR_MOMS_WEIGHT_KG=.*$/m, ''));
+    });
+
+    it('keeps the .env, which is different for every visitor, out of shared caches', async () => {
+      const response = await honeypot.proxy(new NextRequest('https://front.test/.env'));
+      expect(response?.headers.get('cache-control')).toMatch(/^private, /);
     });
 
     it('gives the same secrets to everybody who asks until the server restarts', async () => {

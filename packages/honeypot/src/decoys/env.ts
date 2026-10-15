@@ -4,6 +4,9 @@ import type { Secrets } from './secrets';
  * A `.env` somebody should not have left in the web root. Over the top on purpose: far more services than any one site uses (most of them nothing
  * to do with this one), a few jokes, and a note at the end, so that nobody who reads it takes it for the real thing. Every value is random
  */
+/** Where the line about the visitor's mother is filled in */
+export const VISITORS_MOM = '%%VISITORS_MOM%%';
+
 export const envFile = (s: Secrets, siteName: string): string => {
   const slug = siteName.toLowerCase().replace(/[^a-z0-9]+/g, '') || 'example';
   const host = `${slug}.internal`;
@@ -162,15 +165,33 @@ PINECONE_API_KEY=${s.uuid()}
 ELEVENLABS_API_KEY=sk_${s.hex(24)}
 STABILITY_API_KEY=sk-${s.password(48)}
 
+##### tls and ssh
+SSL_CERTIFICATE_PATH=/etc/ssl/certs/${host}.pem
+SSL_PRIVATE_KEY_PASSPHRASE=${s.password(20)}
+SSL_PRIVATE_KEY="${s.pem('PRIVATE KEY', 1190)}"
+SSL_CERTIFICATE="${s.pem('CERTIFICATE', 1100)}"
+SSL_CA_BUNDLE="${s.pem('CERTIFICATE', 1100)}"
+SSH_DEPLOY_KEY="${s.pem('OPENSSH PRIVATE KEY', 1250)}"
+PGP_SIGNING_KEY_PASSPHRASE=${s.password(24)}
+
 ##### the important ones
 BITCOIN_WALLET_SEED_PHRASE="${s.seedPhrase(12)}"
+BITCOIN_WIF=K${s.base58(51)}
+ETHEREUM_WALLET_ADDRESS=0x${s.hex(20)}
 ETHEREUM_PRIVATE_KEY=0x${s.hex(32)}
+ETHEREUM_KEYSTORE_PASSWORD=${s.password(16)}
+ETHEREUM_MNEMONIC="${s.seedPhrase(24)}"
+METAMASK_VAULT_PASSWORD=${s.password(12)}
+SOLANA_PRIVATE_KEY=${s.base58(88)}
+LEDGER_RECOVERY_PHRASE="${s.seedPhrase(24)}"
 BANK_ACCOUNT_PIN=${s.digits(4)}
 SAFE_COMBINATION=${s.digits(2)}-${s.digits(2)}-${s.digits(2)}
 NUCLEAR_LAUNCH_CODES=${s.upper(8)}-${s.upper(8)}-${s.upper(8)}
 WIFI_PASSWORD=${s.password(12)}
 NETFLIX_PASSWORD=${s.password(10)}
 MY_CATS_NAME=Fluffernutter
+# whoever is reading this, personally:
+VISITOR_MOMS_WEIGHT_KG=${VISITORS_MOM}
 MOTHERS_MAIDEN_NAME=${s.password(8)}
 SECRET_RECIPE_URL=https://example.com/oops-this-is-not-a-real-recipe
 

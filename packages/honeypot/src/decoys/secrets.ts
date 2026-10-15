@@ -54,6 +54,12 @@ export const randomSecrets = () => ({
   hex: (bytes: number) => randomBytes(bytes).toString('hex'),
   base64url: (bytes: number) => randomBytes(bytes).toString('base64url'),
   uuid: () => randomUUID(),
+  /** A PEM block (`-----BEGIN <label>-----`) around random base64: it has the shape of a key or a certificate and decodes to nothing */
+  pem: (label: string, bytes: number) => {
+    const body = randomBytes(bytes).toString('base64').replace(/=+$/, '');
+    return `-----BEGIN ${label}-----\n${body.match(/.{1,64}/g)?.join('\n')}\n-----END ${label}-----`;
+  },
+  base58: (length: number) => fromAlphabet('123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz', length),
   seedPhrase: (words = 12) => Array.from({ length: words }, () => WORDS[randomInt(WORDS.length)]).join(' '),
   awsAccessKeyId: `AKIA${fromAlphabet(UPPERCASE_DIGITS, 16)}`,
   awsSecretAccessKey: randomBytes(30)

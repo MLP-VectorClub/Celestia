@@ -1,6 +1,7 @@
 import { adminerLogin } from './adminer';
-import { envFile } from './env';
+import { VISITORS_MOM, envFile } from './env';
 import { gitConfig } from './git';
+import { momsWeightOf } from './moms';
 import { decoyCsp } from './page';
 import type { HtmlPage } from './page';
 import { randomSecrets } from './secrets';
@@ -11,6 +12,10 @@ export interface Decoy {
   contentType: string;
   /** The Content-Security-Policy that lets a page load its font, stylesheet and script (none for plain text) */
   csp?: string;
+  /** Fills in what depends on who asks (the body is a template then), and keeps the answer out of shared caches */
+  render?: (visitor: { address?: string }) => string;
+  /** Replaces the default `Cache-Control` of the decoys */
+  cacheControl?: string;
   /**
    * Whether answering may set cookies (the default). A file that is just lying around does not: setting one would give the trap away, so a visitor
    * without a session is not given one (and Luna is not asked to start one), and one with a session is flagged without getting any cookie back
@@ -29,8 +34,18 @@ const htmlDecoy = ({ html, script }: HtmlPage): Decoy => ({ body: html, contentT
 
 export const createDecoys = (siteName: string): Record<DecoyName, Decoy> => {
   const secrets = randomSecrets();
+  const momsWeightKg = momsWeightOf(secrets.hex(16));
+  // Generated once, so the secrets stay the same for every visitor: only the line about their mother changes
+  const envTemplate = envFile(secrets, siteName);
   return {
-    env: { body: envFile(secrets, siteName), contentType: 'text/plain; charset=utf-8', cookies: false },
+    env: {
+      body: envTemplate.replace(VISITORS_MOM, momsWeightKg()),
+      contentType: 'text/plain; charset=utf-8',
+      cookies: false,
+      render: ({ address }) => envTemplate.replace(VISITORS_MOM, momsWeightKg(address)),
+      // It has a line that is different for every visitor, so only their own browser may keep it
+      cacheControl: 'private, max-age=86400',
+    },
     'git-config': { body: gitConfig(secrets, siteName), contentType: 'text/plain; charset=utf-8', cookies: false },
     'wordpress-login': htmlDecoy(wordpressLogin(siteName)),
     'adminer-login': htmlDecoy(adminerLogin()),
@@ -45,6 +60,6 @@ export const DECOY_CACHE_CONTROL = 'public, max-age=604800, s-maxage=2592000, st
 
 export const decoyHeaders = (decoy: Decoy): Record<string, string> => ({
   'Content-Type': decoy.contentType,
-  'Cache-Control': DECOY_CACHE_CONTROL,
+  'Cache-Control': decoy.cacheControl ?? DECOY_CACHE_CONTROL,
   ...(decoy.csp ? { 'Content-Security-Policy': decoy.csp } : {}),
 });
