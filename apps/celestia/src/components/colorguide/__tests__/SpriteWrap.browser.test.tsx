@@ -50,6 +50,26 @@ describe('SpriteWrap menu', () => {
     await expect.element(screen.getByRole('menuitem', { name: 'Remove sprite image' })).not.toBeInTheDocument();
   });
 
+  it('opens the menu on a plain right click on the sprite, like the old context menu', async () => {
+    const screen = await renderWrap({ compact: true, editable: true });
+    const wrap = screen.getByTestId('sprite-wrap').element();
+    const event = new MouseEvent('contextmenu', { bubbles: true, cancelable: true });
+    wrap.dispatchEvent(event);
+
+    expect(event.defaultPrevented).toBe(true);
+    await expect.element(screen.getByRole('menuitem', { name: 'Upload new sprite' })).toBeVisible();
+  });
+
+  it('leaves the browser menu alone when a modifier key is held', async () => {
+    const screen = await renderWrap({ compact: true, editable: true });
+    const wrap = screen.getByTestId('sprite-wrap').element();
+    const event = new MouseEvent('contextmenu', { bubbles: true, cancelable: true, shiftKey: true });
+    wrap.dispatchEvent(event);
+
+    expect(event.defaultPrevented).toBe(false);
+    await expect.element(screen.getByRole('menuitem', { name: 'Upload new sprite' })).not.toBeInTheDocument();
+  });
+
   it('has no menu for a visitor when there is no sprite to open', async () => {
     const screen = await renderWrap({ compact: true, editable: false, sprite: null });
     await expect.element(screen.getByRole('button', MENU)).not.toBeInTheDocument();

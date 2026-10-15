@@ -143,7 +143,7 @@ export const SpriteWrap: FC<PropTypes> = ({ appearanceId, sprite, compact = fals
         />
         {(sprite || editable) && (
           <div className={styles.menuButton} onClick={(e) => e.stopPropagation()}>
-            <ActionMenu title={t('colorGuide.edit.sprite.menu')} alignEnd items={menuItems} />
+            <ActionMenu title={t('colorGuide.edit.sprite.menu')} alignEnd items={menuItems} contextTarget=".upload-wrap" />
           </div>
         )}
       </div>

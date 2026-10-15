@@ -1,7 +1,7 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import classNames from 'classnames';
-import { FC } from 'react';
-import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
+import { FC, useEffect, useRef, useState } from 'react';
+import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
 
 import styles from 'modules/ActionMenu.module.scss';
 import InlineIcon from 'src/components/shared/InlineIcon';
@@ -29,43 +29,69 @@ interface PropTypes {
   className?: string;
   /** Opens to the left of the button instead of the right */
   alignEnd?: boolean;
+  /**
+   * CSS selector of the closest ancestor a right click on opens the menu for, like the old site's context menus did. Without it, the element the
+   * menu sits in is used. A right click with Shift, Ctrl, Alt or Meta held, or on a field, still gets the browser's own menu
+   */
+  contextTarget?: string;
 }
 
 /**
  * A "⋯" button that opens a menu of actions. Everything the old site only offered on a right click goes here (or is a button of its own),
  * so no function hides behind a context menu
  */
-export const ActionMenu: FC<PropTypes> = ({ title, items, className, alignEnd = false }) => {
+export const ActionMenu: FC<PropTypes> = ({ title, items, className, alignEnd = false, contextTarget }) => {
   const visible = items.filter(Boolean);
-  if (visible.length === 0) return null;
+  const [open, setOpen] = useState(false);
+  const root = useRef<HTMLElement>(null);
+  const hasItems = visible.length > 0;
+
+  useEffect(() => {
+    const own = root.current;
+    const target = contextTarget ? own?.closest<HTMLElement>(contextTarget) : own?.parentElement;
+    if (!hasItems || !target) return undefined;
+    const onContextMenu = (e: MouseEvent) => {
+      if (e.shiftKey || e.ctrlKey || e.altKey || e.metaKey) return;
+      if (e.target instanceof Element && e.target.closest('input, textarea, select, [contenteditable="true"]')) return;
+      e.preventDefault();
+      e.stopPropagation();
+      setOpen(true);
+    };
+    target.addEventListener('contextmenu', onContextMenu);
+    return () => target.removeEventListener('contextmenu', onContextMenu);
+  }, [hasItems, contextTarget]);
+
+  if (!hasItems) return null;
 
   return (
-    <UncontrolledDropdown className={classNames(styles.actionMenu, className)}>
-      <Tooltipped title={title}>
-        {(ref) => (
-          <DropdownToggle tag="button" type="button" className={styles.toggle} innerRef={ref} aria-label={title}>
-            <InlineIcon icon="ellipsis-h" />
-          </DropdownToggle>
-        )}
-      </Tooltipped>
-      <DropdownMenu end={alignEnd} container="body">
-        {visible.map((item) => (
-          <div key={item.key}>
-            {item.separated && <DropdownItem divider />}
-            <DropdownItem
-              tag={item.href ? 'a' : 'button'}
-              href={item.href}
-              {...(item.href && item.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-              disabled={item.disabled}
-              className={classNames({ 'text-danger': item.danger })}
-              onClick={item.onClick}
-            >
-              {item.icon && <InlineIcon icon={item.icon} first fixedWidth />}
-              {item.label}
-            </DropdownItem>
-          </div>
-        ))}
-      </DropdownMenu>
-    </UncontrolledDropdown>
+    <span ref={root} style={{ display: 'contents' }}>
+      <Dropdown isOpen={open} toggle={() => setOpen((o) => !o)} className={classNames(styles.actionMenu, className)}>
+        <Tooltipped title={title}>
+          {(ref) => (
+            <DropdownToggle tag="button" type="button" className={styles.toggle} innerRef={ref} aria-label={title}>
+              <InlineIcon icon="ellipsis-h" />
+            </DropdownToggle>
+          )}
+        </Tooltipped>
+        <DropdownMenu end={alignEnd} container="body">
+          {visible.map((item) => (
+            <div key={item.key}>
+              {item.separated && <DropdownItem divider />}
+              <DropdownItem
+                tag={item.href ? 'a' : 'button'}
+                href={item.href}
+                {...(item.href && item.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                disabled={item.disabled}
+                className={classNames({ 'text-danger': item.danger })}
+                onClick={item.onClick}
+              >
+                {item.icon && <InlineIcon icon={item.icon} first fixedWidth />}
+                {item.label}
+              </DropdownItem>
+            </div>
+          ))}
+        </DropdownMenu>
+      </Dropdown>
+    </span>
   );
 };
