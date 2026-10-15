@@ -3,6 +3,7 @@ import { ShowListItem } from '@went.tf/mlp-vectorclub-api-types';
 import { useTranslations } from 'next-intl';
 import { FC, useState } from 'react';
 
+import ButtonRow from 'src/components/shared/ButtonRow';
 import { IconButton } from 'src/components/shared/IconButton';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { ShowFormDialog } from 'src/components/show/ShowFormDialog';
@@ -43,7 +44,7 @@ export const ShowRowActions: FC<{ entry: Pick<ShowListItem, 'id' | 'type' | 'tit
   };
 
   return (
-    <span className="ms-2 d-inline-flex flex-wrap align-items-center gap-1">
+    <ButtonRow as="span" inline gap={1} className="ms-2 align-items-center">
       <IconButton
         icon="pencil-alt"
         color="blue"
@@ -72,6 +73,6 @@ export const ShowRowActions: FC<{ entry: Pick<ShowListItem, 'id' | 'type' | 'tit
           }}
         />
       )}
-    </span>
+    </ButtonRow>
   );
 };

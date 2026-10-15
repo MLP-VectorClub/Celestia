@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { Alert, Button, Col, Form, FormGroup, Input, InputGroup, Label, Row } from 'reactstrap';
 
 import BootstrapErrorMessages from 'src/components/shared/BootstrapErrorMessages';
+import ButtonRow from 'src/components/shared/ButtonRow';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import RevealPasswordButton from 'src/components/shared/RevealPasswordButton';
 import { SOCIAL_PROVIDERS } from 'src/fancy-config';
@@ -207,7 +208,7 @@ const SingInForm: FC = () => {
         <legend className="text-uppercase float-none w-auto mx-auto px-2">
           <small>{t('common.auth.socialSignIn.alternatively')}</small>
         </legend>
-        <div className="d-flex flex-wrap justify-content-center gap-2" id="alternative-sign-ins">
+        <ButtonRow justify="center" id="alternative-sign-ins">
           {passkeysSupported && (
             <Button
               type="button"
@@ -231,7 +232,7 @@ const SingInForm: FC = () => {
               </Button>
             );
           })}
-        </div>
+        </ButtonRow>
       </FormGroup>
     </Form>
   );

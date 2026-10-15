@@ -2,6 +2,7 @@ import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
 import { Button, FormGroup, Input, Label } from 'reactstrap';
 
+import ButtonRow from 'src/components/shared/ButtonRow';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { FormDialog } from 'src/components/shared/dialogs/FormDialog';
@@ -102,7 +103,7 @@ export const EventEntryActions: FC<{ entryId: number; title: string; eventKey: s
   const remove = useApiMutation(() => EventEntriesService.remove(entryId), { invalidate: [eventKey] });
 
   return (
-    <div className="d-flex flex-wrap gap-2 mt-2">
+    <ButtonRow className="mt-2">
       <Button size="sm" color="blue" className="edit-entry" title={t('events.entry.edit')} onClick={() => setEditing(true)}>
         <InlineIcon icon="pencil-alt" title={t('events.entry.edit')} />
       </Button>
@@ -128,6 +129,6 @@ export const EventEntryActions: FC<{ entryId: number; title: string; eventKey: s
       </Button>
       {remove.error && <div className="text-danger small w-100">{describeApiError(remove.error)}</div>}
       <EditDialog entryId={entryId} eventKey={eventKey} isOpen={editing} onClose={() => setEditing(false)} />
-    </div>
+    </ButtonRow>
   );
 };

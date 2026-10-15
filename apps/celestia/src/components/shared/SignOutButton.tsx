@@ -3,6 +3,7 @@ import { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Button, Tooltip } from 'reactstrap';
 
+import ButtonRow from 'src/components/shared/ButtonRow';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { RootState, useAppDispatch } from 'src/store';
 import { signOutThunk } from 'src/store/thunks';
@@ -29,14 +30,14 @@ const SignOutButton: FC = () => {
       </Button>
       <Tooltip isOpen={signOutConfirm} target={BUTTON_ID} container="sidebar" placement="bottom" className="tooltip-interactive">
         <p className="mb-1">{t('common.sidebar.confirmSignOut')}</p>
-        <div className="d-flex flex-wrap justify-content-center gap-2">
+        <ButtonRow justify="center">
           <Button size="sm" color="success" onClick={handleSignOut} data-testid="dialog-btn-confirm">
             <InlineIcon icon="check" fixedWidth />
           </Button>
           <Button size="sm" color="danger" onClick={() => setSignOutConfirm(false)}>
             <InlineIcon icon="times" fixedWidth />
           </Button>
-        </div>
+        </ButtonRow>
       </Tooltip>
     </>
   );
