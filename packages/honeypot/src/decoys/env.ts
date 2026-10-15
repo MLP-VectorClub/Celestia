@@ -1,17 +1,19 @@
 import type { Secrets } from './secrets';
 
-/**
- * A `.env` somebody should not have left in the web root. Over the top on purpose: far more services than any one site uses (most of them nothing
- * to do with this one), a few jokes, and a note at the end, so that nobody who reads it takes it for the real thing. Every value is random
- */
 /** Where the line about the visitor's mother is filled in */
 export const VISITORS_MOM = '%%VISITORS_MOM%%';
 
-export const envFile = (s: Secrets, siteName: string): string => {
+/**
+ * A `.env` somebody should not have left in the web root. Over the top on purpose: far more services than any one site uses (most of them nothing
+ * to do with this one), a few jokes, and a pointer to the security policy at the top (which says what these files are), so that nobody who reads it
+ * takes it for the real thing. Every value is random
+ */
+export const envFile = (s: Secrets, siteName: string, securityTxtUrl: string): string => {
   const slug = siteName.toLowerCase().replace(/[^a-z0-9]+/g, '') || 'example';
   const host = `${slug}.internal`;
   return `# ${siteName.toUpperCase()} - PRODUCTION SECRETS
 # DO NOT COMMIT THIS FILE. DO NOT SHARE THIS FILE. DO NOT PUT THIS FILE IN THE WEB ROOT. (oops)
+# Found a security problem with this file? Report it the way ${securityTxtUrl} says.
 
 ##### application
 APP_NAME="${siteName}"
@@ -194,10 +196,5 @@ MY_CATS_NAME=Fluffernutter
 VISITOR_MOMS_WEIGHT_KG=${VISITORS_MOM}
 MOTHERS_MAIDEN_NAME=${s.password(8)}
 SECRET_RECIPE_URL=https://example.com/oops-this-is-not-a-real-recipe
-
-# --------------------------------------------------------------------------------------------------
-# Hello, scanner! Every value in this file was made up by a random number generator when the server
-# started. None of it opens anything, anywhere. Thank you for reading all the way to the bottom.
-# --------------------------------------------------------------------------------------------------
 `;
 };

@@ -32,11 +32,11 @@ export type DecoyName = 'env' | 'wordpress-login' | 'adminer-login' | 'git-confi
  */
 const htmlDecoy = ({ html, script }: HtmlPage): Decoy => ({ body: html, contentType: 'text/html; charset=utf-8', csp: decoyCsp(script) });
 
-export const createDecoys = (siteName: string): Record<DecoyName, Decoy> => {
+export const createDecoys = (siteName: string, securityTxtUrl: string): Record<DecoyName, Decoy> => {
   const secrets = randomSecrets();
   const momsWeightKg = momsWeightOf(secrets.hex(16));
   // Generated once, so the secrets stay the same for every visitor: only the line about their mother changes
-  const envTemplate = envFile(secrets, siteName);
+  const envTemplate = envFile(secrets, siteName, securityTxtUrl);
   return {
     env: {
       body: envTemplate.replace(VISITORS_MOM, momsWeightKg()),

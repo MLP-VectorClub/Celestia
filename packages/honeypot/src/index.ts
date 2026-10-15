@@ -53,7 +53,14 @@ export const createHoneypot = ({
   // Built once, here: the secrets in the decoys are generated now and stay the same until the server restarts
   const sessions = createSessionChecker({ apiHost, appHost, sessionCookie });
   return {
-    proxy: createHoneypotProxy({ apiHost, appHost, sessionCookie, honeypots, sessions, decoys: createDecoys(siteName) }),
+    proxy: createHoneypotProxy({
+      apiHost,
+      appHost,
+      sessionCookie,
+      honeypots,
+      sessions,
+      decoys: createDecoys(siteName, `${appHost ?? ''}/.well-known/security.txt`),
+    }),
     match: (pathname) => honeypots.match(pathname)?.name ?? null,
     robotsLines: honeypots.robotsLines,
     robotsTxt: ({ comment, rules }) => buildRobotsTxt({ comment, rules, honeypotLines: honeypots.robotsLines }),
