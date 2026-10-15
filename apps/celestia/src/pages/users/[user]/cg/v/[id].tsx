@@ -1,7 +1,7 @@
+import { GetAppearancesIdResult, GetUsersIdResult } from '@went.tf/mlp-vectorclub-api-types';
 import { NextPage } from 'next';
 import { useMemo } from 'react';
 
-import { GetAppearancesIdResult, GetUsersIdResult } from '@went.tf/mlp-vectorclub-api-types';
 import { AppearanceView } from 'src/components/colorguide/AppearanceView';
 import { appearanceFetcher, userFetcher } from 'src/fetchers';
 import { useTitleSetter } from 'src/hooks';

@@ -1,7 +1,7 @@
+import { ColorGroup } from '@went.tf/mlp-vectorclub-api-types';
 import { useTranslations } from 'next-intl';
 import { FC } from 'react';
 
-import { ColorGroup } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/CompactColorGroups.module.scss';
 import ColorSquare from 'src/components/colorguide/ColorSquare';
 

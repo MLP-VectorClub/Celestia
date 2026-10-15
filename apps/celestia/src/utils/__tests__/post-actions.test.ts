@@ -1,6 +1,6 @@
+import { PostItem } from '@went.tf/mlp-vectorclub-api-types';
 import { describe, expect, it } from 'vitest';
 
-import { PostItem } from '@went.tf/mlp-vectorclub-api-types';
 import { getPostActions } from 'src/utils/post-actions';
 
 const post = (overrides: Partial<PostItem> = {}): PostItem => ({

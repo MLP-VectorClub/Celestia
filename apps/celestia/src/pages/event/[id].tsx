@@ -1,3 +1,4 @@
+import { GetEventsIdResult } from '@went.tf/mlp-vectorclub-api-types';
 import { StatusCodes } from 'http-status-codes';
 import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
@@ -5,7 +6,6 @@ import Link from 'next/link';
 import pluralize from 'pluralize';
 import { useMemo } from 'react';
 
-import { GetEventsIdResult } from '@went.tf/mlp-vectorclub-api-types';
 import { EventEntries } from 'src/components/events/EventEntries';
 import { EventFinishedImage } from 'src/components/events/EventFinishedImage';
 import Content from 'src/components/shared/Content';

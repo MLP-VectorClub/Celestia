@@ -1,6 +1,6 @@
+import { GuideName, SlimGuideTag } from '@went.tf/mlp-vectorclub-api-types';
 import { FC, ReactNode, useMemo } from 'react';
 
-import { GuideName, SlimGuideTag } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/AppearanceTags.module.scss';
 import { Tag } from 'src/components/colorguide/Tag';
 import { Nullable } from 'src/types';

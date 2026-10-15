@@ -1,7 +1,7 @@
+import { GuideName, SlimGuideTag } from '@went.tf/mlp-vectorclub-api-types';
 import { useTranslations } from 'next-intl';
 import { FC, ReactNode } from 'react';
 
-import { GuideName, SlimGuideTag } from '@went.tf/mlp-vectorclub-api-types';
 import AppearanceItemTags from 'src/components/colorguide/AppearanceItemTags';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { Nullable } from 'src/types';

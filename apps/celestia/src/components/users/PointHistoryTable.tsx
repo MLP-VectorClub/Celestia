@@ -1,9 +1,9 @@
+import { GetUsersIdPersonalGuidePointHistoryResult } from '@went.tf/mlp-vectorclub-api-types';
 import classNames from 'classnames';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { FC, ReactNode } from 'react';
 
-import { GetUsersIdPersonalGuidePointHistoryResult } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/PointHistoryTable.module.scss';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import TimeAgo from 'src/components/shared/TimeAgo';

@@ -1,8 +1,8 @@
+import { GetPostsResult, PostItem } from '@went.tf/mlp-vectorclub-api-types';
 import { useTranslations } from 'next-intl';
 import { FC, ReactNode, useState } from 'react';
 import { Button } from 'reactstrap';
 
-import { GetPostsResult, PostItem } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/PostList.module.scss';
 import StatusAlert from 'src/components/shared/StatusAlert';
 import { PostCreateDialog } from 'src/components/show/PostCreateDialog';

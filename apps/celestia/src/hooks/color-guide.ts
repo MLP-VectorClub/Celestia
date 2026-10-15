@@ -1,6 +1,4 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { useCallback } from 'react';
-
 import {
   GetAppearancesAutocompleteRequest,
   GetAppearancesAutocompleteResult,
@@ -18,6 +16,8 @@ import {
   GetColorGuideMajorChangesResult,
   GetColorGuideResult,
 } from '@went.tf/mlp-vectorclub-api-types';
+import { useCallback } from 'react';
+
 import {
   AppearanceFetcherParams,
   AppearanceLocationFetcherParams,

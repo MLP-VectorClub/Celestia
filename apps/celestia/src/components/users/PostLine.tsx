@@ -1,7 +1,7 @@
+import { PostItem } from '@went.tf/mlp-vectorclub-api-types';
 import Image from 'next/image';
 import { FC } from 'react';
 
-import { PostItem } from '@went.tf/mlp-vectorclub-api-types';
 import ExternalLink from 'src/components/shared/ExternalLink';
 import TimeAgo from 'src/components/shared/TimeAgo';
 import UserLink from 'src/components/shared/UserLink';

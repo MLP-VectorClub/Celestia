@@ -4,8 +4,8 @@ import { FC } from 'react';
 
 import InlineIcon from 'src/components/shared/InlineIcon';
 import TimeAgo from 'src/components/shared/TimeAgo';
-import { NOTIFICATIONS_KEY, useNotificationSocket, useNotifications } from 'src/hooks/notifications';
 import { useApiMutation } from 'src/hooks';
+import { NOTIFICATIONS_KEY, useNotificationSocket, useNotifications } from 'src/hooks/notifications';
 import { AccountService } from 'src/services/account';
 import { formatShowId } from 'src/utils/show';
 

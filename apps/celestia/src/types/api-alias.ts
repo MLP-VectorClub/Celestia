@@ -10,6 +10,7 @@ import {
   User,
   UserRole,
 } from '@went.tf/mlp-vectorclub-api-types';
+
 import { Nullable } from 'src/types/common';
 
 export type MappedAboutConnectionResult = GetAboutConnectionResult & {

@@ -1,6 +1,4 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useMemo } from 'react';
-
 import {
   GetConfigResult,
   GetEventsIdFinishedImageResult,
@@ -28,6 +26,8 @@ import {
   GetUsersIdProfileRequest,
   GetUsersIdProfileResult,
 } from '@went.tf/mlp-vectorclub-api-types';
+import { useMemo } from 'react';
+
 import {
   configFetcher,
   contributionsFetcher,

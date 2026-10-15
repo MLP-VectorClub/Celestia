@@ -1,7 +1,7 @@
+import { GetTagsAutocompleteResult } from '@went.tf/mlp-vectorclub-api-types';
 import classNames from 'classnames';
 import { FC } from 'react';
 
-import { GetTagsAutocompleteResult } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/TagSuggestions.module.scss';
 import InlineIcon from 'src/components/shared/InlineIcon';
 

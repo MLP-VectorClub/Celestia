@@ -1,8 +1,8 @@
+import { GetShowIdVoteResult } from '@went.tf/mlp-vectorclub-api-types';
 import { useTranslations } from 'next-intl';
 import { FC } from 'react';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader, Progress } from 'reactstrap';
 
-import { GetShowIdVoteResult } from '@went.tf/mlp-vectorclub-api-types';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { useShowVotes } from 'src/hooks';
 import { Status } from 'src/types';

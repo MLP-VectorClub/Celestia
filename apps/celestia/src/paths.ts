@@ -1,6 +1,6 @@
+import { GuideName, PreviewAppearance, ShowListItem } from '@went.tf/mlp-vectorclub-api-types';
 import { isEmpty, mapValues, omit, omitBy } from 'lodash';
 
-import { GuideName, PreviewAppearance, ShowListItem } from '@went.tf/mlp-vectorclub-api-types';
 import { FullGuideSortField, PublicUser } from 'src/types/api-alias';
 import { Numeric } from 'src/types/common';
 import { seasonEpisodeToString } from 'src/utils/show';

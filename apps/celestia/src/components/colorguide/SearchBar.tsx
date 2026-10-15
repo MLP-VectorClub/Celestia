@@ -1,3 +1,4 @@
+import { GuideName } from '@went.tf/mlp-vectorclub-api-types';
 import classNames from 'classnames';
 import { debounce } from 'lodash';
 import { useTranslations } from 'next-intl';
@@ -19,7 +20,6 @@ import {
 } from 'react';
 import { Button, Col, Form, Input, InputGroup, ListGroupItem, Row, UncontrolledTooltip } from 'reactstrap';
 
-import { GuideName } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/SearchBar.module.scss';
 import { AppearancePreview } from 'src/components/colorguide/AppearancePreview';
 import { NutshellLabel } from 'src/components/colorguide/NutshellLabel';

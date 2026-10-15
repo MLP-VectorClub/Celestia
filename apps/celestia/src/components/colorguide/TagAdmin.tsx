@@ -1,8 +1,8 @@
+import { GetConfigResult, TagListItem } from '@went.tf/mlp-vectorclub-api-types';
 import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
 import { Alert, Button, FormGroup, FormText, Input, Label } from 'reactstrap';
 
-import { GetConfigResult, TagListItem } from '@went.tf/mlp-vectorclub-api-types';
 import { TagSuggestions } from 'src/components/colorguide/TagSuggestions';
 import { IconButton } from 'src/components/shared/IconButton';
 import InlineIcon from 'src/components/shared/InlineIcon';

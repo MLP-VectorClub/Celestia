@@ -6,7 +6,6 @@ const vercelConfig = require('./vercel.json');
 
 const devMode = process.env.NODE_ENV === 'development';
 
-
 /** The address of the websocket server (the same as `wsServerHost` of Luna's /config) in the form the CSP's connect-src wants it, empty when there is none */
 const WS_ORIGINS = (() => {
   const host = process.env.NEXT_PUBLIC_WS_HOST;

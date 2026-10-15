@@ -1,5 +1,3 @@
-import { IncomingMessage } from 'http';
-
 import {
   GetAppearancesAutocompleteRequest,
   GetAppearancesFullRequest,
@@ -9,6 +7,8 @@ import {
   GetAppearancesRequest,
   GetColorGuideMajorChangesRequest,
 } from '@went.tf/mlp-vectorclub-api-types';
+import { IncomingMessage } from 'http';
+
 import { ColorGuideService, defaultServices } from 'src/services';
 import { NullableProps } from 'src/types';
 import { requestPromiseMapper } from 'src/utils';

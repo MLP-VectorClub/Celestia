@@ -27,10 +27,8 @@ export const ColorTextEditor: FC<PropTypes> = ({ value, onChange, label, invalid
       <pre ref={highlightRef} className={styles.highlight} aria-hidden="true">
         <code>
           {value.split('\n').map((line, index) => (
-             
             <span key={index}>
               {tokenizeColorLine(line).map((token, i) => (
-                 
                 <span key={i} className={token.kind === 'plain' ? undefined : styles[token.kind]}>
                   {token.text}
                 </span>

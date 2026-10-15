@@ -1,10 +1,10 @@
+import { PostItem, ShowListItem } from '@went.tf/mlp-vectorclub-api-types';
 import Axios from 'axios';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { FC, useState } from 'react';
 import { Alert, Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
-import { PostItem, ShowListItem } from '@went.tf/mlp-vectorclub-api-types';
 import postStyles from 'modules/PostList.module.scss';
 import { ImageZoomLink } from 'src/components/shared/ImageZoomLink';
 import InlineIcon from 'src/components/shared/InlineIcon';

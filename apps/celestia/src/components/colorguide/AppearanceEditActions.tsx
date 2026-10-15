@@ -1,9 +1,9 @@
+import { DetailedAppearance } from '@went.tf/mlp-vectorclub-api-types';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
 import { Alert, Button } from 'reactstrap';
 
-import { DetailedAppearance } from '@went.tf/mlp-vectorclub-api-types';
 import { AppearanceMetaDialog } from 'src/components/colorguide/AppearanceMetaDialog';
 import { AppearanceRelationsDialog } from 'src/components/colorguide/AppearanceRelationsDialog';
 import { CutieMarkDialog } from 'src/components/colorguide/CutieMarkDialog';

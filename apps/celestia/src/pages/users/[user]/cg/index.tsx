@@ -1,3 +1,4 @@
+import { GetUsersIdPersonalGuideAppearancesResult, GetUsersIdResult } from '@went.tf/mlp-vectorclub-api-types';
 import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -5,7 +6,6 @@ import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 import { Button } from 'reactstrap';
 
-import { GetUsersIdPersonalGuideAppearancesResult, GetUsersIdResult } from '@went.tf/mlp-vectorclub-api-types';
 import { AppearanceCreateButton } from 'src/components/colorguide/AppearanceCreateButton';
 import AppearanceItem from 'src/components/colorguide/AppearanceItem';
 import { useColorCopyWidget } from 'src/components/colorguide/ColorCopyWidget';

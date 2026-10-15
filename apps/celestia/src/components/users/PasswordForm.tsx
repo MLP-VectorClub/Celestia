@@ -84,7 +84,12 @@ export const PasswordForm: FC<{ passwordSet: boolean }> = ({ passwordSet }) => {
               onChange={(e) => setNext(e.target.value)}
               invalid={Boolean(errors.newPassword)}
             />
-            <Button type="button" color="ui" id={revealed ? 'hide-new-password' : 'reveal-new-password'} onClick={() => setRevealed(!revealed)}>
+            <Button
+              type="button"
+              color="ui"
+              id={revealed ? 'hide-new-password' : 'reveal-new-password'}
+              onClick={() => setRevealed(!revealed)}
+            >
               <InlineIcon icon={revealed ? 'eye-slash' : 'eye'} first />
               {t(revealed ? 'users.account.password.conceal' : 'users.account.password.reveal')}
             </Button>

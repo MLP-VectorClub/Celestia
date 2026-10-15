@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-
 import { GetAboutMembersResult } from '@went.tf/mlp-vectorclub-api-types';
+
 import { membersFetcher, usersFetcher } from 'src/fetchers';
 import { ENDPOINTS, mapQueryStatus } from 'src/utils';
 

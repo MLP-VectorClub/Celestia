@@ -1,6 +1,3 @@
-import { IncomingMessage } from 'http';
-import { GetServerSidePropsContext } from 'next';
-
 import {
   GetPostsResult,
   GetShowIdAdjacentResult,
@@ -9,6 +6,9 @@ import {
   GetShowReservationInfoResult,
   ShowListItem,
 } from '@went.tf/mlp-vectorclub-api-types';
+import { IncomingMessage } from 'http';
+import { GetServerSidePropsContext } from 'next';
+
 import { ShowEntryPageProps, showTitleFactory } from 'src/components/show/ShowEntryPage';
 import {
   latestShowFetcher,

@@ -1,8 +1,8 @@
+import { DetailedAppearance } from '@went.tf/mlp-vectorclub-api-types';
 import { useTranslations } from 'next-intl';
 import { FC, useState } from 'react';
 import { FormGroup, Input, Label } from 'reactstrap';
 
-import { DetailedAppearance } from '@went.tf/mlp-vectorclub-api-types';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { FormDialog } from 'src/components/shared/dialogs/FormDialog';
 import { describeApiError, useApiMutation } from 'src/hooks';

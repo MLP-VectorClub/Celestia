@@ -1,9 +1,9 @@
 import { useQueryClient } from '@tanstack/react-query';
+import { UserProfile } from '@went.tf/mlp-vectorclub-api-types';
 import { useTranslations } from 'next-intl';
 import { FC, MouseEvent } from 'react';
 import { Alert, Button } from 'reactstrap';
 
-import { UserProfile } from '@went.tf/mlp-vectorclub-api-types';
 import ExternalLink from 'src/components/shared/ExternalLink';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import TimeAgo from 'src/components/shared/TimeAgo';

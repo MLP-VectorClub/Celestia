@@ -1,10 +1,10 @@
+import { GetColorGuideMajorChangesResult, GuideName } from '@went.tf/mlp-vectorclub-api-types';
 import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { Table } from 'reactstrap';
 
-import { GetColorGuideMajorChangesResult, GuideName } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/GuideChangesPage.module.scss';
 import { AppearanceLink } from 'src/components/colorguide/AppearanceLink';
 import { GuideNotFound } from 'src/components/colorguide/GuideNotFound';

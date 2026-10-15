@@ -1,8 +1,8 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { ShowListItem } from '@went.tf/mlp-vectorclub-api-types';
 import { useTranslations } from 'next-intl';
 import { FC, useState } from 'react';
 
-import { ShowListItem } from '@went.tf/mlp-vectorclub-api-types';
 import { IconButton } from 'src/components/shared/IconButton';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { ShowFormDialog } from 'src/components/show/ShowFormDialog';

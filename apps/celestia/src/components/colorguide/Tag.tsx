@@ -1,9 +1,9 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { GuideName, SlimGuideTag } from '@went.tf/mlp-vectorclub-api-types';
 import classNames from 'classnames';
 import Link from 'next/link';
 import { FC, ReactNode, memo } from 'react';
 
-import { GuideName, SlimGuideTag } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/Tag.module.scss';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { PATHS } from 'src/paths';

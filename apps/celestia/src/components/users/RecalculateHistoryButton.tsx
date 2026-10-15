@@ -23,7 +23,13 @@ export const RecalculateHistoryButton: FC<{ userId: number }> = ({ userId }) => 
         size="sm"
         disabled={recalc.isPending}
         onClick={async () => {
-          if (await confirm({ title: t('users.pointHistory.recalculate'), body: t('users.staffTools.recalculate'), confirmLabel: t('users.pointHistory.recalculate') })) {
+          if (
+            await confirm({
+              title: t('users.pointHistory.recalculate'),
+              body: t('users.staffTools.recalculate'),
+              confirmLabel: t('users.pointHistory.recalculate'),
+            })
+          ) {
             recalc.mutate();
           }
         }}

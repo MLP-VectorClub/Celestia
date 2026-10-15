@@ -1,10 +1,10 @@
+import { GetAppearancesIdResult } from '@went.tf/mlp-vectorclub-api-types';
 import { StatusCodes } from 'http-status-codes';
 import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { GetAppearancesIdResult } from '@went.tf/mlp-vectorclub-api-types';
 import Content from 'src/components/shared/Content';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import StandardHeading from 'src/components/shared/StandardHeading';

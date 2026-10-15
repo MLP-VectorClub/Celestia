@@ -1,8 +1,8 @@
+import { ShowListItem } from '@went.tf/mlp-vectorclub-api-types';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { FC, useState } from 'react';
 
-import { ShowListItem } from '@went.tf/mlp-vectorclub-api-types';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { LocalTime } from 'src/components/shared/LocalTime';
 import { ShowRowActions } from 'src/components/show/ShowRowActions';

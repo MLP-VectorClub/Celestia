@@ -1,8 +1,8 @@
+import { UserProfile } from '@went.tf/mlp-vectorclub-api-types';
 import { useTranslations } from 'next-intl';
 import { FC, useState } from 'react';
 import { Button } from 'reactstrap';
 
-import { UserProfile } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/ProfilePage.module.scss';
 import AvatarWrap from 'src/components/shared/AvatarWrap';
 import InlineIcon from 'src/components/shared/InlineIcon';
@@ -39,7 +39,14 @@ export const ProfileBriefing: FC<{ profile: UserProfile }> = ({ profile }) => {
           {profile.deviantArtUrl && (
             <Tooltipped title={t('users.profile.visitDa')}>
               {(ref) => (
-                <a className={styles.da} href={profile.deviantArtUrl!} ref={ref} aria-label={t('users.profile.visitDa')} target="_blank" rel="noopener noreferrer">
+                <a
+                  className={styles.da}
+                  href={profile.deviantArtUrl!}
+                  ref={ref}
+                  aria-label={t('users.profile.visitDa')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <DeviantArtLogo />
                 </a>
               )}

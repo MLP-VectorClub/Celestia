@@ -1,8 +1,8 @@
+import { GetAboutMembersResult } from '@went.tf/mlp-vectorclub-api-types';
 import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
-import { GetAboutMembersResult } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/UsersIndexPage.module.scss';
 import Content from 'src/components/shared/Content';
 import StandardHeading, { StandardHeadingProps } from 'src/components/shared/StandardHeading';

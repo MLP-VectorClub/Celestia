@@ -1,6 +1,5 @@
-import { range, uniq } from 'lodash';
-
 import { Pagination } from '@went.tf/mlp-vectorclub-api-types';
+import { range, uniq } from 'lodash';
 
 export const GO_TO_ITEM = '\u{2026}';
 

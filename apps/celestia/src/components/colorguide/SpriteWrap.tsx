@@ -1,10 +1,10 @@
 import { useQueryClient } from '@tanstack/react-query';
+import { Sprite } from '@went.tf/mlp-vectorclub-api-types';
 import classNames from 'classnames';
 import { useTranslations } from 'next-intl';
 import { FC, useRef, useState } from 'react';
 import { Alert } from 'reactstrap';
 
-import { Sprite } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/SpriteWrap.module.scss';
 import { SpriteDialog } from 'src/components/colorguide/SpriteDialog';
 import SpriteImage from 'src/components/colorguide/SpriteImage';

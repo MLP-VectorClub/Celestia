@@ -1,8 +1,8 @@
+import { Color } from '@went.tf/mlp-vectorclub-api-types';
 import classNames from 'classnames';
 import { useTranslations } from 'next-intl';
 import { FC, KeyboardEvent, MouseEvent, RefObject, useEffect, useRef, useState } from 'react';
 
-import { Color } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/ColorSquare.module.scss';
 import { RgbValuesDialog } from 'src/components/colorguide/RgbValuesDialog';
 import { useColorCopySettings } from 'src/hooks/color-copy';
@@ -44,7 +44,11 @@ const ColorSquare: FC<PropTypes> = ({ color, compact = false, innerRef, path = [
   return (
     <>
       <span
-        className={classNames(styles.colorSquare, { [styles.compactColorSquare]: compact, [styles.copied]: feedback === 'copied', [styles.failed]: feedback === 'failed' })}
+        className={classNames(styles.colorSquare, {
+          [styles.compactColorSquare]: compact,
+          [styles.copied]: feedback === 'copied',
+          [styles.failed]: feedback === 'failed',
+        })}
         style={{ backgroundColor: hex ?? undefined }}
         ref={innerRef}
         {...(interactive

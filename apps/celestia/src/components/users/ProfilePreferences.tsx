@@ -1,18 +1,18 @@
 import { useQueryClient } from '@tanstack/react-query';
+import { UserProfile } from '@went.tf/mlp-vectorclub-api-types';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { FC, useEffect, useState } from 'react';
 import { Button, Input } from 'reactstrap';
 
-import { UserProfile } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/ProfilePage.module.scss';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { describeApiError, useApiMutation, useAuth, useUserPrefs } from 'src/hooks';
 import { userPrefsKey } from 'src/hooks/prefs';
 import { PATHS } from 'src/paths';
 import { AccountService } from 'src/services/account';
-import { ENDPOINTS } from 'src/utils';
 import { UserPrefs } from 'src/types/api-alias';
+import { ENDPOINTS } from 'src/utils';
 
 type Key = keyof UserPrefs;
 type Kind = 'checkbox' | 'number' | 'guide' | 'vectorapp';
@@ -37,7 +37,13 @@ const SECTIONS: Array<{ id: 'cg' | 'ep' | 'personal' | 'limits'; fields: Field[]
       { key: 'cg_nutshell', kind: 'checkbox' },
     ],
   },
-  { id: 'ep', fields: [{ key: 'ep_noappprev', kind: 'checkbox' }, { key: 'ep_revstepbtn', kind: 'checkbox' }] },
+  {
+    id: 'ep',
+    fields: [
+      { key: 'ep_noappprev', kind: 'checkbox' },
+      { key: 'ep_revstepbtn', kind: 'checkbox' },
+    ],
+  },
   {
     id: 'personal',
     fields: [
@@ -50,7 +56,10 @@ const SECTIONS: Array<{ id: 'cg' | 'ep' | 'personal' | 'limits'; fields: Field[]
   {
     id: 'limits',
     staffSaves: true,
-    fields: (['a_pcgearn', 'a_pcgmake', 'a_pcgsprite', 'a_postreq', 'a_postres', 'a_reserve'] as Key[]).map((key) => ({ key, kind: 'checkbox' as const })),
+    fields: (['a_pcgearn', 'a_pcgmake', 'a_pcgsprite', 'a_postreq', 'a_postres', 'a_reserve'] as Key[]).map((key) => ({
+      key,
+      kind: 'checkbox' as const,
+    })),
   },
 ];
 
@@ -62,7 +71,8 @@ type Value = boolean | number | string | null;
 const PrefForm: FC<{ field: Field; userId: number; stored: Value; canSave: boolean }> = ({ field, userId, stored, canSave }) => {
   const t = useTranslations();
   const queryClient = useQueryClient();
-  const initial = (): Value => (field.kind === 'checkbox' ? Boolean(stored) : field.kind === 'number' ? Number(stored ?? 7) : (stored ?? '') as string);
+  const initial = (): Value =>
+    field.kind === 'checkbox' ? Boolean(stored) : field.kind === 'number' ? Number(stored ?? 7) : ((stored ?? '') as string);
   const [value, setValue] = useState<Value>(initial);
   useEffect(() => setValue(initial()), [stored]); // eslint-disable-line react-hooks/exhaustive-deps
   const { user } = useAuth();
@@ -71,7 +81,8 @@ const PrefForm: FC<{ field: Field; userId: number; stored: Value; canSave: boole
       void queryClient.invalidateQueries({ queryKey: [userPrefsKey(userId)] });
       if (user.id === userId) void queryClient.invalidateQueries({ queryKey: [ENDPOINTS.USER_PREFS_ME()] });
       // What a few of them change shows in the profile and the sidebar right away
-      if (['p_vectorapp', 'p_hidepcg'].includes(field.key)) void queryClient.invalidateQueries({ queryKey: [ENDPOINTS.USER_PROFILE({ id: userId })] });
+      if (['p_vectorapp', 'p_hidepcg'].includes(field.key))
+        void queryClient.invalidateQueries({ queryKey: [ENDPOINTS.USER_PROFILE({ id: userId })] });
     },
   });
   const changed = value !== initial();
@@ -87,9 +98,26 @@ const PrefForm: FC<{ field: Field; userId: number; stored: Value; canSave: boole
     field.kind === 'checkbox' ? (
       <Input id={id} type="checkbox" checked={Boolean(value)} disabled={!canSave} onChange={(e) => setValue(e.target.checked)} />
     ) : field.kind === 'number' ? (
-      <Input id={id} type="number" min={7} max={20} step={1} style={{ width: '5rem' }} value={String(value)} disabled={!canSave} onChange={(e) => setValue(Number(e.target.value))} />
+      <Input
+        id={id}
+        type="number"
+        min={7}
+        max={20}
+        step={1}
+        style={{ width: '5rem' }}
+        value={String(value)}
+        disabled={!canSave}
+        onChange={(e) => setValue(Number(e.target.value))}
+      />
     ) : field.kind === 'guide' ? (
-      <Input id={id} type="select" style={{ width: 'auto' }} value={String(value)} disabled={!canSave} onChange={(e) => setValue(e.target.value)}>
+      <Input
+        id={id}
+        type="select"
+        style={{ width: 'auto' }}
+        value={String(value)}
+        disabled={!canSave}
+        onChange={(e) => setValue(e.target.value)}
+      >
         <option value="">{t('users.prefs.cg_defaultguideNone')}</option>
         <optgroup label={t('users.prefs.guides')}>
           <option value="pony">Friendship is Magic</option>
@@ -97,10 +125,23 @@ const PrefForm: FC<{ field: Field; userId: number; stored: Value; canSave: boole
         </optgroup>
       </Input>
     ) : (
-      <Input id={id} type="select" style={{ width: 'auto' }} value={String(value)} disabled={!canSave} onChange={(e) => setValue(e.target.value)}>
+      <Input
+        id={id}
+        type="select"
+        style={{ width: 'auto' }}
+        value={String(value)}
+        disabled={!canSave}
+        onChange={(e) => setValue(e.target.value)}
+      >
         {VECTOR_APPS.map((app) => (
           <option key={app} value={app}>
-            {app === '' ? t('users.prefs.p_vectorappNone') : app === 'illustrator' ? 'Adobe Illustrator' : app === 'inkscape' ? 'Inkscape' : 'Ponyscape'}
+            {app === ''
+              ? t('users.prefs.p_vectorappNone')
+              : app === 'illustrator'
+                ? 'Adobe Illustrator'
+                : app === 'inkscape'
+                  ? 'Inkscape'
+                  : 'Ponyscape'}
           </option>
         ))}
       </Input>
@@ -159,7 +200,13 @@ export const ProfilePreferences: FC<{ profile: UserProfile }> = ({ profile }) =>
             </h3>
             {prefs ? (
               fields.map((field) => (
-                <PrefForm key={field.key} field={field} userId={userId} stored={prefs[field.key] as Value} canSave={section.staffSaves ? isStaff : profile.sameUser} />
+                <PrefForm
+                  key={field.key}
+                  field={field}
+                  userId={userId}
+                  stored={prefs[field.key] as Value}
+                  canSave={section.staffSaves ? isStaff : profile.sameUser}
+                />
               ))
             ) : (
               <p className="text-muted">{t('users.staffTools.loading')}</p>

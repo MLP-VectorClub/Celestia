@@ -1,9 +1,9 @@
+import { GetShowRequest, GetShowResult } from '@went.tf/mlp-vectorclub-api-types';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import { FC, useMemo } from 'react';
 import { Table } from 'reactstrap';
 
-import { GetShowRequest, GetShowResult } from '@went.tf/mlp-vectorclub-api-types';
 import Pagination from 'src/components/shared/Pagination';
 import { ShowListItemRow } from 'src/components/show/ShowEntriesTableRow';
 import { useShowList } from 'src/hooks/show';

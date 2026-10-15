@@ -1,8 +1,8 @@
+import { PostItem } from '@went.tf/mlp-vectorclub-api-types';
 import { useTranslations } from 'next-intl';
 import { FC, useState } from 'react';
 import { FormGroup, Input, Label } from 'reactstrap';
 
-import { PostItem } from '@went.tf/mlp-vectorclub-api-types';
 import { FormDialog } from 'src/components/shared/dialogs/FormDialog';
 import { describeApiError, fieldErrors, useApiMutation } from 'src/hooks';
 import { PostService } from 'src/services/posts';

@@ -1,10 +1,10 @@
 import { useQueryClient } from '@tanstack/react-query';
+import { SlimGuideTag, TagListItem } from '@went.tf/mlp-vectorclub-api-types';
 import Axios from 'axios';
 import { useTranslations } from 'next-intl';
 import { FC, useState } from 'react';
 import { Alert, Button } from 'reactstrap';
 
-import { SlimGuideTag, TagListItem } from '@went.tf/mlp-vectorclub-api-types';
 import { TagFormDialog } from 'src/components/colorguide/TagAdmin';
 import { ActionMenu } from 'src/components/shared/ActionMenu';
 import InlineIcon from 'src/components/shared/InlineIcon';

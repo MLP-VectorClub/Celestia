@@ -8,15 +8,15 @@ contract, write conventions, shared components); where a status in them disagree
 Deployed to https://next.mlpvector.club: Celestia (Next.js), Luna (Laravel API) and Muffins (websocket server). Winterchilla still serves the old site; the shared database
 cutover has not happened (DeviantArt token sync in Luna stays off until it). The "work in progress" banner is still on.
 
-| Area | State |
-|---|---|
-| Public pages (guide, full list, changes, tags, appearance, shows, episodes, events, users, profile, personal guide, about) | ✅ built, see §2 |
-| Member flows (reserve, finish, approve, take over an overdue reservation, requests, voting, account, Discord, preferences) | ✅ |
-| Guide editing (metadata, inline tag editor, sprite, cutie marks, color groups, relations, shows, order, selective wipe, share links of private appearances) | ✅ |
-| Staff / admin (tags, shows, roles, PCG points, logs, notices, useful links, PCG appearance list, settings dialogs, developer tools, websocket diagnostics) | ✅ |
-| Client tools (blending, blending reverser, color picker) | ✅ |
-| Sitewide (notices, sidebar links, notifications over REST and websocket, "happening soon", Discord invitation rules, deploy banner, updating page) | ✅ |
-| Side-by-side visual comparison with the old site | 🟡 done page by page until 2026-10-06, see `ui-parity-plan.md` for which pages have not been compared |
+| Area                                                                                                                                                        | State                                                                                                 |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Public pages (guide, full list, changes, tags, appearance, shows, episodes, events, users, profile, personal guide, about)                                  | ✅ built, see §2                                                                                      |
+| Member flows (reserve, finish, approve, take over an overdue reservation, requests, voting, account, Discord, preferences)                                  | ✅                                                                                                    |
+| Guide editing (metadata, inline tag editor, sprite, cutie marks, color groups, relations, shows, order, selective wipe, share links of private appearances) | ✅                                                                                                    |
+| Staff / admin (tags, shows, roles, PCG points, logs, notices, useful links, PCG appearance list, settings dialogs, developer tools, websocket diagnostics)  | ✅                                                                                                    |
+| Client tools (blending, blending reverser, color picker)                                                                                                    | ✅                                                                                                    |
+| Sitewide (notices, sidebar links, notifications over REST and websocket, "happening soon", Discord invitation rules, deploy banner, updating page)          | ✅                                                                                                    |
+| Side-by-side visual comparison with the old site                                                                                                            | 🟡 done page by page until 2026-10-06, see `ui-parity-plan.md` for which pages have not been compared |
 
 **Verification numbers.** Winterchilla's browser suite against Celestia and Luna (`Winterchilla/scripts/ui-test-celestia.sh`): 112 passed, 0 failed. The tests that only make sense on
 the old site (`winterchilla-only`: 21 tests or files, three of them whole files (the dialog test page and the DeviantArt and Discord sign-in flows through the old fake OAuth provider), the rest drive its own DOM, `/components`, `/docs`, diagnose and browser pages) are left out; 17 `celestia-only` tests cover
@@ -24,6 +24,7 @@ Celestia's own versions of the editor flows (dialogs, tag editor, relations, sha
 tests), 30.8 % of lines. Luna: 289 tests.
 
 **Open items (known, 2026-10-10)**
+
 - Private appearances: the share link, the page, its sprite, PNG and swatch files and the cutie mark downloads work with the token, and the owner can generate a new link (✅ built 2026-10-10).
   What the old site did not do either: a visitor who arrived with a token does not get the token in their own Share button (only people who may edit do).
 - Staff "Add new appearance" in another user's personal guide: Luna's `POST /appearances` creates in the caller's own guide, so this needs an API change (the old API had no owner parameter either).
@@ -41,6 +42,7 @@ the browser recognition page (`/browser`, `/about/browser` redirect to `/about/c
 reservation as staff (the old site only offered it to other members).
 
 Ground rules
+
 - UI is built from **data**. Fields Winterchilla marks as UI details (`li`, `html`, `cgs`, `section`, `render`, `list`, `suggestion`,
   `entryHtml`, `newhtml`, `button`, `pendingReservations`, `cmList`, `changes`, `update`, `notes` in color-group responses, …) are ignored.
   After a write we **refetch the data** (React Query invalidation) instead of splicing server HTML.
@@ -57,6 +59,7 @@ components (`Appearance*` helper types such as `AppearanceOnly`, `AppearancePrev
 gone; `PreviewAppearance` now requires `previewData`), `SidebarUserInfo`/`authSlice` (`/users/me` shape), `SidebarUsefulLinks`.
 
 Decisions from the Winterchilla side:
+
 - **Auth belongs to Luna** (`/sanctum/csrf-cookie`, `/users/signin`, `/users/oauth/signin/{provider}`, `POST /users`, `/users/tokens`, `/about/sleep`) and is not
   in the contract; Celestia's existing sign-in code stays Luna-shaped and its auth types must be hand-written (or from Luna's own spec), not from
   Winterchilla's `api.json`. `POST /users/signout` is the one shared endpoint. Read `security: SessionCookie` as "signed in".
@@ -110,7 +113,8 @@ Built: `useApiMutation` (API errors become `UnifiedErrorResponse`, `describeApiE
 `FormDialog`, `PostService`, post actions on every post (reserve, mark finished with the reserver-overwrite retry, approve, unfinish, remove approval, cancel
 reservation, delete request) driven by `getPostActions` (unit tested), add request / add reservation dialogs with image check, and voting on aired episodes.
 Verified request shapes and conflicts with a Sanctum-style cookie + `X-XSRF-TOKEN` client against the seeded API (through a throwaway proxy that turns the header into
-Winterchilla's `CSRF_TOKEN` parameter); the UI itself was not clicked through (no browser extension available). Also built: the account page (`/users/[user]/account`: preference switches/selects through `PUT /users/{id}/preferences/{key}`, Discord sync/unlink, sign out everywhere; password and e-mail stay with Luna). Its content is client-rendered (auth state is not available during SSR yet), so it was only checked for compilation and the SSR shell. 
+Winterchilla's `CSRF_TOKEN` parameter); the UI itself was not clicked through (no browser extension available). Also built: the account page (`/users/[user]/account`: preference switches/selects through `PUT /users/{id}/preferences/{key}`, Discord sync/unlink, sign out everywhere; password and e-mail stay with Luna). Its content is client-rendered (auth state is not available during SSR yet), so it was only checked for compilation and the SSR shell.
+
 ### Phase 3 status (2026-10-01)
 
 Built (guide editing on the appearance page, gated by `canEdit` / staff role): metadata (always sends the current `guide`: omitting it moves the appearance to a
@@ -119,64 +123,64 @@ related appearances and linked shows (transfer list). Not done: cutie mark edito
 tag admin, show admin, user role / PCG points, logs, notices, useful links, settings.
 Checked: request bodies of these flows against Luna (`:8766`, bearer token) and Winterchilla (`:8768` through the CSRF proxy); UI not clicked through.
 
-
 ## 2. Page inventory (current)
 
 Legend: ✅ built and checked against the old behavior · 🟡 built, differs in a way noted · ❌ missing · ⛔ not ported on purpose.
 
 ### Public / guest pages
 
-| Winterchilla route | Celestia | Notes |
-|---|---|---|
-| `/` homepage redirect | ✅ `pages/index.ts` | preference `cg_defaultguide` / `p_homelastep` |
-| `/about`, `/about/privacy`, `/about/connection` | ✅ | `/about/browser`, `/browser` redirect to `/about/connection` |
-| `/show` (+`/episodes/{page}`, `/movies/{page}`) | ✅ | the page routes redirect to `/show?page=` |
-| `/episode/{S#E#}`, `/episode/{id}-slug`, `/episode/latest`, `/movie/{id}`, `/{st}/{id}` | ✅ `episode`, `movie`, `short`, `special`, `show/[id]` | canonical redirects; request / reservation lists, voting, reserver pill, overdue takeover |
-| `/events`, `/events/{page}`, `/event/{id}` | ✅ | entry cards with edit and withdraw for the author and staff (creating entries is disabled on both sides) |
-| `/cg` (index), `/cg/{guide}`, `/cg/{guide}/full`, `/cg/{guide}/changes/{page}` | ✅ | list items with sprite ⋯ menu, tags, buttons; full list with sort menu and staff reorder |
-| `/cg/{guide}/v/{id}-slug` (+ short `/cg/v/{id}`) | ✅ | related shows and appearances, inline tag editor, share link (with the token for private ones), 300px sprite from the 600px file |
-| `/cg/{guide}/tags/{page}` | ✅ | staff tag admin |
-| `/cg/{guide}/tag-changes/{id}` | ⛔ | an unfinished stub on the old site (always 404) |
-| `/cg/{guide}/preferred` | 🟡 | `/cg/preferred` redirects to `/cg` |
-| `/blending`, `/cg/blending`, `/cg/blending-reverse`, `/cg/picker`, `/cg/picker/frame` | ✅ | old addresses redirect |
-| `/cg/cutiemark/{id}.svg`, `/cg/cutiemark/download/{id}` | ✅ | proxied from Luna, takes the share token |
-| `/cg/v/{id}.png|.svg|.json|.gpl` (exports) | ✅ | rewritten to Luna's `/appearances/{id}/image` and `/palette` |
-| `/s/{id}` post share link | ✅ | `GET /posts/{id}/location`, the post is highlighted on arrival |
-| `/users`, `/users/{id}`, `/@name`, `/u/{name}`, `/{u|settings}` | ✅ | profile with briefing, contributions, personal guide, pending reservations, preferences |
-| `/users/{id}/contrib/{type}/{page}` | ✅ | |
-| `/users/{id}/cg/{page}`, `/users/{id}/cg/{point,slot}-history/{page}`, `/users/{id}/cg/{guide}/v/{id}` | ✅ | slot history redirects to point history |
-| `/users/{id}/account`, `/users/verify` | ✅ | sessions, security, Discord, DeviantArt, preferences |
-| `/da-auth*`, `/discord-connect/*` | ✅ | Luna's OAuth (`/oauth/[provider]`), old routes redirect |
-| `/manifest`, `/muffin-rating` | ✅ | |
-| `/docs`, `/components`, `/diagnose/*`, `/test-*` | ⛔ | `/docs` redirects to Luna's API docs; `/test-login/{id}` exists for browser tests only (`E2E_TEST_LOGIN=1`) |
+| Winterchilla route                                                                                     | Celestia                                               | Notes                                                                                                                            |
+| ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| `/` homepage redirect                                                                                  | ✅ `pages/index.ts`                                    | preference `cg_defaultguide` / `p_homelastep`                                                                                    |
+| `/about`, `/about/privacy`, `/about/connection`                                                        | ✅                                                     | `/about/browser`, `/browser` redirect to `/about/connection`                                                                     |
+| `/show` (+`/episodes/{page}`, `/movies/{page}`)                                                        | ✅                                                     | the page routes redirect to `/show?page=`                                                                                        |
+| `/episode/{S#E#}`, `/episode/{id}-slug`, `/episode/latest`, `/movie/{id}`, `/{st}/{id}`                | ✅ `episode`, `movie`, `short`, `special`, `show/[id]` | canonical redirects; request / reservation lists, voting, reserver pill, overdue takeover                                        |
+| `/events`, `/events/{page}`, `/event/{id}`                                                             | ✅                                                     | entry cards with edit and withdraw for the author and staff (creating entries is disabled on both sides)                         |
+| `/cg` (index), `/cg/{guide}`, `/cg/{guide}/full`, `/cg/{guide}/changes/{page}`                         | ✅                                                     | list items with sprite ⋯ menu, tags, buttons; full list with sort menu and staff reorder                                         |
+| `/cg/{guide}/v/{id}-slug` (+ short `/cg/v/{id}`)                                                       | ✅                                                     | related shows and appearances, inline tag editor, share link (with the token for private ones), 300px sprite from the 600px file |
+| `/cg/{guide}/tags/{page}`                                                                              | ✅                                                     | staff tag admin                                                                                                                  |
+| `/cg/{guide}/tag-changes/{id}`                                                                         | ⛔                                                     | an unfinished stub on the old site (always 404)                                                                                  |
+| `/cg/{guide}/preferred`                                                                                | 🟡                                                     | `/cg/preferred` redirects to `/cg`                                                                                               |
+| `/blending`, `/cg/blending`, `/cg/blending-reverse`, `/cg/picker`, `/cg/picker/frame`                  | ✅                                                     | old addresses redirect                                                                                                           |
+| `/cg/cutiemark/{id}.svg`, `/cg/cutiemark/download/{id}`                                                | ✅                                                     | proxied from Luna, takes the share token                                                                                         |
+| `/cg/v/{id}.png                                                                                        | .svg                                                   | .json                                                                                                                            | .gpl` (exports)                                                                         | ✅  | rewritten to Luna's `/appearances/{id}/image` and `/palette` |
+| `/s/{id}` post share link                                                                              | ✅                                                     | `GET /posts/{id}/location`, the post is highlighted on arrival                                                                   |
+| `/users`, `/users/{id}`, `/@name`, `/u/{name}`, `/{u                                                   | settings}`                                             | ✅                                                                                                                               | profile with briefing, contributions, personal guide, pending reservations, preferences |
+| `/users/{id}/contrib/{type}/{page}`                                                                    | ✅                                                     |                                                                                                                                  |
+| `/users/{id}/cg/{page}`, `/users/{id}/cg/{point,slot}-history/{page}`, `/users/{id}/cg/{guide}/v/{id}` | ✅                                                     | slot history redirects to point history                                                                                          |
+| `/users/{id}/account`, `/users/verify`                                                                 | ✅                                                     | sessions, security, Discord, DeviantArt, preferences                                                                             |
+| `/da-auth*`, `/discord-connect/*`                                                                      | ✅                                                     | Luna's OAuth (`/oauth/[provider]`), old routes redirect                                                                          |
+| `/manifest`, `/muffin-rating`                                                                          | ✅                                                     |                                                                                                                                  |
+| `/docs`, `/components`, `/diagnose/*`, `/test-*`                                                       | ⛔                                                     | `/docs` redirects to Luna's API docs; `/test-login/{id}` exists for browser tests only (`E2E_TEST_LOGIN=1`)                      |
 
 ### Staff / admin pages
 
-| Winterchilla route | Celestia | Notes |
-|---|---|---|
-| `/admin` | ✅ | index, developer OpenSearch status, recent posts |
-| `/admin/logs/{page}` (+ `/logs`) | ✅ | filters, entry details with the both / new / old switch |
-| `/admin/usefullinks`, `/admin/notices` | ✅ | |
-| `/admin/pcg-appearances/{page}` | 🟡 | built, not compared side by side |
-| `/admin/wsdiag` | ✅ | developer-only, live list of connected websocket clients with their origin |
-| Site settings (reservation rules, about reservations, developer role label) | ✅ | edited where they are shown (`ReservationTexts`, `DevRoleLabelDialog`) |
+| Winterchilla route                                                          | Celestia | Notes                                                                      |
+| --------------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------- |
+| `/admin`                                                                    | ✅       | index, developer OpenSearch status, recent posts                           |
+| `/admin/logs/{page}` (+ `/logs`)                                            | ✅       | filters, entry details with the both / new / old switch                    |
+| `/admin/usefullinks`, `/admin/notices`                                      | ✅       |                                                                            |
+| `/admin/pcg-appearances/{page}`                                             | 🟡       | built, not compared side by side                                           |
+| `/admin/wsdiag`                                                             | ✅       | developer-only, live list of connected websocket clients with their origin |
+| Site settings (reservation rules, about reservations, developer role label) | ✅       | edited where they are shown (`ReservationTexts`, `DevRoleLabelDialog`)     |
 
 ### Sitewide shell
 
-| Piece | Celestia | Notes |
-|---|---|---|
-| Notices banner | ✅ `Notices` | sanitized HTML |
-| Sidebar links | ✅ | guests get the `guest` links |
-| Header navigation | ✅ | Winterchilla's order, plus Events |
-| Sidebar notifications | ✅ | REST list plus websocket push (Muffins), unread count on the mobile toggler |
-| "Happening soon" | ✅ | `GET /show/upcoming` with a countdown |
-| Join Discord button | ✅ | hidden for users on the server (`discordServerMember` of `/users/me`) and for those who hid it |
-| Prefs | ✅ | `GET /user-prefs/me` |
-| Deploy banner / updating page | ✅ | asks for a reload instead of reloading, nginx serves the updating page while the app restarts |
+| Piece                         | Celestia     | Notes                                                                                          |
+| ----------------------------- | ------------ | ---------------------------------------------------------------------------------------------- |
+| Notices banner                | ✅ `Notices` | sanitized HTML                                                                                 |
+| Sidebar links                 | ✅           | guests get the `guest` links                                                                   |
+| Header navigation             | ✅           | Winterchilla's order, plus Events                                                              |
+| Sidebar notifications         | ✅           | REST list plus websocket push (Muffins), unread count on the mobile toggler                    |
+| "Happening soon"              | ✅           | `GET /show/upcoming` with a countdown                                                          |
+| Join Discord button           | ✅           | hidden for users on the server (`discordServerMember` of `/users/me`) and for those who hid it |
+| Prefs                         | ✅           | `GET /user-prefs/me`                                                                           |
+| Deploy banner / updating page | ✅           | asks for a reload instead of reloading, nginx serves the updating page while the app restarts  |
 
 ## 3. Global data: `/config`, auth, prefs
 
 **`GET /config`** replaces `export_vars`. Plan:
+
 - `src/fetchers/config.ts` + `ConfigService`; a `useConfig()` hook backed by React Query with `staleTime: Infinity`.
 - Fetch **once per server render in `_app` `getInitialProps`/store wrapper**, hydrate into the Redux `core` slice (so SSR output has patterns/roles
   on first paint and there is no client waterfall). Cache in-process on the Node side with a short TTL (the response is "the same for every
@@ -187,8 +191,8 @@ Legend: ✅ built and checked against the old behavior · 🟡 built, differs in
   we ever port live updates (not planned).
 - Add a unit test that every pattern in a fixture of `/config` compiles in JS (Winterchilla only proves PHP).
 
-**Auth.** The contract describes auth per endpoint and leaves the mechanism to Luna/Sanctum, but the *spec contains no endpoint to obtain a
-session or token* by design: Luna owns auth. Celestia keeps its Luna sign-in flow and treats auth as: forward the incoming `cookie`/`authorization` header (already done by
+**Auth.** The contract describes auth per endpoint and leaves the mechanism to Luna/Sanctum, but the _spec contains no endpoint to obtain a
+session or token_ by design: Luna owns auth. Celestia keeps its Luna sign-in flow and treats auth as: forward the incoming `cookie`/`authorization` header (already done by
 `Service.getRequestOptions`) and read the user from `GET /users/me`. Page-level gates use `GET /users/me` role and the per-resource `canEdit`/`canManage`/`canEnter`
 flags — never re-derive from roles (the contract's stated intent).
 
@@ -198,6 +202,7 @@ flags — never re-derive from roles (the contract's stated intent).
 ## 4. Write flows
 
 Conventions for every mutation (shared `useApiMutation` wrapper around axios + React Query):
+
 - JSON bodies are camelCase. The write API now accepts `application/json` as well as form-encoded everywhere, so **always send JSON** (the spec still
   lists form encoding on some operations: signout, role, points, prefs, useful-links order; lists of scalars are read as comma lists, nested values as JSON strings).
 - Status handling: `401` → open sign-in dialog and replay; `403` → toast + refetch permissions; `404` → refetch the list; `409` → conflict dialog
@@ -206,28 +211,28 @@ Conventions for every mutation (shared `useApiMutation` wrapper around axios + R
   response); `429`/`5xx` → toast with `message`.
 - Success: invalidate the owning query keys (`['post-list', showId, kind]`, `['appearance', id]`, `['tags']`, …). Never read `li`/`html`/`cgs`.
 
-| Flow | Endpoints | UI notes |
-|---|---|---|
-| Reserve / un-reserve | `POST/DELETE /posts/{id}/reservation` | button on `PostListItem`; 409 body has the current state → refetch |
-| Add request / reservation | `POST /posts` `{kind, showId, postas?, allowNonmember?}` (returns int `id`; ignore `idString`); `POST /posts/check-image` for the preview + title; `POST /posts/reservations` (staff, on behalf) | `PostCreateDialog`; check-image on blur; 409 `canForce` → confirm and resend with `allowNonmember` |
-| Edit post / change image | `GET/PUT /posts/{id}`, `PUT /posts/{id}/image` | edit dialog; type `chr|obj|bg` |
-| Finish / unfinish / unbind | `PUT/DELETE /posts/{id}/finish` (`deviation`, `allowOverwriteReserver`, `finishedAt`; `DELETE ?unbind`) | `retry` flag on 409 means "try again after the club-gallery sync" |
-| Approve / unapprove | `POST/DELETE /posts/{id}/approval` | staff-only unapprove; developer-only if still in the gallery (403 otherwise) |
-| Delete request, unbreak | `DELETE /posts/requests/{id}`, `POST /posts/{id}/unbreak` | write responses now carry `post` (`PostItem`) next to `li`: update the cache from `post`. The random-request suggestion is `x-internal`: pick one client-side from `GET /posts?showId&kind=request`. |
-| Vote | `GET/POST /show/{id}/vote` `{vote}` | refetch `GET …/vote` (data) afterwards |
-| Show create/edit/delete, link appearances | `GET /show/prefill`, `POST /show`, `PUT/DELETE /show/{id}`, `GET/PUT /show/{id}/appearances` | staff; "set" semantics (verb is `PUT`; the spec docblock typo was fixed) |
-| Appearance create/edit/delete/pin/template | `POST /appearances`, `GET /appearances/{id}/metadata` + `PUT/DELETE /appearances/{id}`, `POST/DELETE …/pin`, `POST …/template`, `DELETE …/contents` | `201` may return `{goto}` for PCG creation |
-| Appearance ordering | `PUT /appearances/order` (full list drag/drop, staff) | |
-| Color group edit | `POST /color-groups`, `GET/PUT/DELETE /color-groups/{id}`, `GET/PUT /appearances/{id}/color-groups/order` | see below |
-| Tags (appearance) | `GET/PUT /appearances/{id}/tags` (plain text `tags`, `origTags` for conflict detection), `GET /tags/autocomplete?s` | chips editor over the text format |
-| Tags (admin) | `GET /tags/autocomplete`, `POST /tags`, `GET/PUT/DELETE /tags/{id}` (`?sanityCheck`), `PUT/DELETE /tags/{id}/synonym`, `POST /tags/recount-uses` | `409 {uses}` → "used N times, delete anyway?" |
-| Sprite upload / remove | `POST /appearances/{id}/sprite` (multipart `sprite`), `DELETE …/sprite` | validate size against `config.maxUploadSize`; PCG owners may get 403 by preference |
-| Cutie marks | `GET/PUT /appearances/{id}/cutie-marks` (≤4), `POST …/sanitize-svg` (multipart `file`) | upload → sanitize → preview → `PUT` the list; keep the 4-mark limit client-side too |
-| Relations / linked shows | `GET/PUT /appearances/{id}/relations` (`ids`, `mutuals`), `GET/PUT /appearances/{id}/shows` | two-column "unlinked / linked" transfer-list component; `mutual` toggles on linked rows |
-| Personal guide | `GET /users/{id}/personal-guide/slots`, staff points `GET/POST …/points`, `POST …/point-history/recalculation` (dev) | |
-| Account | `POST /users/signout {everywhere}`, `PUT /users/{id}/preferences/{key}`, Discord `POST /users/{userId}/discord/sync`, `DELETE /users/{userId}/discord`; password/e-mail/sessions are Luna's (the Winterchilla equivalents are `x-internal`) | |
-| User admin | `PUT /users/{id}/role` (form `value`; `200 {alreadyIn}` vs `204`), `DELETE /users/{id}/contributions/cache` | `editableRoles` from the profile decides the options |
-| Staff site admin | notices, useful links, `PUT /settings/{key}`, `DELETE /admin/stat-cache` (dev), `POST /color-guide/reindex` + `GET /color-guide/export` (dev) | |
+| Flow                                       | Endpoints                                                                                                                                                                                                                                   | UI notes                                                                                                                                                                                             |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Reserve / un-reserve                       | `POST/DELETE /posts/{id}/reservation`                                                                                                                                                                                                       | button on `PostListItem`; 409 body has the current state → refetch                                                                                                                                   |
+| Add request / reservation                  | `POST /posts` `{kind, showId, postas?, allowNonmember?}` (returns int `id`; ignore `idString`); `POST /posts/check-image` for the preview + title; `POST /posts/reservations` (staff, on behalf)                                            | `PostCreateDialog`; check-image on blur; 409 `canForce` → confirm and resend with `allowNonmember`                                                                                                   |
+| Edit post / change image                   | `GET/PUT /posts/{id}`, `PUT /posts/{id}/image`                                                                                                                                                                                              | edit dialog; type `chr                                                                                                                                                                               | obj | bg` |
+| Finish / unfinish / unbind                 | `PUT/DELETE /posts/{id}/finish` (`deviation`, `allowOverwriteReserver`, `finishedAt`; `DELETE ?unbind`)                                                                                                                                     | `retry` flag on 409 means "try again after the club-gallery sync"                                                                                                                                    |
+| Approve / unapprove                        | `POST/DELETE /posts/{id}/approval`                                                                                                                                                                                                          | staff-only unapprove; developer-only if still in the gallery (403 otherwise)                                                                                                                         |
+| Delete request, unbreak                    | `DELETE /posts/requests/{id}`, `POST /posts/{id}/unbreak`                                                                                                                                                                                   | write responses now carry `post` (`PostItem`) next to `li`: update the cache from `post`. The random-request suggestion is `x-internal`: pick one client-side from `GET /posts?showId&kind=request`. |
+| Vote                                       | `GET/POST /show/{id}/vote` `{vote}`                                                                                                                                                                                                         | refetch `GET …/vote` (data) afterwards                                                                                                                                                               |
+| Show create/edit/delete, link appearances  | `GET /show/prefill`, `POST /show`, `PUT/DELETE /show/{id}`, `GET/PUT /show/{id}/appearances`                                                                                                                                                | staff; "set" semantics (verb is `PUT`; the spec docblock typo was fixed)                                                                                                                             |
+| Appearance create/edit/delete/pin/template | `POST /appearances`, `GET /appearances/{id}/metadata` + `PUT/DELETE /appearances/{id}`, `POST/DELETE …/pin`, `POST …/template`, `DELETE …/contents`                                                                                         | `201` may return `{goto}` for PCG creation                                                                                                                                                           |
+| Appearance ordering                        | `PUT /appearances/order` (full list drag/drop, staff)                                                                                                                                                                                       |                                                                                                                                                                                                      |
+| Color group edit                           | `POST /color-groups`, `GET/PUT/DELETE /color-groups/{id}`, `GET/PUT /appearances/{id}/color-groups/order`                                                                                                                                   | see below                                                                                                                                                                                            |
+| Tags (appearance)                          | `GET/PUT /appearances/{id}/tags` (plain text `tags`, `origTags` for conflict detection), `GET /tags/autocomplete?s`                                                                                                                         | chips editor over the text format                                                                                                                                                                    |
+| Tags (admin)                               | `GET /tags/autocomplete`, `POST /tags`, `GET/PUT/DELETE /tags/{id}` (`?sanityCheck`), `PUT/DELETE /tags/{id}/synonym`, `POST /tags/recount-uses`                                                                                            | `409 {uses}` → "used N times, delete anyway?"                                                                                                                                                        |
+| Sprite upload / remove                     | `POST /appearances/{id}/sprite` (multipart `sprite`), `DELETE …/sprite`                                                                                                                                                                     | validate size against `config.maxUploadSize`; PCG owners may get 403 by preference                                                                                                                   |
+| Cutie marks                                | `GET/PUT /appearances/{id}/cutie-marks` (≤4), `POST …/sanitize-svg` (multipart `file`)                                                                                                                                                      | upload → sanitize → preview → `PUT` the list; keep the 4-mark limit client-side too                                                                                                                  |
+| Relations / linked shows                   | `GET/PUT /appearances/{id}/relations` (`ids`, `mutuals`), `GET/PUT /appearances/{id}/shows`                                                                                                                                                 | two-column "unlinked / linked" transfer-list component; `mutual` toggles on linked rows                                                                                                              |
+| Personal guide                             | `GET /users/{id}/personal-guide/slots`, staff points `GET/POST …/points`, `POST …/point-history/recalculation` (dev)                                                                                                                        |                                                                                                                                                                                                      |
+| Account                                    | `POST /users/signout {everywhere}`, `PUT /users/{id}/preferences/{key}`, Discord `POST /users/{userId}/discord/sync`, `DELETE /users/{userId}/discord`; password/e-mail/sessions are Luna's (the Winterchilla equivalents are `x-internal`) |                                                                                                                                                                                                      |
+| User admin                                 | `PUT /users/{id}/role` (form `value`; `200 {alreadyIn}` vs `204`), `DELETE /users/{id}/contributions/cache`                                                                                                                                 | `editableRoles` from the profile decides the options                                                                                                                                                 |
+| Staff site admin                           | notices, useful links, `PUT /settings/{key}`, `DELETE /admin/stat-cache` (dev), `POST /color-guide/reindex` + `GET /color-guide/export` (dev)                                                                                               |                                                                                                                                                                                                      |
 
 **Color group editor (largest component).** Data comes from `GET /color-groups/{id}` (`PrivateColorGroup`) or empty for create; form model
 `{label, colors: [{id?, label, hex}], major, reason}`; `major` requires `reason`. Rules to port: hex validated with `config.patterns.hexColor`,
@@ -241,6 +246,7 @@ Existing and reusable: `Pagination`, `Content`, `StandardHeading`, `StatusAlert`
 `ColorSquare`, `ColorListItem`, `Tag`, `TimeAgo`, `Notices`, `Breadcrumbs`, `modals/AuthModal`.
 
 New:
+
 1. **Dialog system** — a promise-based `useDialog()` over reactstrap `Modal` (confirm, form, wait, details). Winterchilla's `Dialog/DialogTest` (21 cases)
    is the behavior spec: focus trap, Escape, stacked confirm, busy state disables buttons, error alert inside the dialog.
 2. **`useApiMutation` + `ApiError`** (status mapping in §4), **`FormField`** with 422 field mapping, `useConfig`.
@@ -289,6 +295,7 @@ cutover; no phase deploys.
 ## 8. API gaps: status after the Winterchilla answers (`1073e4fb`)
 
 Sent as G1–G10 on 2026-10-01; all answered.
+
 - **Fixed:** G1 (Discord sync/unlink documented; `/appearances/full`), G2 (`relatedAppearances`/`relatedShows`, `GET /useful-links`), G3 (envelope typing; `post` in post write
   responses; HTML-only operations marked `x-internal`), G5 (`GET /show/latest`, `season`/`episode` filters), G8 (camelCase fixes, int `id` + `idString`, JSON bodies, default security), G10.
 - **By design, not provided:** auth/session/token endpoints (Luna), sessions list (G4), `/u/{uuid}` (G6), appearance exports (G7), admin PCG / tag-changes / browser pages (G9).

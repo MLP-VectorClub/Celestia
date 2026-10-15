@@ -1,8 +1,8 @@
+import { UserProfile } from '@went.tf/mlp-vectorclub-api-types';
 import { useTranslations } from 'next-intl';
 import { FC, useState } from 'react';
 import { Alert, Button, FormGroup, FormText, Input, Label } from 'reactstrap';
 
-import { UserProfile } from '@went.tf/mlp-vectorclub-api-types';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import TimeAgo from 'src/components/shared/TimeAgo';
 import { describeApiError, fieldErrors, useApiMutation, useAuth } from 'src/hooks';

@@ -1,9 +1,3 @@
-import { useTranslations } from 'next-intl';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { FC, useMemo, useState } from 'react';
-import { Button } from 'reactstrap';
-
 import {
   GetPostsResult,
   GetShowIdAdjacentResult,
@@ -11,6 +5,12 @@ import {
   GetShowIdVoteResult,
   GetShowReservationInfoResult,
 } from '@went.tf/mlp-vectorclub-api-types';
+import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { FC, useMemo, useState } from 'react';
+import { Button } from 'reactstrap';
+
 import styles from 'modules/ShowEntry.module.scss';
 import { AppearanceLink } from 'src/components/colorguide/AppearanceLink';
 import Content from 'src/components/shared/Content';

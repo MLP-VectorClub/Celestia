@@ -1,6 +1,6 @@
+import { GetUserPrefsMeRequest } from '@went.tf/mlp-vectorclub-api-types';
 import { IncomingMessage } from 'http';
 
-import { GetUserPrefsMeRequest } from '@went.tf/mlp-vectorclub-api-types';
 import { UserService, defaultServices } from 'src/services';
 import { UserPrefs } from 'src/types/api-alias';
 import { requestPromiseMapper } from 'src/utils';

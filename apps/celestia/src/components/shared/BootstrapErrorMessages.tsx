@@ -1,7 +1,6 @@
+import { ValidationErrorResponse } from '@went.tf/mlp-vectorclub-api-types';
 import { FC } from 'react';
 import { FormFeedback } from 'reactstrap';
-
-import { ValidationErrorResponse } from '@went.tf/mlp-vectorclub-api-types';
 
 interface PropTypes {
   errors: ValidationErrorResponse['errors'];

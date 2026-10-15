@@ -1,6 +1,6 @@
+import { ValidationErrorResponse } from '@went.tf/mlp-vectorclub-api-types';
 import { FieldError, FieldErrors, FieldValues, ValidateResult } from 'react-hook-form';
 
-import { ValidationErrorResponse } from '@went.tf/mlp-vectorclub-api-types';
 import { Nullable, TFunction, UnifiedErrorResponse, UnifiedErrorResponseTypes } from 'src/types';
 
 import commonNs from '../../public/locales/en/common.json';

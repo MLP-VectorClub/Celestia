@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
+import { GetNoticesCurrentResult } from '@went.tf/mlp-vectorclub-api-types';
 import Axios from 'axios';
 import { useTranslations } from 'next-intl';
 import { useCallback, useEffect } from 'react';
 
-import { GetNoticesCurrentResult } from '@went.tf/mlp-vectorclub-api-types';
 import { csrfFetcher, usefulLinksFetcher } from 'src/fetchers';
 import { AppDispatch } from 'src/store';
 import { CoreSliceMirroredState } from 'src/store/slices';

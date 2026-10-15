@@ -1,9 +1,9 @@
+import { Appearance, CutieMark } from '@went.tf/mlp-vectorclub-api-types';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { FC } from 'react';
 import { Button, Card, CardBody } from 'reactstrap';
 
-import { Appearance, CutieMark } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/AppearanceCutieMarks.module.scss';
 import { CutieMarkPreview } from 'src/components/colorguide/CutieMarkPreview';
 import ButtonCollection from 'src/components/shared/ButtonCollection';

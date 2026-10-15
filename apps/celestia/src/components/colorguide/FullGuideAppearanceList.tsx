@@ -1,3 +1,4 @@
+import { SlimAppearance } from '@went.tf/mlp-vectorclub-api-types';
 import classNames from 'classnames';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
@@ -5,7 +6,6 @@ import Link from 'next/link';
 import { FC, JSX } from 'react';
 import { Card, CardBody } from 'reactstrap';
 
-import { SlimAppearance } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/FullGuideAppearanceList.module.scss';
 import { AppearancePreview } from 'src/components/colorguide/AppearancePreview';
 import { NutshellLabel } from 'src/components/colorguide/NutshellLabel';

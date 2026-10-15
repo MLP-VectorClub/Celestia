@@ -1,9 +1,9 @@
+import { GetUsersIdProfileResult, GetUsersIdResult } from '@went.tf/mlp-vectorclub-api-types';
 import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo } from 'react';
 
-import { GetUsersIdProfileResult, GetUsersIdResult } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/ProfilePage.module.scss';
 import Content from 'src/components/shared/Content';
 import StandardHeading from 'src/components/shared/StandardHeading';

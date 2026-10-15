@@ -16,7 +16,7 @@ pure logic in `src/utils/picker/` (unit tested), one component per UI part in `s
 - **Status bar:** hover hints (`data-info`), image coordinates under the pointer, color and opacity of the pixel under the pointer.
 - **Settings:** a few values in `localStorage` (sidebar width, copy-hash, levels dialog enabled), cleared from the Tools menu. Tabs and their images
   are not persisted.
-- **Levels (optional, off by default):** a low/high range that changes how the image *looks* without changing the colors the areas report. This is the
+- **Levels (optional, off by default):** a low/high range that changes how the image _looks_ without changing the colors the areas report. This is the
   only user of `canvas.hdr.js`, and the original warns about the "drastic performance decrease".
 - An About dialog.
 
@@ -136,6 +136,7 @@ The browser tests share `localStorage` with the app's settings, so they clear it
 
 The first version used a horizontal toolbar of text buttons and put everything in a card under the page heading. The old picker is a Photoshop-like
 window, and now the new one is laid out the same way:
+
 - The picker fills the page down to the footer (`useFillViewport`; the heading is visually hidden), near-black editor, dark chrome from CSS variables on `.dropZone`.
 - Menu bar (File, Tools, About, compact, light dropdowns, Tools also has "Adjust levels…") above the tab bar; each tab has a swatch with the color of
   its picking areas (click: `AreaColorDialog`, which replaced the "Area color" toolbar button), the name and ×.

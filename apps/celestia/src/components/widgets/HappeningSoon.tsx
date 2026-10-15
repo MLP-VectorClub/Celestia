@@ -1,9 +1,9 @@
+import { ShowListItem } from '@went.tf/mlp-vectorclub-api-types';
 import { addMonths, differenceInSeconds, format, formatDistanceToNowStrict } from 'date-fns';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { FC, useEffect, useState } from 'react';
 
-import { ShowListItem } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/HappeningSoon.module.scss';
 import { useUpcomingShows } from 'src/hooks';
 import { PATHS } from 'src/paths';

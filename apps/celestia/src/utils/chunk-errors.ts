@@ -22,6 +22,7 @@ export const isChunkLoadError = (error: unknown): boolean => {
 export const isBuildAssetFailure = (target: EventTarget | null): boolean => {
   if (!target || typeof (target as Element).tagName !== 'string') return false;
   const element = target as HTMLScriptElement | HTMLLinkElement;
-  const url = element.tagName === 'SCRIPT' ? (element as HTMLScriptElement).src : element.tagName === 'LINK' ? (element as HTMLLinkElement).href : '';
+  const url =
+    element.tagName === 'SCRIPT' ? (element as HTMLScriptElement).src : element.tagName === 'LINK' ? (element as HTMLLinkElement).href : '';
   return url !== '' && url.includes('/_next/static/');
 };

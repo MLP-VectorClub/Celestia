@@ -2,8 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useCallback } from 'react';
 
 import { prefsFetcher } from 'src/fetchers';
-import { UserPrefs } from 'src/types/api-alias';
 import { AccountService } from 'src/services/account';
+import { UserPrefs } from 'src/types/api-alias';
 import { ENDPOINTS } from 'src/utils';
 
 export function usePrefs(enabled: boolean): Partial<UserPrefs> | undefined {

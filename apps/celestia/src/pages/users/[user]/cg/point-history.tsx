@@ -1,3 +1,4 @@
+import { GetUsersIdPersonalGuidePointHistoryResult, GetUsersIdResult } from '@went.tf/mlp-vectorclub-api-types';
 import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -5,7 +6,6 @@ import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 import { Button } from 'reactstrap';
 
-import { GetUsersIdPersonalGuidePointHistoryResult, GetUsersIdResult } from '@went.tf/mlp-vectorclub-api-types';
 import ButtonCollection from 'src/components/shared/ButtonCollection';
 import Content from 'src/components/shared/Content';
 import InlineIcon from 'src/components/shared/InlineIcon';

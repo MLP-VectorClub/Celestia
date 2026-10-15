@@ -1,8 +1,8 @@
+import { PostItem } from '@went.tf/mlp-vectorclub-api-types';
 import classNames from 'classnames';
 import { useTranslations } from 'next-intl';
 import { FC, useRef, useState } from 'react';
 
-import { PostItem } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/PostList.module.scss';
 import { ImageZoomLink } from 'src/components/shared/ImageZoomLink';
 import LoadingRing from 'src/components/shared/LoadingRing';
@@ -100,9 +100,7 @@ export const DeviationImage: FC<{ post: PostItem; deviationId: string }> = ({ po
             onError={() => setLoaded(true)}
             hidden={!loaded}
           />
-          {loaded && post.approved && (
-            <span className={styles.approvedMark} title={t('show.post.approvedHint')} />
-          )}
+          {loaded && post.approved && <span className={styles.approvedMark} title={t('show.post.approvedHint')} />}
         </a>
       )}
       {!(deviation?.previewUrl && loaded) && <ImagePromise deviation />}

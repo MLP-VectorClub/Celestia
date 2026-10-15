@@ -1,6 +1,6 @@
+import { GetUsersMeResult, User } from '@went.tf/mlp-vectorclub-api-types';
 import { IncomingMessage } from 'http';
 
-import { GetUsersMeResult, User } from '@went.tf/mlp-vectorclub-api-types';
 import { UserService } from 'src/services';
 import { ResourceService } from 'src/services/resource';
 import { ENDPOINTS, requestPromiseMapper } from 'src/utils';

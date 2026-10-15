@@ -1,9 +1,9 @@
+import { GetShowIdAdjacentResult, ShowListItem } from '@went.tf/mlp-vectorclub-api-types';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { FC } from 'react';
 import { Button } from 'reactstrap';
 
-import { GetShowIdAdjacentResult, ShowListItem } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/ShowEntry.module.scss';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import { useShowAdjacent } from 'src/hooks';
@@ -32,7 +32,9 @@ export const EpisodeHeading: FC<PropTypes> = ({ show, initialAdjacent, addedBy }
   const adjacent = useShowAdjacent({ id: show.id }, initialAdjacent || undefined);
   return (
     <div className={styles.headingWrap}>
-      <div className={`${styles.side} ${styles.prev}`}>{adjacent?.previous && <AdjacentButton entry={adjacent.previous} direction="previous" />}</div>
+      <div className={`${styles.side} ${styles.prev}`}>
+        {adjacent?.previous && <AdjacentButton entry={adjacent.previous} direction="previous" />}
+      </div>
       <div className={styles.main}>
         <h1 className="page-heading">{formatShowHeading(show)}</h1>
         <div className="lead page-lead">{t('show.entry.subtitle')}</div>

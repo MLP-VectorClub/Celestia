@@ -33,7 +33,12 @@ export const formatShowHeading = (show: {
 };
 
 /** What the old site calls a show in a short link: `S4E19` for episodes, `Movie 3` for the other kinds */
-export const formatShowId = (show: { type: string; season: Nullable<number>; episode: Nullable<number>; parts?: Nullable<number> }): string => {
+export const formatShowId = (show: {
+  type: string;
+  season: Nullable<number>;
+  episode: Nullable<number>;
+  parts?: Nullable<number>;
+}): string => {
   if (show.type === 'episode') return seasonEpisodeToString(show);
   return `${show.type.charAt(0).toUpperCase()}${show.type.slice(1)} ${show.episode ?? ''}`.trim();
 };

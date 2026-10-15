@@ -1,7 +1,7 @@
+import { GuideName } from '@went.tf/mlp-vectorclub-api-types';
 import { FC, RefObject, useRef } from 'react';
 import { UncontrolledTooltip } from 'reactstrap';
 
-import { GuideName } from '@went.tf/mlp-vectorclub-api-types';
 import { getGuideLabel } from 'src/utils';
 
 interface PropTypes {

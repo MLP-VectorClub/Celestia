@@ -1,5 +1,3 @@
-import { IncomingMessage } from 'http';
-
 import {
   GetConfigResult,
   GetEventsIdFinishedImageResult,
@@ -31,6 +29,8 @@ import {
   GetUsersIdProfileRequest,
   GetUsersIdProfileResult,
 } from '@went.tf/mlp-vectorclub-api-types';
+import { IncomingMessage } from 'http';
+
 import { ResourceService } from 'src/services/resource';
 import { ENDPOINTS, requestPromiseMapper } from 'src/utils';
 
