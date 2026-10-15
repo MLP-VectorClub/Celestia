@@ -21,6 +21,8 @@ const Footer: FC = () => {
         {` | `}
         <ContactLink>{t('common.footer.contactUs')}</ContactLink>
         {` | `}
+        <ExternalLink href="https://status.mlpvector.club">{t('common.footer.status')}</ExternalLink>
+        {` | `}
         <Abbr id="api-docs" title={t('common.footer.apiMeaning')}>
           <ExternalLink id="api-docs" href={API_DOCS_URL}>
             {t('common.footer.api')}
