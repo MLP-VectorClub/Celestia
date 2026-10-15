@@ -307,3 +307,40 @@ describe('honeypot proxy', () => {
     });
   });
 });
+
+describe('honeypot decoys across workers', () => {
+  const fetchText = async (hp: ReturnType<typeof createHoneypot>, address = '203.0.113.1') =>
+    (await (await hp.proxy(new NextRequest('https://front.test/.env', { headers: { 'x-forwarded-for': address } })))?.text()) ?? '';
+  const make = (seed?: string) =>
+    createHoneypot({
+      traps: [{ glob: '/.env', decoy: 'env' }],
+      siteName: 'Test Site',
+      seed,
+      apiHost: 'https://luna.test',
+      appHost: 'https://front.test',
+    });
+
+  it('make the very same files in every worker given the same seed (the pm2 workers each build their own honeypot)', async () => {
+    const [first, second] = [await fetchText(make('build-abc;123')), await fetchText(make('build-abc;123'))];
+    expect(first).toBe(second);
+    expect(first.length).toBeGreaterThan(5000);
+  });
+
+  it('make other files for another seed, a new build', async () => {
+    expect(await fetchText(make('build-abc;123'))).not.toBe(await fetchText(make('build-def;456')));
+  });
+
+  it('make different files in every worker without a seed (which is why the app passes one)', async () => {
+    expect(await fetchText(make())).not.toBe(await fetchText(make()));
+  });
+
+  it('keep the visitor line of a seeded honeypot per visitor, in every worker', async () => {
+    const [a1, a2, b] = [
+      await fetchText(make('s'), '203.0.113.1'),
+      await fetchText(make('s'), '203.0.113.1'),
+      await fetchText(make('s'), '198.51.100.7'),
+    ];
+    expect(a1).toBe(a2);
+    expect(a1).not.toBe(b);
+  });
+});

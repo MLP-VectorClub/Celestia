@@ -26,6 +26,10 @@ export const HONEYPOT_TRAPS: TrapSpec[] = [
 export const honeypot = createHoneypot({
   traps: HONEYPOT_TRAPS,
   siteName: APP_NAME,
+  // The server runs as several workers (pm2 cluster mode): without something they share, each would invent its own secrets, and a scanner sent from one
+  // to the next would read different files. The build id is the same in all of them and changes with every deploy; HONEYPOT_SEED, when set, keeps the
+  // values across deploys
+  seed: process.env.HONEYPOT_SEED || process.env.NEXT_PUBLIC_BUILD_ID || undefined,
   apiHost: API_HOST,
   appHost: APP_HOST,
   sessionCookie: process.env.LUNA_SESSION_COOKIE || undefined,

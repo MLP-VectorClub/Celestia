@@ -35,8 +35,8 @@ export type DecoyName = 'env' | 'wordpress-login' | 'adminer-login' | 'phpmyadmi
  */
 const htmlDecoy = ({ html, script }: HtmlPage): Decoy => ({ body: html, contentType: 'text/html; charset=utf-8', csp: decoyCsp(script) });
 
-export const createDecoys = (siteName: string, securityTxtUrl: string): Record<DecoyName, Decoy> => {
-  const secrets = randomSecrets();
+export const createDecoys = (siteName: string, securityTxtUrl: string, seed?: string): Record<DecoyName, Decoy> => {
+  const secrets = randomSecrets(seed);
   const momsWeight = momsWeightOf(secrets.hex(16));
   const fillIn = (template: string, weight: { kg: string; lbs: string }) =>
     template.replace(VISITORS_MOM, weight.kg).replace(VISITORS_MOM_LBS, weight.lbs);

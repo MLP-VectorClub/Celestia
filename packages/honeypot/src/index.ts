@@ -20,6 +20,12 @@ export interface HoneypotOptions {
    * `decoy` to answer with a mock page or file instead of the plain refusal
    */
   traps: readonly (string | TrapSpec)[];
+  /**
+   * Where the random values of the decoys (the secrets in the `.env` and so on) come from. Without one every process makes its own, and a server that
+   * runs as several workers hands out a different file depending on which one answers. With the same seed they all make the same values: use
+   * something every worker has and a new launch does not (the build id), or a secret kept in the environment to keep them across deploys
+   */
+  seed?: string;
   /** What the mock pages call the site */
   siteName?: string;
   /** The address of Luna, which keeps the flag in the session row of its database */
@@ -45,12 +51,13 @@ export interface Honeypot {
 export const createHoneypot = ({
   traps,
   siteName = 'Website',
+  seed,
   apiHost,
   appHost,
   sessionCookie = 'luna_session',
 }: HoneypotOptions): Honeypot => {
   const honeypots = compileHoneypots(traps);
-  // Built once, here: the secrets in the decoys are generated now and stay the same until the server restarts
+  // Built once, here: the secrets in the decoys are made now and stay the same until the server restarts (and, with a seed, in every worker)
   const sessions = createSessionChecker({ apiHost, appHost, sessionCookie });
   return {
     proxy: createHoneypotProxy({
@@ -59,7 +66,7 @@ export const createHoneypot = ({
       sessionCookie,
       honeypots,
       sessions,
-      decoys: createDecoys(siteName, `${appHost ?? ''}/.well-known/security.txt`),
+      decoys: createDecoys(siteName, `${appHost ?? ''}/.well-known/security.txt`, seed),
     }),
     match: (pathname) => honeypots.match(pathname)?.name ?? null,
     robotsLines: honeypots.robotsLines,
