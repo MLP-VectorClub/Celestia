@@ -400,5 +400,17 @@
     "l2": "Finished requests only count toward additional slots after they have been submitted to the group and have been accepted to the gallery. This is indicated by a tick symbol (✔) on the post throughout the site.",
     "l3": "A finished request does not count towards additional slots if you were the one who requested it in the first place. We're not against this behaviour generally, but allowing this would defeat the purpose of this feature: encouraging members to help others.",
     "l4": "Do not attempt to abuse the system in any way. Exploiting any bugs you may encounter instead of reporting them could result in us disabling your access to this feature."
+  },
+  "resetPassword": {
+    "title": "Choose a new password",
+    "heading": "Choose a new password",
+    "lead": "Pick a password you do not use anywhere else.",
+    "invalid": "This link is not complete. Please use the link from the e-mail as it is, or ask for a new one.",
+    "newPassword": "New password",
+    "hint": "At least 8 characters, and not one that is commonly used. You will be signed out everywhere. Two-step verification stays on if you have it.",
+    "save": "Set the new password",
+    "done": "Your new password is set. You have been signed out everywhere, so please sign in again.",
+    "signIn": "Sign in",
+    "askAgain": "Ask for a new link"
   }
 }

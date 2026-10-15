@@ -9,7 +9,13 @@ const DOWNLOADS = ['png', 'svg', 'json', 'gpl'].flatMap((extension) =>
 
 const ROBOTS_TXT = honeypot.robotsTxt({
   comment: 'The generated files of the color guide are for downloading, not for the search results',
-  rules: [...DOWNLOADS, 'Disallow: /cg/cutiemark/*.svg$', 'Disallow: /cg/cutiemark/*.svg?*$', 'Disallow: /admin'],
+  rules: [
+    ...DOWNLOADS,
+    'Disallow: /cg/cutiemark/*.svg$',
+    'Disallow: /cg/cutiemark/*.svg?*$',
+    'Disallow: /admin',
+    'Disallow: /users/reset-password',
+  ],
 });
 
 export default function handler(_req: NextApiRequest, res: NextApiResponse) {

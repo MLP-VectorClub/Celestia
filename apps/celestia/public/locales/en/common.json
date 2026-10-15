@@ -122,7 +122,6 @@
     "hidePassword": "Hide Password",
     "showPassword": "Show Password",
     "forgotPassword": "Forgot password?",
-    "pwResetNotYetAvailable": "The password reset feature is not available yet",
     "socialSignIn": {
       "alternatively": "alternatively",
       "signInWith": "Sign in with {provider}"
@@ -148,6 +147,13 @@
       "signIn": "Sign in with a passkey",
       "failed": "Could not use a passkey. Try again, or sign in with your password.",
       "rejected": "That passkey was not accepted. Try another one, or sign in with your password."
+    },
+    "forgot": {
+      "title": "Forgot your password?",
+      "intro": "Enter the e-mail address of your account and we will send you a link for choosing a new password.",
+      "send": "Send the link",
+      "sent": "If an account uses that e-mail address, we have sent it a link for choosing a new password. It works for an hour. It can take a few minutes to arrive, check the spam folder too.",
+      "back": "Back to sign in"
     }
   },
   "validation": {

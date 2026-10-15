@@ -39,6 +39,8 @@ export const ENDPOINTS = {
   USERS_SIGNIN_TWO_FACTOR_PASSKEY: `/users/signin/two-factor/passkey`,
   USERS_SIGNIN_PASSKEY_OPTIONS: `/users/signin/passkey/options`,
   USERS_SIGNIN_PASSKEY: `/users/signin/passkey`,
+  USERS_PASSWORD_FORGOT: `/users/password/forgot`,
+  USERS_PASSWORD_RESET: `/users/password/reset`,
   USERS_SIGNOUT: `/users/signout`,
   USERS_ME: `/users/me`,
   USERS_TOKENS: `/users/tokens`,

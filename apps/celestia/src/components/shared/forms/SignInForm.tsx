@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { FC, MouseEventHandler, useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
-import { Alert, Button, Col, Form, FormGroup, Input, InputGroup, Label, Row, UncontrolledTooltip } from 'reactstrap';
+import { Alert, Button, Col, Form, FormGroup, Input, InputGroup, Label, Row } from 'reactstrap';
 import { fromEvent } from 'rxjs';
 
 import BootstrapErrorMessages from 'src/components/shared/BootstrapErrorMessages';
@@ -229,15 +229,14 @@ const SingInForm: FC = () => {
           </Button>
         </Col>
         <Col className="text-end">
-          <Button type="button" color="link" id="forgot-pw" aria-readonly="true">
+          <Button
+            type="button"
+            color="link"
+            id="forgot-pw"
+            onClick={() => dispatch(authActions.openAuthModal(AuthModalSide.PASSWORD_RESET))}
+          >
             {t('common.auth.forgotPassword')}
           </Button>
-          <UncontrolledTooltip target="forgot-pw" fade={false}>
-            <>
-              <InlineIcon icon="exclamation-triangle" color="warning" first />
-              {t('common.auth.pwResetNotYetAvailable')}
-            </>
-          </UncontrolledTooltip>
         </Col>
       </Row>
 

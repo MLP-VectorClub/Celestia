@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 
+import ForgotPasswordForm from 'src/components/shared/forms/ForgotPasswordForm';
 import RegisterForm from 'src/components/shared/forms/RegisterForm';
 import SingInForm from 'src/components/shared/forms/SignInForm';
 import TwoFactorForm from 'src/components/shared/forms/TwoFactorForm';
@@ -38,7 +39,7 @@ const AuthModal: FC = () => {
   const modalTitles = {
     [AuthModalSide.SIGN_IN]: t('common.auth.signInTitle'),
     [AuthModalSide.REGISTER]: t('common.auth.signUpTitle'),
-    [AuthModalSide.PASSWORD_RESET]: t('common.auth.signInTitle'),
+    [AuthModalSide.PASSWORD_RESET]: t('common.auth.forgot.title'),
     [AuthModalSide.TWO_FACTOR]: t('common.auth.twoFactor.title'),
   };
   const modalTitle = modalTitles[authModal.side];
@@ -46,8 +47,7 @@ const AuthModal: FC = () => {
   const sides = {
     [AuthModalSide.SIGN_IN]: <SingInForm />,
     [AuthModalSide.REGISTER]: <RegisterForm />,
-    // TODO Implement password reset form
-    [AuthModalSide.PASSWORD_RESET]: null,
+    [AuthModalSide.PASSWORD_RESET]: <ForgotPasswordForm />,
     [AuthModalSide.TWO_FACTOR]: <TwoFactorForm />,
   };
 

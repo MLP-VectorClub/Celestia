@@ -53,6 +53,13 @@ export class UserService extends Service {
 
   static signInPasskey = (data: PostUsersSigninPasskeyRequest) => Axios.post<Record<string, unknown>>(ENDPOINTS.USERS_SIGNIN_PASSKEY, data);
 
+  /** Mails a link for choosing a new password; the answer is the same for any address */
+  static forgotPassword = (email: string) => Axios.post<{ message: string }>(ENDPOINTS.USERS_PASSWORD_FORGOT, { email });
+
+  /** Sets the new password with the token of the mailed link, which ends every session of the account */
+  static resetPassword = (data: { token: string; newPassword: string }) =>
+    Axios.post<{ message: string }>(ENDPOINTS.USERS_PASSWORD_RESET, data);
+
   static signInOauth = (data: PostUsersOauthSigninProviderRequest) =>
     Axios.post<PostUsersOauthSigninProviderResult>(ENDPOINTS.USERS_OAUTH_SIGNIN_PROVIDER(data), data);
 
