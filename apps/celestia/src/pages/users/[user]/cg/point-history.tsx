@@ -50,7 +50,7 @@ const PointHistoryPage: NextPage<PropTypes> = ({ userId, page, user, initialData
   const { query } = useRouter();
   const { user: me } = useAuth();
   const ownHistory = me.id !== null && me.id === userId;
-  const currentPage = validatePageParam(query.page, page);
+  const currentPage = validatePageParam(query.page);
   const { data, status } = usePointHistory({ id: userId, page: currentPage }, currentPage === page ? initialData || undefined : undefined);
 
   const titleData = useMemo(() => titleFactory({ user, userId }), [user, userId]);

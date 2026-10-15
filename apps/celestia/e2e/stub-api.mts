@@ -184,9 +184,14 @@ createServer(async (req, res) => {
     tags: (a.characterTags ?? []).map((name, i) => ({ id: a.id * 10 + i, name, type: 'char' })),
   });
   if (req.method === 'GET' && url.pathname === '/appearances') {
+    const itemsPerPage = 7;
+    const totalPages = Math.max(1, Math.ceil(control.appearances.length / itemsPerPage));
+    const currentPage = Math.min(Math.max(1, Number(url.searchParams.get('page')) || 1), totalPages);
     return send(200, {
-      appearances: control.appearances.map((a) => ({ ...appearance(a), colorGroups: [] })),
-      pagination: { currentPage: 1, totalPages: 1, totalItems: control.appearances.length, itemsPerPage: 7 },
+      appearances: control.appearances
+        .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+        .map((a) => ({ ...appearance(a), colorGroups: [] })),
+      pagination: { currentPage, totalPages, totalItems: control.appearances.length, itemsPerPage },
     });
   }
   if (req.method === 'GET' && url.pathname === '/appearances/pinned') return send(200, []);

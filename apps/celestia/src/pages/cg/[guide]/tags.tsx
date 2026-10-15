@@ -2,6 +2,7 @@ import { GetConfigResult, GetTagsResult, GuideName } from '@went.tf/mlp-vectorcl
 import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 import { Button } from 'reactstrap';
 
@@ -42,10 +43,12 @@ interface PropTypes {
   initialConfig: Nullable<GetConfigResult>;
 }
 
-const TagsPage: NextPage<PropTypes> = ({ guide, page, initialTags, initialConfig }) => {
+const TagsPage: NextPage<PropTypes> = ({ guide, page: initialPage, initialTags, initialConfig }) => {
   const t = useTranslations();
+  const { query } = useRouter();
+  const page = validatePageParam(query.page);
   const dispatch = useAppDispatch();
-  const { data, status } = useTags({ page }, initialTags || undefined);
+  const { data, status } = useTags({ page }, page === initialPage ? initialTags || undefined : undefined);
   const { config } = useConfig(initialConfig || undefined);
   const { isStaff } = useAuth();
   const canManage = isStaff && Boolean(data?.canEdit) && Boolean(config);

@@ -2,6 +2,7 @@ import { GetAppearancesPinnedResult, GetAppearancesResult, GuideName } from '@we
 import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button } from 'reactstrap';
@@ -60,13 +61,18 @@ interface PropTypes {
 
 const PAGING_RELEVANT_PROPS = ['q'];
 
-const ColorGuidePage: NextPage<PropTypes> = ({ guide, page, q, initialData }) => {
+const ColorGuidePage: NextPage<PropTypes> = ({ guide, page: initialPage, q: initialQ, initialData }) => {
   const t = useTranslations();
+  const { query } = useRouter();
+  // Pagination and searching change the address without running getServerSideProps again, so the props only describe the first render
+  const page = validatePageParam(query.page);
+  const q = typeof query.q === 'string' ? query.q.trim() : '';
+  const isInitialView = page === initialPage && q === initialQ;
   const dispatch = useDispatch<AppDispatch>();
   const { isStaff, signedIn } = useAuth();
   const prefs = usePrefs(signedIn);
   const size = prefs?.cg_itemsperpage || initialData.appearances?.pagination.itemsPerPage;
-  const data = useGuide({ guide, page, q, size }, initialData.appearances || undefined);
+  const data = useGuide({ guide, page, q, size }, isInitialView ? initialData.appearances || undefined : undefined);
   const heading = getGuideTitle(guide);
 
   const titleData = useMemo(() => titleFactory({ guide, page, q }), [guide, page, q]);

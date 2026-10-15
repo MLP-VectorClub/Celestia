@@ -49,6 +49,7 @@ export function useGuide(params: GuideFetcherParams, initialData?: GetAppearance
     queryFn: fetcher,
     enabled: Boolean(params.guide),
     initialData,
+    placeholderData: keepPreviousData,
   });
 
   return {
@@ -127,6 +128,7 @@ export function useMajorChanges(params: MajorChangesFetcherParams, initialData?:
     queryKey: [ENDPOINTS.GUIDE_MAJOR_CHANGES(params as GetColorGuideMajorChangesRequest)],
     queryFn: fetcher,
     initialData,
+    placeholderData: keepPreviousData,
   });
 
   return {

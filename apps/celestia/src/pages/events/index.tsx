@@ -38,7 +38,7 @@ const EventsPage: NextPage<PropTypes> = ({ page, initialEvents }) => {
   const dispatch = useAppDispatch();
   const { query } = useRouter();
   const [now] = useState(() => Date.now());
-  const currentPage = validatePageParam(query.page, page);
+  const currentPage = validatePageParam(query.page);
   const { data, status } = useEvents({ page: currentPage }, initialEvents && currentPage === page ? initialEvents : undefined);
 
   const titleData = useMemo(() => titleFactory({}), []);

@@ -50,7 +50,7 @@ const PersonalGuidePage: NextPage<PropTypes> = ({ userId, page, user, initialDat
   const dispatch = useAppDispatch();
   const { query } = useRouter();
   const { user: visitor, isStaff } = useAuth();
-  const currentPage = validatePageParam(query.page, page);
+  const currentPage = validatePageParam(query.page);
   const { data, status } = usePersonalGuide({ id: userId, page: currentPage }, currentPage === page ? initialData || undefined : undefined);
 
   const titleData = useMemo(() => titleFactory({ user }), [user]);

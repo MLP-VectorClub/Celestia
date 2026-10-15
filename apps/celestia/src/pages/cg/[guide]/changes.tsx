@@ -1,6 +1,7 @@
 import { GetColorGuideMajorChangesResult, GuideName } from '@went.tf/mlp-vectorclub-api-types';
 import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { Table } from 'reactstrap';
@@ -53,13 +54,15 @@ const titleFactory: TitleFactory<Omit<PropTypes, 'initialData'>> = ({ guide, pag
 
 const PAGING_RELEVANT_PROPS: string[] = [];
 
-const GuideChangesPage: NextPage<PropTypes> = ({ guide, page, initialData }) => {
+const GuideChangesPage: NextPage<PropTypes> = ({ guide, page: initialPage, initialData }) => {
   const t = useTranslations();
+  const { query } = useRouter();
+  const page = validatePageParam(query.page);
   const dispatch = useDispatch<AppDispatch>();
   const heading = t('colorGuide.changes.heading', {
     guideName: getGuideLabel(guide),
   });
-  const data = useMajorChanges({ guide, page }, initialData || undefined);
+  const data = useMajorChanges({ guide, page }, page === initialPage ? initialData || undefined : undefined);
 
   const titleData = useMemo(() => titleFactory({ guide, page }), [guide, page]);
   useTitleSetter(dispatch, titleData);
