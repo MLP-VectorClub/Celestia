@@ -165,8 +165,8 @@ describe('honeypot proxy', () => {
       }
       const weight = (text: string) => text.match(/^VISITOR_MOMS_WEIGHT_KG=(\d+\.\d)$/m)?.[1];
       expect(weight(a1)).toBeDefined();
-      expect(Number(weight(a1))).toBeGreaterThanOrEqual(38);
-      expect(Number(weight(a1))).toBeLessThan(143);
+      expect(Number(weight(a1))).toBeGreaterThan(120);
+      expect(Number(weight(a1))).toBeLessThan(290);
       expect(weight(a1)).toBe(weight(a2));
       expect(a1).toBe(a2);
       // Everything else is the same file for everybody
