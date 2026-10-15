@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
+import { GetNoticesResult, Notice } from '@went.tf/mlp-vectorclub-api-types';
 import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { Button, FormGroup, FormText, Input, Label } from 'reactstrap';
 
-import { Notice } from '@went.tf/mlp-vectorclub-api-types';
 import { AdminPage } from 'src/components/admin/AdminPage';
 import { IconButton } from 'src/components/shared/IconButton';
 import InlineIcon from 'src/components/shared/InlineIcon';
@@ -15,6 +15,7 @@ import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { FormDialog } from 'src/components/shared/dialogs/FormDialog';
 import { describeApiError, fieldErrors, useApiMutation, useAuth } from 'src/hooks';
 import { AdminService } from 'src/services/admin';
+import { ResourceService } from 'src/services/resource';
 import { createAdminGetServerSideProps } from 'src/utils/admin-page';
 import { renderNoticeHtml } from 'src/utils/notice-html';
 import { validatePageParam } from 'src/utils/validate-page-param';
@@ -144,7 +145,12 @@ const NoticeDialog = ({ notice, isOpen, onClose }: DialogProps) => {
   );
 };
 
-const NoticesPage: NextPage = () => {
+type PropTypes = {
+  /** The first page of the list, fetched with the visitor's session so the page does not start out as "Loading" (null when that failed) */
+  initialNotices: { page: number; data: GetNoticesResult } | null;
+};
+
+const NoticesPage: NextPage<PropTypes> = ({ initialNotices }) => {
   const t = useTranslations();
   const { query } = useRouter();
   const { isStaff } = useAuth();
@@ -155,6 +161,8 @@ const NoticesPage: NextPage = () => {
     queryKey: ['/notices', page],
     queryFn: () => AdminService.notices({ page }).then((r) => r.data),
     enabled: isStaff,
+    // Only for the page it was fetched for, the list is refetched in the background like any other
+    initialData: initialNotices?.page === page ? initialNotices.data : undefined,
   });
   const remove = useApiMutation((id: number) => AdminService.deleteNotice(id), { invalidate: [['/notices']] });
 
@@ -221,6 +229,15 @@ const NoticesPage: NextPage = () => {
   );
 };
 
-export const getServerSideProps = createAdminGetServerSideProps('notices');
+export const getServerSideProps = createAdminGetServerSideProps('notices', 'staff', async ({ req, query }): Promise<PropTypes> => {
+  const page = validatePageParam(query.page);
+  try {
+    const { data } = await new ResourceService(req).get<GetNoticesResult>(`/notices?page=${page}`);
+    return { initialNotices: { page, data } };
+  } catch {
+    // The page falls back to asking from the browser
+    return { initialNotices: null };
+  }
+});
 
 export default NoticesPage;

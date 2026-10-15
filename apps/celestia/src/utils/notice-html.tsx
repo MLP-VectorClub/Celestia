@@ -1,37 +1,59 @@
+import HtmlToReact, { Parser as HtmlToReactParser, ProcessingInstruction } from 'html-to-react';
 import { Fragment, ReactNode, createElement } from 'react';
 
 const INLINE_TAGS = new Set(['b', 'strong', 'i', 'em', 'u', 'code', 'br', 'small']);
 
-const safeHref = (href: string | null) => (href && /^(https?:\/\/|\/(?!\/))/i.test(href.trim()) ? href.trim() : null);
+const safeHref = (href: string | undefined) => (href && /^(https?:\/\/|\/(?!\/))/i.test(href.trim()) ? href.trim() : null);
 
-const convert = (node: Node, key: string): ReactNode => {
-  if (node.nodeType === Node.TEXT_NODE) return node.textContent;
-  if (node.nodeType !== Node.ELEMENT_NODE) return null;
-  const el = node as Element;
-  const tag = el.tagName.toLowerCase();
-  const children = Array.from(el.childNodes).map((child, i) => convert(child, `${key}.${i}`));
-  if (tag === 'a') {
-    const href = safeHref(el.getAttribute('href'));
-    return href ? (
-      <a key={key} href={href} {...(/^https?:/i.test(href) ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
-        {children}
-      </a>
-    ) : (
-      <Fragment key={key}>{children}</Fragment>
-    );
-  }
-  if (INLINE_TAGS.has(tag)) return createElement(tag, { key }, ...(tag === 'br' ? [] : children));
-  // Anything else (scripts, images, event handlers…) is dropped but its text is kept
-  return tag === 'script' || tag === 'style' ? null : <Fragment key={key}>{children}</Fragment>;
-};
+const processNodeDefinitions = new HtmlToReact.ProcessNodeDefinitions();
+const instructions: ProcessingInstruction[] = [
+  {
+    shouldProcessNode: (node) => node.name === 'a',
+    processNode: (node, children, index) => {
+      const href = safeHref(node.attribs?.href);
+      return href ? (
+        <a key={index} href={href} {...(/^https?:/i.test(href) ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+          {children as ReactNode}
+        </a>
+      ) : (
+        <Fragment key={index}>{children as ReactNode}</Fragment>
+      );
+    },
+  },
+  {
+    // Kept as they are, without their attributes
+    shouldProcessNode: (node) => node.type === 'tag' && INLINE_TAGS.has(node.name),
+    processNode: (node, children, index) =>
+      node.name === 'br' ? <br key={index} /> : createElement(node.name, { key: index }, children as ReactNode),
+  },
+  {
+    // Scripts and styles are dropped with their content
+    shouldProcessNode: (node) => node.name === 'script' || node.name === 'style',
+    processNode: () => null,
+  },
+  {
+    // Anything else (images, event handlers…) is dropped but its text is kept
+    shouldProcessNode: (node) => node.type === 'tag',
+    processNode: (_node, children, index) => <Fragment key={index}>{children as ReactNode}</Fragment>,
+  },
+  { shouldProcessNode: () => true, processNode: processNodeDefinitions.processDefaultNode },
+];
+const parser = new HtmlToReactParser();
 
 /**
  * Notices carry server-sanitized HTML, this only keeps a small set of inline tags and safe links before it reaches the page.
- * Needs a DOM, so call it in the browser only
+ * Works on the server and in the browser, so a page can render notices from its first byte
  */
 export const renderNoticeHtml = (html: string): ReactNode => {
-  const doc = new DOMParser().parseFromString(html, 'text/html');
-  return Array.from(doc.body.childNodes).map((child, i) => convert(child, String(i)));
+  // The wrapper makes several top level nodes (text next to tags) come back as one element
+  const wrapped = parser.parseWithInstructions(`<notice-root>${html}</notice-root>`, () => true, [
+    {
+      shouldProcessNode: (node) => node.name === 'notice-root',
+      processNode: (_node, children) => <Fragment>{children as ReactNode}</Fragment>,
+    },
+    ...instructions,
+  ]);
+  return wrapped;
 };
 
 const escapeHtml = (text: string) =>
