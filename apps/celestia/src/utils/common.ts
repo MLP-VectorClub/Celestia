@@ -39,6 +39,9 @@ const mapHttpResponse = (err: AxiosError | unknown): UnifiedErrorResponse => {
   switch (statusCode) {
     case 503: {
       const message = get(err, 'response.data.message') as unknown;
+      if (get(err, 'response.data.readOnly') === true) {
+        return { type: UnifiedErrorResponseTypes.READ_ONLY, message: typeof message === 'string' ? message : null };
+      }
       return {
         type: UnifiedErrorResponseTypes.BACKEND_DOWN,
         message: typeof message === 'string' ? message : null,

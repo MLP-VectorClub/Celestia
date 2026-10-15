@@ -62,6 +62,8 @@ export enum UnifiedErrorResponseTypes {
   MISSING_CSRF_TOKEN = 'MISSING_CSRF_TOKEN',
   RATE_LIMITED = 'RATE_LIMITED',
   BACKEND_DOWN = 'BACKEND_DOWN',
+  /** The API refuses every change on purpose (a 503 flagged `readOnly`), unlike BACKEND_DOWN where the service is deploying or gone */
+  READ_ONLY = 'READ_ONLY',
 }
 
 type UnifiedErrorBody =
@@ -84,6 +86,10 @@ type UnifiedErrorBody =
     }
   | {
       type: UnifiedErrorResponseTypes.BACKEND_DOWN;
+      message: string | null;
+    }
+  | {
+      type: UnifiedErrorResponseTypes.READ_ONLY;
       message: string | null;
     }
   | {

@@ -13,6 +13,7 @@ import InlineIcon from 'src/components/shared/InlineIcon';
 import RevealPasswordButton from 'src/components/shared/RevealPasswordButton';
 import { API_PREFIX } from 'src/config';
 import { SOCIAL_PROVIDERS } from 'src/fancy-config';
+import { describeApiError } from 'src/hooks/mutation';
 import { useRateLimitLock } from 'src/hooks/rate-limit';
 import { RootState, useAppDispatch } from 'src/store';
 import { authActions } from 'src/store/slices';
@@ -182,6 +183,10 @@ const SingInForm: FC = () => {
       )}
 
       {signIn.error?.type === UnifiedErrorResponseTypes.MESSAGE_ONLY && <Alert color="danger">{signIn.error.message}</Alert>}
+
+      {(signIn.error?.type === UnifiedErrorResponseTypes.READ_ONLY || signIn.error?.type === UnifiedErrorResponseTypes.BACKEND_DOWN) && (
+        <Alert color="warning">{describeApiError(signIn.error)}</Alert>
+      )}
 
       {signIn.error?.type === UnifiedErrorResponseTypes.RATE_LIMITED && (
         <Alert color="danger">

@@ -18,6 +18,8 @@ export const describeApiError = (error: UnifiedErrorResponse): string => {
       return Number.isFinite(error.retryAfter)
         ? `Too many attempts, try again in ${error.retryAfter} seconds.`
         : 'Too many attempts, try again later.';
+    case UnifiedErrorResponseTypes.READ_ONLY:
+      return 'The site is read-only right now, so nothing can be changed or submitted. Please try again once editing is back.';
     case UnifiedErrorResponseTypes.BACKEND_DOWN:
       return error.message || 'The server is not available at the moment, please try again later.';
     case UnifiedErrorResponseTypes.VALIDATION_ERROR: {

@@ -8,6 +8,7 @@ import BootstrapErrorMessages from 'src/components/shared/BootstrapErrorMessages
 import ExternalLink from 'src/components/shared/ExternalLink';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import RevealPasswordButton from 'src/components/shared/RevealPasswordButton';
+import { describeApiError } from 'src/hooks/mutation';
 import { PATHS } from 'src/paths';
 import { RootState, useAppDispatch } from 'src/store';
 import { authActions } from 'src/store/slices';
@@ -190,6 +191,11 @@ const RegisterForm: FC = () => {
       </FormGroup>
 
       {register.error?.type === UnifiedErrorResponseTypes.MESSAGE_ONLY && <Alert color="danger">{register.error.message}</Alert>}
+
+      {(register.error?.type === UnifiedErrorResponseTypes.READ_ONLY ||
+        register.error?.type === UnifiedErrorResponseTypes.BACKEND_DOWN) && (
+        <Alert color="warning">{describeApiError(register.error)}</Alert>
+      )}
 
       {register.error?.type === UnifiedErrorResponseTypes.RATE_LIMITED && (
         <Alert color="danger">
