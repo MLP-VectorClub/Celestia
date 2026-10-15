@@ -2,7 +2,7 @@ import { FC, PropsWithChildren, useEffect, useMemo, useRef, useState } from 'rea
 
 const MOBILE_BREAKPOINT_WIDTH = 992;
 
-export const Main: FC<PropsWithChildren & { margin?: boolean }> = ({ children, padding = true }) => {
+export const Main: FC<PropsWithChildren & { padding?: boolean }> = ({ children, padding = true }) => {
   const mainRef = useRef<HTMLElement>(null);
   const [height, setHeight] = useState<string | undefined>('100vh');
 
