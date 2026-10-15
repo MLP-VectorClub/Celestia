@@ -15,6 +15,12 @@ interface PropTypes {
 
 const isMac = () => typeof navigator !== 'undefined' && /Macintosh/i.test(navigator.userAgent);
 
+const Embed: FC<{ src: string }> = ({ src }) => (
+  <div className="ratio ratio-16x9 mt-2">
+    <iframe src={src} allowFullScreen loading="lazy" title="Tutorial" />
+  </div>
+);
+
 /** The "Download swatch file" dialog of the old site: pick Inkscape or Adobe Illustrator and get that program's files and instructions */
 export const SwatchDialog: FC<PropTypes> = ({ appearanceId, name, token, isOpen, onClose }) => {
   const t = useTranslations();
@@ -94,6 +100,7 @@ export const SwatchDialog: FC<PropTypes> = ({ appearanceId, name, token, isOpen,
                 })}
               </li>
             </ul>
+            <Embed src="https://www.youtube.com/embed/oobQZ2xiDB8" />
           </div>
         )}
         {program === 'inkscape' && (
@@ -115,6 +122,7 @@ export const SwatchDialog: FC<PropTypes> = ({ appearanceId, name, token, isOpen,
                 kbd: (chunks) => <kbd>{chunks}</kbd>,
               })}
             </p>
+            <Embed src="https://www.youtube.com/embed/zmaJhbIKQqM" />
           </div>
         )}
       </ModalBody>
