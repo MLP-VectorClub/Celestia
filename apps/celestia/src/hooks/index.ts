@@ -14,3 +14,4 @@ export * from 'src/hooks/nutshell';
 export * from 'src/hooks/sidebar-widget';
 export * from 'src/hooks/in-view';
 export * from 'src/hooks/tag-suggestions';
+export * from 'src/hooks/passkey';

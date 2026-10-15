@@ -10,7 +10,9 @@ import StandardHeading from 'src/components/shared/StandardHeading';
 import { EmailChangeForm } from 'src/components/users/EmailChangeForm';
 import { PasswordForm } from 'src/components/users/PasswordForm';
 import { DiscordSection } from 'src/components/users/account/DiscordSection';
+import { PasskeysSection } from 'src/components/users/account/PasskeysSection';
 import { SessionsSection } from 'src/components/users/account/SessionsSection';
+import { TwoFactorSection } from 'src/components/users/account/TwoFactorSection';
 import { userFetcher } from 'src/fetchers';
 import { useAuth, useTitleSetter, useUserProfile } from 'src/hooks';
 import { PATHS } from 'src/paths';
@@ -87,7 +89,7 @@ const AccountPage: NextPage<PropTypes> = ({ userId, user }) => {
       {heading}
       <div id="account">
         <SessionsSection userId={userId} own={own} />
-        {isStaff && profile && (
+        {(own || (isStaff && profile)) && (
           <section id="security">
             <h2>
               <span title={t('users.profile.visibleTo.staff')} className="me-1">
@@ -95,8 +97,18 @@ const AccountPage: NextPage<PropTypes> = ({ userId, user }) => {
               </span>
               {t('users.account.security')}
             </h2>
-            <EmailChangeForm profile={profile} sameUser={own} />
-            {own && <PasswordForm passwordSet={Boolean(profile.account?.passwordSet)} />}
+            {isStaff && profile && (
+              <>
+                <EmailChangeForm profile={profile} sameUser={own} />
+                {own && <PasswordForm passwordSet={Boolean(profile.account?.passwordSet)} />}
+              </>
+            )}
+            {own && (
+              <>
+                <TwoFactorSection />
+                <PasskeysSection />
+              </>
+            )}
           </section>
         )}
         {profile && <DiscordSection profile={profile} sameUser={own} />}

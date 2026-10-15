@@ -13,14 +13,17 @@ import RevealPasswordButton from 'src/components/shared/RevealPasswordButton';
 import { API_PREFIX } from 'src/config';
 import { SOCIAL_PROVIDERS } from 'src/fancy-config';
 import { describeApiError } from 'src/hooks/mutation';
+import { passkeyErrorMessage, usePasskeyAutofill, usePasskeysSupported } from 'src/hooks/passkey';
 import { useRateLimitLock } from 'src/hooks/rate-limit';
+import { UserService } from 'src/services/user';
 import { RootState, useAppDispatch } from 'src/store';
 import { authActions } from 'src/store/slices';
-import { signInThunk } from 'src/store/thunks';
+import { signInPasskeyThunk, signInThunk } from 'src/store/thunks';
 import { AuthModalSide, Nullable, Status, UnifiedErrorResponseTypes } from 'src/types';
 import { SocialProvider } from 'src/types/auth';
 import { ENDPOINTS, combineErrors, popupOpenCenter, validateEmail, validatePassword, validateRequired } from 'src/utils';
 import { listenForOAuthResult } from 'src/utils/oauth-popup';
+import { signInWithPasskeyOptions } from 'src/utils/passkeys';
 
 enum INPUT_NAMES {
   EMAIL = 'email',
@@ -47,11 +50,16 @@ const SingInForm: FC = () => {
     reset,
   } = useForm<FormFields>({ criteriaMode: 'all' });
   const dispatch = useAppDispatch();
-  const { authModal, signIn } = useSelector((store: RootState) => store.auth);
+  const { authModal, signIn, passkey } = useSelector((store: RootState) => store.auth);
   const [passwordRevealed, setPasswordRevealed] = useState(false);
   const socialAuthPopup = useRef<SocialPopupRef>({ window: null });
   const queryClient = useQueryClient();
   const rateLimited = useRateLimitLock(signIn.error);
+  const [passkeyBusy, setPasskeyBusy] = useState(false);
+  const [passkeyMessage, setPasskeyMessage] = useState<string | null>(null);
+  // Passkeys the browser offers in the e-mail field's dropdown, while the dialog is up
+  usePasskeyAutofill(authModal.open);
+  const passkeysSupported = usePasskeysSupported();
 
   useEffect(() => {
     if (!authModal.open) {
@@ -89,6 +97,20 @@ const SingInForm: FC = () => {
       },
     [queryClient]
   );
+
+  const signInWithPasskey = async () => {
+    setPasskeyMessage(null);
+    setPasskeyBusy(true);
+    try {
+      const { data } = await UserService.passkeyOptions();
+      const credential = await signInWithPasskeyOptions(data.options);
+      await dispatch(signInPasskeyThunk({ challenge: data.challenge, credential, remember: true }));
+    } catch (e) {
+      setPasskeyMessage(passkeyErrorMessage(e, t('common.auth.passkey.failed')));
+    } finally {
+      setPasskeyBusy(false);
+    }
+  };
 
   const onSubmit: Parameters<typeof handleSubmit>[0] = useCallback(
     (data) =>
@@ -137,6 +159,8 @@ const SingInForm: FC = () => {
             innerRef={emailInputRef}
             invalid={INPUT_NAMES.EMAIL in errors}
             disabled={isLoading}
+            // `webauthn` makes the browser offer the saved passkeys here (see usePasskeyAutofill)
+            autoComplete="username webauthn"
           />
           <BootstrapErrorMessages errors={errors} name={INPUT_NAMES.EMAIL} />
         </Col>
@@ -174,6 +198,13 @@ const SingInForm: FC = () => {
 
       {signIn.error?.type === UnifiedErrorResponseTypes.AUTHENTICATION_ERROR && (
         <Alert color="danger">{t('common.auth.invalidCredentials')}</Alert>
+      )}
+
+      {(passkeyMessage || (passkey.error && passkey.error.type !== UnifiedErrorResponseTypes.AUTHENTICATION_ERROR)) && (
+        <Alert color="danger">{passkeyMessage ?? (passkey.error ? describeApiError(passkey.error) : null)}</Alert>
+      )}
+      {passkey.error?.type === UnifiedErrorResponseTypes.AUTHENTICATION_ERROR && (
+        <Alert color="danger">{t('common.auth.passkey.rejected')}</Alert>
       )}
 
       {signIn.error?.type === UnifiedErrorResponseTypes.MESSAGE_ONLY && <Alert color="danger">{signIn.error.message}</Alert>}
@@ -214,6 +245,19 @@ const SingInForm: FC = () => {
         <legend className="text-uppercase float-none w-auto mx-auto px-2">
           <small>{t('common.auth.socialSignIn.alternatively')}</small>
         </legend>
+        {passkeysSupported && (
+          <Button
+            type="button"
+            color="ui"
+            className="mx-2"
+            id="passkey-sign-in"
+            disabled={passkeyBusy || isLoading}
+            onClick={() => void signInWithPasskey()}
+          >
+            <InlineIcon first loading={passkeyBusy} icon="fingerprint" />
+            {t('common.auth.passkey.signIn')}
+          </Button>
+        )}
         {map(SOCIAL_PROVIDERS, ({ name, renderIcon: RenderIcon }, provider: SocialProvider) => {
           const text = t('common.auth.socialSignIn.signInWith', {
             provider: name,

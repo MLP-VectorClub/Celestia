@@ -6,6 +6,7 @@ import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 
 import RegisterForm from 'src/components/shared/forms/RegisterForm';
 import SingInForm from 'src/components/shared/forms/SignInForm';
+import TwoFactorForm from 'src/components/shared/forms/TwoFactorForm';
 import { useAuth } from 'src/hooks';
 import { RootState, useAppDispatch } from 'src/store';
 import { authActions } from 'src/store/slices';
@@ -34,13 +35,20 @@ const AuthModal: FC = () => {
 
   const toggleModal = () => dispatch(authModal.open ? authActions.closeAuthModal() : authActions.openAuthModal(null));
 
-  const modalTitle = authModal.side === AuthModalSide.SIGN_IN ? t('common.auth.signInTitle') : t('common.auth.signUpTitle');
+  const modalTitles = {
+    [AuthModalSide.SIGN_IN]: t('common.auth.signInTitle'),
+    [AuthModalSide.REGISTER]: t('common.auth.signUpTitle'),
+    [AuthModalSide.PASSWORD_RESET]: t('common.auth.signInTitle'),
+    [AuthModalSide.TWO_FACTOR]: t('common.auth.twoFactor.title'),
+  };
+  const modalTitle = modalTitles[authModal.side];
 
   const sides = {
     [AuthModalSide.SIGN_IN]: <SingInForm />,
     [AuthModalSide.REGISTER]: <RegisterForm />,
     // TODO Implement password reset form
     [AuthModalSide.PASSWORD_RESET]: null,
+    [AuthModalSide.TWO_FACTOR]: <TwoFactorForm />,
   };
 
   return (

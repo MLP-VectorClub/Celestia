@@ -2,6 +2,14 @@ import { BrowserSession, GetNotificationsResult, PostUsersMeSocketTokenResult } 
 import Axios from 'axios';
 
 import { UserPrefs } from 'src/types/api-alias';
+import {
+  AccountPasskey,
+  IdentityProof,
+  PasskeyCreationOptionsResponse,
+  PostUsersMePasskeysRequest,
+  TwoFactorSetup,
+  TwoFactorStatus,
+} from 'src/types/auth';
 
 /**
  * Flags are sent as 1/0: the API reads JSON `false` as the (truthy) string "false" at the moment (reported to Winterchilla)
@@ -56,4 +64,29 @@ export class AccountService {
   static getSessions = () => Axios.get<{ sessions: BrowserSession[] }>('/users/sessions');
 
   static deleteSession = (id: string) => Axios.delete<void>(`/users/sessions/${id}`);
+
+  static getTwoFactor = () => Axios.get<TwoFactorStatus>('/users/me/two-factor');
+
+  /** Starts setting up an authenticator app: the secret to scan. Nothing is asked at sign-in until `confirmTwoFactor` */
+  static startTwoFactor = (proof: IdentityProof) => Axios.post<TwoFactorSetup>('/users/me/two-factor', proof);
+
+  /** Turns two-factor authentication on with a code of the app, the recovery codes are in the answer and never shown again */
+  static confirmTwoFactor = (code: string) => Axios.post<{ recoveryCodes: string[] }>('/users/me/two-factor/confirm', { code });
+
+  static regenerateRecoveryCodes = (proof: IdentityProof) =>
+    Axios.post<{ recoveryCodes: string[] }>('/users/me/two-factor/recovery-codes', proof);
+
+  /** Axios sends the body of a DELETE only in `data` */
+  static disableTwoFactor = (proof: IdentityProof) => Axios.delete<void>('/users/me/two-factor', { data: proof });
+
+  static getPasskeys = () => Axios.get<AccountPasskey[]>('/users/me/passkeys');
+
+  static passkeyRegistrationOptions = (proof: IdentityProof) =>
+    Axios.post<PasskeyCreationOptionsResponse>('/users/me/passkeys/options', proof);
+
+  static registerPasskey = (data: PostUsersMePasskeysRequest) => Axios.post<AccountPasskey>('/users/me/passkeys', data);
+
+  static renamePasskey = (id: number, name: string) => Axios.patch<AccountPasskey>(`/users/me/passkeys/${id}`, { name });
+
+  static deletePasskey = (id: number, proof: IdentityProof) => Axios.delete<void>(`/users/me/passkeys/${id}`, { data: proof });
 }

@@ -1,6 +1,5 @@
-import { useTranslations } from 'next-intl';
-
 import { User, ValidationErrorResponse } from '@went.tf/mlp-vectorclub-api-types';
+import { useTranslations } from 'next-intl';
 
 export type TFunction = ReturnType<typeof useTranslations>;
 
@@ -71,6 +70,8 @@ type UnifiedErrorBody =
       type: UnifiedErrorResponseTypes.AUTHENTICATION_ERROR;
       /** The API ended the session because DeviantArt no longer accepts the member's token */
       deviantArtRequired?: boolean;
+      /** The challenge of a two-factor sign-in ran out or was used up, the sign-in has to start over */
+      expired?: boolean;
     }
   | {
       type: UnifiedErrorResponseTypes.RATE_LIMITED;

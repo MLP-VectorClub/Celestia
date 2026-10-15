@@ -56,4 +56,12 @@ describe('describeApiError / fieldErrors', () => {
   it('asks guests to sign in', () => {
     expect(describeApiError(httpResponseMapper(axiosError(401, { message: 'Unauthorized' })))).toMatch(/sign in/i);
   });
+
+  it('tells a two-factor challenge that ran out from a wrong code', () => {
+    expect(httpResponseMapper(axiosError(401, { message: 'expired', expired: true }))).toMatchObject({
+      type: UnifiedErrorResponseTypes.AUTHENTICATION_ERROR,
+      expired: true,
+    });
+    expect(httpResponseMapper(axiosError(401, { message: 'That code is not right' }))).not.toHaveProperty('expired');
+  });
 });

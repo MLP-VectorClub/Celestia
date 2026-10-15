@@ -53,6 +53,7 @@ const mapHttpResponse = (err: AxiosError | unknown): UnifiedErrorResponse => {
       return {
         type: UnifiedErrorResponseTypes.AUTHENTICATION_ERROR,
         ...(get(err, 'response.data.deviantArtRequired') === true ? { deviantArtRequired: true } : {}),
+        ...(get(err, 'response.data.expired') === true ? { expired: true } : {}),
       };
     case 422: {
       const body = isValidationErrorResponse(err)

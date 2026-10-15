@@ -127,7 +127,28 @@
       "alternatively": "alternatively",
       "signInWith": "Sign in with {provider}"
     },
-    "acceptPrivacyPolicy": "I accept the <link>Privacy Policy</link>"
+    "acceptPrivacyPolicy": "I accept the <link>Privacy Policy</link>",
+    "twoFactor": {
+      "title": "Two-step verification",
+      "introTotp": "Open your authenticator app and enter the 6-digit code it shows for this site.",
+      "introRecovery": "Enter one of the recovery codes you saved when you turned on two-step verification. Each one works only once.",
+      "code": "Code from your authenticator app",
+      "recoveryCode": "Recovery code",
+      "verify": "Verify",
+      "invalidCode": "That code is not right, or it was already used. Wait for the next one and try again.",
+      "invalidRecoveryCode": "That recovery code is not right, or it was already used.",
+      "expired": "This sign-in took too long or had too many wrong tries. Please start over.",
+      "startOver": "Start over",
+      "useRecovery": "Use a recovery code instead",
+      "useApp": "Use the authenticator app instead",
+      "usePasskey": "Use a passkey instead",
+      "back": "Back to sign in"
+    },
+    "passkey": {
+      "signIn": "Sign in with a passkey",
+      "failed": "Could not use a passkey. Try again, or sign in with your password.",
+      "rejected": "That passkey was not accepted. Try another one, or sign in with your password."
+    }
   },
   "validation": {
     "required": "Please fill in this field",

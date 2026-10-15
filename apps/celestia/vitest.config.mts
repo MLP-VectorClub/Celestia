@@ -30,7 +30,7 @@ export default defineConfig({
         extends: true,
         // Pre-bundle up front, otherwise Vite reloads the page mid-run when it discovers them
         optimizeDeps: {
-          include: ['react', 'react-dom/client', 'react/jsx-dev-runtime', 'vitest-browser-react'],
+          include: ['react', 'react-dom/client', 'react/jsx-dev-runtime', 'vitest-browser-react', 'qrcode', '@simplewebauthn/browser'],
         },
         // Next.js inlines these at build time, the browser project has no `process`
         define: {

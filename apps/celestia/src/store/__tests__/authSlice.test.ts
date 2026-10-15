@@ -5,12 +5,27 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { UserService } from 'src/services';
 import authReducer, { authActions } from 'src/store/slices/authSlice';
-import { registerThunk, signInThunk, signOutThunk } from 'src/store/thunks';
-import { AuthModalSide, Status } from 'src/types';
+import {
+  registerThunk,
+  signInPasskeyThunk,
+  signInThunk,
+  signInTwoFactorPasskeyThunk,
+  signInTwoFactorThunk,
+  signOutThunk,
+} from 'src/store/thunks';
+import { AuthModalSide, Status, UnifiedErrorResponseTypes } from 'src/types';
 import { ENDPOINTS } from 'src/utils/endpoints';
 
 vi.mock('src/services', () => ({
-  UserService: { signIn: vi.fn(), signOut: vi.fn(), register: vi.fn(), getMe: vi.fn() },
+  UserService: {
+    signIn: vi.fn(),
+    signOut: vi.fn(),
+    register: vi.fn(),
+    getMe: vi.fn(),
+    signInTwoFactor: vi.fn(),
+    signInTwoFactorPasskey: vi.fn(),
+    signInPasskey: vi.fn(),
+  },
 }));
 
 const user = { id: 3, name: 'Tester' };
@@ -88,6 +103,118 @@ describe('signInThunk', () => {
     expect(signIn.error).toMatchObject({ errors: { username: ['Unknown user'] } });
     expect(authModal.open).toBe(true);
     expect(queryCache.getQueryData([ENDPOINTS.USERS_ME])).toBeUndefined();
+  });
+});
+
+describe('two-factor sign in', () => {
+  const challenge = { challenge: 'token', methods: ['totp', 'recovery', 'passkey'] };
+
+  const afterPassword = async () => {
+    service.signIn.mockReturnValue(ok({ twoFactor: challenge }));
+    const made = makeStore();
+    made.store.dispatch(authActions.openAuthModal(null));
+    await made.store.dispatch(signInThunk({ email: 'a', password: 'b' }));
+    return made;
+  };
+
+  it('moves the dialog on to the second step instead of signing in when the API asks for a second factor', async () => {
+    const { store, queryCache } = await afterPassword();
+
+    const { authModal, twoFactor, signIn } = store.getState().auth;
+    expect(authModal).toEqual({ open: true, side: AuthModalSide.TWO_FACTOR });
+    expect(twoFactor.challenge).toEqual(challenge);
+    expect(signIn.status).toBe(Status.INIT);
+    // Nobody is signed in, so the user is not asked for
+    expect(service.getMe).not.toHaveBeenCalled();
+    expect(queryCache.getQueryData([ENDPOINTS.USERS_ME])).toBeUndefined();
+  });
+
+  it('signs in with the code and closes the dialog', async () => {
+    const { store, queryCache } = await afterPassword();
+    service.signInTwoFactor.mockReturnValue(ok({}));
+
+    const pending = store.dispatch(signInTwoFactorThunk({ challenge: 'token', code: '123456' }));
+    expect(store.getState().auth.twoFactor.status).toBe(Status.LOAD);
+    await pending;
+
+    expect(service.signInTwoFactor).toHaveBeenCalledWith({ challenge: 'token', code: '123456' });
+    expect(queryCache.getQueryData([ENDPOINTS.USERS_ME])).toEqual(user);
+    expect(store.getState().auth.authModal.open).toBe(false);
+    expect(store.getState().auth.twoFactor.challenge).toBeNull();
+  });
+
+  it('keeps the dialog on the second step with the error when the code is wrong', async () => {
+    const { store } = await afterPassword();
+    service.signInTwoFactor.mockReturnValue(fail(401, { message: 'That code is not right' }));
+    await store.dispatch(signInTwoFactorThunk({ challenge: 'token', code: '000000' }));
+
+    const { twoFactor, authModal } = store.getState().auth;
+    expect(twoFactor.status).toBe(Status.FAILURE);
+    expect(twoFactor.error).toMatchObject({ type: UnifiedErrorResponseTypes.AUTHENTICATION_ERROR });
+    expect(twoFactor.error).not.toHaveProperty('expired');
+    expect(authModal).toEqual({ open: true, side: AuthModalSide.TWO_FACTOR });
+    expect(twoFactor.challenge).toEqual(challenge);
+  });
+
+  it('knows when the challenge ran out', async () => {
+    const { store } = await afterPassword();
+    service.signInTwoFactor.mockReturnValue(fail(401, { message: 'expired', expired: true }));
+    await store.dispatch(signInTwoFactorThunk({ challenge: 'token', code: '000000' }));
+
+    expect(store.getState().auth.twoFactor.error).toMatchObject({ type: UnifiedErrorResponseTypes.AUTHENTICATION_ERROR, expired: true });
+  });
+
+  it('goes back to the sign in form and forgets the challenge', async () => {
+    const { store } = await afterPassword();
+    store.dispatch(authActions.backToSignIn());
+
+    const { authModal, twoFactor } = store.getState().auth;
+    expect(authModal).toEqual({ open: true, side: AuthModalSide.SIGN_IN });
+    expect(twoFactor.challenge).toBeNull();
+  });
+
+  it('clears the error of a wrong code when the visitor switches to another way', async () => {
+    const { store } = await afterPassword();
+    service.signInTwoFactor.mockReturnValue(fail(401, {}));
+    await store.dispatch(signInTwoFactorThunk({ challenge: 'token', code: '000000' }));
+    store.dispatch(authActions.clearTwoFactorError());
+
+    expect(store.getState().auth.twoFactor.error).toBeNull();
+    expect(store.getState().auth.twoFactor.status).toBe(Status.INIT);
+  });
+
+  it('signs in with a passkey as the second factor', async () => {
+    const { store, queryCache } = await afterPassword();
+    service.signInTwoFactorPasskey.mockReturnValue(ok({}));
+    await store.dispatch(signInTwoFactorPasskeyThunk({ challenge: 'token', passkeyChallenge: 'p', credential: { id: 'x' } as never }));
+
+    expect(queryCache.getQueryData([ENDPOINTS.USERS_ME])).toEqual(user);
+    expect(store.getState().auth.authModal.open).toBe(false);
+  });
+});
+
+describe('signInPasskeyThunk', () => {
+  it('signs in without a password and closes the dialog', async () => {
+    service.signInPasskey.mockReturnValue(ok({}));
+    const { store, queryCache } = makeStore();
+    store.dispatch(authActions.openAuthModal(null));
+    await store.dispatch(signInPasskeyThunk({ challenge: 'c', credential: { id: 'x' } as never, remember: true }));
+
+    expect(queryCache.getQueryData([ENDPOINTS.USERS_ME])).toEqual(user);
+    expect(store.getState().auth.authModal.open).toBe(false);
+  });
+
+  it('keeps its error apart from the password form', async () => {
+    service.signInPasskey.mockReturnValue(fail(401, { message: 'That passkey was not accepted' }));
+    const { store } = makeStore();
+    store.dispatch(authActions.openAuthModal(null));
+    await store.dispatch(signInPasskeyThunk({ challenge: 'c', credential: { id: 'x' } as never }));
+
+    const { passkey, signIn, authModal } = store.getState().auth;
+    expect(passkey.status).toBe(Status.FAILURE);
+    expect(passkey.error).toMatchObject({ type: UnifiedErrorResponseTypes.AUTHENTICATION_ERROR });
+    expect(signIn.error).toBeNull();
+    expect(authModal.open).toBe(true);
   });
 });
 
