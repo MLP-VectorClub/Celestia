@@ -13,9 +13,6 @@ import {
 
 export type SiteSettingKey = 'reservation_rules' | 'about_reservations' | 'dev_role_label';
 export type PcgAppearancesResult = GetAdminPcgAppearancesResult;
-/** What a notice has since the cutover notices were added; the generated types take it over once they are pinned to a Luna that sends it */
-export type NoticeSchedule = { showAfter?: string | null; site?: 'all' | 'celestia' | 'winterchilla' };
-export type NoticeBody = PostNoticesRequest & NoticeSchedule;
 export type UsefulLinkBody = { label: string; url: string; title?: string; minRole: string };
 
 /** Staff-only site administration */
@@ -29,9 +26,9 @@ export class AdminService {
 
   static notices = (params: GetNoticesRequest) => Axios.get<GetNoticesResult>('/notices', { params });
 
-  static createNotice = (body: NoticeBody) => Axios.post<unknown>('/notices', body);
+  static createNotice = (body: PostNoticesRequest) => Axios.post<unknown>('/notices', body);
 
-  static updateNotice = (id: number, body: NoticeBody) => Axios.put<unknown>(`/notices/${id}`, body);
+  static updateNotice = (id: number, body: PostNoticesRequest) => Axios.put<unknown>(`/notices/${id}`, body);
 
   static deleteNotice = (id: number) => Axios.delete<void>(`/notices/${id}`);
 

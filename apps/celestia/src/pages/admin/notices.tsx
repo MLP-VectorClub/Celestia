@@ -14,15 +14,13 @@ import TimeAgo from 'src/components/shared/TimeAgo';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { FormDialog } from 'src/components/shared/dialogs/FormDialog';
 import { describeApiError, fieldErrors, useApiMutation, useAuth } from 'src/hooks';
-import { AdminService, NoticeSchedule } from 'src/services/admin';
+import { AdminService } from 'src/services/admin';
 import { createAdminGetServerSideProps } from 'src/utils/admin-page';
 import { renderNoticeHtml } from 'src/utils/notice-html';
 import { validatePageParam } from 'src/utils/validate-page-param';
 
 const NOTICE_TYPES = ['info', 'success', 'fail', 'warn', 'caution'] as const;
 const NOTICE_SITES = ['all', 'celestia', 'winterchilla'] as const;
-
-type NoticeRow = Notice & NoticeSchedule;
 
 const toLocalInput = (iso: string) => {
   const d = new Date(iso);
@@ -32,7 +30,7 @@ const toLocalInput = (iso: string) => {
 
 interface DialogProps {
   /** `null` creates a notice */
-  notice: NoticeRow | null;
+  notice: Notice | null;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -152,7 +150,7 @@ const NoticesPage: NextPage = () => {
   const { isStaff } = useAuth();
   const { confirm } = useDialog();
   const page = validatePageParam(query.page);
-  const [editing, setEditing] = useState<NoticeRow | null | undefined>(undefined);
+  const [editing, setEditing] = useState<Notice | null | undefined>(undefined);
   const notices = useQuery({
     queryKey: ['/notices', page],
     queryFn: () => AdminService.notices({ page }).then((r) => r.data),
@@ -178,7 +176,7 @@ const NoticesPage: NextPage = () => {
         <>
           <Pagination {...notices.data.pagination} tooltipPos="bottom" />
           <ul id="notice-list">
-            {(notices.data.notices as NoticeRow[]).map((n) => (
+            {notices.data.notices.map((n) => (
               <li key={n.id} id={`notice-${n.id}`}>
                 {renderNoticeHtml(n.messageHtml)} –{' '}
                 {n.showAfter && (
