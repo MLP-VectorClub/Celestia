@@ -11,6 +11,9 @@ export const APP_DESCRIPTION = 'Handling requests, reservations & the Color Guid
 export const APP_HOST = process.env.NEXT_PUBLIC_FRONTEND_HOST as string;
 export const API_HOST = process.env.NEXT_PUBLIC_BACKEND_HOST as string;
 
+/** Greyed-out notices shown while the real ones load, so the content below does not jump. Set to how many notices the site usually has */
+export const NOTICE_PLACEHOLDERS = 1;
+
 export const GITHUB_URL = 'https://github.com/MLP-VectorClub/Celestia';
 export const PROJECT_NAME = GITHUB_URL.split('/').pop();
 export const BACKEND_GITHUB_URL = 'https://github.com/MLP-VectorClub/Luna';

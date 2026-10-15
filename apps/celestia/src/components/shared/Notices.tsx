@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { FC } from 'react';
 import { Alert } from 'reactstrap';
 
+import { NOTICE_PLACEHOLDERS } from 'src/config';
 import { useConfig, useCurrentNotices } from 'src/hooks';
 import { renderNoticeHtml, substituteNoticePath } from 'src/utils/notice-html';
 
@@ -24,6 +25,14 @@ const Notices: FC = () => {
           {t('common.readOnlyNotice')}
         </Alert>
       )}
+      {notices === undefined &&
+        Array.from({ length: NOTICE_PLACEHOLDERS }, (_, i) => (
+          <Alert key={`placeholder-${i}`} color="secondary" fade={false} className="notice-placeholder" aria-hidden="true">
+            <span className="placeholder-glow">
+              <span className="placeholder col-12 col-md-8" />
+            </span>
+          </Alert>
+        ))}
       {notices?.map((notice) => (
         <Alert key={notice.id} color={NOTICE_COLORS[notice.type]} fade={false}>
           {renderNoticeHtml(substituteNoticePath(notice.messageHtml, path))}
