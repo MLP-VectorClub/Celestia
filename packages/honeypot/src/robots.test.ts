@@ -16,4 +16,9 @@ describe('buildRobotsTxt', () => {
   it('is one group of rules (a blank line would orphan the traps)', () => {
     expect(txt.trim()).not.toMatch(/\n\s*\n/);
   });
+
+  it('does not say anywhere that some of the lines are traps', () => {
+    expect(txt.toLowerCase()).not.toMatch(/trap|honeypot|refused|bait/);
+    expect(txt.split('\n').filter((line) => line.startsWith('#'))).toEqual(['# Hello']);
+  });
 });
