@@ -19,3 +19,7 @@ Disallow: /cg/*/v/*.gpl?*$
 Disallow: /cg/cutiemark/*.svg$
 Disallow: /cg/cutiemark/*.svg?*$
 Disallow: /admin
+# Traps: nobody who reads this has a reason to ask for these, whoever does is refused from then on
+Disallow: /.env
+Disallow: /wp-admin
+Disallow: /admin.php

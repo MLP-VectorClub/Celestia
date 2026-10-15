@@ -6,6 +6,13 @@ const vercelConfig = require('./vercel.json');
 
 const devMode = process.env.NODE_ENV === 'development';
 
+/** Paths that scanners ask for and nobody else has a reason to: each is listed in public/robots.txt (the test checks), the name is for Luna's log */
+const HONEYPOTS = [
+  { source: '/.env', name: 'env' },
+  { source: '/wp-admin', name: 'wp-admin' },
+  { source: '/admin.php', name: 'admin-php' },
+];
+
 /** The address of the websocket server (the same as `wsServerHost` of Luna's /config) in the form the CSP's connect-src wants it, empty when there is none */
 const WS_ORIGINS = (() => {
   const host = process.env.NEXT_PUBLIC_WS_HOST;
@@ -169,6 +176,12 @@ module.exports = {
             }
           : rewrite
       ),
+      // Paths robots.txt disallows and nobody has a reason to ask for: Luna flags the session of whoever does (see its HoneypotController), and
+      // from then on `src/proxy.ts` refuses that visitor's requests
+      ...HONEYPOTS.flatMap(({ source, name }) => [
+        { source, destination: `${NEXT_PUBLIC_BACKEND_HOST}/honeypot/${name}` },
+        { source: `${source}/:path*`, destination: `${NEXT_PUBLIC_BACKEND_HOST}/honeypot/${name}` },
+      ]),
       // URLs of the previous site that are served by pages or by the API
       { source: '/cg/picker/frame', destination: '/cg/picker' },
       // Post links from before the 2020 migration (the page's folder keeps its dynamic segments clear of the short links')
