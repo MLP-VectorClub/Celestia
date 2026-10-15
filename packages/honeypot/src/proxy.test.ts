@@ -186,9 +186,9 @@ describe('honeypot proxy', () => {
       expect(withoutWeights(a1)).toBe(withoutWeights(b));
     });
 
-    it('keeps the .env, which is different for every visitor, out of shared caches', async () => {
+    it('keeps the .env, which is different for every visitor, out of shared caches, and lets no browser answer a visit from its own cache', async () => {
       const response = await honeypot.proxy(new NextRequest('https://front.test/.env'));
-      expect(response?.headers.get('cache-control')).toMatch(/^private, /);
+      expect(response?.headers.get('cache-control')).toBe('private, max-age=0');
     });
 
     it('gives the same secrets to everybody who asks until the server restarts', async () => {
@@ -213,7 +213,7 @@ describe('honeypot proxy', () => {
         expect(script).toContain('e.preventDefault()');
         const hash = createHash('sha256').update(script).digest('base64');
         expect(response?.headers.get('content-security-policy')).toContain(`script-src 'sha256-${hash}'`);
-        expect(response?.headers.get('cache-control')).toMatch(/^public, /);
+        expect(response?.headers.get('cache-control')).toBe('public, max-age=0, s-maxage=2592000');
       }
     );
 

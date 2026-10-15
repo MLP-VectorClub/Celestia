@@ -50,7 +50,7 @@ export const createDecoys = (siteName: string, securityTxtUrl: string, seed?: st
       cookies: false,
       render: ({ address }) => fillIn(envTemplate, momsWeight(address)),
       // It has a line that is different for every visitor, so only their own browser may keep it
-      cacheControl: 'private, max-age=86400',
+      cacheControl: 'private, max-age=0',
     },
     'git-config': { body: gitConfig(secrets, siteName), contentType: 'text/plain; charset=utf-8', cookies: false },
     'wordpress-login': {
@@ -64,10 +64,11 @@ export const createDecoys = (siteName: string, securityTxtUrl: string, seed?: st
 };
 
 /**
- * Everything about a decoy is static, so shared caches and browsers may keep it for good: whoever asks again does not reach the server at all (which
- * also means no new session gets flagged for that visit, the price of keeping the load down)
+ * Everything about a decoy is static, so shared caches (a CDN in front of the site) may keep it for a month, which is what spares the server the load of
+ * the scanners that come back. Browsers may not: a visit that a browser answers from its own cache never reaches the server, and the visitor would not be
+ * flagged (somebody who opens a trap, goes away and opens it again a day later would see nothing happen). They ask every time
  */
-export const DECOY_CACHE_CONTROL = 'public, max-age=604800, s-maxage=2592000, stale-while-revalidate=604800, immutable';
+export const DECOY_CACHE_CONTROL = 'public, max-age=0, s-maxage=2592000';
 
 export const decoyHeaders = (decoy: Decoy): Record<string, string> => ({
   'Content-Type': decoy.contentType,

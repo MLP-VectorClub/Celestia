@@ -12,8 +12,7 @@ Traps for scanners, for a Next.js front end whose API (Luna) keeps the sessions.
   `env` (a `.env` of about 170 lines: dozens of services nobody runs on one site, some jokes, a link at the top to report it as the security policy says (which explains it is made up), wallets, fake TLS and SSH keys, and a line with the visitor's mother's weight in kilograms, made up from their address; every value random and opening nothing; the `.env` is the one decoy that is `private` for caches, since that line differs per visitor), `git-config` (a `.git/config` with a token in the remote),
   `wordpress-login` and `adminer-login` (bare mock login pages in Comic Neue from Google Fonts and water.css from jsDelivr, both pinned; they have the
   field names the real ones have, and a few lines of inline script, allowed by hash in the page's own CSP, make the form "work" without any request:
-  it waits a moment and says the login failed). Decoys are sent with `Cache-Control: public` and a long lifetime, so a shared cache or a browser
-  answers repeat visits and the server never sees them (those visits flag nothing, the price of keeping the load down).
+  it waits a moment and says the login failed). Decoys are sent with `Cache-Control: public, max-age=0, s-maxage=2592000`: a shared cache in front of the site may keep them for a month (the load of scanners that come back), a browser asks every time, so a visit is never answered from its own cache without the server flagging the session.
 - `honeypot.robotsTxt(...)` builds a robots.txt that lists every trap as disallowed, so nothing that behaves ever springs one.
 - Luna being unreachable never locks anybody out: sessions count as not flagged and traps still answer `403`.
 
