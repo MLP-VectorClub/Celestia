@@ -29,8 +29,9 @@ export class Service {
           // has to carry theirs, not axios's
           ...pick(this.request.headers, ['authorization', 'cookie', 'user-agent']),
           // The API only accepts a session cookie from requests that come from the front end (Sanctum checks Referer, then Origin), and these do, whatever
-          // site the visitor came from
-          referer: APP_HOST,
+          // site the visitor came from. Without a cookie there is no session to accept, and the API must not start one either: a request that looks like the
+          // front end's makes it keep a session for the visitor, one row of the sessions table for every page of every guest rendered on the server
+          ...(this.request.headers.cookie ? { referer: APP_HOST } : {}),
           ...(address ? { 'x-forwarded-for': address } : {}),
         },
       };

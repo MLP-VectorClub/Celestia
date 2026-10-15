@@ -43,6 +43,13 @@ describe('requests made for a visitor', () => {
     });
   });
 
+  it('do not look like the front end without a cookie, so the API starts no session for a guest', async () => {
+    const headers = await headersOf({ 'user-agent': 'Mozilla/5.0 Firefox/157.0' });
+    expect(headers).not.toHaveProperty('referer');
+    expect(headers).not.toHaveProperty('cookie');
+    expect(headers).toMatchObject({ 'user-agent': 'Mozilla/5.0 Firefox/157.0' });
+  });
+
   it('send no address when the request has none', async () => {
     expect(await headersOf({ cookie: 'a=b' })).not.toHaveProperty('x-forwarded-for');
   });
