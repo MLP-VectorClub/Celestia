@@ -40,7 +40,7 @@ const PickerPage: NextPage = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps<SSRMessages>((store) => async ({ locale }) => {
   titleSetter(store, titleFactory());
-  return { props: { ...(await typedServerSideTranslations(locale, ['colorGuide', 'picker'])) } };
+  return { props: { ...(await typedServerSideTranslations(locale, ['colorGuide', 'picker'])), mainPadding: false } };
 });
 
 export default PickerPage;

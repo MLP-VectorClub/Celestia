@@ -2,7 +2,7 @@ import { FC, PropsWithChildren, useEffect, useMemo, useRef, useState } from 'rea
 
 const MOBILE_BREAKPOINT_WIDTH = 992;
 
-export const Main: FC<PropsWithChildren> = ({ children }) => {
+export const Main: FC<PropsWithChildren & { margin?: boolean }> = ({ children, padding = true }) => {
   const mainRef = useRef<HTMLElement>(null);
   const [height, setHeight] = useState<string | undefined>('100vh');
 
@@ -26,7 +26,7 @@ export const Main: FC<PropsWithChildren> = ({ children }) => {
     return () => window.removeEventListener('resize', resizeListener);
   });
 
-  const styleAttr = useMemo(() => ({ minHeight: height }), [height]);
+  const styleAttr = useMemo(() => ({ minHeight: height, padding: padding ? undefined : '0 !important' }), [height, padding]);
 
   return (
     <main ref={mainRef} style={styleAttr} id="main">

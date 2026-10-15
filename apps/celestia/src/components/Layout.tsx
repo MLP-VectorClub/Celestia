@@ -13,7 +13,7 @@ import { useSidebarSwipe } from 'src/hooks/sidebar-swipe';
 
 const layoutDisabledClass = 'layout-disabled';
 
-const Layout: FC<PropsWithChildren> = ({ children }) => {
+const Layout: FC<PropsWithChildren & { mainPadding?: boolean }> = ({ children, mainPadding: mainPadding = true }) => {
   const { disabled } = useLayout();
   const { enabled: nutshellNames } = useNutshellMode();
   useSidebarSwipe();
@@ -41,7 +41,7 @@ const Layout: FC<PropsWithChildren> = ({ children }) => {
         <Breadcrumbs />
         <Notices />
       </aside>
-      <Main>{children}</Main>
+      <Main padding={mainPadding}>{children}</Main>
       <Footer />
     </div>
   );

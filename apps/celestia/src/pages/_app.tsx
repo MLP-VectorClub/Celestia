@@ -10,8 +10,8 @@ import { Provider } from 'react-redux';
 
 import Layout from 'src/components/Layout';
 import ProgressIndicator from 'src/components/ProgressIndicator';
-import TitleManager from 'src/components/TitleManager';
 import { TestConsoleCapture } from 'src/components/TestConsoleCapture';
+import TitleManager from 'src/components/TitleManager';
 import AuthModal from 'src/components/modals/AuthModal';
 import DeployBanner from 'src/components/shared/DeployBanner';
 import { FetchFailureView } from 'src/components/shared/FetchFailureView';
@@ -45,7 +45,7 @@ const Celestia: AppComponent = ({ Component, ...rest }) => {
           <LayoutContextProvider value={layoutContext}>
             <DialogProvider>
               <SidebarWidgetProvider>
-                <Layout>
+                <Layout mainPadding={!!props.pageProps.mainPadding}>
                   {}
                   {props.pageProps.fetchFailure ? (
                     <FetchFailureView failure={props.pageProps.fetchFailure} />
