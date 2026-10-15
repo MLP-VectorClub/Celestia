@@ -1,7 +1,44 @@
-import { randomBytes, randomInt } from 'node:crypto';
+import { randomBytes, randomInt, randomUUID } from 'node:crypto';
 
 const ALPHANUMERIC = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 const UPPERCASE_DIGITS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+const DIGITS = '0123456789';
+const LOWERCASE_DIGITS = 'abcdefghijklmnopqrstuvwxyz0123456789';
+/** Enough words to look like a wallet's recovery phrase, picked at random: not the list a real wallet uses, so no phrase here is anybody's */
+const WORDS = [
+  'abandon',
+  'anchor',
+  'barrel',
+  'candle',
+  'dragon',
+  'ember',
+  'falcon',
+  'garden',
+  'harbor',
+  'island',
+  'jungle',
+  'kettle',
+  'lantern',
+  'meadow',
+  'nectar',
+  'orchid',
+  'pepper',
+  'quartz',
+  'rabbit',
+  'saddle',
+  'thunder',
+  'umbrella',
+  'velvet',
+  'walnut',
+  'yonder',
+  'zephyr',
+  'biscuit',
+  'cobalt',
+  'dolphin',
+  'echo',
+  'fiddle',
+  'glacier',
+];
 
 const fromAlphabet = (alphabet: string, length: number): string =>
   Array.from({ length }, () => alphabet[randomInt(alphabet.length)]).join('');
@@ -10,7 +47,14 @@ const fromAlphabet = (alphabet: string, length: number): string =>
 export const randomSecrets = () => ({
   appKey: `base64:${randomBytes(32).toString('base64')}`,
   password: (length = 20) => fromAlphabet(ALPHANUMERIC, length),
+  /** Letters and digits in lower case (a lot of keys are) */
+  lower: (length: number) => fromAlphabet(LOWERCASE_DIGITS, length),
+  digits: (length: number) => fromAlphabet(DIGITS, length),
+  upper: (length: number) => fromAlphabet(UPPERCASE_DIGITS, length),
   hex: (bytes: number) => randomBytes(bytes).toString('hex'),
+  base64url: (bytes: number) => randomBytes(bytes).toString('base64url'),
+  uuid: () => randomUUID(),
+  seedPhrase: (words = 12) => Array.from({ length: words }, () => WORDS[randomInt(WORDS.length)]).join(' '),
   awsAccessKeyId: `AKIA${fromAlphabet(UPPERCASE_DIGITS, 16)}`,
   awsSecretAccessKey: randomBytes(30)
     .toString('base64')

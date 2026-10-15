@@ -126,6 +126,27 @@ describe('honeypot proxy', () => {
       expect(luna).not.toHaveBeenCalled();
     });
 
+    it('is over the top: dozens of services nobody runs on one site, jokes, and a note at the end that gives it away to whoever reads that far', async () => {
+      const text = (await (await honeypot.proxy(new NextRequest('https://front.test/.env')))?.text()) ?? '';
+      const keys = text.split('\n').filter((line) => /^[A-Z][A-Z0-9_]*=/.test(line));
+      expect(keys.length).toBeGreaterThan(120);
+      [
+        'OPENAI_API_KEY',
+        'ANTHROPIC_API_KEY',
+        'TWILIO_AUTH_TOKEN',
+        'STRIPE_SECRET',
+        'SLACK_BOT_TOKEN',
+        'MONGODB_URI',
+        'BITCOIN_WALLET_SEED_PHRASE',
+        'NUCLEAR_LAUNCH_CODES',
+      ].forEach((key) => expect(text).toMatch(new RegExp(`^${key}=`, 'm')));
+      expect(text).toMatch(/random number generator/);
+      expect(text).toMatch(/^# DO NOT COMMIT THIS FILE/m);
+      // Nothing is empty and nothing has an unfilled template left in it
+      expect(text).not.toMatch(/\$\{|undefined|NaN|\[object/);
+      keys.forEach((line) => expect(line.split('=')[1]?.trim()).not.toBe(''));
+    });
+
     it('gives the same secrets to everybody who asks until the server restarts', async () => {
       const first = await (await honeypot.proxy(new NextRequest('https://front.test/.env')))?.text();
       const second = await (await honeypot.proxy(new NextRequest('https://front.test/.env')))?.text();
