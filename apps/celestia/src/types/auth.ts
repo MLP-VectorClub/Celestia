@@ -39,12 +39,6 @@ export interface PostUsersSigninRequest {
   remember?: boolean;
 }
 
-export interface PostUsersRequest {
-  name: string;
-  email: string;
-  password: string;
-}
-
 export interface PostUsersOauthSigninProviderRequest {
   provider: SocialProvider;
   code?: string;
@@ -131,5 +125,4 @@ export interface PostUsersMePasskeysRequest {
   credential: RegistrationResponseJSON;
   name?: string;
 }
-export type PostUsersResult = Record<string, unknown>;
 export type GetUsersTokensResult = Record<string, unknown>[];

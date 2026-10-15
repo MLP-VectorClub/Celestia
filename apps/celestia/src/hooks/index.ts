@@ -15,3 +15,4 @@ export * from 'src/hooks/sidebar-widget';
 export * from 'src/hooks/in-view';
 export * from 'src/hooks/tag-suggestions';
 export * from 'src/hooks/passkey';
+export * from 'src/hooks/social-signin';

@@ -5,8 +5,8 @@ import { useSelector } from 'react-redux';
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 
 import ForgotPasswordForm from 'src/components/shared/forms/ForgotPasswordForm';
-import RegisterForm from 'src/components/shared/forms/RegisterForm';
 import SingInForm from 'src/components/shared/forms/SignInForm';
+import SignUpPanel from 'src/components/shared/forms/SignUpPanel';
 import TwoFactorForm from 'src/components/shared/forms/TwoFactorForm';
 import { useAuth } from 'src/hooks';
 import { RootState, useAppDispatch } from 'src/store';
@@ -46,7 +46,7 @@ const AuthModal: FC = () => {
 
   const sides = {
     [AuthModalSide.SIGN_IN]: <SingInForm />,
-    [AuthModalSide.REGISTER]: <RegisterForm />,
+    [AuthModalSide.REGISTER]: <SignUpPanel />,
     [AuthModalSide.PASSWORD_RESET]: <ForgotPasswordForm />,
     [AuthModalSide.TWO_FACTOR]: <TwoFactorForm />,
   };

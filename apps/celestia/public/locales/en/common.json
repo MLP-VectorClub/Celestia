@@ -105,18 +105,13 @@
   },
   "auth": {
     "signInTitle": "Let's get you signed in",
-    "signUpTitle": "Create an account",
-    "noAccountYet": "No account yet? Create one here!",
+    "signUpTitle": "Sign up with DeviantArt",
+    "noAccountYet": "New here? Sign up with DeviantArt",
     "alreadyHaveAccount": "Already have an account? Sign in here!",
-    "name": "Display Name",
-    "nameHelp": "Only English letters, digits, dashes and underscores. Must be between {min} and {max} characters. Can be changed later.",
     "email": "E-Mail Address",
-    "emailHelp": "Use a valid e-mail address that can receive messages to ensure you do not lose access to your account. This address must be confirmed after signing up. <bold>We will not send you spam.</bold>",
     "password": "Password",
-    "passwordHelp": "Must be at least {min} characters long and not commonly used.",
     "rememberMe": "Keep me signed in",
     "signInButton": "Sign In",
-    "registerButton": "Create Account",
     "invalidCredentials": "Incorrect e-mail address or password",
     "rateLimited": "Too many signin attempts, please try again in {count, plural, one {# second} other {# seconds}}",
     "hidePassword": "Hide Password",
@@ -154,6 +149,11 @@
       "send": "Send the link",
       "sent": "If an account uses that e-mail address, we have sent it a link for choosing a new password. It works for an hour. It can take a few minutes to arrive, check the spam folder too.",
       "back": "Back to sign in"
+    },
+    "signUp": {
+      "intro": "Accounts on this site are made from DeviantArt accounts. Sign in with {provider} and your account is created from your {provider} name, nothing else to fill in.",
+      "noPassword": "There is no password to make up, you sign in with {provider} each time. You can add a password, a passkey or two-step verification in your account settings afterwards.",
+      "withProvider": "Sign up with {provider}"
     }
   },
   "validation": {

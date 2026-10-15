@@ -15,18 +15,12 @@ import { Service } from 'src/services/service-class';
 import {
   GetUsersTokensResult,
   PasskeyRequestOptionsResponse,
-  PostUsersResult,
   PostUsersSigninPasskeyRequest,
   PostUsersSigninResult,
   PostUsersSigninTwoFactorPasskeyRequest,
   PostUsersSigninTwoFactorRequest,
 } from 'src/types/auth';
-import {
-  PostUsersOauthSigninProviderRequest,
-  PostUsersOauthSigninProviderResult,
-  PostUsersRequest,
-  PostUsersSigninRequest,
-} from 'src/types/auth';
+import { PostUsersOauthSigninProviderRequest, PostUsersOauthSigninProviderResult, PostUsersSigninRequest } from 'src/types/auth';
 import { ENDPOINTS } from 'src/utils';
 
 export class UserService extends Service {
@@ -64,8 +58,6 @@ export class UserService extends Service {
     Axios.post<PostUsersOauthSigninProviderResult>(ENDPOINTS.USERS_OAUTH_SIGNIN_PROVIDER(data), data);
 
   static signOut = () => Axios.post<PostUsersSignoutResult>(ENDPOINTS.USERS_SIGNOUT, null);
-
-  static register = (data: PostUsersRequest) => Axios.post<PostUsersResult>(ENDPOINTS.USERS, data);
 
   static getTokens = () => Axios.post<GetUsersTokensResult>(ENDPOINTS.USERS_TOKENS);
 

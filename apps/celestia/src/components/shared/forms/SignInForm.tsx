@@ -1,28 +1,25 @@
-import { useQueryClient } from '@tanstack/react-query';
 import { map } from 'lodash';
 import { useTranslations } from 'next-intl';
-import { FC, MouseEventHandler, useCallback, useEffect, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { Alert, Button, Col, Form, FormGroup, Input, InputGroup, Label, Row } from 'reactstrap';
-import { fromEvent } from 'rxjs';
 
 import BootstrapErrorMessages from 'src/components/shared/BootstrapErrorMessages';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import RevealPasswordButton from 'src/components/shared/RevealPasswordButton';
-import { API_PREFIX } from 'src/config';
 import { SOCIAL_PROVIDERS } from 'src/fancy-config';
 import { describeApiError } from 'src/hooks/mutation';
 import { passkeyErrorMessage, usePasskeyAutofill, usePasskeysSupported } from 'src/hooks/passkey';
 import { useRateLimitLock } from 'src/hooks/rate-limit';
+import { useSocialSignIn } from 'src/hooks/social-signin';
 import { UserService } from 'src/services/user';
 import { RootState, useAppDispatch } from 'src/store';
 import { authActions } from 'src/store/slices';
 import { signInPasskeyThunk, signInThunk } from 'src/store/thunks';
-import { AuthModalSide, Nullable, Status, UnifiedErrorResponseTypes } from 'src/types';
+import { AuthModalSide, Status, UnifiedErrorResponseTypes } from 'src/types';
 import { SocialProvider } from 'src/types/auth';
-import { ENDPOINTS, combineErrors, popupOpenCenter, validateEmail, validatePassword, validateRequired } from 'src/utils';
-import { listenForOAuthResult } from 'src/utils/oauth-popup';
+import { combineErrors, validateEmail, validatePassword, validateRequired } from 'src/utils';
 import { signInWithPasskeyOptions } from 'src/utils/passkeys';
 
 enum INPUT_NAMES {
@@ -37,10 +34,6 @@ type FormFields = {
   [INPUT_NAMES.REMEMBER]: string;
 };
 
-interface SocialPopupRef {
-  window: Nullable<Window | null>;
-}
-
 const SingInForm: FC = () => {
   const t = useTranslations();
   const {
@@ -52,8 +45,6 @@ const SingInForm: FC = () => {
   const dispatch = useAppDispatch();
   const { authModal, signIn, passkey } = useSelector((store: RootState) => store.auth);
   const [passwordRevealed, setPasswordRevealed] = useState(false);
-  const socialAuthPopup = useRef<SocialPopupRef>({ window: null });
-  const queryClient = useQueryClient();
   const rateLimited = useRateLimitLock(signIn.error);
   const [passkeyBusy, setPasskeyBusy] = useState(false);
   const [passkeyMessage, setPasskeyMessage] = useState<string | null>(null);
@@ -68,35 +59,7 @@ const SingInForm: FC = () => {
     }
   }, [reset, authModal.open]);
 
-  useEffect(() => {
-    const subscription = fromEvent(window, 'beforeunload').subscribe(() => {
-      if (socialAuthPopup.current.window) {
-        socialAuthPopup.current.window.close();
-      }
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
-
-  const signInWith = useCallback(
-    (provider: SocialProvider, popupTitle: string): MouseEventHandler =>
-      (e) => {
-        e.preventDefault();
-
-        socialAuthPopup.current.window = popupOpenCenter(
-          API_PREFIX + ENDPOINTS.USERS_OAUTH_SIGNIN_PROVIDER({ provider }),
-          popupTitle,
-          screen.availWidth * 0.75,
-          screen.availHeight * 0.75
-        );
-
-        // The popup reports back over a BroadcastChannel, its `closed` state can't be trusted (see oauth-popup.ts)
-        listenForOAuthResult(() => void queryClient.invalidateQueries({ queryKey: [ENDPOINTS.USERS_ME] }));
-      },
-    [queryClient]
-  );
+  const signInWith = useSocialSignIn();
 
   const signInWithPasskey = async () => {
     setPasskeyMessage(null);

@@ -2,14 +2,7 @@ import { PayloadAction, createSlice, isAction } from '@reduxjs/toolkit';
 import { User } from '@went.tf/mlp-vectorclub-api-types';
 import { HYDRATE } from 'next-redux-wrapper';
 
-import {
-  registerThunk,
-  signInPasskeyThunk,
-  signInThunk,
-  signInTwoFactorPasskeyThunk,
-  signInTwoFactorThunk,
-  signOutThunk,
-} from 'src/store/thunks';
+import { signInPasskeyThunk, signInThunk, signInTwoFactorPasskeyThunk, signInTwoFactorThunk, signOutThunk } from 'src/store/thunks';
 import { AuthModalSide, FailsafeUser, Nullable, Status, UnifiedErrorResponse } from 'src/types';
 import { TwoFactorChallenge, isTwoFactorRequired } from 'src/types/auth';
 
@@ -32,14 +25,6 @@ export interface AuthState {
     error: Nullable<UnifiedErrorResponse>;
   };
   signOut: {
-    status: Status;
-    error: Nullable<UnifiedErrorResponse>;
-  };
-  register: {
-    status: Status;
-    error: Nullable<UnifiedErrorResponse>;
-  };
-  registerOauth: {
     status: Status;
     error: Nullable<UnifiedErrorResponse>;
   };
@@ -68,14 +53,6 @@ const initialState: AuthState = {
     status: Status.INIT,
     error: null,
   },
-  register: {
-    status: Status.INIT,
-    error: null,
-  },
-  registerOauth: {
-    status: Status.INIT,
-    error: null,
-  },
   authModal: {
     open: false,
     side: AuthModalSide.SIGN_IN,
@@ -88,7 +65,6 @@ const clearModalState = (state: typeof initialState) => {
   state.passkey = { ...initialState.passkey };
   state.twoFactor = { ...initialState.twoFactor };
   state.signOut = { ...initialState.signOut };
-  state.register = { ...initialState.register };
 };
 
 const afterAuthChange = (state: typeof initialState, user?: FailsafeUser) => {
@@ -165,17 +141,6 @@ const authSlice = createSlice({
       .addCase(signOutThunk.rejected, (state, action) => {
         state.signOut.status = Status.FAILURE;
         state.signOut.error = action.payload as UnifiedErrorResponse;
-      })
-      .addCase(registerThunk.pending, (state) => {
-        state.register.status = Status.LOAD;
-      })
-      .addCase(registerThunk.fulfilled, (state, action: PayloadAction<User>) => {
-        state.register.status = Status.SUCCESS;
-        afterAuthChange(state, action.payload);
-      })
-      .addCase(registerThunk.rejected, (state: AuthState, action) => {
-        state.register.status = Status.FAILURE;
-        state.register.error = action.payload as UnifiedErrorResponse;
       })
       .addMatcher(
         (action) => signInTwoFactorThunk.pending.match(action) || signInTwoFactorPasskeyThunk.pending.match(action),

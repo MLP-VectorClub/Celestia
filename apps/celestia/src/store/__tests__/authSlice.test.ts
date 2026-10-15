@@ -5,14 +5,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { UserService } from 'src/services';
 import authReducer, { authActions } from 'src/store/slices/authSlice';
-import {
-  registerThunk,
-  signInPasskeyThunk,
-  signInThunk,
-  signInTwoFactorPasskeyThunk,
-  signInTwoFactorThunk,
-  signOutThunk,
-} from 'src/store/thunks';
+import { signInPasskeyThunk, signInThunk, signInTwoFactorPasskeyThunk, signInTwoFactorThunk, signOutThunk } from 'src/store/thunks';
 import { AuthModalSide, Status, UnifiedErrorResponseTypes } from 'src/types';
 import { ENDPOINTS } from 'src/utils/endpoints';
 
@@ -20,7 +13,6 @@ vi.mock('src/services', () => ({
   UserService: {
     signIn: vi.fn(),
     signOut: vi.fn(),
-    register: vi.fn(),
     getMe: vi.fn(),
     signInTwoFactor: vi.fn(),
     signInTwoFactorPasskey: vi.fn(),
@@ -237,23 +229,5 @@ describe('signOutThunk', () => {
     await store.dispatch(signOutThunk());
     expect(store.getState().auth.signOut.status).toBe(Status.FAILURE);
     expect(store.getState().auth.signOut.error).not.toBeNull();
-  });
-});
-
-describe('registerThunk', () => {
-  it('registers and signs the new user in', async () => {
-    service.register.mockReturnValue(ok({}));
-    const { store, queryCache } = makeStore();
-    await store.dispatch(registerThunk({ name: 'x' } as never));
-    expect(queryCache.getQueryData([ENDPOINTS.USERS_ME])).toEqual(user);
-    expect(store.getState().auth.register.status).toBe(Status.INIT);
-  });
-
-  it('keeps the API error with its field messages for the form', async () => {
-    service.register.mockReturnValue(fail(422, { message: 'Invalid', errors: { email: ['Taken'] } }));
-    const { store } = makeStore();
-    await store.dispatch(registerThunk({ name: 'x' } as never));
-    expect(store.getState().auth.register.status).toBe(Status.FAILURE);
-    expect(store.getState().auth.register.error).toMatchObject({ errors: { email: ['Taken'] } });
   });
 });
