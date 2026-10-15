@@ -12,7 +12,7 @@ export const envFile = (s: Secrets, siteName: string, securityTxtUrl: string): s
   const slug = siteName.toLowerCase().replace(/[^a-z0-9]+/g, '') || 'example';
   const host = `${slug}.internal`;
   return `# ${siteName.toUpperCase()} - PRODUCTION SECRETS
-# DO NOT COMMIT THIS FILE. DO NOT SHARE THIS FILE. DO NOT PUT THIS FILE IN THE WEB ROOT. (oops)
+# DO NOT COMMIT THIS FILE. DO NOT SHARE THIS FILE. DO NOT PUT THIS FILE IN THE WEB ROOT.
 # Found a security problem with this file? Report it the way ${securityTxtUrl} says.
 
 ##### application
