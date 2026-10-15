@@ -41,6 +41,14 @@ export const createHoneypotProxy = ({ apiHost, appHost, sessionCookie, honeypots
     const response = decoy ? new NextResponse(decoy.body, { status: 200, headers: decoyHeaders(decoy) }) : refusal();
     const address = visitorAddress(request.headers);
     const session = request.cookies.get(sessionCookie)?.value;
+    // Files do not set cookies: nothing to flag a visitor with when they have no session, and nothing to hand back when they do
+    const quiet = decoy?.cookies === false;
+    if (quiet && !session) {
+      console.info(
+        `[honeypot] ${trap.name} asked for by ${address ?? 'an unknown address'} (${request.headers.get('user-agent') ?? 'no user agent'}), no session to flag`
+      );
+      return response;
+    }
     try {
       const luna = await fetch(`${apiHost}/honeypot/${trap.name}`, {
         headers: {
@@ -53,7 +61,7 @@ export const createHoneypotProxy = ({ apiHost, appHost, sessionCookie, honeypots
         redirect: 'manual',
         signal: AbortSignal.timeout(ASK_TIMEOUT_MS),
       });
-      const cookies = luna.headers.getSetCookie();
+      const cookies = quiet ? [] : luna.headers.getSetCookie();
       cookies.forEach((cookie) => response.headers.append('set-cookie', cookie));
       // The session of the visitor is the one the answer started, or the one they sent
       const started = cookies.map((cookie) => cookie.match(new RegExp(`^${sessionCookie}=([^;]*)`))?.[1]).find(Boolean);

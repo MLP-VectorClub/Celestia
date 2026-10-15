@@ -84,13 +84,11 @@ describe('honeypot proxy', () => {
       luna.mockResolvedValue(new Response('Forbidden', { status: 403, headers: { 'set-cookie': 'luna_session=decoyed; Path=/' } }))
     );
 
-    it('answers a trap that names one with a real-looking 200 that anybody may cache, and still flags the session', async () => {
-      const response = await honeypot.proxy(new NextRequest('https://front.test/.env'));
+    it('answers a trap that names one with a real-looking 200 that anybody may cache', async () => {
+      const response = await honeypot.proxy(new NextRequest('https://front.test/.env', { headers: { cookie: 'luna_session=known' } }));
       expect(response?.status).toBe(200);
       expect(response?.headers.get('content-type')).toMatch(/^text\/plain/);
       expect(response?.headers.get('cache-control')).toMatch(/^public, max-age=\d+, s-maxage=\d+/);
-      expect(response?.headers.getSetCookie()).toEqual(['luna_session=decoyed; Path=/']);
-      expect(luna.mock.calls[0][0]).toBe('https://luna.test/honeypot/.env');
       const text = (await response?.text()) ?? '';
       expect(text).toMatch(/^APP_NAME="Test Site"$/m);
       expect(text).toMatch(/^APP_KEY=base64:[A-Za-z0-9+/]{43}=$/m);
@@ -98,10 +96,35 @@ describe('honeypot proxy', () => {
       expect(text).toMatch(/^DB_PASSWORD=[A-Za-z0-9]{22}$/m);
     });
 
+    it('sets no cookie when a file answers, and has nothing to flag for a visitor without a session', async () => {
+      const response = await honeypot.proxy(new NextRequest('https://front.test/.env'));
+      expect(response?.status).toBe(200);
+      expect(response?.headers.getSetCookie()).toEqual([]);
+      expect(response?.headers.get('set-cookie')).toBeNull();
+      expect(luna).not.toHaveBeenCalled();
+    });
+
+    it('flags the session a visitor asking for a file already has, without handing a cookie back', async () => {
+      const response = await honeypot.proxy(new NextRequest('https://front.test/.env', { headers: { cookie: 'luna_session=theirs' } }));
+      expect(response?.status).toBe(200);
+      expect(response?.headers.getSetCookie()).toEqual([]);
+      expect(luna.mock.calls[0][0]).toBe('https://luna.test/honeypot/.env');
+      luna.mockClear();
+      expect((await honeypot.proxy(new NextRequest('https://front.test/', { headers: { cookie: 'luna_session=theirs' } })))?.status).toBe(
+        403
+      );
+      expect(luna).not.toHaveBeenCalled();
+    });
+
     it('gives the same secrets to everybody who asks until the server restarts', async () => {
       const first = await (await honeypot.proxy(new NextRequest('https://front.test/.env')))?.text();
       const second = await (await honeypot.proxy(new NextRequest('https://front.test/.env')))?.text();
       expect(first).toBe(second);
+    });
+
+    it('sets the session cookie of a page that answers (a login page), the way a real one would', async () => {
+      const response = await honeypot.proxy(new NextRequest('https://front.test/wp-login.php'));
+      expect(response?.headers.getSetCookie()).toEqual(['luna_session=decoyed; Path=/']);
     });
 
     it('serves a login page that works without the server, with its own CSP, a comic font and a classless stylesheet', async () => {

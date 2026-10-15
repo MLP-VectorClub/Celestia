@@ -11,6 +11,11 @@ export interface Decoy {
   contentType: string;
   /** The Content-Security-Policy that lets a page load its font, stylesheet and script (none for plain text) */
   csp?: string;
+  /**
+   * Whether answering may set cookies (the default). A file that is just lying around does not: setting one would give the trap away, so a visitor
+   * without a session is not given one (and Luna is not asked to start one), and one with a session is flagged without getting any cookie back
+   */
+  cookies?: boolean;
 }
 
 /** The names a trap can give as its `decoy` */
@@ -25,8 +30,8 @@ const htmlDecoy = ({ html, script }: HtmlPage): Decoy => ({ body: html, contentT
 export const createDecoys = (siteName: string): Record<DecoyName, Decoy> => {
   const secrets = randomSecrets();
   return {
-    env: { body: envFile(secrets, siteName), contentType: 'text/plain; charset=utf-8' },
-    'git-config': { body: gitConfig(secrets, siteName), contentType: 'text/plain; charset=utf-8' },
+    env: { body: envFile(secrets, siteName), contentType: 'text/plain; charset=utf-8', cookies: false },
+    'git-config': { body: gitConfig(secrets, siteName), contentType: 'text/plain; charset=utf-8', cookies: false },
     'wordpress-login': htmlDecoy(wordpressLogin(siteName)),
     'adminer-login': htmlDecoy(adminerLogin()),
   };
