@@ -53,12 +53,12 @@ $link-hover-color-light: color.adjust($link-hover-color, $lightness: 37%, $space
 $sidebar-breakpoint-up: lg;
 // Bootstrap 5 media-breakpoint-down(lg) means below lg, so this and $sidebar-breakpoint-up split at the same width
 $sidebar-breakpoint-down: lg;
-$SidebarBackground: color.adjust($primary, $lightness: -24%, $space: hsl);
+$SidebarBackground: $breadcrumb-bg;
 $SidebarWidth: 330px;
 $MainMargin: 8px;
-$SidebarContentColor: rgba(white, 0.75);
-$SidebarContentBorder: rgba(white, 0.3);
-$SidebarContentBackground: rgba(white, 0.1);
+$SidebarContentColor: rgba($breadcrumb-active-color, 0.75);
+$SidebarContentBorder: rgba($breadcrumb-active-color, 0.3);
+$SidebarContentBackground: rgba($breadcrumb-active-color, 0.1);
 
 $navbar-padding-y: 0.313rem;
 

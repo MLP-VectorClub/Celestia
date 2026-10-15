@@ -14,11 +14,11 @@
   max-width: 100%;
   box-sizing: border-box;
   color: $SidebarContentColor;
+  background-color: $SidebarBackground;
   padding: 0 10px 10px;
   text-align: center;
   overflow: auto;
   will-change: left, width;
-  @include fluid-background($SidebarBackground);
 
   > .mobile-nav {
     position: relative;
@@ -416,7 +416,7 @@
 @include media-breakpoint-down($sidebar-breakpoint-down) {
   #sidebar {
     transition: left 0.5s ease-in-out;
-    will-change: left;
+    @include fluid-background($SidebarBackground);
   }
   @include sidebar-open {
     #sidebar {
