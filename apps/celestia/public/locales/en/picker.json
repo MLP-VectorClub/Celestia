@@ -77,7 +77,13 @@
     "deselect": "Deselect",
     "delete": "Delete",
     "noImages": "No images are open.",
-    "resize": "Resize the picking area list"
+    "resize": "Resize the picking area list",
+    "selectImage": "Select all areas of {name}",
+    "selectImageHint": "Select all areas of this image, or none when they are all selected",
+    "showRgb": "Show colors as RGB",
+    "showRgbHint": "Switch to showing the colors in the list in RGB format",
+    "showHex": "Show colors as hex",
+    "showHexHint": "Switch to showing the colors in the list in HEX format"
   },
   "average": {
     "copyHint": "Copy average color to clipboard",

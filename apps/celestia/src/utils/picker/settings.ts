@@ -7,9 +7,13 @@ export interface PickerSettings {
   pickerWidth: number;
   /** Whether copying an average color includes the `#` */
   copyHash: boolean;
+  /** How the colors of the picking areas are written in the list */
+  colorFormat: ColorFormat;
 }
 
-export const DEFAULT_SETTINGS: PickerSettings = { pickingAreaSize: 25, pickerWidth: 85, copyHash: true };
+export type ColorFormat = 'hex' | 'rgb';
+
+export const DEFAULT_SETTINGS: PickerSettings = { pickingAreaSize: 25, pickerWidth: 85, copyHash: true, colorFormat: 'hex' };
 export const SETTINGS_KEY = 'picker_settings';
 
 type ReadStorage = Pick<Storage, 'getItem'>;
@@ -27,11 +31,12 @@ export function parseSettings(json: string | null): PickerSettings {
     return settings;
   }
   if (typeof stored !== 'object' || stored === null) return settings;
-  const { pickingAreaSize, pickerWidth, copyHash } = stored as Record<string, unknown>;
+  const { pickingAreaSize, pickerWidth, copyHash, colorFormat } = stored as Record<string, unknown>;
   if (typeof pickingAreaSize === 'number' && Number.isFinite(pickingAreaSize)) settings.pickingAreaSize = clampAreaSize(pickingAreaSize);
   const width = typeof pickerWidth === 'string' ? parseFloat(pickerWidth) : pickerWidth;
   if (typeof width === 'number' && Number.isFinite(width)) settings.pickerWidth = clampWidth(width);
   if (typeof copyHash === 'boolean') settings.copyHash = copyHash;
+  if (colorFormat === 'hex' || colorFormat === 'rgb') settings.colorFormat = colorFormat;
   return settings;
 }
 

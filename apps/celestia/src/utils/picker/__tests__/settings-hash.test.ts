@@ -15,6 +15,7 @@ describe('parseSettings', () => {
       pickingAreaSize: 400,
       pickerWidth: 50,
       copyHash: false,
+      colorFormat: 'hex',
     });
     expect(parseSettings('{"pickingAreaSize":"big","copyHash":"no"}')).toEqual(DEFAULT_SETTINGS);
   });
@@ -32,11 +33,15 @@ describe('storage access', () => {
       setItem: (k: string, v: string) => void data.set(k, v),
       removeItem: (k: string) => void data.delete(k),
     };
-    saveSettings({ pickingAreaSize: 40, pickerWidth: 60, copyHash: false }, storage);
+    saveSettings({ pickingAreaSize: 40, pickerWidth: 60, copyHash: false, colorFormat: 'rgb' }, storage);
     expect(data.has(SETTINGS_KEY)).toBe(true);
-    expect(loadSettings(storage)).toEqual({ pickingAreaSize: 40, pickerWidth: 60, copyHash: false });
+    expect(loadSettings(storage)).toEqual({ pickingAreaSize: 40, pickerWidth: 60, copyHash: false, colorFormat: 'rgb' });
     clearSettings(storage);
     expect(loadSettings(storage)).toEqual(DEFAULT_SETTINGS);
+  });
+
+  it('ignores an unknown color format', () => {
+    expect(parseSettings('{"colorFormat":"hsl"}').colorFormat).toBe('hex');
   });
 
   it('survives storage that throws or is missing', () => {

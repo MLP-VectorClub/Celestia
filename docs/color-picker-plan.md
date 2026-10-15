@@ -143,3 +143,4 @@ window, and now the new one is laid out the same way:
   zoom field); bottom left "Picking tool settings" (− size +) and "Picking status" (counts, average color with copy and `#` buttons, RGB).
 - The area list on the right has only the list and an icon bar (delete, deselect, select all); the status bar shows the hint, the pixel and its color as
   `#RRGGBB @ opacity`. The checkerboard sits behind the image only. Tests that hover the stage must stay clear of the panels (top and bottom left).
+- The area list also has the old site's two extras: a droplet/hash button switching the list between hex and RGB (setting `colorFormat`, stored with the others) and selection circles, one per area and one next to the image name (selects or clears every area of that image).

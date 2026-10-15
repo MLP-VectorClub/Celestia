@@ -37,6 +37,12 @@ export function formatColor(pixel: Pixel): string {
   return pixel.alpha === 1 ? hex : `${hex} @ ${formatPercent(pixel.alpha)}%`;
 }
 
+/** `1, 2, 3`, followed by ` @ 50%` when the color is not fully opaque */
+export function formatChannels({ red, green, blue, alpha }: Pixel): string {
+  const channels = `${red}, ${green}, ${blue}`;
+  return alpha === 1 ? channels : `${channels} @ ${formatPercent(alpha)}%`;
+}
+
 /** `rgba(1, 2, 3, 0.5)` for use as a CSS color */
 export const toCssColor = ({ red, green, blue, alpha }: Pixel): string => `rgba(${red}, ${green}, ${blue}, ${alpha})`;
 

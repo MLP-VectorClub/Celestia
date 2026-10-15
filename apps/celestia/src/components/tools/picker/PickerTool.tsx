@@ -232,7 +232,13 @@ export const PickerTool: FC = () => {
           tabs={state.tabs}
           activeId={state.activeId}
           colors={areaColors}
+          colorFormat={settings.colorFormat}
+          onColorFormatChange={(colorFormat) => updateSettings({ colorFormat })}
           onActivateTab={(id) => dispatch({ type: 'activateTab', id })}
+          onSelectTab={(tab) => {
+            dispatch({ type: 'activateTab', id: tab.id });
+            dispatch({ type: 'selectAll', selected: tab.selected.length < tab.areas.length });
+          }}
           onSelect={(tab, area, additive) => {
             dispatch({ type: 'activateTab', id: tab.id });
             dispatch({ type: 'selectAreas', ids: [area.id], mode: additive ? 'toggle' : 'replace' });

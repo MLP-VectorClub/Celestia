@@ -40,6 +40,36 @@ describe('picking areas', () => {
     await expect.element(screen.getByRole('button', { name: /#ff0000.*25px/ })).toBeVisible();
   });
 
+  it('switches the list between hex and RGB and remembers the choice', async () => {
+    const { screen, at } = await openWide();
+    await stageOf(screen).click(at(-25));
+    await screen.getByRole('button', { name: 'Show colors as RGB' }).click();
+    await expect.element(screen.getByRole('button', { name: /255, 0, 0.*25px/ })).toBeVisible();
+    expect(localStorage.getItem('picker_settings')).toContain('"colorFormat":"rgb"');
+    await screen.getByRole('button', { name: 'Show colors as hex' }).click();
+    await expect.element(screen.getByRole('button', { name: /#ff0000.*25px/ })).toBeVisible();
+  });
+
+  it('selects every area of an image with the circle next to its name', async () => {
+    const { screen, at } = await openWide();
+    await stageOf(screen).click(at(-25));
+    await stageOf(screen).click(at(25));
+    await screen.getByRole('button', { name: 'Select all areas of wide.png' }).click();
+    expect(
+      screen
+        .getByRole('button', { pressed: true })
+        .elements()
+        .filter((el) => /25px/.test(el.textContent ?? ''))
+    ).toHaveLength(2);
+    await screen.getByRole('button', { name: 'Select all areas of wide.png' }).click();
+    expect(
+      screen
+        .getByRole('button', { pressed: true })
+        .elements()
+        .filter((el) => /25px/.test(el.textContent ?? ''))
+    ).toHaveLength(0);
+  });
+
   it('places a round area with Alt+click', async () => {
     const { screen, at } = await openWide();
     await stageOf(screen).click({ ...at(-25), modifiers: ['Alt'] });

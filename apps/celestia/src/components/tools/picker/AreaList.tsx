@@ -8,13 +8,18 @@ import { AreaListItem } from 'src/components/tools/picker/AreaListItem';
 import { PickingArea } from 'src/utils/picker/areas';
 import { Pixel } from 'src/utils/picker/pixels';
 import { TabState } from 'src/utils/picker/reducer';
+import { ColorFormat } from 'src/utils/picker/settings';
 
 interface PropTypes {
   tabs: TabState[];
   activeId: number | null;
   /** Average color of each area by id */
   colors: Map<number, Pixel | null>;
+  colorFormat: ColorFormat;
+  onColorFormatChange: (format: ColorFormat) => void;
   onActivateTab: (id: number) => void;
+  /** Selects every area of the image, or none when they are all selected already */
+  onSelectTab: (tab: TabState) => void;
   onSelect: (tab: TabState, area: PickingArea, additive: boolean) => void;
   onEdit: (tab: TabState, area: PickingArea) => void;
   /** Select-all and delete work on the active tab */
@@ -23,7 +28,19 @@ interface PropTypes {
 }
 
 /** Every open image with its picking areas and the buttons working on the selection */
-export const AreaList: FC<PropTypes> = ({ tabs, activeId, colors, onActivateTab, onSelect, onEdit, onSelectAll, onDelete }) => {
+export const AreaList: FC<PropTypes> = ({
+  tabs,
+  activeId,
+  colors,
+  colorFormat,
+  onColorFormatChange,
+  onActivateTab,
+  onSelectTab,
+  onSelect,
+  onEdit,
+  onSelectAll,
+  onDelete,
+}) => {
   const t = useTranslations();
   const active = tabs.find((tab) => tab.id === activeId);
 
@@ -34,13 +51,21 @@ export const AreaList: FC<PropTypes> = ({ tabs, activeId, colors, onActivateTab,
         {tabs.length === 0 && <p className={styles.empty}>{t('picker.list.noImages')}</p>}
         {tabs.map((tab) => (
           <section key={tab.id} aria-label={tab.name}>
-            <button
-              type="button"
-              className={classNames(styles.tabName, { [styles.activeTab]: tab.id === activeId })}
-              onClick={() => onActivateTab(tab.id)}
-            >
-              {tab.name}
-            </button>
+            <div className={classNames(styles.tabRow, { [styles.activeTab]: tab.id === activeId })}>
+              <button type="button" className={styles.tabName} onClick={() => onActivateTab(tab.id)}>
+                {tab.name}
+              </button>
+              <button
+                type="button"
+                className={classNames(styles.selectHandle, styles.tabHandle, {
+                  [styles.handleSelected]: tab.areas.length > 0 && tab.selected.length === tab.areas.length,
+                })}
+                disabled={tab.areas.length === 0}
+                aria-label={t('picker.list.selectImage', { name: tab.name })}
+                data-hint={t('picker.list.selectImageHint')}
+                onClick={() => onSelectTab(tab)}
+              />
+            </div>
             <ul className={styles.areas}>
               {tab.areas.map((area, i) => (
                 <AreaListItem
@@ -49,6 +74,7 @@ export const AreaList: FC<PropTypes> = ({ tabs, activeId, colors, onActivateTab,
                   area={area}
                   color={colors.get(area.id) ?? null}
                   selected={tab.selected.includes(area.id)}
+                  format={colorFormat}
                   onSelect={(additive) => onSelect(tab, area, additive)}
                   onEdit={() => onEdit(tab, area)}
                 />
@@ -77,6 +103,15 @@ export const AreaList: FC<PropTypes> = ({ tabs, activeId, colors, onActivateTab,
           onClick={() => onSelectAll(false)}
         >
           <InlineIcon icon="times" />
+        </button>
+        <button
+          type="button"
+          className={styles.actionButton}
+          aria-label={colorFormat === 'hex' ? t('picker.list.showRgb') : t('picker.list.showHex')}
+          data-hint={colorFormat === 'hex' ? t('picker.list.showRgbHint') : t('picker.list.showHexHint')}
+          onClick={() => onColorFormatChange(colorFormat === 'hex' ? 'rgb' : 'hex')}
+        >
+          <InlineIcon icon={colorFormat === 'hex' ? 'tint' : 'hashtag'} />
         </button>
         <button
           type="button"
