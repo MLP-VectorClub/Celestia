@@ -32,7 +32,7 @@ export interface HoneypotOptions {
   apiHost: string;
   /** The front end's own address, sent as `Referer` (Luna accepts session cookies only from requests that come from the front end) */
   appHost?: string;
-  /** The name of Luna's session cookie (its `session.cookie`, `SESSION_COOKIE` in its `.env`), `luna_session` when not given: this has to be right */
+  /** The name of Luna's session cookie (its `session.cookie`, `SESSION_COOKIE` in its `.env`), `luna_session` when not given: this has to be right, so pass the same variable */
   sessionCookie?: string;
 }
 

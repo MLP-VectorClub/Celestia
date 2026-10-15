@@ -22,6 +22,16 @@ export const HONEYPOT_TRAPS: TrapSpec[] = [
   { glob: '/pma', decoy: 'phpmyadmin-login' },
 ];
 
+/**
+ * The name of Luna's session cookie: the same `SESSION_COOKIE` in the `.env` of both applications. With the wrong name no session is ever found, and
+ * nobody who touches a trap stays blocked, so a missing one is said out loud when the server starts (and Luna's default for this site is used)
+ */
+const SESSION_COOKIE = (() => {
+  if (process.env.SESSION_COOKIE) return process.env.SESSION_COOKIE;
+  console.warn('[honeypot] SESSION_COOKIE is not set, using mlp_vector_club_session: set it to the SESSION_COOKIE of Luna');
+  return 'mlp_vector_club_session';
+})();
+
 /** Set up once when the server starts: the globs are compiled into a single regular expression and the decoys built here */
 export const honeypot = createHoneypot({
   traps: HONEYPOT_TRAPS,
@@ -32,7 +42,5 @@ export const honeypot = createHoneypot({
   seed: process.env.HONEYPOT_SEED || process.env.NEXT_PUBLIC_BUILD_ID || undefined,
   apiHost: API_HOST,
   appHost: APP_HOST,
-  // Luna's `config('session.cookie')`: production's is the one named after the app, the contract server for local tests says `luna_session`
-  // (set LUNA_SESSION_COOKIE there). With the wrong name no session is ever found, and nobody who touches a trap stays blocked
-  sessionCookie: process.env.LUNA_SESSION_COOKIE || 'mlp_vector_club_session',
+  sessionCookie: SESSION_COOKIE,
 });
