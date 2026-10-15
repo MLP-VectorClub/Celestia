@@ -1,3 +1,4 @@
+import { DetailedAppearance, GuideName } from '@went.tf/mlp-vectorclub-api-types';
 import { useTranslations } from 'next-intl';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -5,7 +6,6 @@ import { useRouter } from 'next/router';
 import { FC, Fragment, useMemo, useState } from 'react';
 import { Alert, Button } from 'reactstrap';
 
-import { DetailedAppearance, GuideName } from '@went.tf/mlp-vectorclub-api-types';
 import styles from 'modules/AppearancePage.module.scss';
 import { AppearanceColorGroups } from 'src/components/colorguide/AppearanceColorGroups';
 import { AppearanceCutieMarks } from 'src/components/colorguide/AppearanceCutieMarks';
@@ -97,10 +97,11 @@ export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppe
       {seoData && (
         <Head>
           <meta name="description" content={seoData.description} />
-          <link rel="canonical" href={seoData.canonical} />
+          <meta key="og:description" property="og:description" content={seoData.description} />
+          <link key="canonical" rel="canonical" href={seoData.canonical} />
           {seoData.ogImage && (
             <>
-              <meta property="og:image" content={seoData.ogImage.url} />
+              <meta key="og:image" property="og:image" content={seoData.ogImage.url} />
               <meta property="og:image:width" content={String(seoData.ogImage.width)} />
               <meta property="og:image:height" content={String(seoData.ogImage.height)} />
             </>

@@ -7,6 +7,7 @@ import { APP_DESCRIPTION, APP_NAME } from 'src/config';
 import { translatableValue } from 'src/hooks';
 import { useAppSelector } from 'src/store';
 import { assembleSeoUrl } from 'src/utils';
+import { canonicalPagePath, canonicalPageUrl } from 'src/utils/seo';
 import { renderingStateSlice } from 'src/utils/store';
 
 const TitleManager: FC = () => {
@@ -17,13 +18,14 @@ const TitleManager: FC = () => {
   const titleText = useMemo(() => `${!title ? '' : `${translatableValue(t, title)} - `}${APP_NAME}`, [t, title]);
 
   const ogUrl = assembleSeoUrl(asPath);
+  const canonicalUrl = useMemo(() => canonicalPageUrl(asPath), [asPath]);
   const ogImage = assembleSeoUrl('/img/logo.png');
 
   const languageAlternates = useMemo(
     () =>
       locales?.map((hrefLang) => ({
         hrefLang,
-        href: (hrefLang !== defaultLocale ? `/${hrefLang}` : '') + asPath,
+        href: assembleSeoUrl((hrefLang !== defaultLocale ? `/${hrefLang}` : '') + canonicalPagePath(asPath)),
       })),
     [asPath, defaultLocale, locales]
   );
@@ -37,9 +39,11 @@ const TitleManager: FC = () => {
       <meta property="og:url" content={ogUrl} />
       <meta property="og:locale" content={locale} />
       <meta property="og:site_name" content={APP_NAME} />
-      <meta property="og:description" content={APP_DESCRIPTION} />
-      <meta property="og:image" content={ogImage} />
+      <meta key="og:description" property="og:description" content={APP_DESCRIPTION} />
+      <meta key="og:image" property="og:image" content={ogImage} />
       <meta name="twitter:card" content="summary" />
+      {/* A page that knows better (the appearance, with its own address) sets the same key later and wins */}
+      <link key="canonical" rel="canonical" href={canonicalUrl} />
       {languageAlternates?.map(({ hrefLang, href }) => (
         <link key={hrefLang} rel="alternate" hrefLang={hrefLang} href={href} />
       ))}

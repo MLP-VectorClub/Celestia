@@ -1,2 +1,21 @@
+# The generated files of the color guide are for downloading, not for the search results
 User-agent: *
-Disallow: /
+Disallow: /cg/v/*.png$
+Disallow: /cg/v/*.png?*$
+Disallow: /cg/v/*.svg$
+Disallow: /cg/v/*.svg?*$
+Disallow: /cg/v/*.json$
+Disallow: /cg/v/*.json?*$
+Disallow: /cg/v/*.gpl$
+Disallow: /cg/v/*.gpl?*$
+Disallow: /cg/*/v/*.png$
+Disallow: /cg/*/v/*.png?*$
+Disallow: /cg/*/v/*.svg$
+Disallow: /cg/*/v/*.svg?*$
+Disallow: /cg/*/v/*.json$
+Disallow: /cg/*/v/*.json?*$
+Disallow: /cg/*/v/*.gpl$
+Disallow: /cg/*/v/*.gpl?*$
+Disallow: /cg/cutiemark/*.svg$
+Disallow: /cg/cutiemark/*.svg?*$
+Disallow: /admin

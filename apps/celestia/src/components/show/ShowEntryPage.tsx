@@ -34,6 +34,7 @@ import { useAppDispatch } from 'src/store';
 import { Nullable, Translatable } from 'src/types';
 import { ShowEntry } from 'src/types/api-alias';
 import { TitleFactory } from 'src/types/title';
+import { formatShowHeading } from 'src/utils/show';
 
 export interface ShowEntryPageProps {
   id: number;
@@ -48,7 +49,8 @@ export interface ShowEntryPageProps {
 export const showTitleFactory: TitleFactory<{ show: Nullable<ShowEntry> }> = ({ show }) => {
   const label: string | Translatable = show ? show.title : ['show.entry.notFound'];
   return {
-    title: label,
+    // The episode's number is part of what people search for, the breadcrumb keeps the plain title
+    title: show ? formatShowHeading(show) : label,
     breadcrumbs: [
       { linkProps: { href: PATHS.SHOW }, label: ['common.titles.show'] },
       { label, active: true },
