@@ -244,30 +244,31 @@ const SingInForm: FC = () => {
         <legend className="text-uppercase float-none w-auto mx-auto px-2">
           <small>{t('common.auth.socialSignIn.alternatively')}</small>
         </legend>
-        {passkeysSupported && (
-          <Button
-            type="button"
-            color="ui"
-            className="mx-2"
-            id="passkey-sign-in"
-            disabled={passkeyBusy || isLoading}
-            onClick={() => void signInWithPasskey()}
-          >
-            <InlineIcon first loading={passkeyBusy} icon="fingerprint" />
-            {t('common.auth.passkey.signIn')}
-          </Button>
-        )}
-        {map(SOCIAL_PROVIDERS, ({ name, renderIcon: RenderIcon }, provider: SocialProvider) => {
-          const text = t('common.auth.socialSignIn.signInWith', {
-            provider: name,
-          });
-          return (
-            <Button type="button" key={provider} color={provider} className="mx-2" onClick={signInWith(provider, text)}>
-              <RenderIcon first />
-              {text}
+        <div className="d-flex flex-wrap justify-content-center gap-2" id="alternative-sign-ins">
+          {passkeysSupported && (
+            <Button
+              type="button"
+              color="ui"
+              id="passkey-sign-in"
+              disabled={passkeyBusy || isLoading}
+              onClick={() => void signInWithPasskey()}
+            >
+              <InlineIcon first loading={passkeyBusy} icon="fingerprint" />
+              {t('common.auth.passkey.signIn')}
             </Button>
-          );
-        })}
+          )}
+          {map(SOCIAL_PROVIDERS, ({ name, renderIcon: RenderIcon }, provider: SocialProvider) => {
+            const text = t('common.auth.socialSignIn.signInWith', {
+              provider: name,
+            });
+            return (
+              <Button type="button" key={provider} color={provider} onClick={signInWith(provider, text)}>
+                <RenderIcon first />
+                {text}
+              </Button>
+            );
+          })}
+        </div>
       </FormGroup>
     </Form>
   );
