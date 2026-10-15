@@ -156,6 +156,9 @@ importers:
         specifier: ^4.2.0
         version: 4.2.0
     devDependencies:
+      '@mlp-vectorclub/honeypot':
+        specifier: workspace:*
+        version: link:../../packages/honeypot
       '@mlp-vectorclub/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -279,6 +282,24 @@ importers:
       vitest-browser-react:
         specifier: ^2.3.0
         version: 2.3.0(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(vitest@5.0.1)
+
+  packages/honeypot:
+    devDependencies:
+      '@mlp-vectorclub/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/node':
+        specifier: ^26.5.1
+        version: 26.5.1
+      next:
+        specifier: ^16.3.5
+        version: 16.3.5(@babel/core@7.29.7)(@playwright/test@1.63.0)(@types/node@26.5.1)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(sass@1.104.1)
+      typescript:
+        specifier: ^6.0.3
+        version: 6.0.3
+      vitest:
+        specifier: ^5.0.1
+        version: 5.0.1(@types/node@26.5.1)(@vitest/browser-playwright@5.0.1)(@vitest/coverage-v8@5.0.1)(@vitest/ui@5.0.1)(vite@8.3.0(@types/node@26.5.1)(sass@1.104.1)(terser@5.51.2))
 
   packages/tsconfig: {}
 

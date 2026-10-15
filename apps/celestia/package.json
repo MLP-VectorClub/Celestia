@@ -61,6 +61,7 @@
   },
   "devDependencies": {
     "@mlp-vectorclub/tsconfig": "workspace:*",
+    "@mlp-vectorclub/honeypot": "workspace:*",
     "@mlp-vectorclub/ui": "workspace:*",
     "@playwright/test": "1.63.0",
     "@types/capitalize": "^2.0.2",

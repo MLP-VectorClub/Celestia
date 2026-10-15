@@ -6,12 +6,6 @@ const vercelConfig = require('./vercel.json');
 
 const devMode = process.env.NODE_ENV === 'development';
 
-/** Paths that scanners ask for and nobody else has a reason to: each is listed in public/robots.txt (the test checks), the name is for Luna's log */
-const HONEYPOTS = [
-  { source: '/.env', name: 'env' },
-  { source: '/wp-admin', name: 'wp-admin' },
-  { source: '/admin.php', name: 'admin-php' },
-];
 
 /** The address of the websocket server (the same as `wsServerHost` of Luna's /config) in the form the CSP's connect-src wants it, empty when there is none */
 const WS_ORIGINS = (() => {
@@ -60,7 +54,7 @@ module.exports = {
   // A separate build directory lets a server that is running (the browser test instance) keep its build while another one is made
   distDir: DIST_DIR,
   reactStrictMode: true,
-  transpilePackages: ['@mlp-vectorclub/ui'],
+  transpilePackages: ['@mlp-vectorclub/honeypot', '@mlp-vectorclub/ui'],
   i18n: {
     locales: ['en'],
     defaultLocale: 'en',
@@ -176,12 +170,8 @@ module.exports = {
             }
           : rewrite
       ),
-      // Paths robots.txt disallows and nobody has a reason to ask for: Luna flags the session of whoever does (see its HoneypotController), and
-      // from then on `src/proxy.ts` refuses that visitor's requests
-      ...HONEYPOTS.flatMap(({ source, name }) => [
-        { source, destination: `${NEXT_PUBLIC_BACKEND_HOST}/honeypot/${name}` },
-        { source: `${source}/:path*`, destination: `${NEXT_PUBLIC_BACKEND_HOST}/honeypot/${name}` },
-      ]),
+      // robots.txt is built from the same patterns as the honeypots (src/honeypot), so it cannot go out of date
+      { source: '/robots.txt', destination: '/api/robots' },
       // URLs of the previous site that are served by pages or by the API
       { source: '/cg/picker/frame', destination: '/cg/picker' },
       // Post links from before the 2020 migration (the page's folder keeps its dynamic segments clear of the short links')
