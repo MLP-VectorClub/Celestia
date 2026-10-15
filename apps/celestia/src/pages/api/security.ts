@@ -7,17 +7,23 @@ import { HONEYPOT_TRAPS } from 'src/honeypot';
 const NEVER_GONNA_GIVE_YOU_UP = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
 
 const CONTACT = 'mailto:mail@went.tf';
-const VALID_FOR_MS = 365 * 24 * 60 * 60 * 1000;
+
+/**
+ * The last second of the month eleven months from now: RFC 9116 wants an `Expires` less than a year ahead (a file that never runs out is how stale
+ * policies stay around), and the same value all month long, instead of one that moves with every request
+ */
+export const securityTxtExpiry = (now: Date): string =>
+  new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 12, 0, 23, 59, 59)).toISOString().replace('.000Z', 'Z');
 
 /**
  * The security policy of the site (RFC 9116), served at /.well-known/security.txt and /security.txt (see the rewrites in next.config.js). The honeypot
- * paths are listed from the same traps that spring them, so the note cannot go out of date. `Expires` is always a year from now, there is nothing here
- * that would need a human to renew it
+ * paths are listed from the same traps that spring them, so the note cannot go out of date. `Expires` renews itself (see `securityTxtExpiry`), there is
+ * nothing here that would need a human to renew it
  */
 export const buildSecurityTxt = (now = new Date()): string =>
   [
     `Contact: ${CONTACT}`,
-    `Expires: ${new Date(now.getTime() + VALID_FOR_MS).toISOString()}`,
+    `Expires: ${securityTxtExpiry(now)}`,
     'Preferred-Languages: en, hu',
     `Canonical: ${APP_HOST}/.well-known/security.txt`,
     '',
