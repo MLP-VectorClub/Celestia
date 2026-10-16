@@ -14,7 +14,7 @@ export const AppearanceNotes: FC<Pick<Partial<SlimAppearance>, 'notes'>> = ({ no
   if (processedNotes === null) return null;
 
   return (
-    <>
+    <section id="notes-section">
       <h2>
         <InlineIcon icon="sticky-note" first size="xs" />
         {t('colorGuide.appearance.additionalNotes')}
@@ -22,6 +22,6 @@ export const AppearanceNotes: FC<Pick<Partial<SlimAppearance>, 'notes'>> = ({ no
       <div className={styles.notes}>
         <AppearanceNotesText>{processedNotes}</AppearanceNotesText>
       </div>
-    </>
+    </section>
   );
 };

@@ -34,6 +34,7 @@ describe('SpriteWrap menu', () => {
     await expect.element(screen.getByRole('menuitem', { name: 'Copy image URL' })).toBeVisible();
     await expect.element(screen.getByRole('menuitem', { name: 'Upload new sprite' })).not.toBeInTheDocument();
     await expect.element(screen.getByRole('menuitem', { name: 'Remove sprite image' })).not.toBeInTheDocument();
+    await expect.element(screen.getByRole('menuitem', { name: 'Check sprite colors' })).not.toBeInTheDocument();
   });
 
   it('lets editors upload and remove too', async () => {
@@ -41,6 +42,7 @@ describe('SpriteWrap menu', () => {
     await screen.getByRole('button', MENU).click();
     await expect.element(screen.getByRole('menuitem', { name: 'Upload new sprite' })).toBeVisible();
     await expect.element(screen.getByRole('menuitem', { name: 'Remove sprite image' })).toBeVisible();
+    await expect.element(screen.getByRole('menuitem', { name: 'Check sprite colors' })).toHaveAttribute('href', '/cg/sprite-colors/5');
   });
 
   it('offers editors an upload but no removal while there is no sprite', async () => {

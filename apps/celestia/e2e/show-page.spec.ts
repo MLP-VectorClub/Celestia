@@ -1,6 +1,6 @@
 import { type APIRequestContext, type Locator, type Page, expect, test } from '@playwright/test';
 
-import { makeEpisodes, makeOthers, pageCount, titlesOnPage } from './show-fixtures.ts';
+import { makeEpisodes, makeOthers, pageCount, titlesOnPage } from './show-fixtures.mts';
 
 const STUB = 'http://127.0.0.1:4010';
 const EPISODES = 'TV Episodes';

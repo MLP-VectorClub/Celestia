@@ -12,7 +12,7 @@ import { FC, useMemo, useState } from 'react';
 import { Button } from 'reactstrap';
 
 import styles from 'modules/ShowEntry.module.scss';
-import { AppearanceLink } from 'src/components/colorguide/AppearanceLink';
+import { RelatedAppearancesList } from 'src/components/colorguide/RelatedAppearancesList';
 import Content from 'src/components/shared/Content';
 import InlineIcon from 'src/components/shared/InlineIcon';
 import StandardHeading from 'src/components/shared/StandardHeading';
@@ -131,13 +131,7 @@ export const ShowEntryPage: FC<ShowEntryPageProps> = ({
               guide: (chunks) => <Link href={PATHS.GUIDE_INDEX}>{chunks}</Link>,
             })}
           </RibbonHeading>
-          <ul>
-            {show.relatedAppearances.map((appearance) => (
-              <li key={appearance.id}>
-                <AppearanceLink {...appearance} />
-              </li>
-            ))}
-          </ul>
+          <RelatedAppearancesList appearances={show.relatedAppearances} />
         </section>
       )}
 

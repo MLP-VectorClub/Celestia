@@ -340,7 +340,8 @@
     "svg": "SVG",
     "source": "Source",
     "by": "By",
-    "downloadSource": "Download the original file as uploaded (staff only)"
+    "downloadSource": "Download the original file as uploaded (staff only)",
+    "none": "This appearance has no cutie marks yet."
   },
   "spriteGenerator": {
     "about": "About this tool",
@@ -507,6 +508,7 @@
     "backToAppearance": "Back to appearance page",
     "noSprite": "This appearance has no sprite image yet.",
     "spriteAlt": "Sprite of {label}",
-    "spriteHint": "Point at a color in the sprite or in the list to find it in the other."
+    "spriteHint": "Point at a color in the sprite or in the list to find it in the other.",
+    "editorsOnly": "The sprite color check is for those who can edit this appearance."
   }
 }

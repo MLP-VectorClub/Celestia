@@ -6,7 +6,7 @@
 import { readFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 
-import { PAGE_SIZE, makeEpisodes, makeOthers } from './show-fixtures.ts';
+import { PAGE_SIZE, makeEpisodes, makeOthers } from './show-fixtures.mts';
 
 const port = Number(process.env.STUB_API_PORT ?? 4010);
 const fixture = (name: string) => JSON.parse(readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url), 'utf8')) as unknown;

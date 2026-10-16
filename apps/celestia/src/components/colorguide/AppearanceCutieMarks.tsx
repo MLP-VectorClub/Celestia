@@ -1,7 +1,7 @@
 import { Appearance, CutieMark } from '@went.tf/mlp-vectorclub-api-types';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 import { Button, Card, CardBody } from 'reactstrap';
 
 import styles from 'modules/AppearanceCutieMarks.module.scss';
@@ -19,25 +19,33 @@ interface PropTypes {
   label: string;
   cutieMarks?: CutieMark[];
   colorGroups: Appearance['colorGroups'];
+  /** Whoever can change the cutie marks gets the section even while there are none, with these buttons at its end */
+  actions?: ReactNode;
 }
 
-export const AppearanceCutieMarks: FC<PropTypes> = ({ appearanceId, label, cutieMarks, colorGroups }) => {
+export const AppearanceCutieMarks: FC<PropTypes> = ({ appearanceId, label, cutieMarks, colorGroups, actions }) => {
   const t = useTranslations();
   const { user } = useAuth();
   const isDeveloper = user.role && permission(user.role, 'developer');
   const isStaff = user.role && permission(user.role, 'staff');
 
-  if (!cutieMarks || cutieMarks.length === 0) return null;
+  const count = cutieMarks?.length ?? 0;
+  if (count === 0 && !actions) return null;
 
   return (
-    <>
+    <section className="approved-cutie-mark">
       <h2>
         <InlineIcon icon="image" first size="xs" />
-        {t('colorGuide.cutieMarkDisplay.heading', { count: cutieMarks.length })}
+        {t('colorGuide.cutieMarkDisplay.heading', { count: Math.max(count, 1) })}
       </h2>
-      <p className={styles.aside}>{t.rich('colorGuide.cutieMarkDisplay.disclaimer', { strong: (chunks) => <strong>{chunks}</strong> })}</p>
+      {count === 0 && <p className="fst-italic text-muted">{t('colorGuide.cutieMarkDisplay.none')}</p>}
+      {count > 0 && (
+        <p className={styles.aside}>
+          {t.rich('colorGuide.cutieMarkDisplay.disclaimer', { strong: (chunks) => <strong>{chunks}</strong> })}
+        </p>
+      )}
       <div className={styles.cutieMarks}>
-        {cutieMarks.map((cm) => {
+        {(cutieMarks ?? []).map((cm) => {
           const facingText = t('colorGuide.cutieMarkDisplay.facing', { facing: cm.facing ?? 'none' });
           const cmTitleId = `cutie-mark-${cm.id}-title`;
           return (
@@ -112,6 +120,7 @@ export const AppearanceCutieMarks: FC<PropTypes> = ({ appearanceId, label, cutie
           );
         })}
       </div>
-    </>
+      {actions}
+    </section>
   );
 };

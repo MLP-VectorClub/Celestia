@@ -1,0 +1,47 @@
+@use '../bootstrap' as bs;
+
+// The sections of an appearance page (the old site's `.section-container > section`): a heading with an icon, then what belongs to it, and the
+// same space between all of them
+.appearance-page {
+  // The name is large and sits close to the "from the ... guide" line under it
+  .page-heading {
+    margin-bottom: 0.625rem;
+    font-size: 2.2rem;
+    line-height: 1.2;
+
+    + .page-lead {
+      margin-bottom: 1rem;
+    }
+  }
+
+  > section {
+    margin-bottom: 1.5rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    > h2 {
+      margin: 0 0 0.5rem;
+      font-size: 1.3rem;
+    }
+
+    p {
+      margin: 0 0 0.3rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    // A row of buttons that ends a section is followed by the space between the sections, not by its own as well
+    > :last-child:is(.btn-toolbar) {
+      margin-bottom: 0;
+    }
+
+    // Buttons under a list or a text keep their distance from it
+    > :not(h2) + .btn-toolbar {
+      margin-top: 0.75rem;
+    }
+  }
+}

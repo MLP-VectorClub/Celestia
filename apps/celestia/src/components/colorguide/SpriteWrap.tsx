@@ -86,15 +86,18 @@ export const SpriteWrap: FC<PropTypes> = ({ appearanceId, sprite, compact = fals
         setTimeout(() => setCopied(false), 1500);
       },
     },
-    {
-      key: 'check-colors',
-      label: t('colorGuide.edit.sprite.checkColors'),
-      icon: 'palette' as const,
-      disabled: !sprite,
-      href: PATHS.SPRITE_COLORS(appearanceId, token),
-    },
     ...(editable
-      ? [{ key: 'upload', label: t('colorGuide.edit.sprite.uploadNew'), icon: 'upload' as const, onClick: () => setDialog(true) }]
+      ? [
+          { key: 'upload', label: t('colorGuide.edit.sprite.uploadNew'), icon: 'upload' as const, onClick: () => setDialog(true) },
+          // Checking the sprite's colors is for those who can fix them
+          {
+            key: 'check-colors',
+            label: t('colorGuide.edit.sprite.checkColors'),
+            icon: 'palette' as const,
+            disabled: !sprite,
+            href: PATHS.SPRITE_COLORS(appearanceId, token),
+          },
+        ]
       : []),
     ...(editable && sprite
       ? [

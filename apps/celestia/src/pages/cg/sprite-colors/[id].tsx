@@ -29,6 +29,7 @@ interface PropTypes {
     guide: GetAppearancesIdResult['guide'];
     ownerId: number | null;
     hasSprite: boolean;
+    canEdit: boolean;
   };
 }
 
@@ -61,7 +62,11 @@ const SpriteColorsPage: NextPage<PropTypes> = ({ token, appearance }) => {
         </Link>
       </p>
       <p className="text-muted">{t('colorGuide.spriteColors.intro')}</p>
-      {appearance.hasSprite ? (
+      {!appearance.canEdit ? (
+        <Alert color="info" fade={false}>
+          {t('colorGuide.spriteColors.editorsOnly')}
+        </Alert>
+      ) : appearance.hasSprite ? (
         <SpriteColorsReport appearanceId={appearance.id} label={appearance.label} token={token} />
       ) : (
         <Alert color="info" fade={false}>
@@ -93,6 +98,7 @@ export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRMess
     guide: found.guide,
     ownerId: found.ownerId ?? null,
     hasSprite: Boolean(found.sprite),
+    canEdit: Boolean(found.canEdit),
   };
   titleSetter(store, titleFactory({ appearance, token }));
   return {

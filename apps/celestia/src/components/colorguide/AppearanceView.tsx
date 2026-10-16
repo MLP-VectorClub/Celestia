@@ -14,7 +14,6 @@ import {
   EditRelationsButton,
   EditTagsButton,
 } from 'src/components/colorguide/AppearanceEditActions';
-import { AppearanceLink } from 'src/components/colorguide/AppearanceLink';
 import { AppearanceNotes } from 'src/components/colorguide/AppearanceNotes';
 import { AppearanceTagEditor } from 'src/components/colorguide/AppearanceTagEditor';
 import AppearanceTags from 'src/components/colorguide/AppearanceTags';
@@ -22,6 +21,7 @@ import { useColorCopyWidget } from 'src/components/colorguide/ColorCopyWidget';
 import { GuideLink } from 'src/components/colorguide/GuideLink';
 import { GuideNotFound } from 'src/components/colorguide/GuideNotFound';
 import { NutshellLabel } from 'src/components/colorguide/NutshellLabel';
+import { RelatedAppearancesList } from 'src/components/colorguide/RelatedAppearancesList';
 import { ShareAppearanceButton } from 'src/components/colorguide/ShareAppearanceButton';
 import { SpriteWrap } from 'src/components/colorguide/SpriteWrap';
 import { SwatchDialog } from 'src/components/colorguide/SwatchDialog';
@@ -91,7 +91,7 @@ export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppe
   }
 
   return (
-    <Content>
+    <Content className="appearance-page">
       {seoData && (
         <Head>
           <meta name="description" content={seoData.description} />
@@ -248,29 +248,27 @@ export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppe
         label={appearance.label}
         cutieMarks={appearance.cutieMarks}
         colorGroups={appearance.colorGroups}
+        actions={
+          appearance.canEdit ? (
+            <ButtonCollection leftAlign>
+              <EditCutieMarksButton appearance={appearance} />
+            </ButtonCollection>
+          ) : undefined
+        }
       />
-      {appearance.canEdit && (
-        <ButtonCollection leftAlign>
-          <EditCutieMarksButton appearance={appearance} />
-        </ButtonCollection>
-      )}
-      <AppearanceColorGroups
-        colorGroups={appearance.colorGroups}
-        appearanceId={appearance.id}
-        canEdit={appearance.canEdit}
-        appearanceLabel={appearance.label}
-      />
+      <section className="color-list">
+        <AppearanceColorGroups
+          colorGroups={appearance.colorGroups}
+          appearanceId={appearance.id}
+          canEdit={appearance.canEdit}
+          appearanceLabel={appearance.label}
+        />
+      </section>
       {appearance.ownerId === null && (appearance.relatedAppearances.length > 0 || appearance.canEdit) && (
         <section className="related">
           <h2>{t('colorGuide.appearance.relatedAppearances')}</h2>
           {appearance.relatedAppearances.length > 0 ? (
-            <ul className="list-unstyled">
-              {appearance.relatedAppearances.map((related) => (
-                <li key={related.id}>
-                  <AppearanceLink {...related} />
-                </li>
-              ))}
-            </ul>
+            <RelatedAppearancesList appearances={appearance.relatedAppearances} />
           ) : (
             <p className="fst-italic text-muted">{t('colorGuide.appearance.noRelatedAppearances')}</p>
           )}
