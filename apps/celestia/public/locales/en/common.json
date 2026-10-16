@@ -90,7 +90,7 @@
     "howTo": "How to contact us",
     "useAnyBelow": "You can use any of the following methods to reach out to us:",
     "discord": "<link>Join our Discord server</link> and describe your issue/idea in the <bold>#club-helpdesk</bold> channel",
-    "deviantart": "<link>Send a note</link> to the group on DeviantArt",
+    "deviantart": "<link>Send a note</link> to the group on DeviantArt <note>(this inbox is monitored less closely than the other options, so we don't recommend it)</note>",
     "email": "<link>Send an e-mail</link> to {email}"
   },
   "guestUserName": "Curious Pony",

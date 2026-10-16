@@ -29,6 +29,7 @@ const ContactModal: FC = () => {
           <li>
             {t.rich('common.contact.deviantart', {
               link: (chunks: ReactNode) => <ExternalLink href={`${DEVIANTART_GROUP_URL}/notes/`}>{chunks}</ExternalLink>,
+              note: (chunks: ReactNode) => <small className="text-muted">{chunks}</small>,
             })}
           </li>
           <li>
