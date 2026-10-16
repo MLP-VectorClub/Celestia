@@ -8,11 +8,14 @@
   }
 }
 
-// An empty entry keeps the place of the sprite for those who can add one, like the old site's dashed box
 .spriteBox {
   box-sizing: border-box;
   width: 150px;
   min-height: 150px;
+}
+
+// For those who can add a sprite the box is the drop zone, like the old site's dashed box: nobody else sees an outline
+.spriteDropzone {
   border: 1px dashed rgba(#000, 0.4);
 }
 

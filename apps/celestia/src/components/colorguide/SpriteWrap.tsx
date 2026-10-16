@@ -113,7 +113,12 @@ export const SpriteWrap: FC<PropTypes> = ({ appearanceId, sprite, compact = fals
   return (
     <div className={compact ? undefined : 'text-center mb-3'}>
       <div
-        className={classNames('upload-wrap', styles.wrap, { nosprite: !sprite, [styles.compact]: compact, [styles.dragging]: dragging })}
+        className={classNames('upload-wrap', styles.wrap, {
+          nosprite: !sprite,
+          [styles.dropzone]: editable,
+          [styles.compact]: compact,
+          [styles.dragging]: dragging,
+        })}
         data-testid="sprite-wrap"
         onClick={() => editable && !sprite && input.current?.click()}
         // Like the old site's upload zone, an image dropped onto the sprite is uploaded straight away
@@ -132,7 +137,14 @@ export const SpriteWrap: FC<PropTypes> = ({ appearanceId, sprite, compact = fals
         }}
       >
         {sprite ? (
-          <SpriteImage appearanceId={appearanceId} sprite={sprite} height={compact ? 150 : 300} highRes={!compact} token={token} />
+          editable || compact || !spriteUrl ? (
+            <SpriteImage appearanceId={appearanceId} sprite={sprite} height={compact ? 150 : 300} highRes={!compact} token={token} />
+          ) : (
+            // Visitors who cannot change the sprite click it to see it bigger
+            <a href={spriteUrl} target="_blank" rel="noopener" title={t('colorGuide.edit.sprite.openInNewTab')}>
+              <SpriteImage appearanceId={appearanceId} sprite={sprite} height={300} highRes token={token} />
+            </a>
+          )
         ) : (
           editable && !compact && <span className="text-muted">{t('colorGuide.edit.sprite.none')}</span>
         )}

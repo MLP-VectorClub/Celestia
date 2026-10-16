@@ -1,5 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { Appearance, GuideName } from '@went.tf/mlp-vectorclub-api-types';
+import classNames from 'classnames';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { FC, useMemo, useState } from 'react';
@@ -67,7 +68,7 @@ const AppearanceItem: FC<AppearanceItemProps> = ({ appearance, pinned = false, g
           {(appearance.sprite || canManage) && (
             <Col xs={12} sm="auto">
               <div className="d-flex justify-content-center justify-content-sm-start pe-sm-3 mb-2 mb-sm-0" role="presentation">
-                <div className={styles.spriteBox}>
+                <div className={classNames(styles.spriteBox, { [styles.spriteDropzone]: canManage })}>
                   <SpriteWrap appearanceId={appearance.id} sprite={appearance.sprite} compact editable={canManage} />
                 </div>
               </div>

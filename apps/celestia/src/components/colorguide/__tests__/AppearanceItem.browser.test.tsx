@@ -53,4 +53,18 @@ describe('AppearanceItem sprite box', () => {
     const screen = await renderItem(null);
     await expect.element(screen.getByTestId('sprite-wrap')).toBeInTheDocument();
   });
+
+  it('outlines the sprite box only for those who can drop a file on it', async () => {
+    const box = async () =>
+      getComputedStyle((await renderItem({ hash: 'abc' })).getByTestId('sprite-wrap').element().parentElement!).borderTopStyle;
+
+    expect(await box()).toBe('none');
+  });
+
+  it('outlines the box of those who can add a sprite', async () => {
+    auth.isStaff = true;
+    const screen = await renderItem({ hash: 'abc' });
+
+    expect(getComputedStyle(screen.getByTestId('sprite-wrap').element().parentElement!).borderTopStyle).toBe('dashed');
+  });
 });

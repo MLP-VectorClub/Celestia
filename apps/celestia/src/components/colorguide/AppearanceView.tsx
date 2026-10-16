@@ -6,7 +6,6 @@ import { useRouter } from 'next/router';
 import { FC, Fragment, useMemo, useState } from 'react';
 import { Alert, Button } from 'reactstrap';
 
-import styles from 'modules/AppearancePage.module.scss';
 import { AppearanceColorGroups } from 'src/components/colorguide/AppearanceColorGroups';
 import { AppearanceCutieMarks } from 'src/components/colorguide/AppearanceCutieMarks';
 import {
@@ -24,7 +23,6 @@ import { GuideLink } from 'src/components/colorguide/GuideLink';
 import { GuideNotFound } from 'src/components/colorguide/GuideNotFound';
 import { NutshellLabel } from 'src/components/colorguide/NutshellLabel';
 import { ShareAppearanceButton } from 'src/components/colorguide/ShareAppearanceButton';
-import SpriteImage from 'src/components/colorguide/SpriteImage';
 import { SpriteWrap } from 'src/components/colorguide/SpriteWrap';
 import { SwatchDialog } from 'src/components/colorguide/SwatchDialog';
 import { NewTagButton, TagMenu } from 'src/components/colorguide/TagStaffMenus';
@@ -108,21 +106,8 @@ export const AppearanceView: FC<AppearanceViewProps> = ({ guide, id, initialAppe
           )}
         </Head>
       )}
-      {appearance.canEdit ? (
-        <SpriteWrap appearanceId={appearance.id} sprite={appearance.sprite} token={token} />
-      ) : (
-        appearance.sprite && (
-          <div className={styles.spriteImage}>
-            <a
-              href={getSpriteUrl(appearance.id, appearance.sprite, 600, token)}
-              target="_blank"
-              rel="noopener"
-              title={t('colorGuide.edit.sprite.openInNewTab')}
-            >
-              <SpriteImage appearanceId={appearance.id} sprite={appearance.sprite} height={300} highRes token={token} />
-            </a>
-          </div>
-        )
+      {(appearance.canEdit || appearance.sprite) && (
+        <SpriteWrap appearanceId={appearance.id} sprite={appearance.sprite} editable={appearance.canEdit} token={token} />
       )}
       <StandardHeading
         heading={<NutshellLabel appearance={appearance} />}

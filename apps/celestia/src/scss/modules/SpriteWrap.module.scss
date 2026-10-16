@@ -1,16 +1,18 @@
 .wrap {
   position: relative;
   display: inline-block;
-  min-width: 200px;
-  min-height: 120px;
   padding: 0.5rem;
-  border: 2px dashed transparent;
   border-radius: 0.5rem;
 }
 
-// Without a sprite the box shows where one can be added
-.wrap:global(.nosprite) {
-  border-color: var(--bs-border-color, #ced4da);
+// Only a box that takes a dropped file (and opens the file picker when empty) is outlined, so the outline always means "drop an image here"
+.dropzone {
+  min-width: 200px;
+  min-height: 120px;
+  border: 2px dashed var(--bs-border-color, #ced4da);
+}
+
+.dropzone:global(.nosprite) {
   display: inline-flex;
   align-items: center;
   justify-content: center;

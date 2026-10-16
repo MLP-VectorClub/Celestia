@@ -83,3 +83,37 @@ describe('SpriteWrap menu', () => {
     await expect.element(full.getByText(/No sprite yet/)).toBeVisible();
   });
 });
+
+describe('SpriteWrap outline', () => {
+  const outline = async (props: Partial<Parameters<typeof SpriteWrap>[0]>) => {
+    const screen = await renderWrap(props);
+    const style = getComputedStyle(screen.getByTestId('sprite-wrap').element());
+    return { width: style.borderTopWidth, style: style.borderTopStyle };
+  };
+
+  it('is dashed only where a file can be dropped to upload it', async () => {
+    expect(await outline({ editable: true })).toEqual({ width: '2px', style: 'dashed' });
+  });
+
+  it('is dashed for an editor while there is no sprite too', async () => {
+    expect(await outline({ editable: true, sprite: null })).toEqual({ width: '2px', style: 'dashed' });
+  });
+
+  it('is gone for visitors', async () => {
+    expect((await outline({ editable: false })).style).toBe('none');
+  });
+
+  it('is gone for visitors in the guide list', async () => {
+    expect((await outline({ editable: false, compact: true })).style).toBe('none');
+  });
+
+  it('keeps the menu and the centered sprite for visitors, who click it to see it bigger', async () => {
+    const screen = await renderWrap({ editable: false });
+
+    await expect.element(screen.getByRole('button', MENU)).toBeVisible();
+    await expect
+      .element(screen.getByTitle('Open image in new tab'))
+      .toHaveAttribute('href', expect.stringMatching(/\/appearances\/5\/sprite\?size=600/));
+    expect(screen.getByTestId('sprite-wrap').element().parentElement!.classList.contains('text-center')).toBe(true);
+  });
+});
