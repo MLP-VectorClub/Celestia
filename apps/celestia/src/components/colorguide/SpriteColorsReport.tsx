@@ -179,6 +179,8 @@ export const SpriteColorsReport: FC<PropTypes> = ({ appearanceId, label, token }
               {hovered && <style>{`.sprite-colors-svg path:not([fill='${hovered}']) { opacity: 0.12; }`}</style>}
               <div
                 className="sprite-colors-svg border rounded p-2 mb-2"
+                // The transparency grid shows which parts of the sprite are see-through
+                style={{ backgroundImage: "url('/img/transparency.svg')", backgroundSize: '16px' }}
                 role="img"
                 aria-label={t('spriteAlt', { label })}
                 onMouseOver={onSpriteHover}

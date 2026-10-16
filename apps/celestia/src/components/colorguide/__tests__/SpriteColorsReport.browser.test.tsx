@@ -95,6 +95,15 @@ describe('SpriteColorsReport', () => {
     expect(lines[1].getBoundingClientRect().top).toBeGreaterThan(lines[0].getBoundingClientRect().top);
   });
 
+  it('draws the sprite on the transparency grid', async () => {
+    state.getSpriteColors.mockResolvedValue({ data: result });
+    const screen = await renderReport();
+    await expect.element(screen.getByRole('img', { name: 'Sprite of Pony' })).toBeVisible();
+
+    const style = getComputedStyle(screen.getByRole('img', { name: 'Sprite of Pony' }).element());
+    expect(style.backgroundImage).toContain('/img/transparency.svg');
+  });
+
   it('dims the rest of the sprite while a color is pointed at', async () => {
     state.getSpriteColors.mockResolvedValue({ data: result });
     const screen = await renderReport();
