@@ -36,8 +36,9 @@ $h6-font-size: 0.67rem;
 $headings-font-weight: 700;
 $headings-line-height: 1.15;
 $headings-margin-bottom: 0.5rem;
-// The line under a page title: 1.6em, regular weight, italic (see `.page-lead`)
-$lead-font-size: 1.6rem;
+// The line under a page title, in regular weight and italic (see `.page-lead`): the old site made it 1.6em, which put it nearly on par with the
+// title, so it is a size smaller than a section heading here
+$lead-font-size: 1.15rem;
 $lead-font-weight: 400;
 
 $breadcrumb-padding-y: 0.5rem;
