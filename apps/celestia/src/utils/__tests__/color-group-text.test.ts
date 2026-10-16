@@ -9,7 +9,7 @@ describe('colorsToText', () => {
         { id: 5, label: 'Fill', hex: '#012ABC' },
         { label: 'Glow', hex: '' },
       ])
-    ).toBe('// One color per line, e.g. #012ABC Fill\n#012ABC\tFill\tID:5\n#\tGlow\n');
+    ).toBe('// One color per line, e.g. #012ABC "Fill" 40% overlay\n#012ABC "Fill" ID:5\n# "Glow"\n');
   });
 });
 
@@ -84,7 +84,7 @@ describe('tokenizeColorLine', () => {
   });
 });
 
-describe('opacity and blend mode in the plain text list', () => {
+describe('names in double quotes, opacity and blend mode in the plain text list', () => {
   const rows = [
     { id: 5, label: 'Lens', hex: '#012ABC', opacity: 40, blendMode: 'overlay' as const },
     { label: 'Shine', hex: '#FFFFFF', opacity: 50 },
@@ -92,45 +92,80 @@ describe('opacity and blend mode in the plain text list', () => {
     { label: 'Glow', hex: '#00FF00', opacity: 25, blendMode: 'color-dodge' as const },
   ];
 
-  it('writes them after the name and reads them back', () => {
+  it('writes them after the quoted name, separated by single spaces, and reads them back', () => {
     const text = colorsToText(rows);
 
-    expect(text).toContain('#012ABC\tLens\t40% overlay\tID:5\n');
-    expect(text).toContain('#FFFFFF\tShine\t50%\n');
-    expect(text).toContain('#000000\tFrame\t100% multiply\n');
+    expect(text).not.toContain('\t');
+    expect(text).toContain('#012ABC "Lens" 40% overlay ID:5\n');
+    expect(text).toContain('#FFFFFF "Shine" 50%\n');
+    expect(text).toContain('#000000 "Frame" 100% multiply\n');
     expect(parseColorsText(text)).toEqual(rows);
   });
 
-  it('reads them after a space as well, with any case, and a blend mode name with a space', () => {
-    expect(parseColorsText('#012ABC Lens Fill 40% Overlay\n#00ff00 Glow 25% color dodge\tID:7\n')).toEqual([
+  it('treats any run of whitespace between the parts as one separator, and reads blend modes in any case or with a space', () => {
+    expect(parseColorsText('#012ABC\t "Lens Fill"   40%\tOverlay\n#00ff00 "Glow"   25% color dodge   ID:7\n')).toEqual([
       { label: 'Lens Fill', hex: '#012ABC', opacity: 40, blendMode: 'overlay' },
       { id: 7, label: 'Glow', hex: '#00FF00', opacity: 25, blendMode: 'color-dodge' },
     ]);
   });
 
-  it('does not write normal blending or full opacity', () => {
-    expect(colorsToText([{ label: 'Frame', hex: '#000000', opacity: null, blendMode: 'normal' }])).toBe(
-      '// One color per line, e.g. #012ABC Fill\n#000000\tFrame\n'
-    );
-    expect(parseColorsText('#000000\tFrame\t100% normal\n')).toEqual([{ label: 'Frame', hex: '#000000' }]);
+  it('keeps everything inside the quotes as it is, including quotes and percentages', () => {
+    const tricky = [
+      { label: 'Say "hi" \\o/', hex: '#000000' },
+      { label: '50% Gray 40% overlay', hex: '#808080', opacity: 30 },
+    ];
+
+    expect(parseColorsText(colorsToText(tricky))).toEqual(tricky);
+    expect(colorsToText(tricky)).toContain('#000000 "Say \\"hi\\" \\\\o/"\n');
   });
 
-  it('leaves percentages elsewhere in the name alone', () => {
-    expect(parseColorsText('#000000\tLens (40% Opacity)\n#000000\t50% Gray\n')).toEqual([
-      { label: 'Lens (40% Opacity)', hex: '#000000' },
+  it('trims the name', () => {
+    expect(parseColorsText('#012ABC "  padded  "\n')).toEqual([{ label: 'padded', hex: '#012ABC' }]);
+  });
+
+  it('does not write normal blending or full opacity', () => {
+    expect(colorsToText([{ label: 'Frame', hex: '#000000', opacity: null, blendMode: 'normal' }])).toBe(
+      '// One color per line, e.g. #012ABC "Fill" 40% overlay\n#000000 "Frame"\n'
+    );
+    expect(parseColorsText('#000000 "Frame" 100% normal\n')).toEqual([{ label: 'Frame', hex: '#000000' }]);
+  });
+
+  it('still reads the lines without quotes of the old site, and skips commented out colors', () => {
+    expect(parseColorsText('#012ABC Lens Fill 40% Overlay\n#000000\t50% Gray\n//#123456 "Old" ID:9\n')).toEqual([
+      { label: 'Lens Fill', hex: '#012ABC', opacity: 40, blendMode: 'overlay' },
       { label: '50% Gray', hex: '#000000' },
     ]);
   });
 
-  it.each(['0%', '150%', '40% glow'])('rejects %s', (setting) => {
-    expect(() => parseColorsText(`#012ABC\tLens\t${setting}\n`)).toThrow(ColorTextParseError);
+  it.each(['0%', '150%', '40% glow', '40 % overlay', 'Fill'])('rejects %s after the name', (tail) => {
+    expect(() => parseColorsText(`#012ABC "Lens" ${tail}\n`)).toThrow(ColorTextParseError);
   });
 
-  it('highlights them like the ID and keeps every character', () => {
-    const line = '#012ABC\tLens\t40% overlay\tID:5';
+  it.each(['""', '"ab"', '"a name that is much too long for a color"'])('rejects the name %s', (name) => {
+    try {
+      parseColorsText(`#012ABC ${name}\n`);
+      throw new Error('should have thrown');
+    } catch (e) {
+      expect(e).toBeInstanceOf(ColorTextParseError);
+      expect((e as ColorTextParseError).missing).toEqual(['name']);
+    }
+  });
+
+  it('highlights the parts and keeps every character', () => {
+    const line = '#012ABC "Lens" 40% overlay ID:5';
     const tokens = tokenizeColorLine(line);
 
     expect(tokens.map((t) => t.text).join('')).toBe(line);
-    expect(tokens.filter((t) => t.kind === 'id').map((t) => t.text)).toEqual(['40% overlay', 'ID:5']);
+    expect(tokens.map((t) => [t.kind, t.text]).filter(([, text]) => text.trim() !== '')).toEqual([
+      ['hex', '#012ABC'],
+      ['name', '"Lens"'],
+      ['id', '40%'],
+      ['id', 'overlay'],
+      ['id', 'ID:5'],
+    ]);
+  });
+
+  it('marks what cannot be read after the name as invalid', () => {
+    expect(tokenizeColorLine('#012ABC "Lens" 150%').slice(-1)).toEqual([{ kind: 'invalid', text: ' 150%' }]);
   });
 });

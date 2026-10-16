@@ -235,7 +235,7 @@
       "addColor": "Add color",
       "plainText": "Plain text editor",
       "interactive": "Interactive editor",
-      "textHelp": "One color per line: the HEX value, a tab or space, then the name (3-30 characters). Lines starting with // are ignored, and so are colors that are left out of the list. Put how opaque a color is after the name, e.g. 40%, and optionally how it blends with what is under it, e.g. 40% overlay or 40% multiply; without a blend mode it is normal.",
+      "textHelp": "One color per line: the HEX value, then the name in double quotes (3-30 characters), then optionally how opaque the color is, e.g. 40%, and how it blends with what is under it, e.g. 40% overlay or 40% multiply (normal without a blend mode). Lines starting with // are ignored, and so are colors that are left out of the list.",
       "parseError": "Parse error on line {line}:",
       "parseMissing": "The {what} is missing from this line.",
       "parseTypos": "Please check for any typos before continuing.",
