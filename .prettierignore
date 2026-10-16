@@ -1,4 +1,11 @@
 **/dist/
+# Build output and test artifacts
 .next/
+.next-e2e/
+out/
+build/
+coverage/
+.vitest/
+test-results/
 # Generated and rewritten by Next.js on every build
 next-env.d.ts
