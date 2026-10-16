@@ -45,6 +45,7 @@ const result: SpriteColorCheck = {
   ],
   colors: [
     entry({ hex: '#FF0000', pixels: 50, kind: 'listed', labels: ['Coat | Fill'] }),
+    entry({ hex: '#00FF00', pixels: 4, kind: 'listed', labels: ['Eyes | Iris', 'Mane | Fill (Younger)'] }),
     entry({ hex: '#FE0000', pixels: 9, kind: 'near', nearest: { hex: '#FF0000', label: 'Coat | Fill', distance: 1 } }),
     entry({ hex: '#800080', pixels: 7, kind: 'blend', blendOf: ['#FF0000', '#0000FF'], blendMode: 'mix' }),
     entry({ hex: '#445566', pixels: 6, kind: 'blend', blendOf: ['#112233', '#FF0000'], blendMode: 'overlay', blendOpacity: 40 }),
@@ -82,6 +83,16 @@ describe('SpriteColorsReport', () => {
     await expect.element(screen.getByText('Not used', { exact: true })).toBeVisible();
     await expect.element(screen.getByText('Not used (optional)')).toBeVisible();
     expect(state.getSpriteColors).toHaveBeenCalledWith({ id: 7, token: undefined });
+  });
+
+  it('names every listed color that shares a value on a line of its own', async () => {
+    state.getSpriteColors.mockResolvedValue({ data: result });
+    const screen = await renderReport();
+    await expect.element(screen.getByText('Eyes | Iris')).toBeVisible();
+
+    const lines = Array.from(screen.container.querySelectorAll('tr[data-hex="#00FF00"] .listed-label'));
+    expect(lines.map((l) => l.textContent)).toEqual(['Eyes | Iris', 'Mane | Fill (Younger)']);
+    expect(lines[1].getBoundingClientRect().top).toBeGreaterThan(lines[0].getBoundingClientRect().top);
   });
 
   it('dims the rest of the sprite while a color is pointed at', async () => {

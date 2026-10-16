@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { FC, MouseEvent, useMemo, useState } from 'react';
+import { FC, MouseEvent, ReactNode, useMemo, useState } from 'react';
 import { Alert, Badge, Button } from 'reactstrap';
 
 import InlineIcon from 'src/components/shared/InlineIcon';
@@ -44,8 +44,14 @@ const SpriteColorRow: FC<{ color: SpriteColorEntry; active: boolean; onHover: (h
 }) => {
   const t = useTranslations('colorGuide.spriteColors');
   const mode = (value: string) => t(`blendModes.${value}` as 'blendModes.normal');
-  let explanation = '';
-  if (color.kind === 'listed') explanation = color.labels.join(', ');
+  let explanation: ReactNode = '';
+  // A color shared by several listed colors names each of them on a line of its own
+  if (color.kind === 'listed')
+    explanation = color.labels.map((label) => (
+      <div key={label} className="listed-label">
+        {label}
+      </div>
+    ));
   else if (color.kind === 'translucent') explanation = t('explain.translucent');
   else if (color.kind === 'blend' && color.blendOf && color.blendMode) {
     const [a, b] = color.blendOf;
