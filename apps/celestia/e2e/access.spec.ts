@@ -22,8 +22,8 @@ test.describe('pages that are not for everybody answer 403 with the reason', () 
       await configure(request, {});
       const guest = await page.goto(path);
       expect(guest?.status()).toBe(403);
-      await expect(page.getByText('Error 403!')).toBeVisible();
-      await expect(page.getByRole('heading', { name: 'Access denied' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: '403 Unauthorized' })).toBeVisible();
+      await expect(page.getByRole('alert').filter({ hasText: 'You are not allowed to see this page' })).toBeVisible();
 
       await configure(request, { signedIn: true, userRole: 'member' });
       await signInCookie(page);
@@ -38,7 +38,7 @@ test.describe('pages that are not for everybody answer 403 with the reason', () 
     for (const path of ['/admin', '/admin/logs', '/admin/usefullinks']) {
       const response = await page.goto(path);
       expect(response?.status()).toBe(200);
-      await expect(page.getByText('Error 403!')).toHaveCount(0);
+      await expect(page.getByRole('heading', { name: '403 Unauthorized' })).toHaveCount(0);
     }
     await page.goto('/admin');
     await expect(page.getByRole('heading', { name: 'Admin Area' })).toBeVisible();
@@ -48,7 +48,7 @@ test.describe('pages that are not for everybody answer 403 with the reason', () 
     await configure(request, {});
     const guest = await page.goto('/users/9001/account');
     expect(guest?.status()).toBe(403);
-    await expect(page.getByText('Error 403!')).toBeVisible();
+    await expect(page.getByRole('heading', { name: '403 Unauthorized' })).toBeVisible();
 
     await configure(request, { signedIn: true, userRole: 'user' });
     await signInCookie(page);

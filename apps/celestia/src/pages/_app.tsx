@@ -45,7 +45,7 @@ const Celestia: AppComponent = ({ Component, ...rest }) => {
           <LayoutContextProvider value={layoutContext}>
             <DialogProvider>
               <SidebarWidgetProvider>
-                <Layout mainPadding={!!props.pageProps.mainPadding}>
+                <Layout mainPadding={props.pageProps.mainPadding !== false}>
                   {}
                   {props.pageProps.fetchFailure ? (
                     <FetchFailureView failure={props.pageProps.fetchFailure} />

@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   GetConfigResult,
   GetEventsIdFinishedImageResult,
@@ -88,6 +88,7 @@ export function useTags(params: GetTagsRequest, initialData?: GetTagsResult) {
     queryKey: [ENDPOINTS.TAGS(params)],
     queryFn: tagsFetcher(params),
     initialData,
+    placeholderData: keepPreviousData,
   });
   return { data, status: mapQueryStatus(status, fetchStatus) };
 }

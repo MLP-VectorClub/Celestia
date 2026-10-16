@@ -67,7 +67,7 @@ test.describe('pages whose data could not be fetched', () => {
     const response = await page.goto('/show');
     expect(response?.status()).toBe(500);
     await expect(page.getByRole('heading', { name: 'Something went wrong' })).toBeVisible();
-    await expect(page.getByText('Error 500!')).toBeVisible();
+    await expect(page.getByRole('alert').filter({ hasText: 'The server could not answer this request' })).toBeVisible();
   });
 
   test('an episode page that cannot look its episode up answers with the failure, not 404', async ({ page, request }) => {

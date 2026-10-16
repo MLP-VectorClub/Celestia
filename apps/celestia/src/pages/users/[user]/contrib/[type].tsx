@@ -51,7 +51,7 @@ const ContributionsPage: NextPage<PropTypes> = ({ userId, type, page, user, init
   const t = useTranslations();
   const dispatch = useAppDispatch();
   const { query } = useRouter();
-  const currentPage = validatePageParam(query.page, page);
+  const currentPage = validatePageParam(query.page);
   const { data, status } = useContributions(
     { id: userId, type, page: currentPage },
     currentPage === page ? initialData || undefined : undefined

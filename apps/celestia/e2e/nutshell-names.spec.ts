@@ -17,7 +17,7 @@ const configure = async (request: APIRequestContext, nutshell: boolean, signedIn
 const signInCookie = async (page: Page) =>
   page.context().addCookies([{ name: 'mlp_vector_club_session', value: 'e2e', url: 'http://127.0.0.1:4011' }]);
 
-const names = (page: Page) => page.locator('h5 a').allTextContents();
+const names = (page: Page) => page.locator('a[class*="appearanceName"]').allTextContents();
 
 test.describe('nutshell names on the guide list', () => {
   test('are not used unless the visitor turned them on', async ({ page, request }) => {
@@ -38,7 +38,7 @@ test.describe('nutshell names on the guide list', () => {
     expect(['twily', 'sparkle butt']).toContain(twilight);
     expect(pinkie).toBe('pie face');
     // The links still go to the real address of the appearance
-    await expect(page.locator('h5 a').first()).toHaveAttribute('href', /\/cg\/pony\/v\/1-Twilight-Sparkle/);
+    await expect(page.locator('a[class*="appearanceName"]').first()).toHaveAttribute('href', /\/cg\/pony\/v\/1-Twilight-Sparkle/);
     // In the look of the event: the body class and the font of the old site
     await expect(page.locator('body')).toHaveClass(/nutshell-names/);
     await expect(page.locator('link[href*="Comic+Neue"]')).toHaveCount(1);

@@ -37,6 +37,8 @@ interface Control {
   nutshell: boolean;
   /** The appearances of the pony guide, listed in this order */
   appearances: Array<{ id: number; label: string; nutshellNames: string[]; characterTags?: string[] }>;
+  /** How many items the paginated lists have (five to a page), `GET /events` answers with its single fixed event when this is 0 */
+  lists: Partial<Record<'changes' | 'tags' | 'events' | 'history' | 'personal' | 'contributions', number>>;
   /** Whether episodes have aired (voting open) */
   aired: boolean;
   /** Requests whose path starts with this answer with the status instead (with `Retry-After` when given) */
@@ -54,6 +56,7 @@ const DEFAULT_CONTROL: Control = {
   aired: true,
   nutshell: false,
   appearances: [],
+  lists: {},
   userRole: 'user',
   usefulLinks: [],
   failures: [],
@@ -184,9 +187,14 @@ createServer(async (req, res) => {
     tags: (a.characterTags ?? []).map((name, i) => ({ id: a.id * 10 + i, name, type: 'char' })),
   });
   if (req.method === 'GET' && url.pathname === '/appearances') {
+    const itemsPerPage = 7;
+    const totalPages = Math.max(1, Math.ceil(control.appearances.length / itemsPerPage));
+    const currentPage = Math.min(Math.max(1, Number(url.searchParams.get('page')) || 1), totalPages);
     return send(200, {
-      appearances: control.appearances.map((a) => ({ ...appearance(a), colorGroups: [] })),
-      pagination: { currentPage: 1, totalPages: 1, totalItems: control.appearances.length, itemsPerPage: 7 },
+      appearances: control.appearances
+        .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+        .map((a) => ({ ...appearance(a), colorGroups: [] })),
+      pagination: { currentPage, totalPages, totalItems: control.appearances.length, itemsPerPage },
     });
   }
   if (req.method === 'GET' && url.pathname === '/appearances/pinned') return send(200, []);
@@ -200,8 +208,78 @@ createServer(async (req, res) => {
   if (req.method === 'GET' && /^\/users\/9001$/.test(url.pathname)) {
     return send(200, { id: 9001, name: 'TestUser', role: 'user', avatarUrl: null, avatarProvider: 'deviantart' });
   }
-  if (req.method === 'GET' && /^\/users\/9001\/contributions\/[a-z-]+$/.test(url.pathname)) {
-    return send(200, { items: [], pagination: { currentPage: 1, totalPages: 1, totalItems: 0, itemsPerPage: 10 } });
+  // The paginated lists: items named after their position, five to a page
+  const LIST_PAGE_SIZE = 5;
+  const pagedList = (all: object[]) => {
+    const totalPages = Math.max(1, Math.ceil(all.length / LIST_PAGE_SIZE));
+    const currentPage = Math.min(Math.max(1, Number(url.searchParams.get('page')) || 1), totalPages);
+    const items = all.slice((currentPage - 1) * LIST_PAGE_SIZE, currentPage * LIST_PAGE_SIZE);
+    return { items, pagination: { currentPage, totalPages, totalItems: all.length, itemsPerPage: LIST_PAGE_SIZE } };
+  };
+  const nn = (n: number) => String(n).padStart(2, '0');
+  const numbered = (name: keyof Control['lists']) => Array.from({ length: control.lists[name] ?? 0 }, (_, i) => i + 1);
+  const previewAppearance = (n: number) => appearance({ id: n, label: `Pony ${nn(n)}`, nutshellNames: [] });
+  if (req.method === 'GET' && url.pathname === '/color-guide/major-changes' && control.lists.changes) {
+    const { items, pagination } = pagedList(
+      numbered('changes').map((n) => ({
+        id: n,
+        reason: `Change ${nn(n)}`,
+        appearance: previewAppearance(n),
+        createdAt: '2020-01-01T00:00:00Z',
+      }))
+    );
+    return send(200, { changes: items, pagination });
+  }
+  if (req.method === 'GET' && url.pathname === '/tags' && control.lists.tags) {
+    const { items, pagination } = pagedList(
+      numbered('tags').map((n) => ({
+        id: n,
+        name: `Tag ${nn(n)}`,
+        type: 'gen',
+        title: null,
+        uses: 0,
+        synonymOf: null,
+      }))
+    );
+    return send(200, { tags: items, pagination, canEdit: false });
+  }
+  if (req.method === 'GET' && url.pathname === '/events' && control.lists.events) {
+    const { items, pagination } = pagedList(
+      numbered('events').map((n) => ({
+        id: n,
+        name: `Event ${nn(n)}`,
+        startsAt: '2026-10-01T10:00:00+00:00',
+        endsAt: '2026-10-09T10:00:00+00:00',
+        maxEntries: null,
+        entryRole: 'user',
+        voteRole: null,
+        resultFavMe: null,
+        finalizedAt: null,
+      }))
+    );
+    return send(200, { events: items, pagination });
+  }
+  if (req.method === 'GET' && url.pathname === '/users/9001/personal-guide/appearances') {
+    const { items, pagination } = pagedList(numbered('personal').map((n) => ({ ...previewAppearance(n), colorGroups: [] })));
+    return send(200, { appearances: items, pagination, canManage: false });
+  }
+  if (req.method === 'GET' && url.pathname === '/users/9001/personal-guide/point-history') {
+    const { items, pagination } = pagedList(
+      numbered('history').map((n) => ({
+        id: n,
+        changeType: 'free_trial',
+        reason: `Reason ${nn(n)}`,
+        amount: 1,
+        data: null,
+        createdAt: '2020-01-01T00:00:00Z',
+      }))
+    );
+    return send(200, { entries: items, pagination });
+  }
+  const contributions = /^\/users\/9001\/contributions\/([a-z-]+)$/.exec(url.pathname);
+  if (req.method === 'GET' && contributions) {
+    const { items, pagination } = pagedList(numbered('contributions').map((n) => ({ appearance: previewAppearance(n), favMe: null })));
+    return send(200, { type: contributions[1], items, pagination });
   }
 
   const fixed: Record<string, [number, unknown]> = {
