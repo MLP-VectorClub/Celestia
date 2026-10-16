@@ -13,7 +13,13 @@ type PropTypes = ComponentPropsWithoutRef<'div'> & {
 /** A wrapping row of buttons spaced with `gap` (like the login dialog's alternative sign-ins) instead of per-button margins */
 const ButtonRow: FC<PropTypes> = ({ gap = 2, justify, inline = false, as: Tag = 'div', className, ...rest }) => (
   <Tag
-    className={classNames(inline ? 'd-inline-flex' : 'd-flex', 'flex-wrap', `gap-${gap}`, justify && `justify-content-${justify}`, className)}
+    className={classNames(
+      inline ? 'd-inline-flex' : 'd-flex',
+      'flex-wrap',
+      `gap-${gap}`,
+      justify && `justify-content-${justify}`,
+      className
+    )}
     {...rest}
   />
 );
