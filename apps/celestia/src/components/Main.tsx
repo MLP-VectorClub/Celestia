@@ -26,10 +26,10 @@ export const Main: FC<PropsWithChildren & { padding?: boolean }> = ({ children, 
     return () => window.removeEventListener('resize', resizeListener);
   });
 
-  const styleAttr = useMemo(() => ({ minHeight: height, padding: padding ? undefined : '0 !important' }), [height, padding]);
+  const styleAttr = useMemo(() => ({ minHeight: height }), [height]);
 
   return (
-    <main ref={mainRef} style={styleAttr} id="main">
+    <main ref={mainRef} style={styleAttr} id="main" className={padding ? undefined : 'main-flush'}>
       {children}
     </main>
   );

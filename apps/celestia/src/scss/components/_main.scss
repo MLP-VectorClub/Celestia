@@ -21,3 +21,8 @@
     padding: $main-margin $main-margin #{$main-margin + $footer-height} $main-margin;
   }
 }
+
+// Pages that fill the whole area themselves (the color picker) turn the spacing off; inline styles cannot carry `!important`
+#main.main-flush {
+  padding: 0 !important;
+}
