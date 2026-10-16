@@ -22,7 +22,11 @@ export const DiscordSection: FC<{ profile: UserProfile; sameUser: boolean }> = (
   const queryClient = useQueryClient();
   const userId = profile.user.id;
   const discord = profile.discord;
-  const refresh = () => void queryClient.invalidateQueries({ queryKey: [ENDPOINTS.USER_PROFILE({ id: userId })] });
+  const refresh = () => {
+    void queryClient.invalidateQueries({ queryKey: [ENDPOINTS.USER_PROFILE({ id: userId })] });
+    // The sidebar offers the Discord invitation by what the signed in user's own data says about the server membership
+    if (sameUser) void queryClient.invalidateQueries({ queryKey: [ENDPOINTS.USERS_ME] });
+  };
   const sync = useApiMutation(() => AccountService.syncDiscord(userId), { onSuccess: refresh });
   const unlink = useApiMutation(() => AccountService.unlinkDiscord(userId), { onSuccess: refresh });
   const startLinking = (e: MouseEvent) => {
