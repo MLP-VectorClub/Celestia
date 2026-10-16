@@ -6,13 +6,15 @@ import { hexToRgb } from 'src/utils';
 
 interface PropTypes {
   hex: string;
+  /** Percent, for a color that is drawn semi-transparent: shown as rgba() */
+  opacity?: number | null;
   /** Where the color is, e.g. appearance › color group › color */
   path: string[];
   onClose: () => void;
 }
 
 /** "RGB values for color #…": what Shift+clicking a color square (or the sidebar's "show RGB values" switch) opens */
-export const RgbValuesDialog: FC<PropTypes> = ({ hex, path, onClose }) => {
+export const RgbValuesDialog: FC<PropTypes> = ({ hex, opacity, path, onClose }) => {
   const t = useTranslations();
   const rgb = hexToRgb(hex);
   if (!rgb) return null;
@@ -22,8 +24,14 @@ export const RgbValuesDialog: FC<PropTypes> = ({ hex, path, onClose }) => {
       <ModalBody className="text-center">
         {path.length > 0 && <div>{path.join(' › ')}</div>}
         <div className="mt-1" style={{ fontSize: '1.2em' }}>
-          rgb(<code className="text-danger">{rgb.red}</code>, <code className="text-success">{rgb.green}</code>,{' '}
-          <code className="text-primary">{rgb.blue}</code>)
+          {opacity ? 'rgba' : 'rgb'}(<code className="text-danger">{rgb.red}</code>, <code className="text-success">{rgb.green}</code>,{' '}
+          <code className="text-primary">{rgb.blue}</code>
+          {opacity ? (
+            <>
+              , <code className="text-muted">{opacity / 100}</code>
+            </>
+          ) : null}
+          )
         </div>
       </ModalBody>
       <ModalFooter>

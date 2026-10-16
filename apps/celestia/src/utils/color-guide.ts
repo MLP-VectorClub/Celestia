@@ -1,5 +1,6 @@
 import { Appearance, GuideName, PreviewAppearance, SlimAppearance, SlimGuideTag, Sprite } from '@went.tf/mlp-vectorclub-api-types';
 import { padStart } from 'lodash';
+import type { CSSProperties } from 'react';
 
 import { API_PREFIX } from 'src/config';
 import { colorGuide } from 'src/strings';
@@ -187,6 +188,32 @@ export const hexToRgb = (hex: string): RgbColors | null => {
   if (partsMatch === null || partsMatch.length !== 3) return null;
   const [red, green, blue] = partsMatch.map((s) => parseInt(s, 16));
   return { red, green, blue };
+};
+
+/** CSS notation of a color: `rgb(1, 2, 3)`, or `rgba(1, 2, 3, 0.4)` for a color that is drawn semi-transparent (opacity in percent) */
+export const formatRgb = (rgb: RgbColors, opacity?: number | null): string =>
+  opacity ? `rgba(${rgb.red}, ${rgb.green}, ${rgb.blue}, ${opacity / 100})` : `rgb(${rgb.red}, ${rgb.green}, ${rgb.blue})`;
+
+/**
+ * The background of a color's swatch. A color drawn semi-transparent is split along the diagonal: the upper left half is the color itself (fully
+ * opaque, normal blending) and the lower right half is the color at its opacity and blend mode over the transparency grid, which is how it ends
+ * up looking on whatever is underneath. Other colors are a plain fill.
+ */
+export const getSwatchStyle = (hex: string | null | undefined, opacity?: number | null, blendMode?: string | null): CSSProperties => {
+  const rgb = hex ? hexToRgb(hex) : null;
+  if (!hex || !rgb || !opacity) return { backgroundColor: hex ?? undefined };
+
+  const layer = formatRgb(rgb, opacity);
+  return {
+    backgroundImage: [
+      `linear-gradient(to bottom right, ${hex} 0 50%, transparent 50% 100%)`,
+      `linear-gradient(to bottom right, transparent 0 50%, ${layer} 50% 100%)`,
+      "url('/img/transparency.svg')",
+    ].join(', '),
+    backgroundSize: 'auto, auto, 16px',
+    // Per layer, top to bottom: the solid half, the translucent half, the grid
+    backgroundBlendMode: `normal, ${blendMode ?? 'normal'}, normal`,
+  };
 };
 
 /**

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { RgbColors } from 'src/types/sprite-generator';
-import { convertNumberToRgb, convertRgbToNumber, hexToRgb, stringifyRgbNumber } from 'src/utils/color-guide';
+import { convertNumberToRgb, convertRgbToNumber, formatRgb, getSwatchStyle, hexToRgb, stringifyRgbNumber } from 'src/utils/color-guide';
 
 describe('convertNumberToRgb', () => {
   const testNumber = (sourceNumber: number, expected: RgbColors) => {
@@ -79,5 +79,34 @@ describe('hexToRgb', () => {
     testString('ab', null);
     testString('abcd', null);
     testString('abcdf', null);
+  });
+});
+
+describe('getSwatchStyle', () => {
+  it('fills opaque colors', () => {
+    expect(getSwatchStyle('#112233')).toEqual({ backgroundColor: '#112233' });
+    expect(getSwatchStyle('#112233', null, 'overlay')).toEqual({ backgroundColor: '#112233' });
+    expect(getSwatchStyle(null, 50)).toEqual({ backgroundColor: undefined });
+  });
+
+  it('splits semi-transparent colors: the color itself in the upper left, its opacity and blend mode over the grid in the lower right', () => {
+    const style = getSwatchStyle('#112233', 40, 'overlay');
+
+    expect(style.backgroundImage).toBe(
+      "linear-gradient(to bottom right, #112233 0 50%, transparent 50% 100%), linear-gradient(to bottom right, transparent 0 50%, rgba(17, 34, 51, 0.4) 50% 100%), url('/img/transparency.svg')"
+    );
+    expect(style.backgroundBlendMode).toBe('normal, overlay, normal');
+  });
+
+  it('blends normally unless said otherwise', () => {
+    expect(getSwatchStyle('#112233', 40).backgroundBlendMode).toBe('normal, normal, normal');
+  });
+});
+
+describe('formatRgb', () => {
+  it('writes rgb() for opaque colors and rgba() for semi-transparent ones', () => {
+    expect(formatRgb({ red: 1, green: 2, blue: 3 })).toBe('rgb(1, 2, 3)');
+    expect(formatRgb({ red: 1, green: 2, blue: 3 }, null)).toBe('rgb(1, 2, 3)');
+    expect(formatRgb({ red: 1, green: 2, blue: 3 }, 40)).toBe('rgba(1, 2, 3, 0.4)');
   });
 });

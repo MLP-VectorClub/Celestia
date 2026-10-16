@@ -8,6 +8,7 @@ import { describeApiError } from 'src/hooks';
 import { ColorGuideService } from 'src/services/color-guide';
 import { SpriteColorEntry, SpriteColorKind, SpriteColorPaletteEntry } from 'src/types/sprite-colors';
 import { ENDPOINTS } from 'src/utils';
+import { getSwatchStyle } from 'src/utils/color-guide';
 import { httpResponseMapper } from 'src/utils/common';
 
 interface PropTypes {
@@ -28,10 +29,10 @@ const KIND_COLORS: Record<SpriteColorKind, string> = {
   translucent: 'secondary',
 };
 
-const Swatch: FC<{ hex: string }> = ({ hex }) => (
+const Swatch: FC<{ hex: string; opacity?: number | null; blendMode?: string | null }> = ({ hex, opacity, blendMode }) => (
   <span
     className="d-inline-block align-middle me-2 border"
-    style={{ width: '1.25rem', height: '1.25rem', backgroundColor: hex }}
+    style={{ width: '1.25rem', height: '1.25rem', ...getSwatchStyle(hex, opacity, blendMode) }}
     aria-hidden="true"
   />
 );
@@ -97,7 +98,7 @@ const PaletteRow: FC<{ color: SpriteColorPaletteEntry; active: boolean; onHover:
       onMouseLeave={() => onHover(null)}
     >
       <td className="text-nowrap">
-        <Swatch hex={color.hex} />
+        <Swatch hex={color.hex} opacity={color.opacity} blendMode={color.blendMode} />
         <code>{color.hex}</code>
       </td>
       <td>

@@ -6,10 +6,12 @@ import { FC, KeyboardEvent, MouseEvent, RefObject, useEffect, useRef, useState }
 import styles from 'modules/ColorSquare.module.scss';
 import { RgbValuesDialog } from 'src/components/colorguide/RgbValuesDialog';
 import { useColorCopySettings } from 'src/hooks/color-copy';
+import { ColorBlending } from 'src/types/sprite-colors';
 import { copyText } from 'src/utils/clipboard';
+import { getSwatchStyle } from 'src/utils/color-guide';
 
 interface PropTypes {
-  color: Color;
+  color: Color & ColorBlending;
   compact?: boolean;
   innerRef?: RefObject<HTMLSpanElement>;
   /** Names that lead to the color (appearance, color group), shown above its RGB values */
@@ -49,7 +51,7 @@ const ColorSquare: FC<PropTypes> = ({ color, compact = false, innerRef, path = [
           [styles.copied]: feedback === 'copied',
           [styles.failed]: feedback === 'failed',
         })}
-        style={{ backgroundColor: hex ?? undefined }}
+        style={getSwatchStyle(hex, color.opacity, color.blendMode)}
         ref={innerRef}
         {...(interactive
           ? {
@@ -73,7 +75,9 @@ const ColorSquare: FC<PropTypes> = ({ color, compact = false, innerRef, path = [
       >
         {hex ?? ''}
       </span>
-      {rgbOpen && hex && <RgbValuesDialog hex={hex} path={[...path, color.label]} onClose={() => setRgbOpen(false)} />}
+      {rgbOpen && hex && (
+        <RgbValuesDialog hex={hex} opacity={color.opacity} path={[...path, color.label]} onClose={() => setRgbOpen(false)} />
+      )}
     </>
   );
 };

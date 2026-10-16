@@ -6,6 +6,7 @@ import styles from 'modules/ColorListItem.module.scss';
 import ColorSquare from 'src/components/colorguide/ColorSquare';
 import { ColorBlending } from 'src/types/sprite-colors';
 import { hexToRgb } from 'src/utils';
+import { formatRgb } from 'src/utils/color-guide';
 
 interface PropTypes {
   color: Color;
@@ -28,7 +29,7 @@ export const ColorListItem: FC<PropTypes> = ({ color, hideColorInfo, path }) => 
         </span>
         {rgb && (
           <span className={styles.colorDetails}>
-            {color.hex} • rgb({rgb.red}, {rgb.green}, {rgb.blue})
+            {color.hex} • {formatRgb(rgb, (color as ColorBlending).opacity)}
           </span>
         )}
       </span>
