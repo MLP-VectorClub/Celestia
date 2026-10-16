@@ -43,7 +43,8 @@ const PageLink: FC<PageLinkProps> = ({ number, children, relevantProps, pagePara
   const query: ParsedUrlQuery = { ...linkParams, ...pageNumberProp };
 
   return (
-    <Link href={{ pathname: pathWithoutQueryString, query }} passHref shallow>
+    // Only the list changes, so the page stays where it is: `Link` scrolls to the top after every navigation unless told not to
+    <Link href={{ pathname: pathWithoutQueryString, query }} passHref shallow scroll={false}>
       {children}
     </Link>
   );
