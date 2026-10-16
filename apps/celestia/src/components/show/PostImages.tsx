@@ -50,6 +50,8 @@ export const ScreencapImage: FC<{ post: PostItem }> = ({ post }) => {
   const reload = useApiMutation(() => PostService.reload(post.id), {
     invalidate: [[ENDPOINTS.POSTS({ showId: post.showId, kind: post.kind })]],
   });
+  // Some posts have no image at all
+  if (!post.previewUrl || !post.fullsizeUrl) return null;
   return (
     <div className={classNames(styles.image, styles.screencap)}>
       <ImageZoomLink href={post.fullsizeUrl} alt={post.label ?? ''}>

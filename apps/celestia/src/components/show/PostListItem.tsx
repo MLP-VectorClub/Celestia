@@ -126,12 +126,14 @@ export const PostListItem: FC<{ post: PostItem; viewOnly?: boolean; highlighted?
             ) : (
               <em className={styles.infoLine}>{t('show.post.approvalUnavailable')}</em>
             ))}
-          <span className={styles.infoLine}>
-            <ExternalLink href={post.fullsizeUrl}>
-              <InlineIcon icon="link" first />
-              {t('show.post.originalImage')}
-            </ExternalLink>
-          </span>
+          {post.fullsizeUrl && (
+            <span className={styles.infoLine}>
+              <ExternalLink href={post.fullsizeUrl}>
+                <InlineIcon icon="link" first />
+                {t('show.post.originalImage')}
+              </ExternalLink>
+            </span>
+          )}
           {isStaff && !post.approved && post.reservedBy && (
             <span className={styles.infoLine}>
               <ExternalLink href={openSubmissionsUrl(post.reservedBy.name)}>

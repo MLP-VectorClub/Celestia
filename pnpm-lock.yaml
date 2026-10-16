@@ -48,8 +48,8 @@ importers:
         specifier: ^5.104.1
         version: 5.104.1(@tanstack/react-query@5.104.1(react@19.3.0))(@types/react@19.3.0)(csstype@3.2.3)(react@19.3.0)
       '@went.tf/mlp-vectorclub-api-types':
-        specifier: 0.3.13
-        version: 0.3.13
+        specifier: 0.3.14
+        version: 0.3.14
       axios:
         specifier: ^1.20.0
         version: 1.20.0(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1)
@@ -1735,8 +1735,8 @@ packages:
   '@webassemblyjs/wast-printer@1.14.1':
     resolution: {integrity: sha512-kPSSXE6De1XOR820C90RIo2ogvZG+c3KiHzqUoO/F34Y2shGzesfqv7o57xrxovZJH/MetF5UjroJ/R/3isoiw==}
 
-  '@went.tf/mlp-vectorclub-api-types@0.3.13':
-    resolution: {integrity: sha512-2JwBdWG7aQtx10vcqhl+OwYcjXBGKtzFJMsvaorH7080ax3qI/w7yokCVjysPASOeHrrqRzzHpQSRkJiPrzrYg==}
+  '@went.tf/mlp-vectorclub-api-types@0.3.14':
+    resolution: {integrity: sha512-6WmMDq19mw5EZRjPcuQNmBxKFpKhqAr8fy6Kr0CvFa0Huiu/2/bnbu0xK+esylALqQ6tAHK1pX7AETCqat/e2g==}
 
   '@xtuc/ieee754@1.2.0':
     resolution: {integrity: sha512-DX8nKgqcGwsc0eJSqYt5lwP4DH5FlHnmuWWBRy7X0NcaGR0ZtuyeESgMwTYVEtxmsNGY+qit4QYT/MIYTOTPeA==}
@@ -5636,7 +5636,7 @@ snapshots:
       '@webassemblyjs/ast': 1.14.1
       '@xtuc/long': 4.2.2
 
-  '@went.tf/mlp-vectorclub-api-types@0.3.13': {}
+  '@went.tf/mlp-vectorclub-api-types@0.3.14': {}
 
   '@xtuc/ieee754@1.2.0': {}
 

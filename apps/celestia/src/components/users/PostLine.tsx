@@ -12,15 +12,17 @@ import { createFavMeUrl } from 'src/utils/url';
  */
 export const PostLine: FC<{ post: PostItem; showReserver?: boolean }> = ({ post, showReserver = false }) => (
   <div className="d-flex align-items-center mb-2">
-    <Image
-      src={post.previewUrl}
-      alt={post.label ?? ''}
-      width={80}
-      height={60}
-      unoptimized
-      className="me-2 flex-shrink-0"
-      style={{ objectFit: 'cover' }}
-    />
+    {post.previewUrl && (
+      <Image
+        src={post.previewUrl}
+        alt={post.label ?? ''}
+        width={80}
+        height={60}
+        unoptimized
+        className="me-2 flex-shrink-0"
+        style={{ objectFit: 'cover' }}
+      />
+    )}
     <div>
       {post.label && <strong>{post.label}</strong>}
       {post.deviationId && (
