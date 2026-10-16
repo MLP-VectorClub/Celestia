@@ -6,12 +6,12 @@ import { FC, useRef, useState } from 'react';
 import { Alert } from 'reactstrap';
 
 import styles from 'modules/SpriteWrap.module.scss';
-import { SpriteColorsDialog } from 'src/components/colorguide/SpriteColorsDialog';
 import { SpriteDialog } from 'src/components/colorguide/SpriteDialog';
 import SpriteImage from 'src/components/colorguide/SpriteImage';
 import { ActionMenu, ActionMenuItem } from 'src/components/shared/ActionMenu';
 import { useDialog } from 'src/components/shared/dialogs/DialogProvider';
 import { describeApiError, useApiMutation } from 'src/hooks';
+import { PATHS } from 'src/paths';
 import { AppearanceEditService } from 'src/services/appearance-edit';
 import { ENDPOINTS } from 'src/utils';
 import { copyText } from 'src/utils/clipboard';
@@ -38,7 +38,6 @@ export const SpriteWrap: FC<PropTypes> = ({ appearanceId, sprite, compact = fals
   const input = useRef<HTMLInputElement>(null);
   const [copied, setCopied] = useState(false);
   const [dialog, setDialog] = useState(false);
-  const [colorsDialog, setColorsDialog] = useState(false);
   const [dragging, setDragging] = useState(false);
 
   const queryClient = useQueryClient();
@@ -92,7 +91,7 @@ export const SpriteWrap: FC<PropTypes> = ({ appearanceId, sprite, compact = fals
       label: t('colorGuide.edit.sprite.checkColors'),
       icon: 'palette' as const,
       disabled: !sprite,
-      onClick: () => setColorsDialog(true),
+      href: PATHS.SPRITE_COLORS(appearanceId, token),
     },
     ...(editable
       ? [{ key: 'upload', label: t('colorGuide.edit.sprite.uploadNew'), icon: 'upload' as const, onClick: () => setDialog(true) }]
@@ -161,7 +160,6 @@ export const SpriteWrap: FC<PropTypes> = ({ appearanceId, sprite, compact = fals
           {describeApiError(error)}
         </Alert>
       )}
-      {colorsDialog && <SpriteColorsDialog appearanceId={appearanceId} isOpen onClose={() => setColorsDialog(false)} token={token} />}
       <SpriteDialog appearanceId={appearanceId} hasSprite={Boolean(sprite)} isOpen={dialog} onClose={() => setDialog(false)} />
     </div>
   );

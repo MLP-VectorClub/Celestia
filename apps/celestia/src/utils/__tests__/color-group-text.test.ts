@@ -83,3 +83,36 @@ describe('tokenizeColorLine', () => {
     );
   });
 });
+
+describe('opacity and blend mode in the plain text list', () => {
+  const rows = [
+    { id: 5, label: 'Lens', hex: '#012ABC', opacity: 40, blendMode: 'overlay' as const },
+    { label: 'Shine', hex: '#FFFFFF', opacity: 50 },
+    { label: 'Frame', hex: '#000000' },
+  ];
+
+  it('writes them after the name and reads them back', () => {
+    const text = colorsToText(rows);
+
+    expect(text).toContain('#012ABC\tLens\tOP:40\tBLEND:overlay\tID:5\n');
+    expect(parseColorsText(text)).toEqual(rows);
+  });
+
+  it('does not write normal blending or full opacity', () => {
+    expect(colorsToText([{ label: 'Frame', hex: '#000000', opacity: null, blendMode: 'normal' }])).toBe(
+      '// One color per line, e.g. #012ABC Fill\n#000000\tFrame\n'
+    );
+  });
+
+  it.each(['OP:0', 'OP:100', 'OP:half', 'BLEND:glow'])('rejects %s', (option) => {
+    expect(() => parseColorsText(`#012ABC\tLens\t${option}\n`)).toThrow(ColorTextParseError);
+  });
+
+  it('highlights them like the ID and keeps every character', () => {
+    const line = '#012ABC\tLens\tOP:40\tBLEND:overlay\tID:5';
+    const tokens = tokenizeColorLine(line);
+
+    expect(tokens.map((t) => t.text).join('')).toBe(line);
+    expect(tokens.filter((t) => t.kind === 'id').map((t) => t.text)).toEqual(['OP:40', 'BLEND:overlay', 'ID:5']);
+  });
+});

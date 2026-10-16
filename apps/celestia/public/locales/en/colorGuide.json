@@ -235,7 +235,7 @@
       "addColor": "Add color",
       "plainText": "Plain text editor",
       "interactive": "Interactive editor",
-      "textHelp": "One color per line: the HEX value, a tab or space, then the name (3-30 characters). Lines starting with // are ignored, and so are colors that are left out of the list.",
+      "textHelp": "One color per line: the HEX value, a tab or space, then the name (3-30 characters). Lines starting with // are ignored, and so are colors that are left out of the list. Add OP:40 after the name for a color that is 40% opaque, and BLEND:overlay (or multiply, screen and so on) for how it combines with what is under it; without BLEND: it is normal.",
       "parseError": "Parse error on line {line}:",
       "parseMissing": "The {what} is missing from this line.",
       "parseTypos": "Please check for any typos before continuing.",
@@ -247,7 +247,10 @@
       "createTitle": "Create color group",
       "editTitle": "Edit color group",
       "colorName": "Color {n} name",
-      "colorValue": "Color {n} value"
+      "colorValue": "Color {n} value",
+      "opacity": "% opaque",
+      "colorOpacity": "Opacity of color {n}, in percent (leave empty for fully opaque)",
+      "colorBlendMode": "Blend mode of color {n}"
     },
     "wipe": {
       "title": "Selectively wipe data from {label}",
@@ -468,12 +471,12 @@
     },
     "explain": {
       "listed": "{labels}",
-      "mix": "Mix of {a} and {b}",
-      "multiply": "Multiply of {a} and {b}",
-      "screen": "Screen of {a} and {b}",
       "near": "Looks like {label} ({hex}), which is slightly different",
       "unknown": "Not a listed color, closest is {label} ({hex})",
-      "translucent": "Only drawn semi-transparent"
+      "translucent": "Only drawn semi-transparent",
+      "mix": "Mix of {a} and {b}",
+      "combo": "{mode} of {a} and {b}",
+      "layer": "{a} at {opacity}% over {b} ({mode})"
     },
     "status": {
       "present": "Used",
@@ -483,6 +486,27 @@
     },
     "empty": "Nothing to show.",
     "error": "The colors could not be checked.",
-    "retry": "Try again"
+    "retry": "Try again",
+    "blendModes": {
+      "normal": "Normal",
+      "multiply": "Multiply",
+      "screen": "Screen",
+      "overlay": "Overlay",
+      "darken": "Darken",
+      "lighten": "Lighten",
+      "color-dodge": "Color dodge",
+      "color-burn": "Color burn",
+      "hard-light": "Hard light",
+      "soft-light": "Soft light",
+      "difference": "Difference",
+      "exclusion": "Exclusion"
+    },
+    "breadcrumb": "Sprite colors",
+    "heading": "Sprite color check",
+    "lead": "{label}: do the colors in the sprite match the colors listed for it?",
+    "backToAppearance": "Back to appearance page",
+    "noSprite": "This appearance has no sprite image yet.",
+    "spriteAlt": "Sprite of {label}",
+    "spriteHint": "Point at a color in the sprite or in the list to find it in the other."
   }
 }

@@ -8,6 +8,7 @@ import InlineIcon from 'src/components/shared/InlineIcon';
 import { FormDialog } from 'src/components/shared/dialogs/FormDialog';
 import { describeApiError, fieldErrors, useApiMutation, useConfig } from 'src/hooks';
 import { ColorGroupService } from 'src/services/color-groups';
+import { BLEND_MODES, BlendMode, ColorBlending } from 'src/types/sprite-colors';
 import { ENDPOINTS } from 'src/utils';
 import { ColorTextParseError, ColorTextRow, colorsToText, parseColorsText } from 'src/utils/color-group-text';
 
@@ -45,7 +46,15 @@ export const ColorGroupDialog: FC<PropTypes> = ({ appearanceId, groupId, isOpen,
   useEffect(() => {
     if (!existing.data) return;
     setLabel(existing.data.label ?? '');
-    setRows((existing.data.colors ?? []).map((c) => ({ id: c.id, label: c.label ?? '', hex: c.hex ?? '' })));
+    setRows(
+      (existing.data.colors ?? []).map((c) => ({
+        id: c.id,
+        label: c.label ?? '',
+        hex: c.hex ?? '',
+        opacity: (c as ColorBlending).opacity ?? null,
+        blendMode: (c as ColorBlending).blendMode ?? null,
+      }))
+    );
   }, [existing.data]);
 
   /** The colors as they are now, read from the text when that is being edited */
@@ -78,7 +87,13 @@ export const ColorGroupDialog: FC<PropTypes> = ({ appearanceId, groupId, isOpen,
     label: label.trim(),
     colors: list
       .filter((r) => r.label.trim() !== '')
-      .map((r) => ({ ...(r.id ? { id: r.id } : {}), label: r.label.trim(), hex: r.hex.trim() === '' ? null : r.hex.trim() })),
+      .map((r) => ({
+        ...(r.id ? { id: r.id } : {}),
+        label: r.label.trim(),
+        hex: r.hex.trim() === '' ? null : r.hex.trim(),
+        opacity: r.opacity || null,
+        blendMode: r.blendMode && r.blendMode !== 'normal' ? r.blendMode : null,
+      })),
     major: Number(major) as unknown as boolean,
     reason: major ? reason.trim() : undefined,
   });
@@ -210,6 +225,33 @@ export const ColorGroupDialog: FC<PropTypes> = ({ appearanceId, groupId, isOpen,
                 disabled={existing.isFetching}
                 style={{ maxWidth: '9rem' }}
               />
+              <Input
+                type="number"
+                min={1}
+                max={99}
+                aria-label={t('colorGuide.edit.colorGroup.colorOpacity', { n: i + 1 })}
+                data-testid="form-color-opacity"
+                placeholder={t('colorGuide.edit.colorGroup.opacity')}
+                value={row.opacity ?? ''}
+                onChange={(e) => update(i, { opacity: e.target.value === '' ? null : Number(e.target.value) })}
+                disabled={existing.isFetching}
+                style={{ maxWidth: '5.5rem' }}
+              />
+              <Input
+                type="select"
+                aria-label={t('colorGuide.edit.colorGroup.colorBlendMode', { n: i + 1 })}
+                data-testid="form-color-blend-mode"
+                value={row.blendMode ?? 'normal'}
+                onChange={(e) => update(i, { blendMode: e.target.value as BlendMode })}
+                disabled={existing.isFetching}
+                style={{ maxWidth: '9rem' }}
+              >
+                {BLEND_MODES.map((mode) => (
+                  <option key={mode} value={mode}>
+                    {t(`colorGuide.spriteColors.blendModes.${mode}` as 'colorGuide.spriteColors.blendModes.normal')}
+                  </option>
+                ))}
+              </Input>
               <Button
                 type="button"
                 outline

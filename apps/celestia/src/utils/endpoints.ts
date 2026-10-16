@@ -58,6 +58,8 @@ export const ENDPOINTS = {
   APPEARANCE_SPRITE: (params: GetAppearancesIdSpriteRequest) => buildUrl(`/appearances/${params.id}/sprite`, params),
   APPEARANCE_SPRITE_COLORS: ({ id, token }: { id: number; token?: string }) =>
     buildUrl(`/appearances/${id}/sprite/colors`, token ? { token } : undefined),
+  APPEARANCE_IMAGE: ({ id, ...query }: { id: number; type: 'sprite' | 'palette' | 'preview'; format: 'png' | 'svg'; token?: string }) =>
+    buildUrl(`/appearances/${id}/image`, query),
   APPEARANCE_LOCATE: (data: GetAppearancesIdLocateRequest) => buildUrl(`/appearances/${data.id}/locate`),
   APPEARANCES_PINNED: (params: GetAppearancesPinnedRequest) => buildUrl(`/appearances/pinned`, params),
   APPEARANCES_AUTOCOMPLETE: (params: GetAppearancesAutocompleteRequest) => buildUrl(`/appearances/autocomplete`, params),

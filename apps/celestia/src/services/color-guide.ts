@@ -28,6 +28,13 @@ export class ColorGuideService extends Service {
   getSpriteColors = (data: { id: number; token?: string }) =>
     Axios.get<SpriteColorCheck>(ENDPOINTS.APPEARANCE_SPRITE_COLORS(data), this.getRequestOptions());
 
+  /** The sprite as merged outlines, for drawing it inline */
+  getSpriteSvg = (data: { id: number; token?: string }) =>
+    Axios.get<string>(ENDPOINTS.APPEARANCE_IMAGE({ id: data.id, type: 'sprite', format: 'svg', token: data.token }), {
+      ...this.getRequestOptions(),
+      responseType: 'text',
+    });
+
   getAppearances = (data: GetAppearancesRequest) => Axios.get<GetAppearancesResult>(ENDPOINTS.APPEARANCES(data), this.getRequestOptions());
 
   getIndexData = () => Axios.get<GetColorGuideResult>(ENDPOINTS.GUIDE_INDEX, this.getRequestOptions());

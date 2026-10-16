@@ -19,6 +19,8 @@ export const PATHS = {
       ? PATHS.PCG_APPEARANCE(ownerId, { id, label })
       : `/cg/${guide}/v/${pathSegmentWithId(id, label)}`,
   SHORT_APPEARANCE: ({ id, label }: Pick<PreviewAppearance, 'id' | 'label'>) => `/cg/v/${pathSegmentWithId(id, label)}`,
+  /** What the colors in the appearance's sprite are, next to the colors listed for it. Private appearances need the share token */
+  SPRITE_COLORS: (id: Numeric, token?: string) => `/cg/sprite-colors/${id}${token ? `?token=${encodeURIComponent(token)}` : ''}`,
   BLENDING: '/cg/blending',
   BLENDING_REVERSE: '/cg/blending-reverse',
   PICKER: '/cg/picker',
