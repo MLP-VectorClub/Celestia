@@ -36,35 +36,44 @@ const normalizeHex = (digits: string): string => {
   return `#${digits}`.toUpperCase();
 };
 
-/** The old site's plain text color list: `hex<TAB>name<TAB>ID:n`, one color per line, with `OP:40` and `BLEND:overlay` after the name when set */
+/** The old site's plain text color list: `hex<TAB>name<TAB>ID:n`, one color per line, with `40% overlay` (opacity and blend mode) after the name when set */
 export const colorsToText = (rows: ColorTextRow[]): string =>
   `${[
     COLOR_TEXT_HEADER,
-    ...rows.map((row) =>
-      [
-        row.hex || '#',
-        row.label,
-        ...(row.opacity ? [`OP:${row.opacity}`] : []),
-        ...(row.blendMode && row.blendMode !== 'normal' ? [`BLEND:${row.blendMode}`] : []),
-        ...(row.id ? [`ID:${row.id}`] : []),
-      ].join('\t')
-    ),
+    ...rows.map((row) => [row.hex || '#', row.label, ...blendingText(row), ...(row.id ? [`ID:${row.id}`] : [])].join('\t')),
   ].join('\n')}\n`;
 
-/** The `OP:` and `BLEND:` settings at the end of a line (before the ID), and the line without them */
-const OPTION_PATTERN = /\s+(OP|BLEND):([\w-]+)(?=\s*(?:ID:\d+)?\s*$|\s+(?:OP|BLEND):)/gi;
-export const splitOptions = (line: string): { rest: string; opacity?: number; blendMode?: BlendMode; invalid: string[] } => {
-  const result: { rest: string; opacity?: number; blendMode?: BlendMode; invalid: string[] } = { rest: line, invalid: [] };
-  result.rest = line.replace(OPTION_PATTERN, (_, key: string, value: string) => {
-    if (key.toUpperCase() === 'OP') {
-      const n = Number(value);
-      if (/^\d{1,2}$/.test(value) && n >= 1 && n <= 99) result.opacity = n;
-      else result.invalid.push(`OP:${value}`);
-    } else if (BLEND_MODES.includes(value.toLowerCase() as BlendMode)) result.blendMode = value.toLowerCase() as BlendMode;
-    else result.invalid.push(`BLEND:${value}`);
-    return '';
-  });
-  return result;
+/** How much a color shows and how it blends, as written after the name: `40%` (normal blending), `40% overlay`, `100% multiply` */
+const blendingText = (row: ColorTextRow): string[] => {
+  const mode = row.blendMode && row.blendMode !== 'normal' ? ` ${row.blendMode}` : '';
+  return row.opacity || mode ? [`${row.opacity || 100}%${mode}`] : [];
+};
+
+/** The opacity and blend mode at the end of a line (before the ID): a percentage, then optionally the name of the blend mode */
+const BLENDING_PATTERN = /\s+(\d+)%(?:\s+([a-z]+(?:[-\s][a-z]+)?))?(?=\s*(?:ID:\d+)?\s*$)/i;
+
+/** The opacity and blend mode written at the end of a line (before the ID), and the line without them */
+const findBlending = (line: string): RegExpExecArray | null => {
+  const match = BLENDING_PATTERN.exec(line);
+  // Right after the HEX value it is the start of the name ("#000000<TAB>50% Gray"), the name comes first
+  return match && !/^(?:\/\/)?#?[a-f\d]*$/i.test(line.slice(0, match.index).trim()) ? match : null;
+};
+
+export const splitBlending = (line: string): { rest: string; opacity?: number; blendMode?: BlendMode; invalid: boolean } => {
+  const match = findBlending(line);
+  if (!match) return { rest: line, invalid: false };
+
+  const percent = Number(match[1]);
+  const mode = match[2]?.toLowerCase().replace(/\s+/g, '-');
+  const validMode = mode === undefined || BLEND_MODES.includes(mode as BlendMode);
+  // 100% is fully opaque, which is how colors without an opacity are written back
+  const validPercent = percent >= 1 && percent <= 100;
+  return {
+    rest: line.slice(0, match.index) + line.slice(match.index + match[0].length),
+    ...(validPercent && percent < 100 ? { opacity: percent } : {}),
+    ...(validMode && mode && mode !== 'normal' ? { blendMode: mode as BlendMode } : {}),
+    invalid: !validMode || !validPercent,
+  };
 };
 
 /**
@@ -83,9 +92,9 @@ export const parseColorsText = (text: string): ColorTextRow[] => {
       return;
     }
 
-    const options = splitOptions(trimmed);
+    const options = splitBlending(trimmed);
     const matches = /^(?:(\/\/)?#?([a-f\d]{0,6})?)?\s+([ -~]{3,30})?(?:\s*ID:(\d+))?$/i.exec(options.rest);
-    if (matches?.[3] && options.invalid.length === 0) {
+    if (matches?.[3] && !options.invalid) {
       if (matches[1]) return;
       rows.push({
         ...(matches[4] ? { id: Number(matches[4]) } : {}),
@@ -121,25 +130,19 @@ export const tokenizeColorLine = (line: string): ColorTextToken[] => {
   if (/^\/\//.test(line)) return [{ text: line, kind: 'comment' }];
   if (line === '') return [];
 
-  // The OP: and BLEND: settings are blanked out for the reading below and put back, marked like the ID, afterwards
-  const spans = [...line.matchAll(new RegExp(OPTION_PATTERN.source, 'gi'))].map((m) => [
-    m.index + m[0].length - m[0].trimStart().length,
-    m.index + m[0].length,
-  ]);
-  if (spans.length > 0) {
-    let blanked = line;
-    spans.forEach(([from, to]) => {
-      blanked = `${blanked.slice(0, from)}${' '.repeat(to - from)}${blanked.slice(to)}`;
-    });
+  // The opacity and blend mode are blanked out for the reading below and put back, marked like the ID, afterwards
+  const found = findBlending(line);
+  if (found) {
+    const from = found.index + found[0].length - found[0].trimStart().length;
+    const to = found.index + found[0].length;
     const result: ColorTextToken[] = [];
     let at = 0;
-    tokenizeColorLine(blanked).forEach((token) => {
+    tokenizeColorLine(`${line.slice(0, from)}${' '.repeat(to - from)}${line.slice(to)}`).forEach((token) => {
       const end = at + token.text.length;
+      const cuts = [from, to].filter((n) => n > at && n < end);
       let cursor = at;
-      const cut = [...spans.flatMap(([from, to]) => [from, to]), end].filter((n) => n > at && n < end).sort((a, b) => a - b);
-      [...cut, end].forEach((stop) => {
-        const inSpan = spans.some(([from, to]) => cursor >= from && stop <= to);
-        result.push({ text: line.slice(cursor, stop), kind: inSpan ? 'id' : token.kind });
+      [...cuts, end].forEach((stop) => {
+        result.push({ text: line.slice(cursor, stop), kind: cursor >= from && stop <= to ? 'id' : token.kind });
         cursor = stop;
       });
       at = end;

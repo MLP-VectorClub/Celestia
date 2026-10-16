@@ -88,31 +88,49 @@ describe('opacity and blend mode in the plain text list', () => {
   const rows = [
     { id: 5, label: 'Lens', hex: '#012ABC', opacity: 40, blendMode: 'overlay' as const },
     { label: 'Shine', hex: '#FFFFFF', opacity: 50 },
-    { label: 'Frame', hex: '#000000' },
+    { label: 'Frame', hex: '#000000', blendMode: 'multiply' as const },
+    { label: 'Glow', hex: '#00FF00', opacity: 25, blendMode: 'color-dodge' as const },
   ];
 
   it('writes them after the name and reads them back', () => {
     const text = colorsToText(rows);
 
-    expect(text).toContain('#012ABC\tLens\tOP:40\tBLEND:overlay\tID:5\n');
+    expect(text).toContain('#012ABC\tLens\t40% overlay\tID:5\n');
+    expect(text).toContain('#FFFFFF\tShine\t50%\n');
+    expect(text).toContain('#000000\tFrame\t100% multiply\n');
     expect(parseColorsText(text)).toEqual(rows);
+  });
+
+  it('reads them after a space as well, with any case, and a blend mode name with a space', () => {
+    expect(parseColorsText('#012ABC Lens Fill 40% Overlay\n#00ff00 Glow 25% color dodge\tID:7\n')).toEqual([
+      { label: 'Lens Fill', hex: '#012ABC', opacity: 40, blendMode: 'overlay' },
+      { id: 7, label: 'Glow', hex: '#00FF00', opacity: 25, blendMode: 'color-dodge' },
+    ]);
   });
 
   it('does not write normal blending or full opacity', () => {
     expect(colorsToText([{ label: 'Frame', hex: '#000000', opacity: null, blendMode: 'normal' }])).toBe(
       '// One color per line, e.g. #012ABC Fill\n#000000\tFrame\n'
     );
+    expect(parseColorsText('#000000\tFrame\t100% normal\n')).toEqual([{ label: 'Frame', hex: '#000000' }]);
   });
 
-  it.each(['OP:0', 'OP:100', 'OP:half', 'BLEND:glow'])('rejects %s', (option) => {
-    expect(() => parseColorsText(`#012ABC\tLens\t${option}\n`)).toThrow(ColorTextParseError);
+  it('leaves percentages elsewhere in the name alone', () => {
+    expect(parseColorsText('#000000\tLens (40% Opacity)\n#000000\t50% Gray\n')).toEqual([
+      { label: 'Lens (40% Opacity)', hex: '#000000' },
+      { label: '50% Gray', hex: '#000000' },
+    ]);
+  });
+
+  it.each(['0%', '150%', '40% glow'])('rejects %s', (setting) => {
+    expect(() => parseColorsText(`#012ABC\tLens\t${setting}\n`)).toThrow(ColorTextParseError);
   });
 
   it('highlights them like the ID and keeps every character', () => {
-    const line = '#012ABC\tLens\tOP:40\tBLEND:overlay\tID:5';
+    const line = '#012ABC\tLens\t40% overlay\tID:5';
     const tokens = tokenizeColorLine(line);
 
     expect(tokens.map((t) => t.text).join('')).toBe(line);
-    expect(tokens.filter((t) => t.kind === 'id').map((t) => t.text)).toEqual(['OP:40', 'BLEND:overlay', 'ID:5']);
+    expect(tokens.filter((t) => t.kind === 'id').map((t) => t.text)).toEqual(['40% overlay', 'ID:5']);
   });
 });

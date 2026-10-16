@@ -63,10 +63,10 @@ describe('ColorGroupDialog opacity and blend mode', () => {
 
     await screen.getByRole('button', { name: 'Plain text editor' }).click();
     const text = screen.getByRole('textbox', { name: 'Plain text editor' });
-    await expect.element(text).toHaveValue(expect.stringContaining('#336699\tLens\tOP:40\tBLEND:overlay\tID:91'));
+    await expect.element(text).toHaveValue(expect.stringContaining('#336699\tLens\t40% overlay\tID:91'));
 
     // 55% instead of 40%, and no blend mode anymore (normal)
-    await text.fill('#000000\tFrame\tID:90\n#336699\tLens\tOP:55\tID:91\n#FFFFFF\tShine\tOP:20\tBLEND:screen\n');
+    await text.fill('#000000\tFrame\tID:90\n#336699\tLens\t55%\tID:91\n#FFFFFF\tShine\t20% screen\n');
     await screen.getByTestId('dialog-btn-save').click();
 
     expect(api.update).toHaveBeenCalledWith(
@@ -97,7 +97,7 @@ describe('ColorGroupDialog opacity and blend mode', () => {
     await expect.element(screen.getByRole('spinbutton', { name: /Opacity of color 2/ })).toBeVisible();
 
     await screen.getByRole('button', { name: 'Plain text editor' }).click();
-    await screen.getByRole('textbox', { name: 'Plain text editor' }).fill('#336699\tLens\tOP:150\n');
+    await screen.getByRole('textbox', { name: 'Plain text editor' }).fill('#336699\tLens\t150%\n');
     await screen.getByTestId('dialog-btn-save').click();
 
     await expect.element(screen.getByText(/line 1/i)).toBeVisible();
