@@ -172,7 +172,7 @@ export const SpriteColorsReport: FC<PropTypes> = ({ appearanceId, label, token }
   return (
     <div className="row g-4">
       <div className="col-lg-5">
-        <div className="sticky-top" style={{ top: '1rem' }}>
+        <div className="sticky-below-header">
           {svg.data && (
             <>
               {/* Only the pixels whose color is pointed at stay fully visible */}

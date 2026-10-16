@@ -1,5 +1,10 @@
 // The account page stacks a lot of forms (sessions, e-mail, password, two-step verification, passkeys, Discord, DeviantArt): room between the blocks
 #account {
+  // The old page left these to the browser: 1.5em for a block's heading
+  > section > h2 {
+    font-size: 1.5rem;
+  }
+
   > section:not(:last-child) {
     margin-bottom: 3.5rem;
   }

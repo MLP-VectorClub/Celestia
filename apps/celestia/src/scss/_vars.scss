@@ -25,6 +25,21 @@ $font-family-sans-serif: 'Arimo', sans-serif;
 
 $headings-font-family: 'Celestia', 'Lucida Calligraphy', 'Monotype Corsiva', cursive;
 
+// Heading sizes of the old site (Winterchilla): a page title of 2em, section headings of 1.3em, then the browser defaults for the smaller ones,
+// bold and tightly spaced. Pages that need another size set it on their own element
+$h1-font-size: 2rem;
+$h2-font-size: 1.3rem;
+$h3-font-size: 1.17rem;
+$h4-font-size: 1rem;
+$h5-font-size: 0.83rem;
+$h6-font-size: 0.67rem;
+$headings-font-weight: 700;
+$headings-line-height: 1.15;
+$headings-margin-bottom: 0.5rem;
+// The line under a page title: 1.6em, regular weight, italic (see `.page-lead`)
+$lead-font-size: 1.6rem;
+$lead-font-weight: 400;
+
 $breadcrumb-padding-y: 0.5rem;
 $breadcrumb-padding-x: 0.5rem;
 $breadcrumb-border-radius: 0;

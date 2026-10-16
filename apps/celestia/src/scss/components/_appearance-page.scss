@@ -1,4 +1,5 @@
 @use '../bootstrap' as bs;
+@use '../functions' as *;
 
 // The sections of an appearance page (the old site's `.section-container > section`): a heading with an icon, then what belongs to it, and the
 // same space between all of them
@@ -44,4 +45,10 @@
       margin-top: 0.75rem;
     }
   }
+}
+
+// Something that stays in view while the page scrolls: below the fixed header, not behind it
+.sticky-below-header {
+  position: sticky;
+  top: calc(#{header-height()} + 1rem);
 }

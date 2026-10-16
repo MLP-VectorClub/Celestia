@@ -24,6 +24,11 @@
     font-family: serif !important;
   }
 
+  // The policy is the old plain page: its section headings are the browser's 1.5em, not the 1.3em of the rest of the site
+  h2 {
+    font-size: 1.5rem;
+  }
+
   a,
   a:hover {
     color: blue;
