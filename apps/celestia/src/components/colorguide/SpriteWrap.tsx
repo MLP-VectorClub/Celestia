@@ -6,6 +6,7 @@ import { FC, useRef, useState } from 'react';
 import { Alert } from 'reactstrap';
 
 import styles from 'modules/SpriteWrap.module.scss';
+import { SpriteColorsDialog } from 'src/components/colorguide/SpriteColorsDialog';
 import { SpriteDialog } from 'src/components/colorguide/SpriteDialog';
 import SpriteImage from 'src/components/colorguide/SpriteImage';
 import { ActionMenu, ActionMenuItem } from 'src/components/shared/ActionMenu';
@@ -37,6 +38,7 @@ export const SpriteWrap: FC<PropTypes> = ({ appearanceId, sprite, compact = fals
   const input = useRef<HTMLInputElement>(null);
   const [copied, setCopied] = useState(false);
   const [dialog, setDialog] = useState(false);
+  const [colorsDialog, setColorsDialog] = useState(false);
   const [dragging, setDragging] = useState(false);
 
   const queryClient = useQueryClient();
@@ -84,6 +86,13 @@ export const SpriteWrap: FC<PropTypes> = ({ appearanceId, sprite, compact = fals
         void copyText(new URL(spriteUrl, window.location.origin).toString()).then(setCopied);
         setTimeout(() => setCopied(false), 1500);
       },
+    },
+    {
+      key: 'check-colors',
+      label: t('colorGuide.edit.sprite.checkColors'),
+      icon: 'palette' as const,
+      disabled: !sprite,
+      onClick: () => setColorsDialog(true),
     },
     ...(editable
       ? [{ key: 'upload', label: t('colorGuide.edit.sprite.uploadNew'), icon: 'upload' as const, onClick: () => setDialog(true) }]
@@ -152,6 +161,7 @@ export const SpriteWrap: FC<PropTypes> = ({ appearanceId, sprite, compact = fals
           {describeApiError(error)}
         </Alert>
       )}
+      {colorsDialog && <SpriteColorsDialog appearanceId={appearanceId} isOpen onClose={() => setColorsDialog(false)} token={token} />}
       <SpriteDialog appearanceId={appearanceId} hasSprite={Boolean(sprite)} isOpen={dialog} onClose={() => setDialog(false)} />
     </div>
   );

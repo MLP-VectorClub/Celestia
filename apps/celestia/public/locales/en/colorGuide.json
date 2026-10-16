@@ -169,7 +169,8 @@
       "none": "No sprite yet, click to choose one. Use the ⋯ menu for more options.",
       "menu": "Sprite actions",
       "openInNewTab": "Open image in new tab",
-      "copyUrl": "Copy image URL"
+      "copyUrl": "Copy image URL",
+      "checkColors": "Check sprite colors"
     },
     "relations": {
       "mutual": "Mutual",
@@ -446,5 +447,42 @@
     "widgetHint": "Clicking colored squares copies its HEX color to your clipboard. Shift-clicking will display RGB values instead.",
     "copyHash": "Copy # with color codes",
     "rgbOnClick": "Show RGB values instead of copying"
+  },
+  "spriteColors": {
+    "title": "Sprite color check",
+    "intro": "Compares the colors used in the sprite with the colors listed for this appearance. Soft edges and glows that are mixes of listed colors are fine, and colors that are only drawn semi-transparent are not judged.",
+    "ok": "Every listed color is used and nothing unexpected showed up.",
+    "problems": "{count, plural, one {# thing to look at} other {# things to look at}}",
+    "inSprite": "Colors in the sprite",
+    "inPalette": "Colors of the appearance",
+    "color": "Color",
+    "pixels": "Pixels",
+    "kind": {
+      "listed": "Listed",
+      "blend": "Blend",
+      "near": "Almost",
+      "unknown": "Not listed",
+      "nearSpeck": "Stray speck",
+      "unknownSpeck": "Stray speck",
+      "translucent": "Semi-transparent"
+    },
+    "explain": {
+      "listed": "{labels}",
+      "mix": "Mix of {a} and {b}",
+      "multiply": "Multiply of {a} and {b}",
+      "screen": "Screen of {a} and {b}",
+      "near": "Looks like {label} ({hex}), which is slightly different",
+      "unknown": "Not a listed color, closest is {label} ({hex})",
+      "translucent": "Only drawn semi-transparent"
+    },
+    "status": {
+      "present": "Used",
+      "translucent": "Only semi-transparent",
+      "missing": "Not used",
+      "optional": "Not used (optional)"
+    },
+    "empty": "Nothing to show.",
+    "error": "The colors could not be checked.",
+    "retry": "Try again"
   }
 }

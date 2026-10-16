@@ -18,11 +18,15 @@ import {
 import Axios from 'axios';
 
 import { Service } from 'src/services/service-class';
+import { SpriteColorCheck } from 'src/types/sprite-colors';
 import { ENDPOINTS } from 'src/utils';
 
 export class ColorGuideService extends Service {
   getAppearance = (data: GetAppearancesIdRequest & { token?: string }) =>
     Axios.get<GetAppearancesIdResult>(ENDPOINTS.APPEARANCE(data), this.getRequestOptions());
+
+  getSpriteColors = (data: { id: number; token?: string }) =>
+    Axios.get<SpriteColorCheck>(ENDPOINTS.APPEARANCE_SPRITE_COLORS(data), this.getRequestOptions());
 
   getAppearances = (data: GetAppearancesRequest) => Axios.get<GetAppearancesResult>(ENDPOINTS.APPEARANCES(data), this.getRequestOptions());
 
