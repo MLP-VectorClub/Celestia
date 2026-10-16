@@ -1,7 +1,7 @@
 import { ColorGroup } from '@went.tf/mlp-vectorclub-api-types';
 import { useTranslations } from 'next-intl';
-import { FC, useState } from 'react';
-import { Alert, Button, Card, CardBody, Col, Row } from 'reactstrap';
+import { CSSProperties, FC, useState } from 'react';
+import { Alert, Button, Card, CardBody } from 'reactstrap';
 
 import styles from 'modules/AppearanceColorGroups.module.scss';
 import { ColorGroupDialog } from 'src/components/colorguide/ColorGroupDialog';
@@ -84,9 +84,13 @@ export const AppearanceColorGroups: FC<PropTypes> = ({ colorGroups, appearanceId
         </Alert>
       )}
       {groups.length === 0 && <div className={styles.noColorGroups}>{t('colorGuide.appearance.noColorGroups')}</div>}
-      <Row className={styles.colorGroupCardRow}>
+      <div
+        className={styles.colorGroupCardRow}
+        // The cards share the width, and wrap onto the next line once they would get narrower than their colors need
+        style={{ '--card-min-width': prefs?.cg_hideclrinfo ? '11rem' : '17rem' } as CSSProperties}
+      >
         {groups.map((cg) => (
-          <Col key={cg.id} xs={12} sm>
+          <div key={cg.id}>
             <Card className={styles.colorGroupCard} role="region" aria-label={`Color Group: ${cg.label}`}>
               <CardBody className="p-2">
                 <h3 className="text-center">{cg.label}</h3>
@@ -136,9 +140,9 @@ export const AppearanceColorGroups: FC<PropTypes> = ({ colorGroups, appearanceId
                 </ul>
               </CardBody>
             </Card>
-          </Col>
+          </div>
         ))}
-      </Row>
+      </div>
       {editable && (
         <>
           <ColorGroupDialog
