@@ -46,4 +46,28 @@ test.describe('color guide pagination', () => {
     await topNav(page).getByRole('button', { name: '1', exact: true }).click();
     await expect.poll(() => names(page)).toEqual(labelsOnPage(1));
   });
+
+  test('does not scroll to the top when the page changes, which is what phones do on every press', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 400 });
+    // The router scrolls with window.scrollTo(0, 0), which the page's smooth scrolling then animates, so the calls are recorded instead of the position
+    await page.addInitScript(() => {
+      const calls: unknown[][] = [];
+      (window as unknown as { __scrollCalls: unknown[][] }).__scrollCalls = calls;
+      const original = window.scrollTo.bind(window);
+      window.scrollTo = ((...args: unknown[]) => {
+        calls.push(args);
+        return (original as (...a: unknown[]) => void)(...args);
+      }) as typeof window.scrollTo;
+    });
+    await page.goto('/cg/pony');
+    await expect.poll(() => names(page)).toEqual(labelsOnPage(1));
+    await page.evaluate(() => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' }));
+    expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
+    await page.evaluate(() => ((window as unknown as { __scrollCalls: unknown[][] }).__scrollCalls.length = 0));
+
+    await page.getByRole('navigation', { name: 'pagination' }).last().getByRole('button', { name: '2', exact: true }).click();
+    await expect.poll(() => names(page)).toEqual(labelsOnPage(2));
+    expect(await page.evaluate(() => (window as unknown as { __scrollCalls: unknown[][] }).__scrollCalls)).toEqual([]);
+    expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
+  });
 });
