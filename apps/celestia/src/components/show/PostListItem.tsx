@@ -42,7 +42,7 @@ export const PostListItem: FC<{ post: PostItem; viewOnly?: boolean; highlighted?
   const isStaff = permission(user, 'staff');
   const isRequest = post.kind === 'request';
   const finished = post.deviationId !== null && post.finishedAt !== null;
-  const noQuotes = post.label.includes('"');
+  const noQuotes = post.label?.includes('"') ?? false;
   // Like the old site, who requested something is only shown to staff, the requester and the reserver
   const isRequester = user.id !== null && post.postedBy?.id === user.id;
   const isReserver = user.id !== null && post.reservedBy?.id === user.id;

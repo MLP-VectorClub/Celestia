@@ -14,7 +14,7 @@ export const PostLine: FC<{ post: PostItem; showReserver?: boolean }> = ({ post,
   <div className="d-flex align-items-center mb-2">
     <Image
       src={post.previewUrl}
-      alt={post.label}
+      alt={post.label ?? ''}
       width={80}
       height={60}
       unoptimized
@@ -22,7 +22,7 @@ export const PostLine: FC<{ post: PostItem; showReserver?: boolean }> = ({ post,
       style={{ objectFit: 'cover' }}
     />
     <div>
-      <strong>{post.label}</strong>
+      {post.label && <strong>{post.label}</strong>}
       {post.deviationId && (
         <>
           {' '}

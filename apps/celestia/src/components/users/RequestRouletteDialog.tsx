@@ -76,9 +76,9 @@ export const RequestRouletteDialog: FC<{ isOpen: boolean; onClose: () => void }>
             <li id={`request-${suggestion.id}`} className={postStyles.card}>
               {!imageFailed && (
                 <div className={postStyles.image}>
-                  <ImageZoomLink href={suggestion.fullsizeUrl} alt={suggestion.label}>
+                  <ImageZoomLink href={suggestion.fullsizeUrl} alt={suggestion.label ?? ''}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={suggestion.fullsizeUrl} alt={suggestion.label} onError={() => setImageFailed(true)} />
+                    <img src={suggestion.fullsizeUrl} alt={suggestion.label ?? ''} onError={() => setImageFailed(true)} />
                   </ImageZoomLink>
                 </div>
               )}

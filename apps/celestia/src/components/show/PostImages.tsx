@@ -52,10 +52,10 @@ export const ScreencapImage: FC<{ post: PostItem }> = ({ post }) => {
   });
   return (
     <div className={classNames(styles.image, styles.screencap)}>
-      <ImageZoomLink href={post.fullsizeUrl} alt={post.label}>
+      <ImageZoomLink href={post.fullsizeUrl} alt={post.label ?? ''}>
         <LazyImage
           src={post.previewUrl}
-          alt={post.label}
+          alt={post.label ?? ''}
           onFail={() => {
             if (asked.current || post.broken) return;
             asked.current = true;

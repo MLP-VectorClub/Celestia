@@ -23,11 +23,11 @@ export const PostEditDialog: FC<PropTypes> = ({ post, isOpen, onClose }) => {
   const actions = getPostActions(post, user);
   const [imageOpen, setImageOpen] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
-  const [label, setLabel] = useState(post.label);
+  const [label, setLabel] = useState(post.label ?? '');
   const [type, setType] = useState<'chr' | 'obj' | 'bg'>(post.type ?? 'chr');
   useEffect(() => {
     if (isOpen) {
-      setLabel(post.label);
+      setLabel(post.label ?? '');
       setType(post.type ?? 'chr');
       setImageOpen(false);
       setImageUrl('');
