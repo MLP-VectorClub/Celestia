@@ -53,3 +53,24 @@ export const breadcrumbListJsonLd = (items: BreadcrumbJsonLdItem[], currentHref?
 
 /** For the body of a `<script type="application/ld+json">`: nothing in the data may close the tag early */
 export const serializeJsonLd = (data: unknown): string => JSON.stringify(data).replace(/</g, '\\u003c');
+
+/** Google's rules for a BreadcrumbList that are not obvious from the types: what makes Search Console call the markup invalid */
+export const validateBreadcrumbListJsonLd = (data: unknown): string[] => {
+  const problems: string[] = [];
+  const list = data as { '@type'?: unknown; itemListElement?: unknown } | null;
+  if (!list || list['@type'] !== 'BreadcrumbList') return ['not a BreadcrumbList'];
+  const entries = list.itemListElement;
+  if (!Array.isArray(entries) || entries.length === 0) return ['itemListElement is missing or empty'];
+  entries.forEach((entry: { '@type'?: unknown; position?: unknown; name?: unknown; item?: unknown }, i) => {
+    const at = `itemListElement[${i}]`;
+    if (entry['@type'] !== 'ListItem') problems.push(`${at}: @type is not ListItem`);
+    if (entry.position !== i + 1) problems.push(`${at}: position is ${String(entry.position)}, expected ${i + 1}`);
+    if (typeof entry.name !== 'string' || entry.name.trim() === '') problems.push(`${at}: missing name`);
+    if (entry.item === undefined) {
+      if (i < entries.length - 1) problems.push(`${at}: missing item (only the last entry may leave it out)`);
+    } else if (typeof entry.item !== 'string' || !/^https?:\/\/[^/\s]+/.test(entry.item)) {
+      problems.push(`${at}: item is not a whole http(s) address: ${String(entry.item)}`);
+    }
+  });
+  return problems;
+};
