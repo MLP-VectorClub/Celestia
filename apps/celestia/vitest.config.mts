@@ -22,6 +22,7 @@ export default defineConfig({
         test: {
           name: 'unit',
           environment: 'node',
+          env: { NEXT_PUBLIC_FRONTEND_HOST: 'http://localhost:3000' },
           include: ['src/**/*.test.{ts,tsx}'],
           exclude: [browserTests],
         },

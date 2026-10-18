@@ -1,6 +1,7 @@
 import { useTranslations } from 'next-intl';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { FC } from 'react';
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
 
@@ -13,11 +14,15 @@ const ELEMENT_ID = 'breadcrumbs';
 
 const Breadcrumbs: FC = () => {
   const t = useTranslations();
+  const { asPath } = useRouter();
   const { breadcrumbs } = useAppSelector((state) => renderingStateSlice(state.core));
 
   if (breadcrumbs.length === 0) return <div id={ELEMENT_ID} />;
 
-  const jsonLd = breadcrumbListJsonLd(breadcrumbs.map((el) => ({ name: translatableValue(t, el.label), href: el.linkProps?.href })));
+  const jsonLd = breadcrumbListJsonLd(
+    breadcrumbs.map((el) => ({ name: translatableValue(t, el.label), href: el.linkProps?.href })),
+    asPath.split('#')[0]
+  );
 
   return (
     <Breadcrumb id={ELEMENT_ID}>
