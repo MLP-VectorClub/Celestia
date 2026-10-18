@@ -27,17 +27,29 @@ export const absoluteUrl = (href: string | UrlObject): string => {
   return value.startsWith('/') && !value.startsWith('//') ? assembleSeoUrl(value) : value;
 };
 
-/** schema.org's BreadcrumbList (the old site marked its breadcrumbs up the same way, with microdata) */
-export const breadcrumbListJsonLd = (items: BreadcrumbJsonLdItem[]) => ({
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: items.map(({ name, href }, i) => ({
-    '@type': 'ListItem',
-    position: i + 1,
-    name,
-    ...(href ? { item: absoluteUrl(href) } : {}),
-  })),
-});
+/**
+ * schema.org's BreadcrumbList (the old site marked its breadcrumbs up the same way, with microdata).
+ * Google requires `item` on every entry but the last, so label-only entries in the middle are left out and
+ * the last one (the page being viewed) falls back to `currentHref`.
+ */
+export const breadcrumbListJsonLd = (items: BreadcrumbJsonLdItem[], currentHref?: string | UrlObject) => {
+  const entries = items.flatMap(({ name, href }, i) => {
+    const isLast = i === items.length - 1;
+    const target = href ?? (isLast ? currentHref : undefined);
+    if (!target && !isLast) return [];
+    return [{ name, item: target ? absoluteUrl(target) : undefined }];
+  });
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: entries.map(({ name, item }, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name,
+      ...(item ? { item } : {}),
+    })),
+  };
+};
 
 /** For the body of a `<script type="application/ld+json">`: nothing in the data may close the tag early */
 export const serializeJsonLd = (data: unknown): string => JSON.stringify(data).replace(/</g, '\\u003c');
