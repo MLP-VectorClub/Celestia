@@ -79,7 +79,7 @@
   background: rgba(204, 0, 0, 0.1);
 }
 
-:global([data-bs-theme='dark']) {
+@mixin dark-syntax {
   .comment {
     color: rgba(255, 255, 255, 0.55);
   }
@@ -99,5 +99,16 @@
   .invalid {
     color: #ff6b6b;
     background: rgba(255, 107, 107, 0.15);
+  }
+}
+
+:global([data-bs-theme='dark']) {
+  @include dark-syntax;
+}
+
+// No saved theme: the device decides (see scss/_theme.scss)
+@media (prefers-color-scheme: dark) {
+  :global(:root:not([data-bs-theme])) {
+    @include dark-syntax;
   }
 }

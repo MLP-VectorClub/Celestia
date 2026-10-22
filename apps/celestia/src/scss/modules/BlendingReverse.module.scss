@@ -21,13 +21,14 @@
 }
 
 .pairs {
-  background: white;
+  color: var(--bs-body-color);
+  background: var(--bs-body-bg);
   border-collapse: collapse;
 
   &,
   th,
   td {
-    border: 1px solid black;
+    border: 1px solid var(--bs-emphasis-color);
   }
 
   th,
@@ -76,15 +77,15 @@
 }
 
 .red {
-  color: #c33;
+  color: var(--mlpvc-text-red);
 }
 
 .green {
-  color: #2a8a2a;
+  color: var(--mlpvc-text-green);
 }
 
 .blue {
-  color: #2b4fcc;
+  color: var(--mlpvc-text-blue);
 }
 
 .previewWrap {

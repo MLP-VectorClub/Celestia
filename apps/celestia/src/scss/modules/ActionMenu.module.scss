@@ -10,7 +10,7 @@
   height: 28px;
   padding: 0;
   margin: 0 2px;
-  color: #337287;
+  color: var(--bs-link-color);
   cursor: pointer;
   background: transparent;
   border: 1px solid transparent;
@@ -19,7 +19,7 @@
   &:hover,
   &:focus-visible,
   &:global(.show) {
-    background: rgba(#000, 0.08);
-    border-color: rgba(#000, 0.2);
+    background: rgba(var(--bs-emphasis-color-rgb), 0.08);
+    border-color: rgba(var(--bs-emphasis-color-rgb), 0.2);
   }
 }

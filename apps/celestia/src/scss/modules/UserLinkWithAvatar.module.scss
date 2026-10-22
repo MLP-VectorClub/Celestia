@@ -2,11 +2,23 @@
 @use '../mixins/reserve-button' as *;
 @use '../vars' as *;
 
+// The pill has a pale background of its own in every theme (the reserve button's green, tinted by the vector app), so its text has fixed dark
+// colors as well: the page's link and muted colors are light in the dark theme and were unreadable on it. 4.5:1 or more on every tint
+$pill-text: #1d4e5d;
+$pill-caption: #454545;
+
 .userLinkWithAvatar {
   $image-height: 1.5em;
   $border-size: 1px;
 
   @include reserve-button;
+
+  &,
+  &:hover,
+  &:focus-visible,
+  &:active {
+    color: $pill-text;
+  }
 
   display: inline-block;
   white-space: nowrap;
@@ -75,7 +87,7 @@
   }
 
   .caption {
-    color: #666;
+    color: $pill-caption;
     font-size: 11px;
     font-style: italic;
     font-weight: normal;

@@ -32,7 +32,7 @@
 
 .aka {
   display: block;
-  color: bs.$black;
+  color: var(--bs-body-color);
   font-size: 0.7rem;
   font-weight: bold;
 }

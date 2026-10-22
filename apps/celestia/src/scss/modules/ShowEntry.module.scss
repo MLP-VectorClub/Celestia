@@ -64,23 +64,23 @@
   margin: 10px 0 0;
 
   &.blue {
-    color: #0070e9;
+    color: var(--mlpvc-text-blue);
   }
 
   &.orange {
-    color: #b40;
+    color: var(--mlpvc-text-orange);
   }
 
   &.green {
-    color: #008000;
+    color: var(--mlpvc-text-green);
   }
 
   &.ui {
-    color: #357;
+    color: var(--mlpvc-text-ui);
   }
 
   &.darkblue {
-    color: #02a;
+    color: var(--mlpvc-text-darkblue);
   }
 }
 

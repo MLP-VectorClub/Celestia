@@ -45,8 +45,8 @@
   display: inline-block;
   padding: 0.1rem 0.35rem;
   font-style: italic;
-  color: #555;
-  border: 1px dashed #888;
+  color: var(--bs-secondary-color);
+  border: 1px dashed var(--bs-border-color);
 }
 
 // On a phone each group is a full width row, like the old site's

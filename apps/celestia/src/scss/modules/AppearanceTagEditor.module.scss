@@ -9,7 +9,8 @@
   min-height: 90px;
   padding: 0.35rem;
   border: 1px solid grey;
-  background: #fff;
+  color: var(--bs-body-color);
+  background: var(--bs-body-bg);
   position: relative;
 }
 
@@ -73,8 +74,9 @@
   padding: 0;
   overflow-y: auto;
   list-style: none;
-  background: #fff;
-  border: 1px solid #bbb;
+  color: var(--bs-body-color);
+  background: var(--bs-body-bg);
+  border: 1px solid var(--bs-border-color);
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
 
   > li {

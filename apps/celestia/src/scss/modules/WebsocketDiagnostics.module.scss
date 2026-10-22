@@ -10,7 +10,7 @@
   }
 
   &.dead {
-    color: black;
+    color: var(--bs-emphasis-color);
   }
 }
 
@@ -43,8 +43,8 @@
   flex: 1 1 auto;
   margin: 0.3rem;
   padding: 0.6rem;
-  border: 1px solid rgba(black, 0.2);
-  background: rgba(black, 0.05);
+  border: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.2);
+  background: rgba(var(--bs-emphasis-color-rgb), 0.05);
 
   h3 {
     margin: 0 0 0.6rem;
@@ -68,5 +68,5 @@
 
 .current {
   margin-left: 0.4rem;
-  color: #d00;
+  color: var(--mlpvc-text-red);
 }

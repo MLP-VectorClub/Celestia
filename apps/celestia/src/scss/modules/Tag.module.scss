@@ -1,5 +1,6 @@
 @use 'sass:color';
 @use '../bootstrap-defaults' as bs;
+@use '../contrast' as *;
 @use '../vars' as *;
 
 @mixin tag-variant($color: $tag-color-default) {
@@ -13,7 +14,7 @@
   &,
   &:hover,
   &:active {
-    color: $border;
+    color: readable($border, $background, $background-hover);
   }
 
   &:hover {
