@@ -12,6 +12,7 @@ import { buildUrl, makeUrlSafe, pathSegmentWithId } from 'src/utils/url';
 export const PATHS = {
   ROOT: '/',
   ABOUT: '/about',
+  COMPONENTS: '/components',
   ADMIN: '/admin',
   /** Appearances of the personal guides have no guide of their own, they live under their owner instead */
   APPEARANCE: ({ id, label, guide, ownerId }: Pick<PreviewAppearance, 'id' | 'label' | 'guide'> & { ownerId?: number | null }) =>
