@@ -10,6 +10,12 @@ allowBuilds:
   sharp: false
   unrs-resolver: true
 
+# Security fixes for packages that only reach us through other packages (Dependabot alerts on seroval, vite, source-map-js)
+overrides:
+  seroval: 1.6.3
+  vite: 8.3.4
+  source-map-js: 1.2.2
+
 minimumReleaseAge: 20160
 minimumReleaseAgeExclude:
   # Published by Luna's own workflow (with provenance), so there is nothing to wait out

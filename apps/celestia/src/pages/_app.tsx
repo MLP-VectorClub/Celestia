@@ -1,9 +1,9 @@
 import '../app.scss';
 
 import { QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { NextIntlClientProvider } from 'next-intl';
 import { AppComponent } from 'next/dist/shared/lib/router/router';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useMemo, useRef, useState } from 'react';
 import { Provider } from 'react-redux';
@@ -23,6 +23,13 @@ import { wrapper } from 'src/store';
 import { getQueryClient } from 'src/store/queryClient';
 
 import { appLibrary } from '../fontawesome';
+
+// The devtools are loaded by development builds only. The condition has to be this literal `process.env.NODE_ENV` check, which the bundler folds, so
+// a production build drops the import (an imported-but-unused package would stay in the bundle) and the package can be a dev dependency
+const ReactQueryDevtools =
+  process.env.NODE_ENV !== 'production'
+    ? dynamic(() => import('@tanstack/react-query-devtools').then((module) => module.ReactQueryDevtools), { ssr: false })
+    : () => null;
 
 const Celestia: AppComponent = ({ Component, ...rest }) => {
   const { store, props } = wrapper.useWrappedStore(rest);
