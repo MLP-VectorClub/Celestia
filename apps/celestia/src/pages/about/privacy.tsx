@@ -1,7 +1,6 @@
 import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
 import { ReactNode, useMemo } from 'react';
-import { Alert } from 'reactstrap';
 
 import styles from 'modules/PrivacyPolicy.module.scss';
 import ContactLink from 'src/components/shared/ContactLink';
@@ -44,9 +43,6 @@ const PrivacyPolicy: NextPage = () => {
 
   return (
     <>
-      <Alert color="warning" className="p-2 mb-2" fade={false}>
-        {t('privacyPolicy.notYetUpdated')}
-      </Alert>
       <Content className={styles.privacyPolicy}>
         <StandardHeading heading={t('privacyPolicy.title')} lead={t('privacyPolicy.lead')} />
 
@@ -72,6 +68,41 @@ const PrivacyPolicy: NextPage = () => {
         <p>{t('privacyPolicy.infoCollectionAndUse.p5')}</p>
         <p>{t('privacyPolicy.infoCollectionAndUse.p6')}</p>
         <p>{t('privacyPolicy.infoCollectionAndUse.p7')}</p>
+
+        <h2>{t('privacyPolicy.accounts.heading')}</h2>
+        <p>{t('privacyPolicy.accounts.p1')}</p>
+        <p>
+          {t.rich('privacyPolicy.accounts.email', {
+            bold: (chunks: ReactNode) => <strong>{chunks}</strong>,
+          })}
+        </p>
+        <p>{t('privacyPolicy.accounts.emailVerification')}</p>
+        <p>
+          {t.rich('privacyPolicy.accounts.password', {
+            bold: (chunks: ReactNode) => <strong>{chunks}</strong>,
+          })}
+        </p>
+        <p>{t('privacyPolicy.accounts.reset')}</p>
+        <p>
+          {t.rich('privacyPolicy.accounts.twoFactor', {
+            bold: (chunks: ReactNode) => <strong>{chunks}</strong>,
+          })}
+        </p>
+        <p>
+          {t.rich('privacyPolicy.accounts.passkeys', {
+            bold: (chunks: ReactNode) => <strong>{chunks}</strong>,
+          })}
+        </p>
+        <p>
+          {t.rich('privacyPolicy.accounts.discord', {
+            bold: (chunks: ReactNode) => <strong>{chunks}</strong>,
+          })}
+        </p>
+        <p>
+          {t.rich('privacyPolicy.accounts.sessions', {
+            bold: (chunks: ReactNode) => <strong>{chunks}</strong>,
+          })}
+        </p>
 
         <h2>{t('privacyPolicy.logData.heading')}</h2>
         <p>{t('privacyPolicy.logData.p1')}</p>

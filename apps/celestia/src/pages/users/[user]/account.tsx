@@ -97,7 +97,7 @@ const AccountPage: NextPage<PropTypes> = ({ userId, user }) => {
               </span>
               {t('users.account.security')}
             </h2>
-            {isStaff && profile && (
+            {profile && (own || permission(authUser, 'developer')) && (
               <>
                 <EmailChangeForm profile={profile} sameUser={own} />
                 {own && <PasswordForm passwordSet={Boolean(profile.account?.passwordSet)} />}

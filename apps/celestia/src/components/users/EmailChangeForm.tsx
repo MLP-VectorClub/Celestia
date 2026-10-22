@@ -13,8 +13,8 @@ const MIN_LENGTH = 3;
 const MAX_LENGTH = 128;
 
 /**
- * Ask for a new e-mail address; it only changes once the link in the mail sent to that address is opened. Staff asking for someone else's
- * address do not need that user's password
+ * Ask for a new e-mail address; it only changes once the link in the mail sent to that address is opened. Everybody may change their own address (with their
+ * password), developers asking for someone else's do not need that user's password
  */
 export const EmailChangeForm: FC<{ profile: UserProfile; sameUser: boolean }> = ({ profile, sameUser }) => {
   const t = useTranslations();

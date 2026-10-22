@@ -157,12 +157,6 @@ const AboutPage: NextPage = () => {
               author: () => <DeviantLink username="Charleston-and-itchy" />,
             })}
           </li>
-          <li>
-            {t.rich('about.attributions.logoVectors.specific', {
-              favme: () => <ChildfreeFavme id="ddztpnc" content={getGuideLabel('pl')} />,
-              author: () => <DeviantLink username="illumnious" />,
-            })}
-          </li>
         </ul>
         <p>
           {t.rich('about.attributions.uiIcons', {
