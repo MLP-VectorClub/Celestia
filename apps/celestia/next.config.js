@@ -55,6 +55,8 @@ module.exports = {
   reactStrictMode: true,
   // Nobody needs to be told what the site runs on (security scanners flag the X-Powered-By: Next.js header)
   poweredByHeader: false,
+  // The dev server is reached through nginx at https://mlpvector.lc, which Next would otherwise treat as a cross-origin request (blocking HMR)
+  allowedDevOrigins: ['mlpvector.lc'],
   transpilePackages: ['@mlp-vectorclub/honeypot', '@mlp-vectorclub/ui'],
   i18n: {
     locales: ['en'],
