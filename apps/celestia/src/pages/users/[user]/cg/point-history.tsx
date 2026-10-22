@@ -1,6 +1,7 @@
 import { GetUsersIdPersonalGuidePointHistoryResult, GetUsersIdResult } from '@went.tf/mlp-vectorclub-api-types';
 import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
+import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
@@ -58,6 +59,10 @@ const PointHistoryPage: NextPage<PropTypes> = ({ userId, page, user, initialData
 
   return (
     <Content>
+      {/* A member's own page, like the rest of their guide: not for the search results */}
+      <Head>
+        <meta name="robots" content="noindex" />
+      </Head>
       <StandardHeading
         heading={ownHistory ? t('users.pointHistory.headingOwn') : t('users.pointHistory.heading', { name: user?.name ?? '' })}
         lead={data ? t('users.pointHistory.itemsPerPage', { count: data.pagination.itemsPerPage }) : undefined}

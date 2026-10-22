@@ -1,6 +1,7 @@
 import { GetUsersIdPersonalGuideAppearancesResult, GetUsersIdResult } from '@went.tf/mlp-vectorclub-api-types';
 import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
+import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
@@ -59,6 +60,10 @@ const PersonalGuidePage: NextPage<PropTypes> = ({ userId, page, user, initialDat
 
   return (
     <Content>
+      {/* Long lists of what one member did: thin pages that Search Console reports as crawled but not indexed, the appearances they link to are the ones worth listing */}
+      <Head>
+        <meta name="robots" content="noindex" />
+      </Head>
       <StandardHeading
         heading={t('users.personalGuide.heading', { name: user?.name ?? '' })}
         lead={t.rich('users.personalGuide.lead', {

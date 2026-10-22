@@ -37,6 +37,8 @@ export const sendCutieMarkFile = async (
     return { props: {} };
   }
 
+  // A file, not a page: crawlers that get past robots.txt should not list it
+  ctx.res.setHeader('X-Robots-Tag', 'noindex');
   ctx.res.setHeader('Content-Type', response.headers.get('content-type') ?? 'image/svg+xml');
   const contentDisposition = response.headers.get('content-disposition');
   if (contentDisposition) ctx.res.setHeader('Content-Disposition', contentDisposition);

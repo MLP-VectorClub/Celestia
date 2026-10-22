@@ -13,6 +13,10 @@ const ROBOTS_TXT = honeypot.robotsTxt({
     ...DOWNLOADS,
     'Disallow: /cg/cutiemark/*.svg$',
     'Disallow: /cg/cutiemark/*.svg?*$',
+    // Downloads and data, not pages: Search Console reported the cutie mark downloads as soft 404s and the sprite and export URLs as crawled but not indexed
+    'Disallow: /cg/cutiemark/download/',
+    'Disallow: /dist/mlpvc-colorguide.json',
+    'Disallow: /api/',
     'Disallow: /admin',
     'Disallow: /users/reset-password',
   ],

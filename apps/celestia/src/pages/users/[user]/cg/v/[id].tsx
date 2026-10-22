@@ -1,5 +1,6 @@
 import { GetAppearancesIdResult, GetUsersIdResult } from '@went.tf/mlp-vectorclub-api-types';
 import { NextPage } from 'next';
+import Head from 'next/head';
 import { useMemo } from 'react';
 
 import { AppearanceView } from 'src/components/colorguide/AppearanceView';
@@ -36,7 +37,15 @@ const PersonalGuideAppearancePage: NextPage<PropTypes> = ({ id, userId, user, in
   const titleData = useMemo(() => titleFactory({ user, userId, initialAppearance }), [user, userId, initialAppearance]);
   useTitleSetter(dispatch, titleData);
 
-  return <AppearanceView guide={null} id={id} initialAppearance={initialAppearance} />;
+  return (
+    <>
+      {/* A member's own page, like the rest of their guide: not for the search results */}
+      <Head>
+        <meta name="robots" content="noindex" />
+      </Head>
+      <AppearanceView guide={null} id={id} initialAppearance={initialAppearance} />
+    </>
+  );
 };
 
 export const getServerSideProps = wrapper.getServerSideProps<PropTypes & SSRMessages>((store) => async (ctx) => {
