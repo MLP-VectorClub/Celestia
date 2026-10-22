@@ -113,6 +113,7 @@ const PrivacyPolicy: NextPage = () => {
         <p>{t('privacyPolicy.cookies.p2')}</p>
         <p>{t('privacyPolicy.cookies.p3')}</p>
         <p>{t('privacyPolicy.cookies.p4')}</p>
+        <p>{t('privacyPolicy.cookies.p5')}</p>
 
         <h2>{t('privacyPolicy.security.heading')}</h2>
         <p>{t('privacyPolicy.security.p1')}</p>
@@ -140,7 +141,7 @@ const PrivacyPolicy: NextPage = () => {
   );
 };
 
-export const getStaticProps = wrapper.getStaticProps((store) => async ({ locale }) => {
+export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ locale }) => {
   titleSetter(store, titleFactory());
   return {
     props: {

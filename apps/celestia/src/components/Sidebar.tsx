@@ -10,6 +10,7 @@ import SidebarUsefulLinks from 'src/components/shared/SidebarUsefulLinks';
 import SidebarUserInfo from 'src/components/shared/SidebarUserInfo';
 import SignInButton from 'src/components/shared/SignInButton';
 import SignOutButton from 'src/components/shared/SignOutButton';
+import ThemeSwitcher from 'src/components/shared/ThemeSwitcher';
 import HappeningSoon from 'src/components/widgets/HappeningSoon';
 import { DISCORD_INVITE_LINK } from 'src/config';
 import { useAuth, useConnectionInfo, usePrefs, useSidebarWidgetSlot } from 'src/hooks';
@@ -58,6 +59,10 @@ const Sidebar: FC = () => {
           <HappeningSoon />
         </>
       )}
+
+      <div className="mt-3 mb-2">
+        <ThemeSwitcher />
+      </div>
     </aside>
   );
 };

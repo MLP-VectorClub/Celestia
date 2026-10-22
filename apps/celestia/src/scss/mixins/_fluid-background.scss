@@ -1,6 +1,7 @@
-@use '../vars';
+@use 'sass:math';
 
-@mixin fluid-background($color: vars.$primary, $opacity: 0.88) {
-  background-color: rgba($color, $opacity);
+// A translucent version of a color that follows the theme: by default the header color, `$color` is a CSS color or `var()`
+@mixin fluid-background($color: var(--mlpvc-header), $opacity: 0.88) {
+  background-color: color-mix(in srgb, #{$color} #{math.percentage($opacity)}, transparent);
   backdrop-filter: blur(5px);
 }

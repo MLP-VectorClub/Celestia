@@ -38,7 +38,8 @@
     "p1": "Cookies are files with small amount of data. Cookies are sent to your browser from a web site and stored on your computer's hard drive.",
     "p2": "We use \"cookies\" to retain information. You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent. However, if you do not accept cookies, you may not be able to use some portions of our Site.",
     "p3": "For every visitor we store a randomly generated token (\"CSRF Token\") used to prevent Cross-Site Request Forgery (CSRF) attacks and thus improve the site's security. It is not tied to any specific person until you sign in, and for visitors who are not signed in the session it belongs to is deleted after a day without activity. This cookie is required for most actions on the site that alter stored information, and as such disabling cookies will remove your ability to change or modify site content.",
-    "p4": "When you sign in, a session cookie keeps you signed in. If you choose to be remembered, the cookie also keeps you signed in across browser sessions. If you want to stop being remembered you can sign out, end the session from your account page, or clear the cookies set by our Site."
+    "p4": "When you sign in, a session cookie keeps you signed in. If you choose to be remembered, the cookie also keeps you signed in across browser sessions. If you want to stop being remembered you can sign out, end the session from your account page, or clear the cookies set by our Site.",
+    "p5": "If you choose a color theme (light or dark) in the sidebar, the choice is kept for 1 year in a cookie so the page can be shown in that theme right away. It contains only the word \"light\" or \"dark\". Without a choice no such cookie is set and the page follows your device's setting."
   },
   "security": {
     "heading": "Security",

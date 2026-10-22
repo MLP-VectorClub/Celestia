@@ -25,6 +25,7 @@ import {
   faClone,
   faCode,
   faDatabase,
+  faDesktop,
   faDownload,
   faEject,
   faEllipsisH,
@@ -73,6 +74,8 @@ import {
   faSignOutAlt,
   faSitemap,
   faSlidersH,
+  faSun,
+  faMoon,
   faSort,
   faStickyNote,
   faSync,
@@ -190,6 +193,9 @@ library.add(
   faSearchPlus,
   faSlidersH,
   faTint,
+  faDesktop,
+  faMoon,
+  faSun,
   faWindowMaximize
 );
 

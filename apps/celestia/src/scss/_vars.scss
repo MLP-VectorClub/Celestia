@@ -15,10 +15,9 @@ $primary-dark: color.adjust($primary, $lightness: -20%, $space: hsl);
 
 $component-active-bg: $ui;
 
-// Bootstrap 5 only puts white text on a color if the contrast ratio is above this (default 4.5),
-// otherwise black. At 2, every theme color gets the same text color as Bootstrap 4 gave it,
-// including white on the Discord and DeviantArt brand colors.
-$min-contrast-ratio: 2;
+// Bootstrap 5 only puts white text on a color if the contrast ratio is above this, otherwise black. It is WCAG AA's 4.5:1 (Bootstrap's own
+// default): at 2, white text was put on the Discord and DeviantArt brand colors (3.3:1 and 2.2:1), which now get black text.
+$min-contrast-ratio: 4.5;
 
 $font-family-monospace: 'Consolas', monospace;
 $font-family-sans-serif: 'Arimo', sans-serif;
@@ -60,11 +59,26 @@ $footer-height: 2.375rem;
 
 $content-outline: rgba(188, 188, 188, 0.8);
 $content-bg: rgba(255, 255, 255, 0.75);
+$main-bg: #fff;
+// The header and footer are translucent, over white content their text must still have 4.5:1
+$header: color.adjust($primary, $lightness: -6%, $space: hsl);
+
+// Dark theme. The blue chrome (header, sidebar, footer, breadcrumbs) stays blue but deeper, so its white text keeps its contrast
+$chrome-dark: color.adjust($primary, $lightness: -28%, $space: hsl);
+$header-dark: color.adjust($primary, $lightness: -22%, $space: hsl);
+$content-outline-dark: rgba(255, 255, 255, 0.2);
+$content-bg-dark: rgba(33, 37, 41, 0.85);
+$main-bg-dark: #14171a;
 
 $link-color: #337287;
-$link-hover-color: color.adjust(color.adjust($link-color, $lightness: 13%, $space: hsl), $saturation: -7%, $space: hsl);
+// Hovering darkens a link: the old lighter shade had 3.3:1 on white, below WCAG AA. The lighter shade is still what hovering over the blue chrome uses (below)
+$link-hover-color: color.adjust($link-color, $lightness: -8%, $space: hsl);
+$link-hover-color-on-chrome: color.adjust(color.adjust($link-color, $lightness: 13%, $space: hsl), $saturation: -7%, $space: hsl);
 $link-color-light: color.adjust($link-color, $lightness: 30%, $space: hsl);
-$link-hover-color-light: color.adjust($link-hover-color, $lightness: 37%, $space: hsl);
+$link-hover-color-light: color.adjust($link-hover-color-on-chrome, $lightness: 37%, $space: hsl);
+// Links on the dark theme's content panel, the same tints the sidebar uses on the blue
+$link-color-dark: color.adjust($link-color, $lightness: 30%, $space: hsl);
+$link-hover-color-dark: $link-hover-color-light;
 
 $sidebar-breakpoint-up: lg;
 // Bootstrap 5 media-breakpoint-down(lg) means below lg, so this and $sidebar-breakpoint-up split at the same width
@@ -78,7 +92,8 @@ $SidebarContentBackground: rgba($breadcrumb-active-color, 0.1);
 
 $navbar-padding-y: 0.313rem;
 
-$code-color: color.adjust($club-blue, $hue: -40deg, $space: hsl);
+// (a lightness of -12% keeps it at 4.5:1 or more on white)
+$code-color: color.adjust(color.adjust($club-blue, $hue: -40deg, $space: hsl), $lightness: -12%, $space: hsl);
 
 $tag-color-base: #0c70b1;
 $tag-color-default: gray;

@@ -1,0 +1,190 @@
+// Light and dark theme.
+//
+// Which theme shows is decided on <html> (see pages/_document.tsx):
+// - data-bs-theme="dark" / "light": the visitor's saved choice, put there by the server, so it works without JavaScript
+// - no attribute: "system", the dark rules apply through prefers-color-scheme
+//
+// Bootstrap only writes its dark rules for [data-bs-theme=dark]. The system case needs the same rules inside a media query, so the ones this site
+// uses are repeated below (`bootstrap-dark-*`); __tests__/theme-system.test.ts fails when Bootstrap's output has a dark rule that is not repeated.
+@use 'sass:color';
+@use 'sass:math';
+@use 'bootstrap' as bs;
+@use 'contrast';
+@use 'vars';
+
+// Derived colors print as percentages (rgb(2.1%, ...)); whole channels are easier to read, and to check in tests
+@function solid($c) {
+  @return rgb(
+    math.round(color.channel($c, 'red', $space: rgb)),
+    math.round(color.channel($c, 'green', $space: rgb)),
+    math.round(color.channel($c, 'blue', $space: rgb))
+  );
+}
+
+// The lightest background the dark theme puts text on (Bootstrap's dark body background), and the page area of the light theme
+$dark-surface: bs.$body-bg-dark;
+$light-surface: #fff;
+
+// Each theme color as text color: itself where it is readable (4.5:1) on the theme's surface, otherwise the nearest darker (light theme) or
+// lighter (dark theme) shade. Used for outline buttons, `.text-*` and the colored dialogs, which all put the theme color on the page
+@mixin color-text-tokens($dark) {
+  @each $name, $value in bs.$theme-colors {
+    @if $dark {
+      --mlpvc-#{$name}-text: #{solid(contrast.readable-light($value, $dark-surface))};
+    } @else {
+      --mlpvc-#{$name}-text: #{solid(contrast.readable($value, $light-surface))};
+    }
+  }
+}
+
+// Our own colors as custom properties, so the stylesheet can follow the theme at run time
+@mixin light-tokens {
+  --mlpvc-chrome: #{solid(vars.$SidebarBackground)};
+  --mlpvc-header: #{solid(vars.$header)};
+  --mlpvc-content-bg: #{vars.$content-bg};
+  --mlpvc-content-outline: #{vars.$content-outline};
+  --mlpvc-main-bg: #{vars.$main-bg};
+  --mlpvc-grid: url('/img/grid-16x16.svg?v=2'), url('/img/grid-4x4.svg?v=2');
+  --mlpvc-backdrop-bg: #{vars.$modal-backdrop-bg};
+  // Colored text on the content panel (section headings of a show, the contest note...)
+  --mlpvc-text-blue: #0070e9;
+  --mlpvc-text-orange: #b40;
+  --mlpvc-text-green: #008000;
+  --mlpvc-text-ui: #357;
+  --mlpvc-text-darkblue: #02a;
+  --mlpvc-text-red: #c00;
+  --mlpvc-text-brown: #432100;
+  @include color-text-tokens(false);
+}
+
+@mixin dark-tokens {
+  --mlpvc-chrome: #{solid(vars.$chrome-dark)};
+  --mlpvc-header: #{solid(vars.$header-dark)};
+  --mlpvc-content-bg: #{vars.$content-bg-dark};
+  --mlpvc-content-outline: #{vars.$content-outline-dark};
+  --mlpvc-main-bg: #{vars.$main-bg-dark};
+  --mlpvc-grid: url('/img/grid-16x16-dark.svg?v=1'), url('/img/grid-4x4-dark.svg?v=1');
+  --mlpvc-backdrop-bg: #000;
+  --mlpvc-text-blue: #4da3ff;
+  --mlpvc-text-orange: #ff8f5a;
+  --mlpvc-text-green: #3fcf3f;
+  --mlpvc-text-ui: #8fb3dd;
+  --mlpvc-text-darkblue: #97a3ff;
+  --mlpvc-text-red: #ff6b6b;
+  --mlpvc-text-brown: #f0c9a0;
+  @include color-text-tokens(true);
+  // Bootstrap's dark text-emphasis tints are fixed percentages of the color, too dim for the site's darker brand colors
+  @each $state in (primary, secondary, success, info, warning, danger) {
+    --#{bs.$prefix}#{$state}-text-emphasis: var(--mlpvc-#{$state}-text);
+  }
+}
+
+// What Bootstrap's _root.scss puts under [data-bs-theme=dark], written for :root
+@mixin bootstrap-dark-variables {
+  $p: bs.$prefix;
+  color-scheme: dark;
+
+  --#{$p}body-color: #{bs.$body-color-dark};
+  --#{$p}body-color-rgb: #{bs.to-rgb(bs.$body-color-dark)};
+  --#{$p}body-bg: #{bs.$body-bg-dark};
+  --#{$p}body-bg-rgb: #{bs.to-rgb(bs.$body-bg-dark)};
+
+  --#{$p}emphasis-color: #{bs.$body-emphasis-color-dark};
+  --#{$p}emphasis-color-rgb: #{bs.to-rgb(bs.$body-emphasis-color-dark)};
+
+  --#{$p}secondary-color: #{bs.$body-secondary-color-dark};
+  --#{$p}secondary-color-rgb: #{bs.to-rgb(bs.$body-secondary-color-dark)};
+  --#{$p}secondary-bg: #{bs.$body-secondary-bg-dark};
+  --#{$p}secondary-bg-rgb: #{bs.to-rgb(bs.$body-secondary-bg-dark)};
+
+  --#{$p}tertiary-color: #{bs.$body-tertiary-color-dark};
+  --#{$p}tertiary-color-rgb: #{bs.to-rgb(bs.$body-tertiary-color-dark)};
+  --#{$p}tertiary-bg: #{bs.$body-tertiary-bg-dark};
+  --#{$p}tertiary-bg-rgb: #{bs.to-rgb(bs.$body-tertiary-bg-dark)};
+
+  @each $color, $value in bs.$theme-colors-text-dark {
+    --#{$p}#{$color}-text-emphasis: #{$value};
+  }
+
+  @each $color, $value in bs.$theme-colors-bg-subtle-dark {
+    --#{$p}#{$color}-bg-subtle: #{$value};
+  }
+
+  @each $color, $value in bs.$theme-colors-border-subtle-dark {
+    --#{$p}#{$color}-border-subtle: #{$value};
+  }
+
+  --#{$p}heading-color: #{bs.$headings-color-dark};
+
+  --#{$p}link-color: #{bs.$link-color-dark};
+  --#{$p}link-hover-color: #{bs.$link-hover-color-dark};
+  --#{$p}link-color-rgb: #{bs.to-rgb(bs.$link-color-dark)};
+  --#{$p}link-hover-color-rgb: #{bs.to-rgb(bs.$link-hover-color-dark)};
+
+  --#{$p}code-color: #{bs.$code-color-dark};
+  --#{$p}highlight-color: #{bs.$mark-color-dark};
+  --#{$p}highlight-bg: #{bs.$mark-bg-dark};
+
+  --#{$p}border-color: #{bs.$border-color-dark};
+  --#{$p}border-color-translucent: #{bs.$border-color-translucent-dark};
+
+  --#{$p}form-valid-color: #{bs.$form-valid-color-dark};
+  --#{$p}form-valid-border-color: #{bs.$form-valid-border-color-dark};
+  --#{$p}form-invalid-color: #{bs.$form-invalid-color-dark};
+  --#{$p}form-invalid-border-color: #{bs.$form-invalid-border-color-dark};
+
+  @include bs.btn-close-white;
+}
+
+// The dark rules of the components this site uses (a select's arrow, a switch's knob). The accordion, carousel and dark navbar toggler are not used
+@mixin bootstrap-dark-components($root) {
+  #{$root} .form-select {
+    --#{bs.$prefix}form-select-bg-img: #{bs.escape-svg(bs.$form-select-indicator-dark)};
+  }
+
+  #{$root} .form-switch .form-check-input:not(:checked):not(:focus) {
+    --#{bs.$prefix}form-switch-bg: #{bs.escape-svg(bs.$form-switch-bg-image-dark)};
+  }
+}
+
+:root {
+  @include light-tokens;
+}
+
+[data-bs-theme='dark'] {
+  @include dark-tokens;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-bs-theme]) {
+    @include bootstrap-dark-variables;
+    @include dark-tokens;
+  }
+
+  @include bootstrap-dark-components(':root:not([data-bs-theme])');
+}
+
+// Bootstrap's dropdown header is a fixed gray that is too faint on the dark theme
+.dropdown-menu {
+  --#{bs.$prefix}dropdown-header-color: var(--#{bs.$prefix}secondary-color);
+}
+
+// Bootstrap's own backdrop color comes from Sass; the theme's one replaces it
+.modal-backdrop {
+  --#{bs.$prefix}backdrop-bg: var(--mlpvc-backdrop-bg);
+}
+
+// Theme colors used as text or outline put the readable shade of the current theme in place of the plain color
+@each $name, $value in bs.$theme-colors {
+  .btn-outline-#{$name} {
+    --#{bs.$prefix}btn-color: var(--mlpvc-#{$name}-text);
+    --#{bs.$prefix}btn-border-color: var(--mlpvc-#{$name}-text);
+  }
+
+  // `.text-light` and `.text-dark` are picked for the colors behind them (swatches), not for the page
+  @if $name != 'light' and $name != 'dark' {
+    .text-#{$name} {
+      color: var(--mlpvc-#{$name}-text) !important;
+    }
+  }
+}

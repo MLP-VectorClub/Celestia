@@ -18,6 +18,7 @@ import { FetchFailureView } from 'src/components/shared/FetchFailureView';
 import { DialogProvider } from 'src/components/shared/dialogs/DialogProvider';
 import { DEV_ENV } from 'src/config';
 import { LayoutContextProvider, SidebarWidgetProvider } from 'src/hooks';
+import { useSavedTheme } from 'src/hooks/theme';
 import { wrapper } from 'src/store';
 import { getQueryClient } from 'src/store/queryClient';
 
@@ -29,6 +30,7 @@ const Celestia: AppComponent = ({ Component, ...rest }) => {
   const [disabled, setLayoutDisabled] = useState(false);
   const [queryClient] = useState(getQueryClient);
   useRef(appLibrary);
+  useSavedTheme();
 
   const layoutContext = useMemo(() => ({ disabled, setLayoutDisabled }), [disabled, setLayoutDisabled]);
 

@@ -280,7 +280,7 @@ const AboutPage: NextPage = () => {
   );
 };
 
-export const getStaticProps = wrapper.getStaticProps((store) => async ({ locale }) => {
+export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ locale }) => {
   titleSetter(store, titleFactory());
   return {
     props: {

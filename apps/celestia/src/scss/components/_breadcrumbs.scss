@@ -15,11 +15,14 @@
     z-index: 3;
     width: $size;
     height: $size;
-    background: url('/img/sidebar-corner.svg') no-repeat top left;
-    background-size: $size * 2;
+    // The corner's shape comes from the image, its color from the theme
+    background-color: var(--mlpvc-chrome);
+    mask: url('/img/sidebar-corner.svg') no-repeat top left / #{$size * 2};
   }
 
   .breadcrumb {
+    // Bootstrap sets this on `.breadcrumb` itself, so it has to be set here and not on the parent
+    --bs-breadcrumb-bg: var(--mlpvc-chrome);
     padding: 5px;
     margin: 0;
 

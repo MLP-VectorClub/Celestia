@@ -3,10 +3,10 @@
 
 #content {
   border-radius: 5px;
-  border: 1px solid $content-outline;
-  background-color: $content-bg;
+  border: 1px solid var(--mlpvc-content-outline);
+  background-color: var(--mlpvc-content-bg);
   padding: 1rem;
-  color: bs.$black;
+  color: var(--bs-body-color);
   box-sizing: border-box;
   width: 100%;
 

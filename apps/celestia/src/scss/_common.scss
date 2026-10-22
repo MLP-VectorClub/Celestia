@@ -5,12 +5,12 @@
 @use 'vars' as *;
 
 html {
-  background-color: $SidebarBackground;
+  background-color: var(--mlpvc-chrome);
   min-height: 100vh;
 }
 
 body {
-  background: $SidebarBackground;
+  background: var(--mlpvc-chrome);
   margin: 0 !important;
   min-height: 100vh;
 
@@ -90,7 +90,7 @@ body {
 @each $color, $value in bs.$theme-colors {
   .modal-#{$color} {
     @if ($color != 'ui') {
-      color: $value !important;
+      color: var(--mlpvc-#{$color}-text) !important;
     }
 
     .modal-content,
@@ -110,6 +110,21 @@ body {
       }
     }
   }
+}
+
+// Bootstrap's badges have white text whatever the color (a warning badge was white on yellow)
+@each $color, $value in bs.$theme-colors {
+  .badge.bg-#{$color} {
+    color: bs.color-contrast($value) !important;
+  }
+}
+
+// Links in an alert take the alert's own link color: the site's teal had 3.6 to 4.2:1 on the pale alert backgrounds. They are underlined, as
+// color is no longer what sets them apart from the text
+.alert a:not(.btn),
+#content .alert a:not(.btn) {
+  color: var(--bs-alert-link-color);
+  text-decoration: underline;
 }
 
 abbr[aria-label],

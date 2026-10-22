@@ -3,12 +3,12 @@
 @use '../vars' as *;
 
 .page-item-ellipsis .page-link {
-  background-color: color.mix($ui, bs.$body-bg, 5%);
+  background-color: color-mix(in srgb, #{$ui} 5%, var(--bs-body-bg));
   cursor: pointer;
   user-select: none;
 
   &:hover {
-    background-color: color.mix($ui, bs.$body-bg, 10%);
+    background-color: color-mix(in srgb, #{$ui} 10%, var(--bs-body-bg));
   }
 }
 

@@ -1,0 +1,54 @@
+// WCAG contrast maths for Sass, so colors can be adjusted until they are readable on the backgrounds they are used on
+@use 'sass:color';
+@use 'sass:math';
+
+@function channel-luminance($value) {
+  $v: math.div($value, 255);
+  @return if($v <= 0.03928, math.div($v, 12.92), math.pow(math.div($v + 0.055, 1.055), 2.4));
+}
+
+/// WCAG relative luminance
+@function luminance($c) {
+  @return 0.2126 * channel-luminance(color.channel($c, 'red', $space: rgb)) + 0.7152 * channel-luminance(color.channel($c, 'green', $space: rgb)) + 0.0722 *
+    channel-luminance(color.channel($c, 'blue', $space: rgb));
+}
+
+/// WCAG contrast ratio, 1 to 21
+@function contrast($a, $b) {
+  $la: luminance($a);
+  $lb: luminance($b);
+  @return math.div(math.max($la, $lb) + 0.05, math.min($la, $lb) + 0.05);
+}
+
+@function enough-contrast($color, $backgrounds, $minimum) {
+  @each $background in $backgrounds {
+    @if contrast($color, $background) < $minimum {
+      @return false;
+    }
+  }
+  @return true;
+}
+
+/// The color itself, or the closest darker version of it that has `$minimum` contrast on every background (for light backgrounds)
+@function readable($color, $backgrounds...) {
+  $result: $color;
+  @for $i from 1 through 40 {
+    @if enough-contrast($result, $backgrounds, 4.5) {
+      @return $result;
+    }
+    $result: color.adjust($result, $lightness: -3%, $space: hsl);
+  }
+  @return $result;
+}
+
+/// The color itself, or the closest lighter version of it that has 4.5:1 on every background (for dark backgrounds)
+@function readable-light($color, $backgrounds...) {
+  $result: $color;
+  @for $i from 1 through 40 {
+    @if enough-contrast($result, $backgrounds, 4.5) {
+      @return $result;
+    }
+    $result: color.adjust($result, $lightness: 3%, $space: hsl);
+  }
+  @return $result;
+}

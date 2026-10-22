@@ -1,4 +1,11 @@
 {
+  "theme": {
+    "label": "Color theme",
+    "current": "Color theme: {theme}",
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark"
+  },
   "footer": {
     "lastUpdate": "Last update",
     "unknown": "Unknown",
