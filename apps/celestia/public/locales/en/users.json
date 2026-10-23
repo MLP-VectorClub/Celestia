@@ -309,7 +309,7 @@
       "unsupported": "This browser cannot use passkeys."
     },
     "apiKeys": {
-      "intro": "API keys let scripts and AI assistants use the API and the MCP server on your behalf. A key can never do more than your account can, and you can narrow it with scopes.",
+      "intro": "API keys let scripts and MCP consumers use the API and the MCP server on your behalf. A key can never do more than your account can, and you can narrow it with scopes.",
       "none": "You have not created any API keys yet.",
       "name": "Name",
       "namePlaceholder": "e.g. Claude Desktop",
