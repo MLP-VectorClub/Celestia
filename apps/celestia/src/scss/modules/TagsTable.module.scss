@@ -1,5 +1,9 @@
 @use 'sass:color';
 @use '../vars' as *;
+@use '../contrast' as *;
+@use '../mixins/dark-theme' as *;
+
+$dark-surface: #212529;
 
 // A row per tag, colored by the type of the tag like on the old site: pale background, strong text, buttons the other way round
 @mixin row-variant($base) {
@@ -16,6 +20,23 @@
   button {
     color: $background !important;
     background-color: $text !important;
+  }
+
+  // Dark theme: a deep tint of the color, light text, buttons the other way round
+  $dark-background: color.mix($base, $dark-surface, 30%);
+  $dark-text: readable-light(color.to-gamut(color.adjust($base, $lightness: 45%, $space: hsl), $method: clip), $dark-background);
+  @include dark-theme {
+    color: $dark-text;
+    background-color: $dark-background;
+
+    a {
+      color: $dark-text;
+    }
+
+    button {
+      color: $dark-background !important;
+      background-color: $dark-text !important;
+    }
   }
 }
 

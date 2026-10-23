@@ -2,6 +2,10 @@
 @use '../bootstrap-defaults' as bs;
 @use '../contrast' as *;
 @use '../vars' as *;
+@use '../mixins/dark-theme' as *;
+
+// Bootstrap's dark body background, which the tags sit on in the dark theme
+$dark-surface: #212529;
 
 @mixin tag-variant($color: $tag-color-default) {
   $border: color.mix(white, $color, 10%);
@@ -24,6 +28,25 @@
   &:focus {
     // Tag backgrounds are always lightened by 50%, so Bootstrap's color-contrast() would pick black
     box-shadow: 0 0 0 bs.$btn-focus-width rgba(color.mix(black, $border, 15%), 0.5);
+  }
+
+  // Dark theme: a deep tint of the color with a light shade of it as text, instead of the pale box
+  $dark-background: color.mix($color, $dark-surface, 30%);
+  $dark-background-hover: color.mix($color, $dark-surface, 42%);
+  $dark-text: readable-light(color.to-gamut(color.adjust($color, $lightness: 45%, $space: hsl), $method: clip), $dark-background, $dark-background-hover);
+  @include dark-theme {
+    background-color: $dark-background;
+    border-color: color.mix($color, $dark-surface, 60%);
+
+    &,
+    &:hover,
+    &:active {
+      color: $dark-text;
+    }
+
+    &:hover {
+      background-color: $dark-background-hover;
+    }
   }
 }
 

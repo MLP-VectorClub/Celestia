@@ -1,0 +1,12 @@
+// Rules for the dark theme, from a CSS module: a saved "dark" choice, or no choice on a device that prefers dark (see `_theme.scss`)
+@mixin dark-theme {
+  [data-bs-theme='dark'] & {
+    @content;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-bs-theme]) & {
+      @content;
+    }
+  }
+}
