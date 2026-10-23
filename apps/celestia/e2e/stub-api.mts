@@ -213,6 +213,7 @@ createServer(async (req, res) => {
     return send(200, {
       ...appearance(found),
       colorGroups: colorGroups(found.id),
+      notes: 'Additional notes about the appearance',
       cutieMarks: [],
       canEdit: false,
       relatedAppearances: [],

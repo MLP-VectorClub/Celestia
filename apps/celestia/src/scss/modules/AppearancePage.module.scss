@@ -5,10 +5,10 @@
 
 .notes {
   font-size: 1.1em;
-  background: #ffefd5;
-  color: #8b4513;
+  background: var(--mlpvc-notes-bg);
+  color: var(--mlpvc-notes-text);
   padding: 0.625rem;
-  border: 1px solid #deb887;
+  border: 1px solid var(--mlpvc-notes-border);
   display: inline-block;
   margin-bottom: 1rem;
 }

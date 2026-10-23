@@ -103,6 +103,7 @@ for (const theme of THEMES) {
         expect(new URL(page.url()).pathname).toBe(path);
         // The color group boxes and cards are on the pages that list appearances: an empty stub list would leave them unchecked
         if (path.startsWith('/cg/pony') && !/(full|tags|changes)$/.test(path)) await expect(page.getByText('Coat').first()).toBeVisible();
+        if (path.includes('/v/')) await expect(page.locator('#notes-section')).toBeVisible();
         expect(await contrastProblems(page)).toEqual([]);
       });
     }

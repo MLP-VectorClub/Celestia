@@ -54,6 +54,10 @@ $light-surface: #fff;
   --mlpvc-text-darkblue: #14d;
   --mlpvc-text-red: #c00;
   --mlpvc-text-brown: #432100;
+  // The note box of an appearance
+  --mlpvc-notes-bg: #ffefd5;
+  --mlpvc-notes-text: #8b4513;
+  --mlpvc-notes-border: #deb887;
   @include color-text-tokens(false);
 }
 
@@ -72,6 +76,9 @@ $light-surface: #fff;
   --mlpvc-text-darkblue: #97a3ff;
   --mlpvc-text-red: #ff6b6b;
   --mlpvc-text-brown: #f0c9a0;
+  --mlpvc-notes-bg: #33281a;
+  --mlpvc-notes-text: #f0c9a0;
+  --mlpvc-notes-border: #6b5230;
   @include color-text-tokens(true);
   // Bootstrap's dark text-emphasis tints are fixed percentages of the color, too dim for the site's darker brand colors
   @each $state in (primary, secondary, success, info, warning, danger) {
