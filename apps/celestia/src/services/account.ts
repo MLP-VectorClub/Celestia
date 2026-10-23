@@ -1,4 +1,11 @@
-import { BrowserSession, GetNotificationsResult, PostUsersMeSocketTokenResult } from '@went.tf/mlp-vectorclub-api-types';
+import {
+  ApiKey,
+  BrowserSession,
+  GetNotificationsResult,
+  PostUsersMeApiKeysRequest,
+  PostUsersMeApiKeysResult,
+  PostUsersMeSocketTokenResult,
+} from '@went.tf/mlp-vectorclub-api-types';
 import Axios from 'axios';
 
 import { UserPrefs } from 'src/types/api-alias';
@@ -78,6 +85,15 @@ export class AccountService {
 
   /** Axios sends the body of a DELETE only in `data` */
   static disableTwoFactor = (proof: IdentityProof) => Axios.delete<void>('/users/me/two-factor', { data: proof });
+
+  static getApiKeys = () => Axios.get<ApiKey[]>('/users/me/api-keys');
+
+  static createApiKey = (data: PostUsersMeApiKeysRequest) => Axios.post<PostUsersMeApiKeysResult>('/users/me/api-keys', data);
+
+  static rotateApiKey = (id: number, proof: IdentityProof) =>
+    Axios.post<PostUsersMeApiKeysResult>(`/users/me/api-keys/${id}/rotate`, proof);
+
+  static deleteApiKey = (id: number) => Axios.delete<void>(`/users/me/api-keys/${id}`);
 
   static getPasskeys = () => Axios.get<AccountPasskey[]>('/users/me/passkeys');
 

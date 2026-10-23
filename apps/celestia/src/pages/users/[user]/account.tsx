@@ -9,6 +9,7 @@ import InlineIcon from 'src/components/shared/InlineIcon';
 import StandardHeading from 'src/components/shared/StandardHeading';
 import { EmailChangeForm } from 'src/components/users/EmailChangeForm';
 import { PasswordForm } from 'src/components/users/PasswordForm';
+import { ApiKeysSection } from 'src/components/users/account/ApiKeysSection';
 import { DiscordSection } from 'src/components/users/account/DiscordSection';
 import { PasskeysSection } from 'src/components/users/account/PasskeysSection';
 import { SessionsSection } from 'src/components/users/account/SessionsSection';
@@ -107,6 +108,7 @@ const AccountPage: NextPage<PropTypes> = ({ userId, user }) => {
               <>
                 <TwoFactorSection />
                 <PasskeysSection />
+                <ApiKeysSection />
               </>
             )}
           </section>

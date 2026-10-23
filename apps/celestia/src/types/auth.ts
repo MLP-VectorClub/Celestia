@@ -114,6 +114,9 @@ export interface AccountPasskey {
   lastUsedAt: string | null;
 }
 
+export const API_KEY_SCOPES = ['read', 'read:own', 'appearances:write', 'posts:write', 'user:write'] as const;
+export type ApiKeyScope = (typeof API_KEY_SCOPES)[number];
+
 /** The proof of who is asking that changes of the sign-in methods need: the password, or a code for accounts without one */
 export interface IdentityProof {
   currentPassword?: string;

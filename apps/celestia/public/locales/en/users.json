@@ -164,7 +164,8 @@
       "discord": "Discord account",
       "password": "Password",
       "email": "E-mail address",
-      "deviantart": "DeviantArt Account"
+      "deviantart": "DeviantArt Account",
+      "apiKeys": "API keys & MCP"
     },
     "signOutEverywhere": "Sign out everywhere",
     "signOutEverywhereConfirm": "This signs you out of every device, including this one.",
@@ -306,6 +307,39 @@
       "failed": "The passkey could not be added. Try again.",
       "alreadyHere": "A passkey for this account is already saved on that device.",
       "unsupported": "This browser cannot use passkeys."
+    },
+    "apiKeys": {
+      "intro": "API keys let scripts and AI assistants use the API and the MCP server on your behalf. A key can never do more than your account can, and you can narrow it with scopes.",
+      "none": "You have not created any API keys yet.",
+      "name": "Name",
+      "namePlaceholder": "e.g. Claude Desktop",
+      "scopesLegend": "Scopes",
+      "expiry": "Expires",
+      "never": "Never",
+      "days": "{count} days",
+      "create": "Create key",
+      "rotate": "Rotate",
+      "revoke": "Revoke",
+      "neverUsed": "never used",
+      "expiresOn": "Expires",
+      "scopes": {
+        "read": "Read public data",
+        "read:own": "Read data only you can see",
+        "appearances:write": "Edit appearances",
+        "posts:write": "Reserve and finish posts",
+        "user:write": "Change your preferences"
+      },
+      "secretTitle": "Your new key",
+      "secretWarning": "Copy it now, it will not be shown again.",
+      "copy": "Copy",
+      "dismiss": "I have saved it",
+      "revokeTitle": "Revoke this key?",
+      "revokeBody": "“{name}” stops working immediately.",
+      "rotateTitle": "Rotate this key?",
+      "rotateBody": "“{name}” gets a new secret and the old one stops working immediately.",
+      "mcpHeading": "Using the MCP server",
+      "mcpText": "Point your MCP client at the URL below and send the key as a bearer token.",
+      "mcpClaude": "Claude Code"
     }
   },
   "staffTools": {
