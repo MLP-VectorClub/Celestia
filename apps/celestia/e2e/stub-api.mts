@@ -173,6 +173,15 @@ createServer(async (req, res) => {
     });
   }
 
+  // Real color groups, so the boxes around them are on the pages the audits check
+  const colorGroups = (appearanceId: number) =>
+    ['Coat', 'Mane'].map((label, i) => ({
+      id: appearanceId * 10 + i,
+      label,
+      order: i,
+      colors: ['#ff0000', '#00ff00'].map((hex, j) => ({ id: appearanceId * 100 + i * 10 + j, label: `Color ${j + 1}`, order: j, hex })),
+    }));
+
   const appearance = (a: Control['appearances'][number]) => ({
     id: a.id,
     label: a.label,
@@ -193,8 +202,22 @@ createServer(async (req, res) => {
     return send(200, {
       appearances: control.appearances
         .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
-        .map((a) => ({ ...appearance(a), colorGroups: [] })),
+        .map((a) => ({ ...appearance(a), colorGroups: colorGroups(a.id) })),
       pagination: { currentPage, totalPages, totalItems: control.appearances.length, itemsPerPage },
+    });
+  }
+  const appearanceMatch = url.pathname.match(/^\/appearances\/(\d+)$/);
+  if (req.method === 'GET' && appearanceMatch) {
+    const found = control.appearances.find((a) => a.id === Number(appearanceMatch[1]));
+    if (!found) return send(404, { message: 'Not found' });
+    return send(200, {
+      ...appearance(found),
+      colorGroups: colorGroups(found.id),
+      cutieMarks: [],
+      canEdit: false,
+      relatedAppearances: [],
+      relatedShows: [],
+      majorChanges: [],
     });
   }
   if (req.method === 'GET' && url.pathname === '/appearances/pinned') return send(200, []);

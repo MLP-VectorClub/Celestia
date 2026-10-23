@@ -1,4 +1,3 @@
-@use 'sass:color';
 @use '../bootstrap-defaults' as bs;
 
 .compactColorGroups {
@@ -11,8 +10,9 @@
     justify-content: center;
     align-items: center;
     padding: 0.25rem 0.35rem;
-    border: bs.$border-width solid bs.$border-color;
-    background-color: color.mix(bs.$border-color, white, 35%);
+    border: bs.$border-width solid var(--bs-border-color);
+    // 35% of the border color over the page, so the box follows the theme (it was mixed with white, which left the dark theme's light text on it)
+    background-color: color-mix(in srgb, var(--bs-border-color) 35%, var(--bs-body-bg));
     margin-bottom: 0.3rem;
 
     &:not(:last-child) {

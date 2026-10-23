@@ -14,6 +14,8 @@ const PUBLIC_PAGES = [
   '/cg/pony/full',
   '/cg/pony/tags',
   '/cg/pony/changes',
+  // One appearance, with its color groups in cards
+  '/cg/pony/v/1-Pony-1',
   '/cg/picker',
   '/cg/blending',
   '/cg/blending-reverse',
@@ -99,6 +101,8 @@ for (const theme of THEMES) {
         await page.waitForLoadState('networkidle');
         // The page itself: a redirect or an error page would check the wrong thing
         expect(new URL(page.url()).pathname).toBe(path);
+        // The color group boxes and cards are on the pages that list appearances: an empty stub list would leave them unchecked
+        if (path.startsWith('/cg/pony') && !/(full|tags|changes)$/.test(path)) await expect(page.getByText('Coat').first()).toBeVisible();
         expect(await contrastProblems(page)).toEqual([]);
       });
     }
