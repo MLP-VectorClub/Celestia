@@ -99,7 +99,7 @@
     "immer": "^11.1.18",
     "node-fetch": "^3.3.2",
     "playwright": "^1.63.0",
-    "postcss": "^8.5.29",
+    "postcss": "^8.5.30",
     "redux": "^5.0.1",
     "sync-request": "^6.1.0",
     "typescript": "^6.0.3",
