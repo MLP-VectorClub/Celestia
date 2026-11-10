@@ -95,8 +95,8 @@ importers:
         specifier: ^2.3.0
         version: 2.3.0
       joi:
-        specifier: ^18.2.9
-        version: 18.2.9
+        specifier: ^18.3.0
+        version: 18.3.0
       lodash:
         specifier: ^4.18.1
         version: 4.18.1
@@ -2927,8 +2927,8 @@ packages:
     resolution: {integrity: sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==}
     engines: {node: '>= 10.13.0'}
 
-  joi@18.2.9:
-    resolution: {integrity: sha512-2mD929bUVKUhOLQQEVhlf6EZ0Mlo0DeRb5MO7cViR9AXLtBauuccEtB1py9Ocxpo/P7ucnh442iY/iOwrh3IQw==}
+  joi@18.3.0:
+    resolution: {integrity: sha512-/RwAK4BAfzcdbdFg073tzq4/xhY6Q7lMd5AmjqTL6pu0QFJdEmtswgm8BvgwXvOKuPNYQ8XrdQrrW/gF65LiNw==}
     engines: {node: '>= 20'}
 
   js-tokens@10.0.0:
@@ -7047,7 +7047,7 @@ snapshots:
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
-  joi@18.2.9:
+  joi@18.3.0:
     dependencies:
       '@hapi/address': 5.1.1
       '@hapi/formula': 3.0.2
