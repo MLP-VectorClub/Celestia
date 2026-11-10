@@ -60,7 +60,7 @@ const UNDETERMINED_OK = [
   /^a\[href\$="[^"]*"\] > \.p-2\.[\w-]*cardBody\.card-body( > .*)?$/,
   // The captions in the pills tinted by a vector app: the app's icon is a pseudo element over the pill, which axe cannot see through. Their colors
   // are fixed, checked against every pill background in `src/scss/__tests__/user-pill-contrast.test.ts`
-  /^\.app-\w+ > .*__caption$/,
+  /^\.app-[\w-]+ > .*__caption$/,
   // The two buttons above the full list, the same white-on-teal buttons as the ones audited on /cg
   /^\.btn-guide-link\.btn-sm\[href\$="pony"\]$/,
   /^a\[href\$="changes"\]$/,
