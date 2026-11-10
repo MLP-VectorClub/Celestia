@@ -7,7 +7,7 @@ import { Button, Input } from 'reactstrap';
 
 import styles from 'modules/ProfilePage.module.scss';
 import InlineIcon from 'src/components/shared/InlineIcon';
-import { describeApiError, useApiMutation, useAuth, useUserPrefs } from 'src/hooks';
+import { describeApiError, useApiMutation, useAuth, useConfig, useUserPrefs } from 'src/hooks';
 import { userPrefsKey } from 'src/hooks/prefs';
 import { PATHS } from 'src/paths';
 import { AccountService } from 'src/services/account';
@@ -63,8 +63,6 @@ const SECTIONS: Array<{ id: 'cg' | 'ep' | 'personal' | 'limits'; fields: Field[]
   },
 ];
 
-const VECTOR_APPS = ['', 'illustrator', 'inkscape', 'ponyscape'];
-
 type Value = boolean | number | string | null;
 
 /** One preference as the old site showed it: its sentence with the input in it and a green Save button that only enables after a change */
@@ -76,6 +74,8 @@ const PrefForm: FC<{ field: Field; userId: number; stored: Value; canSave: boole
   const [value, setValue] = useState<Value>(initial);
   useEffect(() => setValue(initial()), [stored]); // eslint-disable-line react-hooks/exhaustive-deps
   const { user } = useAuth();
+  const { config } = useConfig();
+  const vectorApps = Object.entries(config?.vectorApps ?? {}).filter(([app]) => app !== '');
   const save = useApiMutation(() => AccountService.setPreference(userId, field.key, (value === '' ? null : value) as never), {
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: [userPrefsKey(userId)] });
@@ -133,15 +133,10 @@ const PrefForm: FC<{ field: Field; userId: number; stored: Value; canSave: boole
         disabled={!canSave}
         onChange={(e) => setValue(e.target.value)}
       >
-        {VECTOR_APPS.map((app) => (
+        <option value="">{t('users.prefs.p_vectorappNone')}</option>
+        {vectorApps.map(([app, name]) => (
           <option key={app} value={app}>
-            {app === ''
-              ? t('users.prefs.p_vectorappNone')
-              : app === 'illustrator'
-                ? 'Adobe Illustrator'
-                : app === 'inkscape'
-                  ? 'Inkscape'
-                  : 'Ponyscape'}
+            {name}
           </option>
         ))}
       </Input>

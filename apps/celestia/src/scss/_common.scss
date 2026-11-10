@@ -136,6 +136,10 @@ time[id] {
   @include vapp(#f80, 'illustrator');
 }
 
+.app-affinity-designer {
+  @include vapp(hsl(88, 45%, 50%), 'affinity-designer');
+}
+
 .app-inkscape {
   @include vapp(#0af, 'inkscape');
 }

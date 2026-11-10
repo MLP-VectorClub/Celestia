@@ -181,7 +181,7 @@ const ComponentsPage: NextPage = () => {
           <UserLinkWithAvatar id={1} name="Some Pony" avatarUrl={null} />
         </div>
         <div className={styles.row}>
-          {[undefined, 'illustrator', 'inkscape', 'ponyscape'].map((app) => (
+          {[undefined, 'illustrator', 'affinity-designer', 'inkscape', 'ponyscape'].map((app) => (
             <UserLinkWithAvatar key={app ?? 'none'} id={1} name="Some Pony" avatarUrl={null} caption="Reserved by:" vectorApp={app} />
           ))}
         </div>

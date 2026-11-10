@@ -108,6 +108,12 @@ const AboutPage: NextPage = () => {
           })}
           <br />
 
+          {t.rich('about.attributions.affinityLogo', {
+            copyright: 'Canva Pty Ltd',
+            link: (chunks: ReactNode) => <ExternalLink href="https://www.affinity.studio/">{chunks}</ExternalLink>,
+          })}
+          <br />
+
           {t.rich('about.attributions.inkscapeLogo', {
             link: (chunks: ReactNode) => (
               <ExternalLink href="https://commons.wikimedia.org/wiki/File:Inkscape_Logo.svg">{chunks}</ExternalLink>

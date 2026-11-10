@@ -10,7 +10,7 @@
     "developer": "Site Developer"
   },
   "showTypes": { "episode": "Episode", "movie": "Movie", "short": "Short", "special": "Special" },
-  "vectorApps": { "": "(don't show)", "illustrator": "Adobe Illustrator", "inkscape": "Inkscape", "ponyscape": "Ponyscape" },
+  "vectorApps": { "": "(don't show)", "illustrator": "Adobe Illustrator", "affinity-designer": "Affinity", "inkscape": "Inkscape", "ponyscape": "Ponyscape" },
   "maxUploadSize": "2 MB",
   "patterns": {
     "printableAscii": { "source": "^[ -~\\n]+$", "flags": "" },

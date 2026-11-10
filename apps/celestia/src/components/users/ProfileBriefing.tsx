@@ -9,9 +9,8 @@ import InlineIcon from 'src/components/shared/InlineIcon';
 import { Tooltipped } from 'src/components/shared/Tooltipped';
 import { ChangeRoleDialog } from 'src/components/users/ChangeRoleDialog';
 import { DevRoleLabelDialog } from 'src/components/users/DevRoleLabelDialog';
+import { useConfig } from 'src/hooks';
 import { mapRoleLabel } from 'src/utils';
-
-const VECTOR_APP_NAMES: Record<string, string> = { illustrator: 'Adobe Illustrator', inkscape: 'Inkscape', ponyscape: 'Ponyscape' };
 
 /** The DeviantArt "D", drawn in the site's green like on the old site */
 const DeviantArtLogo: FC = () => (
@@ -25,6 +24,7 @@ export const ProfileBriefing: FC<{ profile: UserProfile }> = ({ profile }) => {
   const t = useTranslations();
   const [changingRole, setChangingRole] = useState(false);
   const [changingDevLabel, setChangingDevLabel] = useState(false);
+  const { config } = useConfig();
   const { user } = profile;
   const vectorApp = profile.vectorApp ?? null;
 
@@ -57,8 +57,8 @@ export const ProfileBriefing: FC<{ profile: UserProfile }> = ({ profile }) => {
             <img
               className={styles.vectorAppLogo}
               src={`/img/vapps/${vectorApp}.svg`}
-              alt={t('users.profile.vectorAppTitle', { app: VECTOR_APP_NAMES[vectorApp] ?? vectorApp })}
-              title={t('users.profile.vectorAppTitle', { app: VECTOR_APP_NAMES[vectorApp] ?? vectorApp })}
+              alt={t('users.profile.vectorAppTitle', { app: config?.vectorApps[vectorApp] ?? vectorApp })}
+              title={t('users.profile.vectorAppTitle', { app: config?.vectorApps[vectorApp] ?? vectorApp })}
             />
           )}
           {profile.discordServerMember && (
