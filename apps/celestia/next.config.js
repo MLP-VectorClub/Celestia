@@ -50,6 +50,8 @@ const DEPLOYMENT_ID = /^[a-f0-9]{4,}$/i.test(COMMIT) ? COMMIT : undefined;
 
 /** @type {import('next').NextConfig} */
 module.exports = {
+  // The container image (Dockerfile) runs the self-contained server; the pm2 deploy keeps `next start`
+  ...(process.env.NEXT_OUTPUT === 'standalone' ? { output: 'standalone', outputFileTracingRoot: join(__dirname, '../..') } : {}),
   // A separate build directory lets a server that is running (the browser test instance) keep its build while another one is made
   distDir: DIST_DIR,
   reactStrictMode: true,
