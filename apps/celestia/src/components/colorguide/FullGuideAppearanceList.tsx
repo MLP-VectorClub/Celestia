@@ -35,6 +35,7 @@ const FullGuideAppearanceList: FC<{ appearances: SlimAppearance[] }> = ({ appear
                 style={{ objectFit: 'contain' }}
                 unoptimized
                 alt={t('colorGuide.list.spriteAlt', { label: a.label })}
+                loading="lazy"
               />
             </div>
           );
