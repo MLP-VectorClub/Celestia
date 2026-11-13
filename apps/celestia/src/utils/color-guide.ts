@@ -225,11 +225,23 @@ export const getSwatchStyle = (hex: string | null | undefined, opacity?: number 
 export const yiq = (rgb: RgbColors): number => (rgb.red * 299 + rgb.green * 587 + rgb.blue * 114) / 1000;
 
 /**
- * The contract's `Sprite` only carries a hash; the image itself is `GET /appearances/{id}/sprite` (300 or 600 px, `hash` busts caches)
+ * A public appearance's 300 px sprite is addressed by `sprite.path`, the CDN file itself, so listing a guide costs Luna nothing per image.
+ * Everything else goes through `GET /appearances/{id}/sprite` (300 or 600 px, `hash` busts caches), which boots Luna for every image:
+ * the 600 px size (the payload's `path` is the 300 px file), private appearances (`path` is that endpoint, access is checked there) and
+ * anything with a share `token`.
  */
-export const getSpriteUrl = (appearanceId: number, sprite: Pick<Sprite, 'hash'>, size: 300 | 600 = 300, token?: string): string =>
+export const getSpriteUrl = (
+  appearanceId: number,
+  sprite: Pick<Sprite, 'hash'> & Partial<Pick<Sprite, 'path'>>,
+  size: 300 | 600 = 300,
+  token?: string
+): string => {
+  if (size === 300 && !token && sprite.path && /^https?:\/\//.test(sprite.path) && !sprite.path.includes('/appearances/')) {
+    return sprite.path;
+  }
   // `token` is the share secret of a private appearance, without it only its owner and staff get the image
-  `${API_PREFIX}${buildUrl(`/appearances/${appearanceId}/sprite`, { size, hash: sprite.hash, ...(token ? { token } : {}) })}`;
+  return `${API_PREFIX}${buildUrl(`/appearances/${appearanceId}/sprite`, { size, hash: sprite.hash, ...(token ? { token } : {}) })}`;
+};
 
 /** Where an appearance's palette or rendered image is served, `query` being what the endpoint takes (with the share token of a private appearance) */
 export const getAppearanceFileUrl = (

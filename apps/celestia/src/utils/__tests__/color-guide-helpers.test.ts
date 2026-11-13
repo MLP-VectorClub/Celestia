@@ -98,6 +98,18 @@ describe('getSpriteUrl', () => {
     expect(getSpriteUrl(5, { hash: 'abc' }, 600)).toMatch(/size=600&hash=abc$/);
   });
 
+  it('uses the CDN address of a public 300 px sprite, so Luna is not asked for it', () => {
+    const path = 'https://mlpvcdn.top/sprites/6b/file.png';
+    expect(getSpriteUrl(5, { hash: 'abc', path })).toBe(path);
+  });
+
+  it('still asks Luna for 600 px, share tokens and private appearances', () => {
+    const path = 'https://mlpvcdn.top/sprites/6b/file.png';
+    expect(getSpriteUrl(5, { hash: 'abc', path }, 600)).toMatch(/\/appearances\/5\/sprite\?size=600&hash=abc$/);
+    expect(getSpriteUrl(5, { hash: 'abc', path }, 300, 'secret')).toContain('token=secret');
+    expect(getSpriteUrl(5, { hash: 'abc', path: 'https://api.mlpvector.club/appearances/5/sprite' })).toMatch(/size=300&hash=abc$/);
+  });
+
   it('adds the share token of a private appearance only when there is one', () => {
     expect(getSpriteUrl(5, { hash: 'abc' }, 600, 'secret')).toMatch(/\/appearances\/5\/sprite\?size=600&hash=abc&token=secret$/);
     expect(getSpriteUrl(5, { hash: 'abc' }, 300, '')).not.toContain('token');
