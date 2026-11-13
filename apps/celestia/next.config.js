@@ -91,9 +91,11 @@ module.exports = {
         const config = devMode
           ? {
               ...entry,
-              headers: entry.headers.map((headerConfig) => {
+              // Local runs must not file reports with the production receiver (it would refuse the origin anyway)
+              headers: entry.headers.filter((headerConfig) => !/^reporting-endpoints$/i.test(headerConfig.key)).map((headerConfig) => {
                 if (/content-security-policy/i.test(headerConfig.key)) {
                   const value = headerConfig.value
+                    .replace(/;?report-(?:uri|to) [^;]+/g, '')
                     .replace(/script-src [^;]+(;|$)/, `script-src * 'unsafe-inline' 'unsafe-hashes' 'unsafe-eval'$1`)
                     .replace(/((?:img|default)-src [^;]+)(;|$)/g, `$1 ${NEXT_PUBLIC_CDN_DOMAIN}$2`);
                   return {
