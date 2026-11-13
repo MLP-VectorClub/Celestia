@@ -17,7 +17,9 @@ ARG NEXT_PUBLIC_FRONTEND_HOST=https://mlpvector.club
 ARG NEXT_PUBLIC_BACKEND_HOST=https://api.mlpvector.club
 ARG NEXT_PUBLIC_API_PREFIX=/api
 ARG NEXT_PUBLIC_CDN_DOMAIN=mlpvcdn.top
-ARG NEXT_PUBLIC_WS_HOST=
+# The websocket server that pushes notifications (Muffins). The CSP's connect-src is built from it at build time, so without it the browsers'
+# connections to it are blocked; it is what Luna's /config advertises as wsServerHost
+ARG NEXT_PUBLIC_WS_HOST=https://ws.mlpvector.club:8443
 # "<short commit>;<commit unix time>", the build ID the footer shows (see next.config.js)
 ARG BUILD_GIT_INFO=
 ENV NEXT_PUBLIC_FRONTEND_HOST=$NEXT_PUBLIC_FRONTEND_HOST \
