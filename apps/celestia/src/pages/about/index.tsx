@@ -230,12 +230,6 @@ const AboutPage: NextPage = () => {
           </li>
         </ul>
         <p>
-          {t.rich('about.synopsisCredit', {
-            strong: (chunks) => <strong>{chunks}</strong>,
-            tmdb: (chunks) => <ExternalLink href="https://www.themoviedb.org/documentation/api">{chunks}</ExternalLink>,
-          })}
-          {` ${t('common.tmdbDisclaimer')}`}
-          <br />
           <strong>Coding, design & hosting:</strong> <ExternalLink href="https://went.tf">WentTheFox</ExternalLink>
         </p>
       </section>
