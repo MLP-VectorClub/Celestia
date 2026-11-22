@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "check:inline-scripts": "node scripts/inline-scripts.mjs",
     "start": "next start",
     "lint": "eslint .",
     "test": "vitest run",

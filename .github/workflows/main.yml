@@ -47,6 +47,9 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: No inline scripts (the CSP would block them)
+        run: pnpm --filter @mlp-vectorclub/celestia check:inline-scripts
+
       - name: Linting
         run: pnpm lint
 
