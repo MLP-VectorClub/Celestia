@@ -99,6 +99,32 @@ describe('acquireSocket', () => {
     await vi.waitFor(() => expect(callback).toHaveBeenLastCalledWith({ token: 'second' }));
   });
 
+  it('says in the handshake that the visitor opted out of the statistics, and only then', async () => {
+    const { acquireSocket } = await load();
+    await acquireSocket('https://ws.example');
+    const callback = vi.fn();
+
+    vi.stubGlobal('document', { cookie: 'a=b; mlpvc_stats_optout=1900000000000' });
+    sockets[0].options.auth(callback);
+    await vi.waitFor(() => expect(callback).toHaveBeenLastCalledWith({ token: 'one-time', optOut: true }));
+
+    vi.stubGlobal('document', { cookie: 'a=b' });
+    sockets[0].options.auth(callback);
+    await vi.waitFor(() => expect(callback).toHaveBeenLastCalledWith({ token: 'one-time' }));
+  });
+
+  it('starts an open connection over so the server hears a changed choice', async () => {
+    const { acquireSocket, reconnectSocket } = await load();
+    await acquireSocket('https://ws.example');
+    reconnectSocket();
+    expect(sockets[0].disconnect).not.toHaveBeenCalled();
+
+    sockets[0].connected = true;
+    reconnectSocket();
+    expect(sockets[0].disconnect).toHaveBeenCalledTimes(1);
+    expect(sockets[0].connect).toHaveBeenCalledTimes(1);
+  });
+
   it('connects as a guest when no token can be had', async () => {
     vi.mocked(AccountService.getSocketToken).mockRejectedValue(new Error('401'));
     const { acquireSocket } = await load();
@@ -108,11 +134,20 @@ describe('acquireSocket', () => {
     await vi.waitFor(() => expect(callback).toHaveBeenCalledWith({}));
   });
 
-  it('tells the server which page the visitor is on when it connects', async () => {
+  it('tells the server the route name of the visitor\'s page when it connects, never the address', async () => {
+    const { acquireSocket, rememberRoute } = await load();
+    rememberRoute('/cg/[guide]');
+    await acquireSocket('https://ws.example');
+    sockets[0].fire('connect');
+    expect(sockets[0].emitted).toEqual([['navigate', { page: '/cg/[guide]', route: true }]]);
+    expect(JSON.stringify(sockets[0].emitted)).not.toContain('pony');
+  });
+
+  it('says nothing about the page when no route is known yet', async () => {
     const { acquireSocket } = await load();
     await acquireSocket('https://ws.example');
     sockets[0].fire('connect');
-    expect(sockets[0].emitted).toEqual([['navigate', { page: '/cg/pony?page=2#p3' }]]);
+    expect(sockets[0].emitted).toEqual([]);
   });
 
   it('leaves a refused connection alone for 30 seconds, then tries again while somebody is still using it', async () => {
@@ -142,10 +177,10 @@ describe('announcePage', () => {
   it('only speaks while connected', async () => {
     const { announcePage } = await load();
     const socket = new FakeSocket('x', { auth: () => undefined });
-    announcePage(socket as never, '/a');
+    announcePage(socket as never, '/a/[id]');
     expect(socket.emitted).toEqual([]);
     socket.connected = true;
     announcePage(socket as never, '/b');
-    expect(socket.emitted).toEqual([['navigate', { page: '/b' }]]);
+    expect(socket.emitted).toEqual([['navigate', { page: '/b', route: true }]]);
   });
 });

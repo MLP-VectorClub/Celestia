@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl';
 import { ReactNode, useMemo } from 'react';
 
 import styles from 'modules/PrivacyPolicy.module.scss';
+import StatsOptOutForm from 'src/components/privacy/StatsOptOutForm';
 import ContactLink from 'src/components/shared/ContactLink';
 import Content from 'src/components/shared/Content';
 import ExternalLink from 'src/components/shared/ExternalLink';
@@ -114,6 +115,14 @@ const PrivacyPolicy: NextPage = () => {
         <p>{t('privacyPolicy.cookies.p3')}</p>
         <p>{t('privacyPolicy.cookies.p4')}</p>
         <p>{t('privacyPolicy.cookies.p5')}</p>
+        <p>{t('privacyPolicy.cookies.p6')}</p>
+
+        <h2>{t('privacyPolicy.statistics.heading')}</h2>
+        <p>{t('privacyPolicy.statistics.p1')}</p>
+        <p>{t('privacyPolicy.statistics.p2')}</p>
+        <p>{t('privacyPolicy.statistics.p2b')}</p>
+        <p>{t('privacyPolicy.statistics.p3')}</p>
+        <StatsOptOutForm />
 
         <h2>{t('privacyPolicy.security.heading')}</h2>
         <p>{t('privacyPolicy.security.p1')}</p>

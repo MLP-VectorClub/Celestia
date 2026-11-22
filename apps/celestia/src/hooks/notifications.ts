@@ -1,10 +1,10 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { useConfig } from 'src/hooks/content';
 import { AccountService } from 'src/services/account';
-import { acquireSocket, announcePage } from 'src/utils/websocket';
+import { acquireSocket, announcePage, rememberRoute } from 'src/utils/websocket';
 
 export const NOTIFICATIONS_KEY = '/notifications';
 /** Whether the websocket connection that announces new notifications is up, kept in the query cache so that the polling can calm down while it is */
@@ -37,6 +37,9 @@ export function useNotifications(enabled: boolean) {
 export function useNotificationSocket(enabled: boolean) {
   const queryClient = useQueryClient();
   const router = useRouter();
+  // Read when needed, not a dependency of the effect: opening another page must not reconnect the socket
+  const routeRef = useRef(router.pathname);
+  routeRef.current = router.pathname;
   const { config } = useConfig();
   const host = config?.wsServerHost;
 
@@ -47,13 +50,15 @@ export function useNotificationSocket(enabled: boolean) {
     let cleanup: VoidFunction = () => undefined;
     const setConnected = (value: boolean) => queryClient.setQueryData(SOCKET_CONNECTED_KEY, value);
 
+    rememberRoute(routeRef.current);
     acquireSocket(host)
       .then(({ socket, release }) => {
         const onConnect = () => setConnected(true);
         const onDisconnect = () => setConnected(false);
         const onRefusal = () => setConnected(false);
         const onCount = () => void queryClient.invalidateQueries({ queryKey: [NOTIFICATIONS_KEY] });
-        const onRoute = (url: string) => announcePage(socket, url);
+        // `router.pathname` is the route name (`/cg/[guide]`) of the page that was just opened, not its address
+        const onRoute = () => announcePage(socket, routeRef.current);
         socket.on('connect', onConnect);
         socket.on('auth', onConnect);
         socket.on('disconnect', onDisconnect);
