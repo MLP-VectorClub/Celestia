@@ -10,11 +10,13 @@ allowBuilds:
   sharp: false
   unrs-resolver: true
 
-# Security fixes for packages that only reach us through other packages (Dependabot alerts on seroval, vite, source-map-js)
+# Security fixes for packages that only reach us through other packages (Dependabot alerts on seroval, vite, source-map-js, minimatch)
 overrides:
-  seroval: 1.6.3
+  seroval: 1.6.12
   vite: 8.3.4
   source-map-js: 1.2.2
+  # Dependabot alert: every 7.x to 10.x is affected, and they are only reached through eslint/typescript-eslint tooling
+  'minimatch@>=7 <11': 11.0.1
 
 minimumReleaseAge: 20160
 minimumReleaseAgeExclude:
