@@ -7,6 +7,8 @@ import { IntlTestProvider } from 'src/test-utils/IntlTestProvider';
 
 const state = vi.hoisted(() => ({ readOnly: false, loading: false }));
 
+// The site shows no skeleton at the moment (NOTICE_PLACEHOLDERS is 0), but the feature is still here: test it with a fixed number
+vi.mock('src/config', async (importOriginal) => ({ ...(await importOriginal<typeof import('src/config')>()), NOTICE_PLACEHOLDERS: 1 }));
 vi.mock('next/router', () => ({ useRouter: () => ({ isReady: true, asPath: '/cg', pathname: '/cg' }) }));
 vi.mock('src/hooks', () => ({
   useConfig: () => ({ config: { readOnly: state.readOnly } }),

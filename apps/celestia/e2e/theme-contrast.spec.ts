@@ -58,13 +58,18 @@ const UNDETERMINED_OK = [
   // The text of the full list's cards: body text (a line of it at 75%) on the card's body background, which axe reports as overlapped although
   // nothing is (the hit test is clean)
   /^a\[href\$="[^"]*"\] > \.p-2\.[\w-]*cardBody\.card-body( > .*)?$/,
-  // The captions in the pills tinted by a vector app: the app's icon is a pseudo element over the pill, which axe cannot see through. Their colors
-  // are fixed, checked against every pill background in `src/scss/__tests__/user-pill-contrast.test.ts`
-  /^\.app-[\w-]+ > .*__caption$/,
   // The two buttons above the full list, the same white-on-teal buttons as the ones audited on /cg
   /^\.btn-guide-link\.btn-sm\[href\$="pony"\]$/,
   /^a\[href\$="changes"\]$/,
 ];
+
+/**
+ * The captions in the pills tinted by a vector app: the app's icon is a pseudo element over the pill, which axe cannot see through. Their colors are
+ * fixed, checked against every pill background in `src/scss/__tests__/user-pill-contrast.test.ts`. Found by their `data-testid` (in the node's HTML),
+ * not by their class: the class of a CSS module is named by the bundler, and a new Next.js version renamed them and broke the match
+ */
+const isTintedPillCaption = (node: { target: unknown[]; html: string }) =>
+  /^\.app-[\w-]+ > /.test(node.target.join(' ')) && node.html.includes('data-testid="user-pill-caption"');
 
 const contrastProblems = async (page: Page) => {
   await page.addStyleTag({
@@ -81,7 +86,7 @@ const contrastProblems = async (page: Page) => {
   };
   const undetermined = incomplete
     .flatMap((result) => result.nodes)
-    .filter((node) => !UNDETERMINED_OK.some((ok) => ok.test(node.target.join(' '))))
+    .filter((node) => !isTintedPillCaption(node) && !UNDETERMINED_OK.some((ok) => ok.test(node.target.join(' '))))
     .map((node) => `${node.target.join(' ')}: could not be checked (${node.any[0]?.message ?? 'unknown'})`);
   return [...violations.flatMap((violation) => violation.nodes.map(describe)), ...undetermined];
 };

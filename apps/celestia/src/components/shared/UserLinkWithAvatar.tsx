@@ -39,7 +39,9 @@ const UserLinkWithAvatar: FC<Pick<PublicUser, 'id' | 'name' | 'avatarUrl'> & Par
       )}
       {caption ? (
         <span className={styles.text}>
-          <span className={styles.caption}>{caption}</span>
+          <span className={styles.caption} data-testid="user-pill-caption">
+            {caption}
+          </span>
           <span className={styles.name}>{name}</span>
         </span>
       ) : (
