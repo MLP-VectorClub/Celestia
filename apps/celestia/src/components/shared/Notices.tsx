@@ -4,6 +4,7 @@ import { FC } from 'react';
 import { Alert } from 'reactstrap';
 
 import { NOTICE_PLACEHOLDERS } from 'src/config';
+import PrivacyUpdateNotice from 'src/components/shared/PrivacyUpdateNotice';
 import { useConfig, useCurrentNotices } from 'src/hooks';
 import { renderNoticeHtml, substituteNoticePath } from 'src/utils/notice-html';
 
@@ -33,6 +34,7 @@ const Notices: FC = () => {
             </span>
           </Alert>
         ))}
+      <PrivacyUpdateNotice />
       {notices?.map((notice) => (
         <Alert key={notice.id} color={NOTICE_COLORS[notice.type]} fade={false}>
           {renderNoticeHtml(substituteNoticePath(notice.messageHtml, path))}

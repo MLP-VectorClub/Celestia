@@ -117,7 +117,7 @@ const PrivacyPolicy: NextPage = () => {
         <p>{t('privacyPolicy.cookies.p5')}</p>
         <p>{t('privacyPolicy.cookies.p6')}</p>
 
-        <h2>{t('privacyPolicy.statistics.heading')}</h2>
+        <h2 id="visitor-statistics">{t('privacyPolicy.statistics.heading')}</h2>
         <p>{t('privacyPolicy.statistics.p1')}</p>
         <p>{t('privacyPolicy.statistics.p2')}</p>
         <p>{t('privacyPolicy.statistics.p2b')}</p>

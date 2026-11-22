@@ -6,6 +6,10 @@
     "light": "Light",
     "dark": "Dark"
   },
+  "privacyNotice": {
+    "title": "Privacy policy updated.",
+    "body": "We now count how many people are on the site, with anonymous numbers only (no IP addresses, names or page addresses). You can <link>read what is counted and opt out</link>."
+  },
   "footer": {
     "lastUpdate": "Last update",
     "unknown": "Unknown",
@@ -20,7 +24,9 @@
     "contactUs": "Contact Us",
     "status": "Status",
     "api": "API Docs",
-    "apiMeaning": "Application Programming Interface – for developers"
+    "apiMeaning": "Application Programming Interface – for developers",
+    "oldSite": "Old site",
+    "oldSiteTitle": "The previous version of the site (read-only), at this same page"
   },
   "titles": {
     "colorGuides": "Color Guides",

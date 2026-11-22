@@ -34,17 +34,21 @@ describe('buildStatsOptOutCookie', () => {
   const now = new Date('2026-11-22T12:00:00Z');
 
   it('lasts 400 days and records the expiry as its value', () => {
-    expect(buildStatsOptOutCookie(true, false, now)).toBe(
+    expect(buildStatsOptOutCookie(true, false, 'localhost', now)).toBe(
       `${STATS_OPT_OUT_COOKIE}=${now.getTime() + COOKIE_MAX_AGE_DAYS * DAY}; Max-Age=${COOKIE_MAX_AGE_DAYS * 24 * 60 * 60}; Path=/; SameSite=Lax`
     );
   });
 
+  it('is on the parent domain on the club\'s sites, so the old site honours it', () => {
+    expect(buildStatsOptOutCookie(true, true, 'mlpvector.club', now)).toContain('; Domain=mlpvector.club;');
+  });
+
   it('adds Secure when asked', () => {
-    expect(buildStatsOptOutCookie(true, true, now)).toMatch(/; Secure$/);
+    expect(buildStatsOptOutCookie(true, true, 'localhost', now)).toMatch(/; Secure$/);
   });
 
   it('removes the cookie when the choice is undone', () => {
-    expect(buildStatsOptOutCookie(false, true, now)).toBe(`${STATS_OPT_OUT_COOKIE}=; Max-Age=0; Path=/; SameSite=Lax; Secure`);
+    expect(buildStatsOptOutCookie(false, true, 'localhost', now)).toBe(`${STATS_OPT_OUT_COOKIE}=; Max-Age=0; Path=/; SameSite=Lax; Secure`);
   });
 });
 
@@ -67,14 +71,14 @@ describe('with a document', () => {
   });
 
   it('writes the cookie, over https only with Secure', () => {
-    vi.stubGlobal('window', { location: { protocol: 'https:' } });
+    vi.stubGlobal('window', { location: { protocol: 'https:', hostname: 'mlpvector.club' } });
     const doc = fakeDocument('');
     setStatsOptOut(true);
     expect(doc.cookie).toContain('; Secure');
   });
 
   it('renews an existing opt-out and leaves a visitor who has none alone', () => {
-    vi.stubGlobal('window', { location: { protocol: 'http:' } });
+    vi.stubGlobal('window', { location: { protocol: 'http:', hostname: 'localhost' } });
     const none = fakeDocument('a=b');
     renewStatsOptOut();
     expect(none.cookie).toBe('a=b');
