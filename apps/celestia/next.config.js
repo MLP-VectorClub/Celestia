@@ -55,6 +55,12 @@ module.exports = {
   // A separate build directory lets a server that is running (the browser test instance) keep its build while another one is made
   distDir: DIST_DIR,
   reactStrictMode: true,
+  experimental: {
+    // Next 16.4 made Turbopack's shared runtime the default, which starts every page with an inline `(globalThis["TURBOPACK"] ||= []).push(...)` script. Our
+    // CSP has `script-src 'self'` (no inline scripts, and the chunk list differs per page so it cannot be a hash), so the browser refuses it and the page
+    // never starts: no interactivity at all. Keep this off until the CSP can carry a nonce
+    turbopackSharedRuntime: false,
+  },
   // Nobody needs to be told what the site runs on (security scanners flag the X-Powered-By: Next.js header)
   poweredByHeader: false,
   // The dev server is reached through nginx at https://mlpvector.lc, which Next would otherwise treat as a cross-origin request (blocking HMR)
