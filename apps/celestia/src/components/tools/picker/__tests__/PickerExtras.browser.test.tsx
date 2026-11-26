@@ -71,6 +71,9 @@ describe('levels', () => {
     await userEvent.fill(screen.getByLabelText('Low value'), '50');
     await userEvent.fill(screen.getByLabelText('High value'), '150');
     await screen.getByRole('button', { name: 'Set' }).click();
+    // Wait for the levels to be applied to the stage before picking, or a slow runner clicks too early
+    await expect.element(screen.getByRole('button', { name: 'Levels' })).toHaveAttribute('aria-pressed', 'true');
+    await expect.poll(() => shownCenterColor(screen)[0]).toBeGreaterThanOrEqual(127);
 
     const stage = screen.getByRole('img', { name: 'gray.png' });
     const rect = stage.element().getBoundingClientRect();
