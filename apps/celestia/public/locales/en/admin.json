@@ -127,11 +127,6 @@
     "wsdiag": "WS"
   },
   "index": {
-    "elasticStatus": "OpenSearch status",
-    "serverDown": "Server is down.",
-    "indices": "Indices",
-    "nodes": "Nodes",
-    "statusFailed": "Could not load the status.",
     "recentPosts": "{count, plural, one {# Most recent post} other {# Most recent posts}}",
     "recentFailed": "Could not load the posts."
   },

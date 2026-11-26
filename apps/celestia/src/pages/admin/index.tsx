@@ -1,10 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { GetAdminPostsRecentResult, GetAdminSearchStatusResult } from '@went.tf/mlp-vectorclub-api-types';
+import { GetAdminPostsRecentResult } from '@went.tf/mlp-vectorclub-api-types';
 import Axios from 'axios';
 import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { FC } from 'react';
 import { Button } from 'reactstrap';
 
 import postStyles from 'modules/PostList.module.scss';
@@ -21,51 +20,12 @@ import { toPublicUrl } from 'src/utils/public-url';
 /** Luna's Laravel Horizon dashboard (queues), which only lets developers in; it lives on the API's own address, outside the API prefix */
 const HORIZON_URL = `${toPublicUrl(API_HOST)}/horizon`;
 
-const SearchStatus: FC<{ initialData: GetAdminSearchStatusResult | null }> = ({ initialData }) => {
-  const t = useTranslations();
-  const status = useQuery({
-    queryKey: ['/admin/search-status'],
-    queryFn: () => Axios.get<GetAdminSearchStatusResult>('/admin/search-status').then((r) => r.data),
-    initialData: initialData ?? undefined,
-  });
-  return (
-    <section className="elastic-status">
-      <h2>
-        <InlineIcon icon="search" first size="xs" />
-        {t('admin.index.elasticStatus')}
-      </h2>
-      {status.isLoading && <p className="text-muted">{t('admin.loading')}</p>}
-      {status.isError && <p className="text-danger">{t('admin.index.statusFailed')}</p>}
-      {status.data?.down && <strong>{t('admin.index.serverDown')}</strong>}
-      {status.data && !status.data.down && (
-        <>
-          <pre>
-            <code>
-              <strong>{t('admin.index.indices')}</strong>
-              {'\n'}
-              {status.data.indices.join('\n')}
-            </code>
-          </pre>
-          <pre>
-            <code>
-              <strong>{t('admin.index.nodes')}</strong>
-              {'\n'}
-              {status.data.nodes.join('\n')}
-            </code>
-          </pre>
-        </>
-      )}
-    </section>
-  );
-};
-
 type PropTypes = {
-  /** What the server fetched with the visitor's session, null when it failed (or the visitor is not a developer, for the search status) */
+  /** What the server fetched with the visitor's session, null when it failed */
   initialRecent: GetAdminPostsRecentResult | null;
-  initialSearchStatus: GetAdminSearchStatusResult | null;
 };
 
-const AdminIndexPage: NextPage<PropTypes> = ({ initialRecent, initialSearchStatus }) => {
+const AdminIndexPage: NextPage<PropTypes> = ({ initialRecent }) => {
   const t = useTranslations();
   const { user, isStaff } = useAuth();
   const recent = useQuery({
@@ -98,7 +58,6 @@ const AdminIndexPage: NextPage<PropTypes> = ({ initialRecent, initialSearchStatu
           </Button>
         )}
       </ButtonCollection>
-      {permission(user, 'developer') && <SearchStatus initialData={initialSearchStatus} />}
       <section className="recent-posts">
         <h2>
           <InlineIcon icon="bell" first size="xs" />
@@ -116,12 +75,9 @@ const AdminIndexPage: NextPage<PropTypes> = ({ initialRecent, initialSearchStatu
   );
 };
 
-export const getServerSideProps = createAdminGetServerSideProps('index', 'staff', async (ctx, user): Promise<PropTypes> => {
-  const [initialRecent, initialSearchStatus] = await Promise.all([
-    fetchForAdminPage<GetAdminPostsRecentResult>(ctx, '/admin/posts/recent'),
-    permission(user, 'developer') ? fetchForAdminPage<GetAdminSearchStatusResult>(ctx, '/admin/search-status') : Promise.resolve(null),
-  ]);
-  return { initialRecent, initialSearchStatus };
+export const getServerSideProps = createAdminGetServerSideProps('index', 'staff', async (ctx): Promise<PropTypes> => {
+  const initialRecent = await fetchForAdminPage<GetAdminPostsRecentResult>(ctx, '/admin/posts/recent');
+  return { initialRecent };
 });
 
 export default AdminIndexPage;

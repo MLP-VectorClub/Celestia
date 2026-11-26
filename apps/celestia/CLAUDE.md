@@ -103,7 +103,7 @@ The two UIs are meant to look the same. Compare the same page of both sites side
 - **Luna API:** Luna's `scripts/serve-contract.sh` (default `http://127.0.0.1:8766`, no `/api/v0` prefix); bearer token from `POST /test/login/{id}`.
 - Run Celestia against either without touching `.env`:
   `NEXT_PUBLIC_BACKEND_HOST=<api base> NEXT_PUBLIC_FRONTEND_HOST=http://127.0.0.1:3100 NEXT_PUBLIC_CDN_DOMAIN=127.0.0.1 NEXT_PUBLIC_API_PREFIX=/api pnpm exec next dev -p 3100 -H 127.0.0.1`
-  (only one dev server per checkout). OpenSearch-backed pages (guide search, autocomplete) answer 503 without ES.
+  (only one dev server per checkout).
 
 ## Two-step verification and passkeys
 
